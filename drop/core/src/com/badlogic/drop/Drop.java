@@ -1,5 +1,6 @@
 package com.badlogic.drop;
 
+import java.io.File;
 import java.util.Iterator;
 
 import com.badlogic.gdx.ApplicationAdapter;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
+
 public class Drop extends ApplicationAdapter
 {
 	private Texture dropImage;
@@ -32,13 +34,15 @@ public class Drop extends ApplicationAdapter
 	@Override
 	public void create()
 	{
+		String basePath = new File("assets").getAbsolutePath();
+		
 		// load the images for the droplet and the bucket, 64x64 pixels each
-		dropImage = new Texture(Gdx.files.internal("/Users/sean/drop/desktop/assets/droplet.png"));
-		bucketImage = new Texture(Gdx.files.internal("/Users/sean/drop/desktop/assets/bucket.png"));
+		dropImage = new Texture(Gdx.files.internal(basePath + "/droplet.png"));
+		bucketImage = new Texture(Gdx.files.internal(basePath + "/bucket.png"));
 
 		// load the drop sound effect and the rain background "music"
-		dropSound = Gdx.audio.newSound(Gdx.files.internal("/Users/sean/drop/desktop/assets/drop.wav"));
-		rainMusic = Gdx.audio.newMusic(Gdx.files.internal("/Users/sean/drop/desktop/assets/rain.mp3"));
+		dropSound = Gdx.audio.newSound(Gdx.files.internal(basePath + "/drop.wav"));
+		rainMusic = Gdx.audio.newMusic(Gdx.files.internal(basePath + "/rain.mp3"));
 
 		// start the playback of the background music immediately
 		rainMusic.setLooping(true);
