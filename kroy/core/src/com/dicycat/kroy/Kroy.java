@@ -10,10 +10,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Kroy extends ApplicationAdapter {
+	public static final float speed = 400;
+	
 	SpriteBatch batch;
 	Texture img;
-	int x;
-	int y;
+	float x;
+	float y;
 	
 	@Override
 	public void create () {
@@ -25,20 +27,21 @@ public class Kroy extends ApplicationAdapter {
 
 	@Override
 	public void render () {
+		float posChange = speed * Gdx.graphics.getDeltaTime(); 
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		if (Gdx.input.isKeyPressed(Keys.UP)) {
-			y = y + 4;
+			y += posChange;
 		}
 		if (Gdx.input.isKeyPressed(Keys.DOWN)) {
-			y = y - 4;
+			y -= posChange;
 		}
 		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
-			x = x + 4;
+			x += posChange;
 		}
 		if (Gdx.input.isKeyPressed(Keys.LEFT)) {
-			x = x - 4;
+			x -= posChange;
 		}
 		
 		batch.begin();
