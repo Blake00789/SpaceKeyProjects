@@ -9,7 +9,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = Kroy.width;
 		config.height = Kroy.height;
-		config.resizable = false;
+		config.resizable = true;	//Mic:changed to true
 		
 		new LwjglApplication(new Kroy(), config);
 	}
