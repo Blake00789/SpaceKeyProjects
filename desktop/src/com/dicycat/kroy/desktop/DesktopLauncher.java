@@ -7,6 +7,10 @@ import com.dicycat.kroy.Kroy;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		config.width = Kroy.width;
+		config.height = Kroy.height;
+		config.resizable = false;
+		
 		new LwjglApplication(new Kroy(), config);
 	}
 }
