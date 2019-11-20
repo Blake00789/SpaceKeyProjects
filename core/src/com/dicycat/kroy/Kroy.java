@@ -17,7 +17,7 @@ public class Kroy extends Game {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		this.setScreen(new MenuScreen(this)); //Mic: changed from GameScreen to MenuScreen to test
+		this.setScreen(new GameScreen(this));
 	}
 
 	@Override

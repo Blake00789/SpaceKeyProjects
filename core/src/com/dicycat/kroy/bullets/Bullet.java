@@ -7,18 +7,18 @@ import com.dicycat.kroy.GameObject;
 import com.dicycat.kroy.screens.GameScreen;
 
 public class Bullet extends GameObject {
-	private Vector2 velocity;
-	private float maxDist;
-	private float travelDist; //Max distance to travel
+	private Vector2 velocity;	//Direction and distance to travel
+	private float maxDist;		//Max distance to travel
+	private float travelDist; 	//Distance left to travel
 	
 	
-	public Bullet(GameScreen gScreen, Vector2 spawnPos, Vector2 direction, int speed, float range) {
+	public Bullet(GameScreen gScreen, Vector2 spawnPos, Vector2 direction, int speed, float range) {	//Constructor
 		super(gScreen, spawnPos, new Texture("singleP.png"), new Vector2(20,20));
 		velocity = direction.scl(speed);
 		maxDist = range;
 	}
 	
-	public void Fire(Vector2 initial) {
+	public void Fire(Vector2 initial) {	//Reset bullet
 		travelDist = maxDist;
 		position = initial;
 		remove = false;
@@ -26,13 +26,12 @@ public class Bullet extends GameObject {
 	
 	@Override
 	public void Update() { //Called every frame
-		Vector2 posChange = velocity.cpy().scl(Gdx.graphics.getDeltaTime());
+		Vector2 posChange = velocity.cpy().scl(Gdx.graphics.getDeltaTime());	//Calculate distance to move
 		travelDist -= posChange.len();
-		if (travelDist <= 0) {
+		if (travelDist <= 0) {		//Remove if travelled required distance
 			remove = true;
 		}
-		position.add(posChange);
-		System.out.println(posChange);
+		position.add(posChange);	//Update position
 	}
 
 }

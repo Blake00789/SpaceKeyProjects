@@ -8,18 +8,18 @@ import com.dicycat.kroy.GameObject;
 import com.dicycat.kroy.screens.GameScreen;
 
 public class FireTruck extends GameObject{
-	private int speed = 200;
+	private int speed = 200;	//How fast the truck can move
 	
-	public FireTruck(GameScreen gScreen, Vector2 spawnPos) {
+	public FireTruck(GameScreen gScreen, Vector2 spawnPos) {	//Constructor
 		super(gScreen, spawnPos, new Texture("fireTruck.png"), new Vector2(50,100));
 	}
 
 	@Override
 	public void Update() 
 	{
-		float posChange = speed * Gdx.graphics.getDeltaTime();
+		float posChange = speed * Gdx.graphics.getDeltaTime();	//Get how far the truck can move this frame
 		
-		if (Gdx.input.isKeyPressed(Keys.UP)) {
+		if (Gdx.input.isKeyPressed(Keys.UP)) {	//Check all inputs for player movement
 			position.y += posChange;
 		}
 		if (Gdx.input.isKeyPressed(Keys.DOWN)) {

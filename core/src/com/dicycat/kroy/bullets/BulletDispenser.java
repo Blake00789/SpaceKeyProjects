@@ -8,16 +8,16 @@ import com.dicycat.kroy.entities.Entity;
 
 public class BulletDispenser {
 
-	List<Pattern> patterns;
-	Entity owner;
+	List<Pattern> patterns;	//Stores all patterns
+	Entity owner;			//Entity the bulletDispnser is attached to
 	
-	int currentPattern;
-	int currentBullet;
-	float patternTime;
-	float patternTimer;
-	float bulletTimer;
+	int currentPattern;		//Current pattern to fire
+	int currentBullet;		//Current bullet to fire
+	float patternTime;		//Time between firing patterns
+	float patternTimer;		//Time since last pattern
+	float bulletTimer;		//Time since last bullet
 	
-	public BulletDispenser(Entity creator) 
+	public BulletDispenser(Entity creator) 		//Constructor
 	{
 		owner = creator;
 		patterns = new ArrayList<Pattern>();
@@ -27,20 +27,23 @@ public class BulletDispenser {
 		patternTimer = 0;
 	}
 	
-	public void AddPattern(Pattern pattern) {
+	public void AddPattern(Pattern pattern) {	//Add a pattern to the bullet dispensers arsenal
 		patterns.add(pattern);
 	}
 	
-	public Bullet[] Update(Boolean fire) {
-		if (patterns.size() == 0) {
+	public Bullet[] Update(Boolean fire) {		//
+		if (patterns.size() == 0) {	//No patterns -> no checks required
 			return null;
 		}
-		patternTimer += Gdx.graphics.getDeltaTime();
+		patternTimer += Gdx.graphics.getDeltaTime();	//Increment timers by time passed
 		bulletTimer += Gdx.graphics.getDeltaTime();
-		if (fire && patternTimer >= patternTime) {
+		
+		//If should be firing, find any bullets that should be fired this frame
+		//Then reset and timers and increment bullet/pattern as needed
+		if (fire && patternTimer >= patternTime) {		
 			if (bulletTimer >= patterns.get(currentPattern).WaitTime()) {
 				bulletTimer = 0;
-				Bullet[] toFire = patterns.get(currentPattern).Bullets()[currentBullet];
+				Bullet[] toFire = patterns.get(currentPattern).Bullets()[currentBullet];	//Get bullets to fire
 				currentBullet++;
 				if (currentBullet >= patterns.get(currentPattern).Bullets().length) {
 					currentPattern++;
@@ -54,7 +57,8 @@ public class BulletDispenser {
 				
 			}
 		}
-		return null;
+		
+		return null;	//Not firing/no bullets
 	}
 }
 

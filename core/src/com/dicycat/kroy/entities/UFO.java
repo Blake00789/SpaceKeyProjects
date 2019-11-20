@@ -25,7 +25,7 @@ public class UFO extends Entity {
 		Bullet[] toShoot = dispenser.Update(true);
 		if (toShoot != null) {
 			for (Bullet bullet : toShoot) {
-				bullet.Fire(position.cpy());
+				bullet.Fire(GetCentre());
 				gameScreen.AddGameObject(bullet);
 			}
 		}
