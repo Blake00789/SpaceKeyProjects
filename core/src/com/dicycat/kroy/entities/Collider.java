@@ -20,6 +20,6 @@ public class Collider {
     }
 
     public static boolean RectangleOnRectangle(){
-
+    	return true;
     }
 }
