@@ -11,6 +11,6 @@ public class DesktopLauncher {
 		config.height = Kroy.height;
 		config.resizable = true;	//Mic:changed to true
 		
-		new LwjglApplication(new Kroy(), config);	//Dan: Just testing GitHub
+		new LwjglApplication(new Kroy(), config);
 	}
 }
