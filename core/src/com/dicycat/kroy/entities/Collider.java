@@ -1,25 +1,21 @@
 package com.dicycat.kroy.entities;
 
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Collider {
 
-    //TODO: Not going to be void, need to work out representation.
-    public static void getRectangleHitbox(Rectangle x, float angle){
-
+    //TODO: Maths to construct polygons from rectangle and it's rotation angle.
+    public static Polygon getRectangleHitbox(Rectangle x, float angle){
+        return new Polygon();   //Stupid return statement to stop errors while we implement.
     }
 
-    public static boolean CircleOnCircle(Circle c1, Circle c2){
-        if(c1.overlaps(c2)){
-            return true;
-        }
-        else{
-            return false;
-        }
+    public static boolean RectangleOnRectangle(RotatingRectangle r1, RotatingRectangle r2){
+        return false;
     }
 
-    public static boolean RectangleOnRectangle(){
-
+    public static boolean RectangleOnCircle(RotatingRectangle x, Circle y){
+        return false;
     }
 }
