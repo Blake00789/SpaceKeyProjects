@@ -2,12 +2,12 @@ package com.dicycat.kroy.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.dicycat.kroy.GameObject;
 import com.dicycat.kroy.screens.GameScreen;
 
-public class FireTruck extends GameObject{
+public class FireTruck extends Entity{
 	private int speed = 200;	//How fast the truck can move
 	
 	public FireTruck(GameScreen gScreen, Vector2 spawnPos) {	//Constructor
@@ -32,5 +32,6 @@ public class FireTruck extends GameObject{
 			position.x -= posChange;
 		}
 		
+		gameScreen.DrawRect(position, size, 2, Color.FIREBRICK);
 	}
 }
