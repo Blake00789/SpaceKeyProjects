@@ -10,7 +10,7 @@ import com.dicycat.kroy.screens.GameScreen;
 
 public class FireTruck extends GameObject{
 	private int speed = 200;	//How fast the truck can move
-	private Rectangle hitbox = new Rectangle(50, 100, 5, 5);
+	private Rectangle hitbox = new Rectangle(75, 150, 10, 10);
 	
 	public FireTruck(GameScreen gScreen, Vector2 spawnPos) {	//Constructor
 		super(gScreen, spawnPos, new Texture("fireTruck.png"), new Vector2(50,100));
