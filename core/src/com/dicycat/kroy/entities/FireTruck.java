@@ -39,4 +39,8 @@ public class FireTruck extends GameObject{
 		}
 		
 	}
+
+	public Rectangle getHitbox(){
+		return this.hitbox;
+	}
 }
