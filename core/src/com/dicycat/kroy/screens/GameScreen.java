@@ -37,7 +37,7 @@ public class GameScreen implements Screen{
 	public void show() {	//Screen first shown
 		toAdd = new ArrayList<GameObject>();
 		gameObjects = new ArrayList<GameObject>();
-		gameObjects.add(new FireTruck(this, new Vector2(0, 0)));	//Player	//Mic:modified from (100, 100) to (0, 0)
+		gameObjects.add(new FireTruck(this, new Vector2(100, 50)));	//Player	//Mic:modified from (100, 100) to (0, 0)
 		gameObjects.add(new UFO(this, new Vector2(0, 200)));	//UFO	//Mic:modified from (480,580) to (0, 200)
 		//gameObjects.add(new Bullet(this, new Vector2(10, 10), new Vector2(1,5), 50, 500));	//Bullet
 		
@@ -52,7 +52,7 @@ public class GameScreen implements Screen{
 		hud.stage.draw();
 		
 		game.batch.setProjectionMatrix(gamecam.combined);	//Mic:only renders the part of the map where the camera is
-		game.batch.begin();
+		game.batch.begin(); // Game loop Start
 
 		List<GameObject> toRemove = new ArrayList<GameObject>();;
 		for (GameObject gObject : gameObjects) {
@@ -60,7 +60,7 @@ public class GameScreen implements Screen{
 			if (gObject.CheckRemove()) {
 				toRemove.add(gObject);
 			}else {
-				game.batch.draw(gObject.GetSprite(), gObject.GetPos().x, gObject.GetPos().y, gObject.GetSize().x, gObject.GetSize().y);
+				game.batch.draw(gObject.getTexture(), gObject.getX(), gObject.getY(), gObject.getOriginX(), gObject.getOriginY(), gObject.getWidth(), gObject.getHeight(), gObject.getXScale(), gObject.getYScale(), gObject.getRotation(), 0, 0, gObject.getTextureWidth(), gObject.getTextureHeight(), false, false);
 			}
 		}
 		for (GameObject rObject : toRemove) {
@@ -71,10 +71,10 @@ public class GameScreen implements Screen{
 		}
 		toAdd.clear();
 		
-		game.batch.end();
+		game.batch.end(); // Game loop end
 	}
 
-	public void AddGameObject(GameObject gameObject) {
+	public void addGameObject(GameObject gameObject) {
 		toAdd.add(gameObject);
 	}
 	

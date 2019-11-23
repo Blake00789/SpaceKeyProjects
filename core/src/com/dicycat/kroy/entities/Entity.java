@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.dicycat.kroy.GameObject;
 import com.dicycat.kroy.screens.GameScreen;
 
-public class Entity extends GameObject{
+public abstract class Entity extends GameObject{
 
 	protected int healthPoints;
 	protected int radius;
@@ -14,12 +14,6 @@ public class Entity extends GameObject{
 		super(gScreen, spawnPos, img, imSize);
 		healthPoints = 10;
 		radius = 50;
-	}
-
-	@Override
-	public void Update() {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
