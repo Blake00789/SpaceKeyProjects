@@ -22,18 +22,22 @@ public class Bullet extends GameObject {
 	
 	public void Fire(Vector2 initial) {	//Reset bullet
 		travelDist = maxDist;
-		position = initial;
+		setPosition(initial);
 		remove = false;
 	}
 	
-	@Override
+	public void move(Vector2 change) { // bullet movement (vector addition)
+		Vector2 currentPos = new Vector2(getX(),getY());
+		setPosition(currentPos.add(change));
+	}
+	
 	public void Update() { //Called every frame
 		Vector2 posChange = velocity.cpy().scl(Gdx.graphics.getDeltaTime());	//Calculate distance to move
 		travelDist -= posChange.len();
 		if (travelDist <= 0) {		//Remove if travelled required distance
 			remove = true;
 		}
-		position.add(posChange);	//Update position
+		move(posChange); // update bullet position
 	}
 
 	@Override
