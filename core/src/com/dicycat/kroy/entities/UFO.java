@@ -15,7 +15,6 @@ public class UFO extends Entity {
 		super(gScreen, spawnPos, new Texture("ufo.png"), new Vector2(80, 80));
 		dispenser = new BulletDispenser(this);
 		dispenser.AddPattern(new Pattern(250, false, 100, 500, 0.5f, 8, 5));
-		System.out.println("UFO");
 	}
 
 	@Override
