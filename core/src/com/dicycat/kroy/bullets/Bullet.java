@@ -42,7 +42,7 @@ public class Bullet extends GameObject {
 
 	@Override
 	public void Render(SpriteBatch batch) {
-		batch.draw(GetSprite(), GetPos().x, GetPos().y, GetSize().x, GetSize().y);
+		//batch.draw(GetSprite(), GetPos().x, GetPos().y, GetSize().x, GetSize().y);
 	}
 
 }

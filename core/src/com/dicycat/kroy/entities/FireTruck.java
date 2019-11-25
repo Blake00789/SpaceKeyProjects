@@ -89,6 +89,6 @@ public class FireTruck extends Entity{
 		}
 		
 		moveInDirection(keyDetect);
-		gameScreen.DrawRect(position, size, 2, Color.FIREBRICK);
+		//gameScreen.DrawRect(position, size, 2, Color.FIREBRICK);
 	}
 }

@@ -88,6 +88,8 @@ public class GameScreen implements Screen{
 			gameObjects.add(aObject);
 		}
 		toAdd.clear();
+	}
+	
 	public void AddGameObject(GameObject gameObject) {	//Add a game object next frame
 		toAdd.add(gameObject);
 	}
