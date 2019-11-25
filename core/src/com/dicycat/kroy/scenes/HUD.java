@@ -1,4 +1,4 @@
-package com.dicycat.scenes;
+package com.dicycat.kroy.scenes;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;

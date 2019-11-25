@@ -1,5 +1,6 @@
 package com.dicycat.kroy.entities;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.dicycat.kroy.bullets.Bullet;
@@ -14,7 +15,8 @@ public class UFO extends Entity {
 	public UFO(GameScreen gScreen, Vector2 spawnPos) {
 		super(gScreen, spawnPos, new Texture("ufo.png"), new Vector2(80, 80));
 		dispenser = new BulletDispenser(this);
-		dispenser.AddPattern(new Pattern(250, false, 100, 500, 0.5f, 8, 5));
+		dispenser.AddPattern(new Pattern(270, false, 100, 500, 0.5f, 8, 5));
+		dispenser.AddPattern(new Pattern(270, false, 100, 500, 0.3f, 12, 2));
 	}
 
 	@Override
@@ -28,6 +30,11 @@ public class UFO extends Entity {
 				bullet.Fire(GetCentre());
 				gameScreen.addGameObject(bullet);
 			}
+		}
+		
+		//TEST
+		if (gameScreen.GetPlayer() != null) {
+			gameScreen.DrawLine(GetCentre(), gameScreen.GetPlayer().GetCentre(), 3, Color.BLUE);
 		}
 	}
 	

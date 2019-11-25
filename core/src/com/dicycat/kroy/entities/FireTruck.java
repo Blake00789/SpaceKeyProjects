@@ -2,6 +2,7 @@ package com.dicycat.kroy.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Matrix3;
@@ -88,7 +89,6 @@ public class FireTruck extends Entity{
 		}
 		
 		moveInDirection(keyDetect);
-		
-		
+		gameScreen.DrawRect(position, size, 2, Color.FIREBRICK);
 	}
 }

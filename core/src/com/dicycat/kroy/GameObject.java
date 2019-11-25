@@ -3,6 +3,7 @@ package com.dicycat.kroy;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.dicycat.kroy.screens.GameScreen;
 
@@ -19,7 +20,10 @@ public abstract class GameObject {	//Basic object for all displayable objects
 		
 	}
 	
-	public abstract void Update(); //Called every frame
+	public abstract void Update(); //Called every frame | Update the gameobject
+	public abstract void Render(SpriteBatch batch); //Called every frame | Render the object
+	
+	
 	
 	public void changePosition(Vector2 v) { // changes current position by vector x
 		sprite.setX(getX() + v.x);
