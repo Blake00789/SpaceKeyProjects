@@ -2,13 +2,13 @@ package com.dicycat.kroy.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.dicycat.kroy.GameObject;
 import com.dicycat.kroy.screens.GameScreen;
 
-public class FireTruck extends GameObject{
+public class FireTruck extends Entity{
 	private int speed = 200;	//How fast the truck can move
 	private Rectangle hitbox = new Rectangle(75, 150, 10, 10);
 	
@@ -38,6 +38,7 @@ public class FireTruck extends GameObject{
 			hitbox.setX(hitbox.x -= posChange);
 		}
 		
+		gameScreen.DrawRect(position, size, 2, Color.FIREBRICK);
 	}
 
 	public Rectangle getHitbox(){

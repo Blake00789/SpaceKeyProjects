@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dicycat.kroy.Kroy;
-import com.dicycat.scenes.HUD;
+import com.dicycat.kroy.scenes.HUD;
   
  public class MenuScreen implements Screen{
   

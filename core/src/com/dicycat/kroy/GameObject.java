@@ -1,6 +1,7 @@
 package com.dicycat.kroy;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.dicycat.kroy.screens.GameScreen;
 
@@ -19,7 +20,10 @@ public abstract class GameObject {	//Basic object for all displayable objects
 		remove = false;
 	}
 	
-	public abstract void Update(); //Called every frame
+	public abstract void Update(); //Called every frame | Update the gameobject
+	public abstract void Render(SpriteBatch batch); //Called every frame | Render the object
+	
+	
 	
 	//Getters
 	public Texture GetSprite() { return sprite; }	
