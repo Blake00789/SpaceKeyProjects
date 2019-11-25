@@ -4,6 +4,10 @@ import com.badlogic.gdx.math.*;
 
 public class Collider {
 
+    /*Pretty sure this class is reduntant, need to iterate through bullets
+    using if(player.getHitbox().Intersector.overlaps()) in game logic but
+    I don't know where to put it */
+
     public static boolean RectangleOnRectangle(Rectangle r1, Rectangle r2){
         if(Intersector.overlaps(r1,r2)){
             return true;
