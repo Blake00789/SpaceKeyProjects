@@ -9,7 +9,7 @@ public interface Interactivity {
 	
 	public default boolean PlayerInRadius(int x, int y, int range, GameScreen gscreen) {
 		Vector2 tempVector = new Vector2();
-		FireTruck player = gscreen.getPlayer();
+		FireTruck player = gscreen.GetPlayer();
 		tempVector = player.GetCentre();
 		tempVector = tempVector.sub(x,y);
 		if (range>= tempVector.len()) {
