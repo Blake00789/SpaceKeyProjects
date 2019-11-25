@@ -1,3 +1,3 @@
 # DicyCat
 
-Working files for Kroy project :D
+Working files for Kroy project :)
