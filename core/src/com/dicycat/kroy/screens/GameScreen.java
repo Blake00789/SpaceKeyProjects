@@ -61,7 +61,7 @@ public class GameScreen implements Screen{
 		hud.stage.draw();
 		
 		game.batch.setProjectionMatrix(gamecam.combined);	//Mic:only renders the part of the map where the camera is
-		game.batch.begin();
+		game.batch.begin(); // Game loop Start
 
 		UpdateLoop();	//Update all game objects
 		
@@ -78,9 +78,7 @@ public class GameScreen implements Screen{
 			if (gObject.CheckRemove()) {				//Check if game object is to be removed
 				toRemove.add(gObject);					//Set it to be removed
 			}else {
-				//TODO: Make a check to see if gObject is is on screen & if not, don't render
-				
-				gObject.Render(game.batch); 				//Render the game object
+				game.batch.draw(gObject.getTexture(), gObject.getX(), gObject.getY(), gObject.getOriginX(), gObject.getOriginY(), gObject.getWidth(), gObject.getHeight(), gObject.getXScale(), gObject.getYScale(), gObject.getRotation(), 0, 0, gObject.getTextureWidth(), gObject.getTextureHeight(), false, false);
 			}
 		}
 		for (GameObject rObject : toRemove) {	//Remove game objects set for removal
@@ -91,7 +89,7 @@ public class GameScreen implements Screen{
 		}
 		toAdd.clear();
 	}
-
+	
 	public void AddGameObject(GameObject gameObject) {	//Add a game object next frame
 		toAdd.add(gameObject);
 	}
