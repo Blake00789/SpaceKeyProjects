@@ -15,7 +15,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FireTruck extends Entity{
+
 	private int speed = 600;	//How fast the truck can move
+	private Rectangle hitbox = new Rectangle(75, 150, 10, 10);
+
 	protected HashMap<String,Integer> directions = new HashMap<String,Integer>(); // Dictionary to store the possible directions the truck can face
 
 	public FireTruck(GameScreen gScreen, Vector2 spawnPos) {	//Constructor
@@ -62,6 +65,10 @@ public class FireTruck extends Entity{
 			if (directionKey.contains("ew")) {// makes sure direction doesn't change if both up and down are pressed
 				directionKey = directionKey.substring(0, directionKey.length()-2);
 			}
+
+			//Update hitbox coordinates.
+			hitbox.setX(hitbox.x + movement.x);
+			hitbox.setY(hitbox.y + movement.y);
 
 			movement.nor(); // Vector3 method to normalise coordinate vector
 			movement.mul(distance); // multiplies normalised vector by distance to represent speed truck should be travelling
