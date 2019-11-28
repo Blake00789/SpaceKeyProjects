@@ -123,10 +123,15 @@ public class GameScreen implements Screen{
 	}
 
 	public void CheckCollisions(){
+
 		for (GameObject object : gameObjects) {
 			if(object instanceof Bullet){
 
 				Bullet currentBullet = (Bullet) object;
+
+				//Debug draw.
+				DrawRect(new Vector2(player.getHitbox().x, player.getHitbox().y), new Vector2(player.getHitbox().width, player.getHitbox().height), 2, Color.GREEN);
+				DrawCircle(new Vector2(currentBullet.GetHitbox().x, currentBullet.GetHitbox().y), currentBullet.GetHitbox().radius, 2, Color.RED);
 
 				if(Intersector.overlaps(currentBullet.GetHitbox(),player.getHitbox())){
 					System.out.println("Bullet Collision!");
