@@ -8,13 +8,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dicycat.kroy.GameObject;
 import com.dicycat.kroy.Kroy;
-import com.dicycat.kroy.bullets.Bullet;
 import com.dicycat.kroy.debug.DebugCircle;
 import com.dicycat.kroy.debug.DebugDraw;
 import com.dicycat.kroy.debug.DebugLine;
@@ -25,9 +23,6 @@ import com.dicycat.kroy.gamemap.TiledGameMap;
 import com.dicycat.kroy.scenes.HUD;
 
 public class GameScreen implements Screen{
-	public static GameScreen mainGameScreen;
-	
-	Boolean showDebug = true;
 	
 	Kroy game;
 	private OrthographicCamera gamecam;	//m 	//follows along what the port displays
@@ -46,12 +41,6 @@ public class GameScreen implements Screen{
 		gameport = new ScreenViewport(gamecam);	//m //Mic:could also use StretchViewPort to make the screen stretch instead of adapt
 		gameMap = new TiledGameMap();
 		hud = new HUD(game.batch);												//or FitPort to make it fit into a specific width/height ratio
-		if (mainGameScreen == null) {
-			mainGameScreen = this;
-		}
-		else {
-			System.err.println("Duplicate GameScreens");
-		}
 	}
 	
 	@Override
@@ -83,16 +72,14 @@ public class GameScreen implements Screen{
 
 		game.batch.end();
 		
-		if (showDebug) {
-			DrawDebug(); //Draw all debug items as they have to be drawn outside the batch
-		}
+		DrawDebug(); //Draw all debug items as they have to be drawn outside the batch
 	}
 	
 	//region Game Logic
 	private void UpdateLoop() {
 		List<GameObject> toRemove = new ArrayList<GameObject>();;
 		for (GameObject gObject : gameObjects) {	//Go through every game object
-			gObject.Update();//Update the game object
+			gObject.Update();							//Update the game object
 			if (gObject.CheckRemove()) {				//Check if game object is to be removed
 				toRemove.add(gObject);					//Set it to be removed
 			}else {
@@ -106,7 +93,6 @@ public class GameScreen implements Screen{
 			gameObjects.add(aObject);
 		}
 		toAdd.clear();
-
 	}
 	
 	public void AddGameObject(GameObject gameObject) {	//Add a game object next frame
@@ -133,10 +119,9 @@ public class GameScreen implements Screen{
 	}
 
 	
-	public void DrawRect(Vector2 centre, Vector2 dimensions, int lineWidth, Color colour) {
-		debugObjects.add(new DebugRect(centre, dimensions, lineWidth, colour));
+	public void DrawRect(Vector2 bottomLeft, Vector2 dimensions, int lineWidth, Color colour) {
+		debugObjects.add(new DebugRect(bottomLeft, dimensions, lineWidth, colour));
 	}
-
 	@Override
 	public void resize(int width, int height) {			
 		gameport.update(width, height);				//m
@@ -164,15 +149,5 @@ public class GameScreen implements Screen{
 	public void dispose() {
 		game.batch.dispose();
 	}
-	
-	public GameObject getGameObject(int index){
-		if (index <= (gameObjects.size()-1)) {
-			return gameObjects.get(index);
-		}else {
-			return null;
-		}
-		
-	}
-	
 
 }

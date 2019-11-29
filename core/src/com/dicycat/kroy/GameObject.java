@@ -16,12 +16,14 @@ public abstract class GameObject {	//Basic object for all displayable objects
 	public GameObject(GameScreen gScreen, Vector2 spawnPos, Texture image, Vector2 imSize) {	//Constructor; takes the screen to be put on, spawn position vector, image and a vector for its size
 		gameScreen = gScreen;
 		sprite = new Sprite(image,(int) spawnPos.x ,(int) spawnPos.y ,(int) imSize.x,(int) imSize.y); // sprite class stores the texture position and size of the object
-		changePosition(spawnPos);
 		remove = false;
+		
 	}
 	
-	public abstract void Update(); //Called every frame | Update the game object
+	public abstract void Update(); //Called every frame | Update the gameobject
 	public abstract void Render(SpriteBatch batch); //Called every frame | Render the object
+	
+	
 	
 	public void changePosition(Vector2 v) { // changes current position by vector x
 		sprite.setX(getX() + v.x);
@@ -53,7 +55,7 @@ public abstract class GameObject {	//Basic object for all displayable objects
 	public Sprite getSprite() { return sprite; }
 	
 	public Vector2 GetCentre() {	//Return centre of GameObject
-		return new Vector2(sprite.getX() + (sprite.getWidth()/2), sprite.getY() + (sprite.getHeight()/2));
+		return new Vector2(sprite.getX() + (sprite.getX()/2), sprite.getY() + (sprite.getY()/2));
 	}
 	
 	//Setters
@@ -67,12 +69,5 @@ public abstract class GameObject {	//Basic object for all displayable objects
 		rotation = degrees;
 	}
 	
-	public void setRemove(Boolean x){
-		if(x){
-			remove = true;
-		}
-		else{
-			remove = false;
-		}
-	}
+	
 }
