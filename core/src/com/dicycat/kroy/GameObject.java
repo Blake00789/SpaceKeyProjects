@@ -18,7 +18,6 @@ public abstract class GameObject {	//Basic object for all displayable objects
 		sprite = new Sprite(image,(int) spawnPos.x ,(int) spawnPos.y ,(int) imSize.x,(int) imSize.y); // sprite class stores the texture position and size of the object
 		changePosition(spawnPos);
 		remove = false;
-		
 	}
 	
 	public abstract void Update(); //Called every frame | Update the game object
@@ -68,5 +67,12 @@ public abstract class GameObject {	//Basic object for all displayable objects
 		rotation = degrees;
 	}
 	
-	
+	public void setRemove(Boolean x){
+		if(x){
+			remove = true;
+		}
+		else{
+			remove = false;
+		}
+	}
 }
