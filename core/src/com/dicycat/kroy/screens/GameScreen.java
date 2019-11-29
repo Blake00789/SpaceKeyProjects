@@ -129,6 +129,10 @@ public class GameScreen implements Screen{
 
 				Bullet currentBullet = (Bullet) object;
 
+				if(!gamecam.frustum.pointInFrustum(currentBullet.getX(), currentBullet.getY(), 0)){
+					currentBullet.setRemove(true);
+				}
+
 				//Debug draw.
 				DrawRect(new Vector2(player.getHitbox().x, player.getHitbox().y), new Vector2(player.getHitbox().width, player.getHitbox().height), 2, Color.GREEN);
 				DrawCircle(new Vector2(currentBullet.GetHitbox().x, currentBullet.GetHitbox().y), currentBullet.GetHitbox().radius, 2, Color.RED);
