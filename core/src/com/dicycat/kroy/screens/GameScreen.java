@@ -22,6 +22,9 @@ import com.dicycat.kroy.entities.UFO;
 import com.dicycat.kroy.scenes.HUD;
 
 public class GameScreen implements Screen{
+	public static GameScreen mainGameScreen;
+	
+	Boolean showDebug = true;
 	
 	Kroy game;
 	private OrthographicCamera gamecam;	//m 	//follows along what the port displays
@@ -38,6 +41,12 @@ public class GameScreen implements Screen{
 		gamecam = new OrthographicCamera();    //m
 		gameport = new ScreenViewport(gamecam);	//m //Mic:could also use StretchViewPort to make the screen stretch instead of adapt
 		hud = new HUD(game.batch);												//or FitPort to make it fit into a specific width/height ratio
+		if (mainGameScreen == null) {
+			mainGameScreen = this;
+		}
+		else {
+			System.err.println("Duplicate GameScreens");
+		}
 	}
 	
 	@Override
@@ -67,7 +76,9 @@ public class GameScreen implements Screen{
 		
 		game.batch.end();
 		
-		DrawDebug(); //Draw all debug items as they have to be drawn outside the batch
+		if (showDebug) {
+			DrawDebug(); //Draw all debug items as they have to be drawn outside the batch
+		}
 	}
 	
 	//region Game Logic
@@ -114,8 +125,8 @@ public class GameScreen implements Screen{
 	}
 
 	
-	public void DrawRect(Vector2 bottomLeft, Vector2 dimensions, int lineWidth, Color colour) {
-		debugObjects.add(new DebugRect(bottomLeft, dimensions, lineWidth, colour));
+	public void DrawRect(Vector2 centre, Vector2 dimensions, int lineWidth, Color colour) {
+		debugObjects.add(new DebugRect(centre, dimensions, lineWidth, colour));
 	}
 	@Override
 	public void resize(int width, int height) {			

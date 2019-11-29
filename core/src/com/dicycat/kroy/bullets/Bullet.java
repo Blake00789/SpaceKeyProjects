@@ -38,6 +38,7 @@ public class Bullet extends GameObject {
 			remove = true;
 		}
 		move(posChange); // update bullet position
+		gameScreen.DrawCircle(GetCentre(), 8, 1, Color.PINK);
 	}
 
 	@Override
