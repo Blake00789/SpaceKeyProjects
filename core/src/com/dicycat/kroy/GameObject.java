@@ -17,7 +17,6 @@ public abstract class GameObject {	//Basic object for all displayable objects
 		gameScreen = gScreen;
 		sprite = new Sprite(image,(int) spawnPos.x ,(int) spawnPos.y ,(int) imSize.x,(int) imSize.y); // sprite class stores the texture position and size of the object
 		remove = false;
-		
 	}
 	
 	public abstract void Update(); //Called every frame | Update the gameobject
