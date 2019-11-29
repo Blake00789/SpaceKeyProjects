@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.dicycat.kroy.gamemap.TiledGameMap;
 import com.dicycat.kroy.screens.GameScreen;
 
 public abstract class GameObject {	//Basic object for all displayable objects
@@ -13,7 +14,7 @@ public abstract class GameObject {	//Basic object for all displayable objects
 	protected Boolean remove;			//Should this GameObject be removed?
 	protected float rotation = 0;		//Current angle the truck is facing in degrees
 	
-	public GameObject(GameScreen gScreen, Vector2 spawnPos, Texture image, Vector2 imSize) {	//Constructor; takes the screen to be put on, spawn position vector, image and a vector for its size
+	public GameObject(GameScreen gScreen, Vector2 spawnPos, Texture image, Vector2 imSize, TiledGameMap map) {	//Constructor; takes the screen to be put on, spawn position vector, image and a vector for its size
 		gameScreen = gScreen;
 		sprite = new Sprite(image,(int) spawnPos.x ,(int) spawnPos.y ,(int) imSize.x,(int) imSize.y); // sprite class stores the texture position and size of the object
 		remove = false;

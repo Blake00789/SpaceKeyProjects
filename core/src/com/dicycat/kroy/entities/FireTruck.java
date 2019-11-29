@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector3;
 import com.dicycat.kroy.GameObject;
+import com.dicycat.kroy.gamemap.TiledGameMap;
 import com.dicycat.kroy.screens.GameScreen;
 import java.util.Dictionary;
 import java.util.HashMap;
@@ -17,8 +18,8 @@ public class FireTruck extends Entity{
 	private int speed = 600;	//How fast the truck can move
 	protected HashMap<String,Integer> directions = new HashMap<String,Integer>(); // Dictionary to store the possible directions the truck can face
 	
-	public FireTruck(GameScreen gScreen, Vector2 spawnPos) {	//Constructor
-		super(gScreen, spawnPos, new Texture("fireTruck.png"), new Vector2(50,100));
+	public FireTruck(GameScreen gScreen, Vector2 spawnPos, TiledGameMap map) {	//Constructor
+		super(gScreen, spawnPos, new Texture("fireTruck.png"), new Vector2(50,100), map);
 		
 		directions.put("n",0);
 		directions.put("w",90);
@@ -64,9 +65,10 @@ public class FireTruck extends Entity{
 			
 			movement.nor(); // Vector3 method to normalise coordinate vector
 			movement.mul(distance); // multiplies normalised vector by distance to represent speed truck should be travelling
+			
 			changePosition(new Vector2(movement.x,movement.y));// updates truck coordinates
 			setRotation(directions.get(directionKey));// updates truck direction
-		
+			
 		}
 	}
 	
@@ -90,5 +92,15 @@ public class FireTruck extends Entity{
 		
 		moveInDirection(keyDetect);
 		//gameScreen.DrawRect(position, size, 2, Color.FIREBRICK);
+	}
+	
+	public boolean isOnRoad(Vector2 pos) {
+		if(map.getTileTypeByLocation(0, pos.x, pos.y).isCollidable()
+				||map.getTileTypeByLocation(0, pos.x + this.getWidth(), pos.y).isCollidable()
+				||map.getTileTypeByLocation(0, pos.x, pos.y+this.getHeight()).isCollidable()
+				||map.getTileTypeByLocation(0, pos.x+this.getWidth(), pos.y+this.getHeight()).isCollidable()) {
+			return false;
+		}
+		return true;
 	}
 }

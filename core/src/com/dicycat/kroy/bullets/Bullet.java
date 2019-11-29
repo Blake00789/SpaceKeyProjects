@@ -14,7 +14,7 @@ public class Bullet extends GameObject {
 	private float travelDist; 	//Distance left to travel
 	
 	
-	public Bullet(GameScreen gScreen, Vector2 spawnPos, Vector2 direction, int speed, float range) {	//Constructor
+	public Bullet(GameScreen gScreen, Vector2 spawnPos, Vector2 direction, int speed, float range, TiledGameMap map) {	//Constructor
 		super(gScreen, spawnPos, new Texture("singleP.png"), new Vector2(20,20));
 		velocity = direction.scl(speed);
 		maxDist = range;
