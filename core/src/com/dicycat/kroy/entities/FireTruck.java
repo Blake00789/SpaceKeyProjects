@@ -93,6 +93,7 @@ public class FireTruck extends Entity{
 
 		moveInDirection(keyDetect);
 		gameScreen.DrawRect(GetCentre(), new Vector2(20, 20), 2, Color.FIREBRICK);
+		//Move the hitbox to it's new centered position according to the sprites position.
 		hitbox.setX(GetCentre().x);
 		hitbox.setY(GetCentre().y);
 		gameScreen.DrawRect(new Vector2(hitbox.x, hitbox.y), new Vector2(hitbox.width, hitbox.height), 2, Color.GREEN);

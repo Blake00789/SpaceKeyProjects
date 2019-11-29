@@ -42,9 +42,12 @@ public class Bullet extends GameObject {
 			remove = true;
 		}
 		move(posChange); // update bullet position
+		//Moves hitbox according to the sprite.
 		hitbox.x = GetCentre().x;
 		hitbox.y = GetCentre().y;
+		//Debug to draw the hitbox.
 		gameScreen.DrawCircle(new Vector2(hitbox.x, hitbox.y), hitbox.radius, 2, Color.RED);
+		//Check to see if bullet collides with the players truck.
 		if(Intersector.overlaps(hitbox, gameScreen.GetPlayer().getHitbox())){
 			setRemove(true);
 		}
