@@ -15,6 +15,7 @@ public abstract class Entity extends GameObject{
 		super(gScreen, spawnPos, img, imSize);
 		healthPoints = 10;
 		radius = 50;
+		changePosition(spawnPos);
 	}
 
 	@Override

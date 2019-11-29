@@ -19,6 +19,7 @@ import com.dicycat.kroy.debug.DebugLine;
 import com.dicycat.kroy.debug.DebugRect;
 import com.dicycat.kroy.entities.FireTruck;
 import com.dicycat.kroy.entities.UFO;
+import com.dicycat.kroy.gamemap.TiledGameMap;
 import com.dicycat.kroy.scenes.HUD;
 
 public class GameScreen implements Screen{
@@ -27,6 +28,7 @@ public class GameScreen implements Screen{
 	private OrthographicCamera gamecam;	//m 	//follows along what the port displays
 	private Viewport gameport; 	//m
 	private HUD hud;	//m
+	TiledGameMap gameMap;
 	
 	FireTruck player; //Reference to the player
 	List<GameObject> gameObjects;	//List of active game objects
@@ -37,6 +39,7 @@ public class GameScreen implements Screen{
 		game = _game;
 		gamecam = new OrthographicCamera();    //m
 		gameport = new ScreenViewport(gamecam);	//m //Mic:could also use StretchViewPort to make the screen stretch instead of adapt
+		gameMap = new TiledGameMap();
 		hud = new HUD(game.batch);												//or FitPort to make it fit into a specific width/height ratio
 	}
 	
@@ -45,7 +48,7 @@ public class GameScreen implements Screen{
 		toAdd = new ArrayList<GameObject>();
 		gameObjects = new ArrayList<GameObject>();
 		debugObjects = new ArrayList<DebugDraw>();
-		player = new FireTruck(this, new Vector2(0, 0));
+		player = new FireTruck(this, new Vector2(100, 0));
 		gameObjects.add(player);	//Player	//Mic:modified from (100, 100) to (0, 0)
 		gameObjects.add(new UFO(this, new Vector2(0, 200)));	//UFO	//Mic:modified from (480,580) to (0, 200)
 		//gameObjects.add(new Bullet(this, new Vector2(10, 10), new Vector2(1,5), 50, 500));	//Bullet
@@ -57,14 +60,16 @@ public class GameScreen implements Screen{
 		Gdx.gl.glClearColor(.47f, .66f, .29f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
+		gameMap.render(gamecam);
+		
 		game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
 		hud.stage.draw();
 		
 		game.batch.setProjectionMatrix(gamecam.combined);	//Mic:only renders the part of the map where the camera is
 		game.batch.begin(); // Game loop Start
 
-		UpdateLoop();	//Update all game objects
-		
+		UpdateLoop();//Update all game objects
+
 		game.batch.end();
 		
 		DrawDebug(); //Draw all debug items as they have to be drawn outside the batch
