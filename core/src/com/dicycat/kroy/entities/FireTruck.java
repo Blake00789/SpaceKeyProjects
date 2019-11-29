@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector3;
@@ -20,13 +21,12 @@ import java.util.Map;
 public class FireTruck extends Entity{
 	private int speed = 600;	//How fast the truck can move
 	protected HashMap<String,Integer> directions = new HashMap<String,Integer>(); // Dictionary to store the possible directions the truck can face
-	ShapeRenderer lineDraw = new ShapeRenderer();
 	ArrayList<Float> inRange;
 	float fireTruckX;
 	float fireTruckY;
-//	GameScreen gScreen;
 	float nearestEnemyX;
 	float nearestEnemyY;
+	Vector2 nearestEnemy;
 	
 	
 	public FireTruck(GameScreen gScreen, Vector2 spawnPos) {	//Constructor
@@ -43,7 +43,6 @@ public class FireTruck extends Entity{
 		directions.put("ne",315);
 		directions.put("",0); // included so that if multiple keys in the opposite direction are pressed, the truck faces north
 		
-		lineDraw.setColor(0.0f,0.0f,1.0f,1.0f);
 	}
 
 	public void moveInDirection(int keyPressed) {// movement method for fireTruck, keyPressed is a 4 bit code of 0s and 1s, where a 1 represents a certain arrow/WASD key
@@ -119,8 +118,9 @@ public class FireTruck extends Entity{
 				nearestEnemyY=inRange.get(i+1);
 			}
 		}
+		nearestEnemy=new Vector2(nearestEnemyX,nearestEnemyY);
 		if (false==((nearestEnemyX==100000f)&&(nearestEnemyY==100000f))) {		//checks there is actually an enemy in range
-			//lineDraw.line(fireTruckX,fireTruckY,nearestEnemyX,nearestEnemyY);	//draws a line from the firetruck to the nearestenemy
+			gameScreen.DrawLine(this.GetCentre(),nearestEnemy, 10, Color.BLUE);	//draws a line from the firetruck to the nearestenemy
 		}
 		
 		
@@ -135,7 +135,7 @@ public class FireTruck extends Entity{
 			tempGameObject=gScreen.getGameObject(counter);
 			if (tempGameObject==null) {
 				x=false;
-			}else if (false==((tempGameObject instanceof FireTruck) && (Vector2.dst(tempGameObject.getX(), tempGameObject.getY(), centreX, centreY)<range))){  //add in all gameobjects to be avoided
+			}else if (((tempGameObject instanceof UFO) && (Vector2.dst(tempGameObject.getX(), tempGameObject.getY(), centreX, centreY)<range))){  //add in all gameobjects to be avoided
 				tempArray.add(tempGameObject.getX());
 				tempArray.add(tempGameObject.getY());
 			}
