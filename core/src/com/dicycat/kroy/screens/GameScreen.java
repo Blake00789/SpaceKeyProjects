@@ -86,7 +86,6 @@ public class GameScreen implements Screen{
 	//region Game Logic
 	private void UpdateLoop() {
 		List<GameObject> toRemove = new ArrayList<GameObject>();;
-		CheckCollisions();
 		for (GameObject gObject : gameObjects) {	//Go through every game object
 			gObject.Update();//Update the game object
 			if (gObject.CheckRemove()) {				//Check if game object is to be removed
@@ -131,29 +130,6 @@ public class GameScreen implements Screen{
 	
 	public void DrawRect(Vector2 centre, Vector2 dimensions, int lineWidth, Color colour) {
 		debugObjects.add(new DebugRect(centre, dimensions, lineWidth, colour));
-	}
-
-	public void CheckCollisions(){
-
-		for (GameObject object : gameObjects) {
-			if(object instanceof Bullet){
-
-				Bullet currentBullet = (Bullet) object;
-
-				if(!gamecam.frustum.pointInFrustum(currentBullet.getX(), currentBullet.getY(), 0)){
-					currentBullet.setRemove(true);
-				}
-
-				//Debug draw.
-				DrawRect(new Vector2(player.getHitbox().x, player.getHitbox().y), new Vector2(player.getHitbox().width, player.getHitbox().height), 2, Color.GREEN);
-				DrawCircle(new Vector2(currentBullet.GetHitbox().x, currentBullet.GetHitbox().y), currentBullet.GetHitbox().radius, 2, Color.RED);
-
-				if(Intersector.overlaps(currentBullet.GetHitbox(),player.getHitbox())){
-					System.out.println("Bullet Collision!");
-					currentBullet.setRemove(true);
-				}
-			}
-		}
 	}
 
 	@Override

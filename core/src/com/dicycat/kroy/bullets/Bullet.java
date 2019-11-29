@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.dicycat.kroy.GameObject;
 import com.dicycat.kroy.screens.GameScreen;
@@ -20,7 +21,7 @@ public class Bullet extends GameObject {
 		super(gScreen, spawnPos, new Texture("singleP.png"), new Vector2(20,20));
 		velocity = direction.scl(speed);
 		maxDist = range;
-		hitbox = new Circle(spawnPos.x + 10, spawnPos.y, 10);
+		hitbox = new Circle(spawnPos.x, spawnPos.y, 10);
 	}
 	
 	public void Fire(Vector2 initial) {	//Reset bullet
@@ -32,8 +33,6 @@ public class Bullet extends GameObject {
 	public void move(Vector2 change) { // bullet movement (vector addition)
 		Vector2 currentPos = new Vector2(getX(),getY());
 		setPosition(currentPos.add(change));
-		hitbox.x += (change.x);
-		hitbox.y += (change.y);
 	}
 	
 	public void Update() { //Called every frame
@@ -43,7 +42,12 @@ public class Bullet extends GameObject {
 			remove = true;
 		}
 		move(posChange); // update bullet position
-		gameScreen.DrawCircle(GetCentre(), 8, 1, Color.PINK);
+		hitbox.x = GetCentre().x;
+		hitbox.y = GetCentre().y;
+		gameScreen.DrawCircle(new Vector2(hitbox.x, hitbox.y), hitbox.radius, 2, Color.RED);
+		if(Intersector.overlaps(hitbox, gameScreen.GetPlayer().getHitbox())){
+			setRemove(true);
+		}
 	}
 
 	@Override

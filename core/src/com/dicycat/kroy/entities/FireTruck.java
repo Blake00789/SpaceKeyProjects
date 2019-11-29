@@ -1,5 +1,6 @@
 package com.dicycat.kroy.entities;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
@@ -69,10 +70,6 @@ public class FireTruck extends Entity{
 			movement.mul(distance); // multiplies normalised vector by distance to represent speed truck should be travelling
 			changePosition(new Vector2(movement.x,movement.y));// updates truck coordinates
 			setRotation(directions.get(directionKey));// updates truck direction
-			//Update hitbox coordinates.
-			hitbox.setX(hitbox.x + movement.x);
-			hitbox.setY(hitbox.y + movement.y);
-
 		}
 	}
 
@@ -96,6 +93,9 @@ public class FireTruck extends Entity{
 
 		moveInDirection(keyDetect);
 		gameScreen.DrawRect(GetCentre(), new Vector2(20, 20), 2, Color.FIREBRICK);
+		hitbox.setX(GetCentre().x);
+		hitbox.setY(GetCentre().y);
+		gameScreen.DrawRect(new Vector2(hitbox.x, hitbox.y), new Vector2(hitbox.width, hitbox.height), 2, Color.GREEN);
 	}
 
 	public Rectangle getHitbox(){
