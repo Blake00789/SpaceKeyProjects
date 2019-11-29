@@ -8,13 +8,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dicycat.kroy.GameObject;
 import com.dicycat.kroy.Kroy;
-import com.dicycat.kroy.bullets.Bullet;
 import com.dicycat.kroy.debug.DebugCircle;
 import com.dicycat.kroy.debug.DebugDraw;
 import com.dicycat.kroy.debug.DebugLine;
@@ -87,7 +85,7 @@ public class GameScreen implements Screen{
 	private void UpdateLoop() {
 		List<GameObject> toRemove = new ArrayList<GameObject>();;
 		for (GameObject gObject : gameObjects) {	//Go through every game object
-			gObject.Update();//Update the game object
+			gObject.Update();							//Update the game object
 			if (gObject.CheckRemove()) {				//Check if game object is to be removed
 				toRemove.add(gObject);					//Set it to be removed
 			}else {
@@ -101,7 +99,6 @@ public class GameScreen implements Screen{
 			gameObjects.add(aObject);
 		}
 		toAdd.clear();
-
 	}
 	
 	public void AddGameObject(GameObject gameObject) {	//Add a game object next frame
@@ -131,7 +128,6 @@ public class GameScreen implements Screen{
 	public void DrawRect(Vector2 centre, Vector2 dimensions, int lineWidth, Color colour) {
 		debugObjects.add(new DebugRect(centre, dimensions, lineWidth, colour));
 	}
-
 	@Override
 	public void resize(int width, int height) {			
 		gameport.update(width, height);				//m
