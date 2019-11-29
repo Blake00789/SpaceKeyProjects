@@ -144,5 +144,15 @@ public class GameScreen implements Screen{
 	public void dispose() {
 		game.batch.dispose();
 	}
+	
+	public GameObject getGameObject(int index){
+		if (index <= (gameObjects.size()-1)) {
+			return gameObjects.get(index);
+		}else {
+			return null;
+		}
+		
+	}
+	
 
 }
