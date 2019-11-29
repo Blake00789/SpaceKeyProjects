@@ -75,9 +75,9 @@ public class GameScreen implements Screen{
 	//region Game Logic
 	private void UpdateLoop() {
 		List<GameObject> toRemove = new ArrayList<GameObject>();;
+		CheckCollisions();
 		for (GameObject gObject : gameObjects) {	//Go through every game object
 			gObject.Update();//Update the game object
-			CheckCollisions();
 			if (gObject.CheckRemove()) {				//Check if game object is to be removed
 				toRemove.add(gObject);					//Set it to be removed
 			}else {
@@ -135,6 +135,7 @@ public class GameScreen implements Screen{
 
 				if(Intersector.overlaps(currentBullet.GetHitbox(),player.getHitbox())){
 					System.out.println("Bullet Collision!");
+					currentBullet.setRemove(true);
 				}
 			}
 		}

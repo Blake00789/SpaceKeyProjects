@@ -20,7 +20,7 @@ public class Bullet extends GameObject {
 		super(gScreen, spawnPos, new Texture("singleP.png"), new Vector2(20,20));
 		velocity = direction.scl(speed);
 		maxDist = range;
-		hitbox = new Circle(spawnPos.x, spawnPos.y, 10);
+		hitbox = new Circle(spawnPos.x + 10, spawnPos.y, 10);
 	}
 	
 	public void Fire(Vector2 initial) {	//Reset bullet

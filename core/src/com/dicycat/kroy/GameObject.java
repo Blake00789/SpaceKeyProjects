@@ -69,5 +69,12 @@ public abstract class GameObject {	//Basic object for all displayable objects
 		rotation = degrees;
 	}
 	
-	
+	public void setRemove(Boolean x){
+		if(x){
+			remove = true;
+		}
+		else{
+			remove = false;
+		}
+	}
 }
