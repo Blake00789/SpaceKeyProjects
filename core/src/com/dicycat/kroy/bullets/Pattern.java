@@ -1,6 +1,7 @@
 package com.dicycat.kroy.bullets;
 
 import com.badlogic.gdx.math.Vector2;
+import com.dicycat.kroy.screens.GameScreen;
 
 public class Pattern {
 	private Bullet[][] bullets;	//Bullets to fire
@@ -21,7 +22,7 @@ public class Pattern {
 					direction = new Vector2(1, 1);
 					direction.setAngle(degree + ((j - offset) * 10) + xtra);
 				}
-				bullets[i][j] = new Bullet(null, Vector2.Zero, direction, speed, range); //Create bullet
+				bullets[i][j] = new Bullet(GameScreen.mainGameScreen, Vector2.Zero, direction, speed, range); //Create bullet
 			}
 		}
 	}
