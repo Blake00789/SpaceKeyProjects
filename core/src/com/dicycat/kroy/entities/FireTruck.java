@@ -18,7 +18,7 @@ import java.util.Map;
 public class FireTruck extends Entity{
 
 	private int speed = 600;	//How fast the truck can move
-	private Rectangle hitbox = new Rectangle(20, 45, 10, 10);
+	private Rectangle hitbox = new Rectangle(20, 45, 20, 20);
 
 	protected HashMap<String,Integer> directions = new HashMap<String,Integer>(); // Dictionary to store the possible directions the truck can face
 
