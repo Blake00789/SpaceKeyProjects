@@ -11,14 +11,16 @@ import com.dicycat.kroy.GameObject;
 import com.dicycat.kroy.screens.GameScreen;
 
 public class Bullet extends GameObject {
-	private Vector2 velocity;	//Direction and distance to travel
+	private int speed;			//Speed of the bullet
+	private Vector2 velocity;	//Direction and amount to travel
 	private float maxDist;		//Max distance to travel
 	private float travelDist; 	//Distance left to travel
 	private Circle hitbox;
 	
 	
-	public Bullet(GameScreen gScreen, Vector2 spawnPos, Vector2 direction, int speed, float range) {	//Constructor
-		super(gScreen, spawnPos, new Texture("singleP.png"), new Vector2(20,20));
+	public Bullet(GameScreen gScreen, Vector2 spawnPos, Vector2 direction, int _speed, float range) {	//Constructor
+		super(gScreen, spawnPos, gScreen.textures.Bullet(), new Vector2(20,20));
+		speed = _speed;
 		velocity = direction.scl(speed);
 		maxDist = range;
 		hitbox = new Circle(spawnPos.x, spawnPos.y, 10);
@@ -28,6 +30,10 @@ public class Bullet extends GameObject {
 		travelDist = maxDist;
 		setPosition(initial);
 		remove = false;
+	}
+	
+	public void ChangeDirection(Vector2 newDir) {
+		velocity = newDir.scl(speed);
 	}
 	
 	public void move(Vector2 change) { // bullet movement (vector addition)
@@ -46,16 +52,11 @@ public class Bullet extends GameObject {
 		hitbox.x = GetCentre().x;
 		hitbox.y = GetCentre().y;
 		//Debug to draw the hitbox.
-		gameScreen.DrawCircle(new Vector2(hitbox.x, hitbox.y), hitbox.radius, 2, Color.RED);
+		//gameScreen.DrawCircle(new Vector2(hitbox.x, hitbox.y), hitbox.radius, 2, Color.RED);	//No, big lag
 		//Check to see if bullet collides with the players truck.
 		if(Intersector.overlaps(hitbox, gameScreen.GetPlayer().getHitbox())){
 			setRemove(true);
 		}
-	}
-
-	@Override
-	public void Render(SpriteBatch batch) {
-		//batch.draw(GetSprite(), GetPos().x, GetPos().y, GetSize().x, GetSize().y);
 	}
 
 	public Circle GetHitbox(){

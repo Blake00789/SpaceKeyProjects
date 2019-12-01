@@ -7,13 +7,16 @@ public class Pattern {
 	private Bullet[][] bullets;	//Bullets to fire
 	private float waitTime;		//Time between bullets
 	private Boolean aim;		//Should the bullets be targeted towards the player
+	int offset;
+	int xtra;
 	
 	public Pattern(int degree, Boolean target, int speed, int range, float timeBetweenBullets, int patternLength, int multi) {	//Constructor
 		aim = target;
 		waitTime = timeBetweenBullets;
 		bullets = new Bullet[patternLength][multi];
-		int offset = (multi - (multi % 2)) / 2;
-		int xtra = (1-(multi % 2)) * 5;
+		offset = (multi - (multi % 2)) / 2;
+		xtra = (1-(multi % 2)) * 5;
+		System.out.println(xtra);
 		
 		Vector2 direction = Vector2.Zero;
 		for (int i = 0; i < patternLength; i++) {
@@ -25,6 +28,20 @@ public class Pattern {
 				bullets[i][j] = new Bullet(GameScreen.mainGameScreen, Vector2.Zero, direction, speed, range); //Create bullet
 			}
 		}
+	}
+	
+	public Bullet[] BulletSet(int set) {
+		return bullets[set];
+	}
+	
+	public Bullet[] AimedSet(int set, Vector2 aimDir) {
+		Vector2 direction;
+		for (int i = 0; i < bullets[set].length; i++) {
+			direction = new Vector2(1, 1);
+			direction.setAngle(aimDir.angle() + ((i - offset) * 10) + xtra);
+			bullets[set][i].ChangeDirection(direction);
+		}
+		return bullets[set];
 	}
 	
 	public Boolean Aim() { return aim; }	//Getters

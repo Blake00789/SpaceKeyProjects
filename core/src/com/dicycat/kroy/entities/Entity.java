@@ -22,10 +22,5 @@ public abstract class Entity extends GameObject{
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void Render(SpriteBatch batch) {
-		//batch.draw(GetSprite(), GetPos().x, GetPos().y, GetSize().x, GetSize().y);
-	}
 }
 

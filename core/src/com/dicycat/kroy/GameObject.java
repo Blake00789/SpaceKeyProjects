@@ -21,7 +21,10 @@ public abstract class GameObject {	//Basic object for all displayable objects
 	}
 	
 	public abstract void Update(); //Called every frame | Update the game object
-	public abstract void Render(SpriteBatch batch); //Called every frame | Render the object
+	
+	public void Render(SpriteBatch batch) { //Called every frame | Render the object
+		batch.draw(getTexture(), getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getXScale(), getYScale(), getRotation(), 0, 0, getTextureWidth(), getTextureHeight(), false, false);
+	}
 	
 	public void changePosition(Vector2 v) { // changes current position by vector x
 		sprite.setX(getX() + v.x);

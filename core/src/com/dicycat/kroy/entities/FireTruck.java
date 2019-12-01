@@ -23,7 +23,7 @@ public class FireTruck extends Entity{
 	protected HashMap<String,Integer> directions = new HashMap<String,Integer>(); // Dictionary to store the possible directions the truck can face
 
 	public FireTruck(GameScreen gScreen, Vector2 spawnPos) {	//Constructor
-		super(gScreen, spawnPos, new Texture("fireTruck.png"), new Vector2(50,100));
+		super(gScreen, spawnPos, gScreen.textures.Truck(), new Vector2(50,100));
 
 		directions.put("n",0);
 		directions.put("w",90);

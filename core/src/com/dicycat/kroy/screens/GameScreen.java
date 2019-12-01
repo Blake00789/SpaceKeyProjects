@@ -8,13 +8,13 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dicycat.kroy.GameObject;
+import com.dicycat.kroy.GameTextures;
 import com.dicycat.kroy.Kroy;
-import com.dicycat.kroy.bullets.Bullet;
 import com.dicycat.kroy.debug.DebugCircle;
 import com.dicycat.kroy.debug.DebugDraw;
 import com.dicycat.kroy.debug.DebugLine;
@@ -25,6 +25,7 @@ import com.dicycat.kroy.scenes.HUD;
 
 public class GameScreen implements Screen{
 	public static GameScreen mainGameScreen;
+	public GameTextures textures;
 	
 	Boolean showDebug = true;
 	
@@ -42,7 +43,8 @@ public class GameScreen implements Screen{
 		game = _game;
 		gamecam = new OrthographicCamera();    //m
 		gameport = new ScreenViewport(gamecam);	//m //Mic:could also use StretchViewPort to make the screen stretch instead of adapt
-		hud = new HUD(game.batch);												//or FitPort to make it fit into a specific width/height ratio
+		hud = new HUD(game.batch);						//or FitPort to make it fit into a specific width/height ratio
+		textures = new GameTextures();
 		if (mainGameScreen == null) {
 			mainGameScreen = this;
 		}
@@ -78,6 +80,8 @@ public class GameScreen implements Screen{
 		
 		game.batch.end();
 		
+		System.out.println("Render calls:" + game.batch.renderCalls + " | FPS:" + Gdx.graphics.getFramesPerSecond());
+		
 		if (showDebug) {
 			DrawDebug(); //Draw all debug items as they have to be drawn outside the batch
 		}
@@ -85,13 +89,13 @@ public class GameScreen implements Screen{
 	
 	//region Game Logic
 	private void UpdateLoop() {
-		List<GameObject> toRemove = new ArrayList<GameObject>();;
+		List<GameObject> toRemove = new ArrayList<GameObject>();
 		for (GameObject gObject : gameObjects) {	//Go through every game object
 			gObject.Update();//Update the game object
 			if (gObject.CheckRemove()) {				//Check if game object is to be removed
 				toRemove.add(gObject);					//Set it to be removed
 			}else {
-				game.batch.draw(gObject.getTexture(), gObject.getX(), gObject.getY(), gObject.getOriginX(), gObject.getOriginY(), gObject.getWidth(), gObject.getHeight(), gObject.getXScale(), gObject.getYScale(), gObject.getRotation(), 0, 0, gObject.getTextureWidth(), gObject.getTextureHeight(), false, false);
+				gObject.Render(game.batch);
 			}
 		}
 		for (GameObject rObject : toRemove) {	//Remove game objects set for removal
@@ -101,7 +105,6 @@ public class GameScreen implements Screen{
 			gameObjects.add(aObject);
 		}
 		toAdd.clear();
-
 	}
 	
 	public void AddGameObject(GameObject gameObject) {	//Add a game object next frame
