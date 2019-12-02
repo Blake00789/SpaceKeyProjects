@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.dicycat.kroy.GameObject;
+import com.dicycat.kroy.entities.FireTruck;
 import com.dicycat.kroy.screens.GameScreen;
 
 public class Bullet extends GameObject {
@@ -18,8 +19,8 @@ public class Bullet extends GameObject {
 	private Circle hitbox;
 	
 	
-	public Bullet(GameScreen gScreen, Vector2 spawnPos, Vector2 direction, int _speed, float range) {	//Constructor
-		super(gScreen, spawnPos, gScreen.textures.Bullet(), new Vector2(20,20));
+	public Bullet(Vector2 spawnPos, Vector2 direction, int _speed, float range) {	//Constructor
+		super(spawnPos, GameScreen.mainGameScreen.textures.Bullet(), new Vector2(20,20));
 		speed = _speed;
 		velocity = direction.scl(speed);
 		maxDist = range;
@@ -29,6 +30,7 @@ public class Bullet extends GameObject {
 	public void Fire(Vector2 initial) {	//Reset bullet
 		travelDist = maxDist;
 		setPosition(initial);
+		changePosition(new Vector2(-getOriginX(), -getOriginY()));
 		remove = false;
 	}
 	
@@ -54,8 +56,12 @@ public class Bullet extends GameObject {
 		//Debug to draw the hitbox.
 		//gameScreen.DrawCircle(new Vector2(hitbox.x, hitbox.y), hitbox.radius, 2, Color.RED);	//No, big lag
 		//Check to see if bullet collides with the players truck.
-		if(Intersector.overlaps(hitbox, gameScreen.GetPlayer().getHitbox())){
-			setRemove(true);
+		FireTruck truck = GameScreen.mainGameScreen.GetPlayer();
+		if (truck.isAlive()) {
+			if(Intersector.overlaps(hitbox, truck.getHitbox())){
+				truck.ApplyDamage(1);
+				setRemove(true);
+			}
 		}
 	}
 

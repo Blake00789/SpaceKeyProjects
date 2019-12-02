@@ -26,7 +26,6 @@ public class BulletDispenser {
 		patterns = new ArrayList<Pattern>();
 		currentPattern = 0;
 		bulletTimer = 0;
-		patternTime = 2;
 		patternTimer = 0;
 	}
 	
@@ -34,6 +33,7 @@ public class BulletDispenser {
 		patterns.add(pattern);
 		if (patterns.size() == 1) {	//If only pattern, set as firing pattern
 			firingPattern = patterns.get(0);
+			patternTime = firingPattern.Cooldown();
 		}
 	}
 	
@@ -61,6 +61,7 @@ public class BulletDispenser {
 				if (currentBullet >= firingPattern.Bullets().length) {
 					currentPattern++;
 					currentBullet = 0;
+					patternTime = firingPattern.Cooldown();
 					patternTimer = 0;
 					if (currentPattern >= patterns.size()) {
 						currentPattern = 0;

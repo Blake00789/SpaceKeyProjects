@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Matrix3;
@@ -22,8 +23,8 @@ public class FireTruck extends Entity{
 
 	protected HashMap<String,Integer> directions = new HashMap<String,Integer>(); // Dictionary to store the possible directions the truck can face
 
-	public FireTruck(GameScreen gScreen, Vector2 spawnPos) {	//Constructor
-		super(gScreen, spawnPos, gScreen.textures.Truck(), new Vector2(50,100));
+	public FireTruck(Vector2 spawnPos) {	//Constructor
+		super(spawnPos, GameScreen.mainGameScreen.textures.Truck(), new Vector2(50,100));
 
 		directions.put("n",0);
 		directions.put("w",90);
@@ -92,14 +93,20 @@ public class FireTruck extends Entity{
 		}
 
 		moveInDirection(keyDetect);
-		gameScreen.DrawRect(GetCentre(), new Vector2(20, 20), 2, Color.FIREBRICK);
 		//Move the hitbox to it's new centered position according to the sprites position.
 		hitbox.setX(GetCentre().x);
 		hitbox.setY(GetCentre().y);
-		gameScreen.DrawRect(new Vector2(hitbox.x, hitbox.y), new Vector2(hitbox.width, hitbox.height), 2, Color.GREEN);
+		GameScreen.mainGameScreen.DrawRect(new Vector2(hitbox.x, hitbox.y), new Vector2(hitbox.width, hitbox.height), 2, Color.GREEN);
 	}
 
 	public Rectangle getHitbox(){
 		return this.hitbox;
+	}
+	
+	@Override
+	public void Render(SpriteBatch batch) {
+		batch.setColor(0.1f * healthPoints, 0.1f * healthPoints, 0.1f * healthPoints, 1);
+		super.Render(batch);
+		batch.setColor(Color.WHITE);
 	}
 }

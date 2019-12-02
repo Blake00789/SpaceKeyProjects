@@ -1,5 +1,6 @@
 package com.dicycat.kroy.entities;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -11,8 +12,8 @@ public abstract class Entity extends GameObject{
 	protected int healthPoints;
 	protected int radius;
 	
-	public Entity(GameScreen gScreen, Vector2 spawnPos, Texture img, Vector2 imSize) {
-		super(gScreen, spawnPos, img, imSize);
+	public Entity(Vector2 spawnPos, Texture img, Vector2 imSize) {
+		super(spawnPos, img, imSize);
 		healthPoints = 10;
 		radius = 50;
 	}
@@ -21,6 +22,21 @@ public abstract class Entity extends GameObject{
 	public void Update() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public Boolean isAlive() {
+		return (healthPoints > 0) && !remove;
+	}
+	
+	public void ApplyDamage(int damage) {
+		healthPoints -= damage;
+		if (healthPoints <= 0) {
+			Die();
+		}
+	}
+	
+	private void Die() {
+		remove = true;
 	}
 }
 

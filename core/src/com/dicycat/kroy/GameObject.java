@@ -8,13 +8,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.dicycat.kroy.screens.GameScreen;
 
 public abstract class GameObject {	//Basic object for all displayable objects
-	protected GameScreen gameScreen;	//Reference to the gameScreen to be displayed on
+	//protected GameScreen gameScreen;	//Reference to the gameScreen to be displayed on
 	protected Sprite sprite;			//Sprite of the object
 	protected Boolean remove;			//Should this GameObject be removed?
 	protected float rotation = 0;		//Current angle the truck is facing in degrees
 	
-	public GameObject(GameScreen gScreen, Vector2 spawnPos, Texture image, Vector2 imSize) {	//Constructor; takes the screen to be put on, spawn position vector, image and a vector for its size
-		gameScreen = gScreen;
+	public GameObject(Vector2 spawnPos, Texture image, Vector2 imSize) {	//Constructor; takes the screen to be put on, spawn position vector, image and a vector for its size
 		sprite = new Sprite(image,(int) spawnPos.x ,(int) spawnPos.y ,(int) imSize.x,(int) imSize.y); // sprite class stores the texture position and size of the object
 		changePosition(spawnPos);
 		remove = false;

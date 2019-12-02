@@ -39,12 +39,15 @@ public class GameScreen implements Screen{
 	List<GameObject> toAdd;
 	List<DebugDraw> debugObjects; //List of debug items
 	
+	public float gameTimer; //Timer to destroy station
+	
 	public GameScreen(Kroy _game) {
 		game = _game;
 		gamecam = new OrthographicCamera();    //m
 		gameport = new ScreenViewport(gamecam);	//m //Mic:could also use StretchViewPort to make the screen stretch instead of adapt
 		hud = new HUD(game.batch);						//or FitPort to make it fit into a specific width/height ratio
 		textures = new GameTextures();
+		gameTimer = 60 * 15; //Set timer to 15 minutes
 		if (mainGameScreen == null) {
 			mainGameScreen = this;
 		}
@@ -58,9 +61,9 @@ public class GameScreen implements Screen{
 		toAdd = new ArrayList<GameObject>();
 		gameObjects = new ArrayList<GameObject>();
 		debugObjects = new ArrayList<DebugDraw>();
-		player = new FireTruck(this, new Vector2(0, 0));
+		player = new FireTruck(new Vector2(-50, -50));
 		gameObjects.add(player);	//Player	//Mic:modified from (100, 100) to (0, 0)
-		gameObjects.add(new UFO(this, new Vector2(0, 200)));	//UFO	//Mic:modified from (480,580) to (0, 200)
+		gameObjects.add(new UFO(new Vector2(0, 200)));	//UFO	//Mic:modified from (480,580) to (0, 200)
 		//gameObjects.add(new Bullet(this, new Vector2(10, 10), new Vector2(1,5), 50, 500));	//Bullet
 		
 	}
@@ -76,6 +79,12 @@ public class GameScreen implements Screen{
 		game.batch.setProjectionMatrix(gamecam.combined);	//Mic:only renders the part of the map where the camera is
 		game.batch.begin(); // Game loop Start
 
+		gameTimer -= delta;
+		if (gameTimer <= 0) {
+			//Destroy station
+			System.err.println("Timer!");	//Temp test
+		}
+		
 		UpdateLoop();	//Update all game objects
 		
 		game.batch.end();
