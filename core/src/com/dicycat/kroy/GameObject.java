@@ -14,7 +14,7 @@ public abstract class GameObject {	//Basic object for all displayable objects
 	protected Boolean remove;			//Should this GameObject be removed?
 	protected float rotation = 0;		//Current angle the truck is facing in degrees
 	
-	public GameObject(GameScreen gScreen, Vector2 spawnPos, Texture image, Vector2 imSize, TiledGameMap map) {	//Constructor; takes the screen to be put on, spawn position vector, image and a vector for its size
+	public GameObject(GameScreen gScreen, Vector2 spawnPos, Texture image, Vector2 imSize) {	//Constructor; takes the screen to be put on, spawn position vector, image and a vector for its size
 		gameScreen = gScreen;
 		sprite = new Sprite(image,(int) spawnPos.x ,(int) spawnPos.y ,(int) imSize.x,(int) imSize.y); // sprite class stores the texture position and size of the object
 		remove = false;
@@ -54,6 +54,7 @@ public abstract class GameObject {	//Basic object for all displayable objects
 	public int getTextureWidth() { return sprite.getTexture().getWidth(); }
 	public int getTextureHeight() {	return sprite.getTexture().getHeight(); }
 	public Sprite getSprite() { return sprite; }
+	public Vector2 getPosition() { return new Vector2(sprite.getX(),sprite.getY()); }
 	
 	public Vector2 GetCentre() {	//Return centre of GameObject
 		return new Vector2(sprite.getX() + (sprite.getX()/2), sprite.getY() + (sprite.getY()/2));

@@ -4,9 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import com.dicycat.kroy.GameObject;
 import com.dicycat.kroy.gamemap.TiledGameMap;
 import com.dicycat.kroy.screens.GameScreen;
@@ -17,9 +21,16 @@ import java.util.Map;
 public class FireTruck extends Entity{
 	private int speed = 600;	//How fast the truck can move
 	protected HashMap<String,Integer> directions = new HashMap<String,Integer>(); // Dictionary to store the possible directions the truck can face
+	Array<Sprite> fireTruckSprites; //MC
+	TextureAtlas atlas; //MC
+	TextureRegion[][] textureByDirection;
 	
-	public FireTruck(GameScreen gScreen, Vector2 spawnPos, TiledGameMap map) {	//Constructor
-		super(gScreen, spawnPos, new Texture("fireTruck.png"), new Vector2(50,100), map);
+	public FireTruck(GameScreen gScreen, Vector2 spawnPos) {	//Constructor
+		super(gScreen, spawnPos, new Texture("FireTruck.png"), new Vector2(25,50));
+		textureByDirection = TextureRegion.split(new Texture("FireTruck.png"), 32, 32);
+//		atlas = new TextureAtlas("FireTruck.txt"); //MC
+//		fireTruckSprites = atlas.createSprites();//MC
+
 		
 		directions.put("n",0);
 		directions.put("w",90);
@@ -37,6 +48,7 @@ public class FireTruck extends Entity{
 	public void moveInDirection(int keyPressed) {// movement method for fireTruck, keyPressed is a 4 bit code of 0s and 1s, where a 1 represents a certain arrow/WASD key
 		
 		if (keyPressed != 0) { // will not run main logic if no key is pressed
+			
 			String[] keys = {"up","down","left","right"};
 
 			float posChange = speed * Gdx.graphics.getDeltaTime();	//Get how far the truck can move this frame
@@ -66,10 +78,30 @@ public class FireTruck extends Entity{
 			movement.nor(); // Vector3 method to normalise coordinate vector
 			movement.mul(distance); // multiplies normalised vector by distance to represent speed truck should be travelling
 			
-			changePosition(new Vector2(movement.x,movement.y));// updates truck coordinates
+			
+			Vector2 newPos = new Vector2(this.getPosition());
+			if (!isOnCollidableTile(newPos.add(movement.x,0))) {
+				setPosition(newPos);
+			}
+			newPos = new Vector2(this.getPosition());
+			if (!isOnCollidableTile(newPos.add(0,movement.y))) {
+				setPosition(newPos);
+			}
+			
+//			changePosition(new Vector2(movement.x,movement.y));// updates truck coordinates
 			setRotation(directions.get(directionKey));// updates truck direction
 			
 		}
+	}
+	
+	public boolean isOnCollidableTile(Vector2 pos) {
+		if(GameScreen.gameMap.getTileTypeByLocation(0, pos.x, pos.y).isCollidable()
+				||GameScreen.gameMap.getTileTypeByLocation(0, pos.x + this.getWidth(), pos.y).isCollidable()
+				||GameScreen.gameMap.getTileTypeByLocation(0, pos.x, pos.y+this.getHeight()).isCollidable()
+				||GameScreen.gameMap.getTileTypeByLocation(0, pos.x+this.getWidth(), pos.y+this.getHeight()).isCollidable()) {
+			return true;
+		}
+		return false;
 	}
 	
 	public void Update() 
@@ -94,7 +126,7 @@ public class FireTruck extends Entity{
 		//gameScreen.DrawRect(position, size, 2, Color.FIREBRICK);
 	}
 	
-	public boolean isOnRoad(Vector2 pos) {
+	public boolean isOnRoad(Vector2 pos) { //MC
 		if(map.getTileTypeByLocation(0, pos.x, pos.y).isCollidable()
 				||map.getTileTypeByLocation(0, pos.x + this.getWidth(), pos.y).isCollidable()
 				||map.getTileTypeByLocation(0, pos.x, pos.y+this.getHeight()).isCollidable()
@@ -103,4 +135,37 @@ public class FireTruck extends Entity{
 		}
 		return true;
 	}
+	
+//	@Override
+//	public Texture getTexture() { //MC
+//		if (this.getRotation() == 90) {
+//			return textureByDirection[0][0].getTexture();
+//		}
+//		if (this.getRotation() == 270) {
+//			return textureByDirection[0][0].getTexture();
+//		}
+//		if (this.getRotation() == 0) {
+//			return textureByDirection[0][0].getTexture();
+//		}
+//		if (this.getRotation() == 180) {
+//			return textureByDirection[0][0].getTexture();
+//		}
+//		if (this.getRotation() == 135) {
+//			return textureByDirection[0][0].getTexture();
+//		}
+//		if (this.getRotation() == 225) {
+//			return textureByDirection[0][0].getTexture();
+//		}
+//		if (this.getRotation() == 315) {
+//			return textureByDirection[0][0].getTexture();
+//		}
+//		if (this.getRotation() == 45) {
+//			return textureByDirection[0][0].getTexture();
+//		}
+//		return textureByDirection[0][0].getTexture();
+//	}
+	
+
+
+	
 }

@@ -28,7 +28,7 @@ public class GameScreen implements Screen{
 	private OrthographicCamera gamecam;	//m 	//follows along what the port displays
 	private Viewport gameport; 	//m
 	private HUD hud;	//m
-	TiledGameMap gameMap;
+	public static TiledGameMap gameMap;
 	
 	FireTruck player; //Reference to the player
 	List<GameObject> gameObjects;	//List of active game objects
@@ -48,7 +48,7 @@ public class GameScreen implements Screen{
 		toAdd = new ArrayList<GameObject>();
 		gameObjects = new ArrayList<GameObject>();
 		debugObjects = new ArrayList<DebugDraw>();
-		player = new FireTruck(this, new Vector2(100, 0));
+		player = new FireTruck(this, new Vector2(1530, 1300));
 		gameObjects.add(player);	//Player	//Mic:modified from (100, 100) to (0, 0)
 		gameObjects.add(new UFO(this, new Vector2(0, 200)));	//UFO	//Mic:modified from (480,580) to (0, 200)
 		//gameObjects.add(new Bullet(this, new Vector2(10, 10), new Vector2(1,5), 50, 500));	//Bullet
@@ -57,13 +57,17 @@ public class GameScreen implements Screen{
 
 	@Override
 	public void render(float delta) {		//Called every frame
-		Gdx.gl.glClearColor(.47f, .66f, .29f, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+	
 		
-		gameMap.render(gamecam);
 		
-		game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
-		hud.stage.draw();
+		gameMap.renderRoads(gamecam);
+		
+		
+		
+		gamecam.position.set(player.getX(), player.getY(), 0);
+		gamecam.update();
+		
+		
 		
 		game.batch.setProjectionMatrix(gamecam.combined);	//Mic:only renders the part of the map where the camera is
 		game.batch.begin(); // Game loop Start
@@ -71,6 +75,11 @@ public class GameScreen implements Screen{
 		UpdateLoop();//Update all game objects
 
 		game.batch.end();
+		
+		gameMap.renderBuildings(gamecam);
+		
+		game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+		hud.stage.draw();
 		
 		DrawDebug(); //Draw all debug items as they have to be drawn outside the batch
 	}

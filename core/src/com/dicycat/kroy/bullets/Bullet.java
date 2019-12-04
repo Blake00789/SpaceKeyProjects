@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.dicycat.kroy.GameObject;
+import com.dicycat.kroy.gamemap.TiledGameMap;
 import com.dicycat.kroy.screens.GameScreen;
 
 public class Bullet extends GameObject {
@@ -14,7 +15,7 @@ public class Bullet extends GameObject {
 	private float travelDist; 	//Distance left to travel
 	
 	
-	public Bullet(GameScreen gScreen, Vector2 spawnPos, Vector2 direction, int speed, float range, TiledGameMap map) {	//Constructor
+	public Bullet(GameScreen gScreen, Vector2 spawnPos, Vector2 direction, int speed, float range) {	//Constructor
 		super(gScreen, spawnPos, new Texture("singleP.png"), new Vector2(20,20));
 		velocity = direction.scl(speed);
 		maxDist = range;

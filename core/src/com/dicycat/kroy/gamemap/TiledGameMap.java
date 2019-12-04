@@ -20,10 +20,16 @@ public class TiledGameMap{
 	}
 
 
-	public void render(OrthographicCamera camera) {
+	public void renderRoads(OrthographicCamera camera) {
 		tiledMapRenderer.setView(camera);
-		tiledMapRenderer.render();
+		tiledMapRenderer.render(new int[] {1});
 	}
+	
+	public void renderBuildings(OrthographicCamera camera) {
+		tiledMapRenderer.setView(camera);
+		tiledMapRenderer.render(new int[] {2,3});
+	}
+
 
 
 

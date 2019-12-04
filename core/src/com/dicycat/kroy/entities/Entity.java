@@ -13,12 +13,11 @@ public abstract class Entity extends GameObject{
 	protected int radius;
 	protected TiledGameMap map;
 	
-	public Entity(GameScreen gScreen, Vector2 spawnPos, Texture img, Vector2 imSize, TiledGameMap map) {
-		super(gScreen, spawnPos, img, imSize, map);
+	public Entity(GameScreen gScreen, Vector2 spawnPos, Texture img, Vector2 imSize) {
+		super(gScreen, spawnPos, img, imSize);
 		healthPoints = 10;
 		radius = 50;
 		changePosition(spawnPos);
-		this.map = map;
 	}
 
 	@Override
