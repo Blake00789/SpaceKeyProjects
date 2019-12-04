@@ -9,11 +9,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector3;
-import com.dicycat.kroy.GameObject;
 import com.dicycat.kroy.screens.GameScreen;
-import java.util.Dictionary;
 import java.util.HashMap;
-import java.util.Map;
 
 public class FireTruck extends Entity{
 
@@ -41,7 +38,6 @@ public class FireTruck extends Entity{
 	public void moveInDirection(int keyPressed) {// movement method for fireTruck, keyPressed is a 4 bit code of 0s and 1s, where a 1 represents a certain arrow/WASD key
 
 		if (keyPressed != 0) { // will not run main logic if no key is pressed
-			String[] keys = {"up","down","left","right"};
 
 			float posChange = speed * Gdx.graphics.getDeltaTime();	//Get how far the truck can move this frame
 			Matrix3 distance = new Matrix3().setToScaling(posChange,posChange); // Matrix to scale the final normalised vector to the correct distance
@@ -68,35 +64,46 @@ public class FireTruck extends Entity{
 			}
 			movement.nor(); // Vector3 method to normalise coordinate vector
 			movement.mul(distance); // multiplies normalised vector by distance to represent speed truck should be travelling
-			changePosition(new Vector2(movement.x,movement.y));// updates truck coordinates
-			setRotation(directions.get(directionKey));// updates truck direction
+
+			Vector2 finalMovement = new Vector2(movement.x,movement.y);// Creates the final movement vector
+			changePosition(finalMovement);// updates truck coordinates
+			setRotation(directions.get(directionKey));// Updates truck direction
+
+			//changePosition(new Vector2(movement.x,movement.y));// updates truck coordinates 
+			//setRotation(directions.get(directionKey));// updates truck direction
+
 		}
 	}
 
 	public void Update()
 	{
 
-		int keyDetect = 0;
+		if (Gdx.input.isKeyPressed(Keys.ANY_KEY)) {
+			int keyDetect = 0;
 
-		if (Gdx.input.isKeyPressed(Keys.UP)) {	//Check all inputs for player movement
-			keyDetect += 1;
-		}
-		if (Gdx.input.isKeyPressed(Keys.DOWN)) {
-			keyDetect += 10;
-		}
-		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
-			keyDetect += 100;
-		}
-		if (Gdx.input.isKeyPressed(Keys.LEFT)) {
-			keyDetect += 1000;
-		}
-
-		moveInDirection(keyDetect);
-		gameScreen.DrawRect(GetCentre(), new Vector2(20, 20), 2, Color.FIREBRICK);
-		//Move the hitbox to it's new centered position according to the sprites position.
-		hitbox.setX(GetCentre().x);
-		hitbox.setY(GetCentre().y);
-		gameScreen.DrawRect(new Vector2(hitbox.x, hitbox.y), new Vector2(hitbox.width, hitbox.height), 2, Color.GREEN);
+			if (Gdx.input.isKeyPressed(Keys.UP)) {	//Check all inputs for player movement
+				keyDetect += 1;
+			}
+			if (Gdx.input.isKeyPressed(Keys.DOWN)) {
+				keyDetect += 10;
+			}
+			if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+				keyDetect += 100;
+			}
+			if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+				keyDetect += 1000;
+			}
+			
+			moveInDirection(keyDetect);
+			if (gameScreen.FOLLOWCAMERA) {
+				gameScreen.updateCamera();// Updates the screen position to always have the truck roughly centre
+			}
+      gameScreen.DrawRect(GetCentre(), new Vector2(20, 20), 2, Color.FIREBRICK);
+		  //Move the hitbox to it's new centered position according to the sprites position.
+		  hitbox.setX(GetCentre().x);
+		  hitbox.setY(GetCentre().y);
+		  gameScreen.DrawRect(new Vector2(hitbox.x, hitbox.y), new Vector2(hitbox.width, hitbox.height), 2, Color.GREEN);
+	    }
 	}
 
 	public Rectangle getHitbox(){

@@ -1,7 +1,6 @@
 package com.dicycat.kroy;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -43,7 +42,7 @@ public abstract class GameObject {	//Basic object for all displayable objects
 	public float getX() { return sprite.getX(); }
 	public float getY() { return sprite.getY(); }
 	public Boolean CheckRemove() { return remove; }
-	public float getOriginX () { return sprite.getOriginX(); }
+	public float getOriginX () { return sprite.getOriginX(); } // returns centre of sprite (25, 50) Use GetCentre for position on screen
 	public float getOriginY() {return sprite.getOriginY(); }
 	public  float getXScale() { return 1; }
 	public float getYScale() { return 1; }
@@ -51,9 +50,14 @@ public abstract class GameObject {	//Basic object for all displayable objects
 	public int getTextureWidth() { return sprite.getTexture().getWidth(); }
 	public int getTextureHeight() {	return sprite.getTexture().getHeight(); }
 	public Sprite getSprite() { return sprite; }
+	public Vector2 GetPosition() { return new Vector2(getX(), getY());  }
 	
 	public Vector2 GetCentre() {	//Return centre of GameObject
-		return new Vector2(sprite.getX() + (sprite.getWidth()/2), sprite.getY() + (sprite.getHeight()/2));
+
+		return new Vector2(getOriginX()+getX(), getOriginY()+getY());
+
+		//return new Vector2(sprite.getX() + (sprite.getWidth()/2), sprite.getY() + (sprite.getHeight()/2));  //not working
+
 	}
 	
 	//Setters

@@ -13,11 +13,11 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class HUD {
 	
 	public Stage stage;
-	private Viewport viewport;	//Mic: creating new port so that the HUD stays locked while map can move around independently
+	private Viewport viewport;	//creating new port so that the HUD stays locked while map can move around independently
 	
 	
 	private Integer trucks;
-	private Integer timeCount;	//Mic: change to float maybe
+	private Integer timeCount;	//change to float maybe
 	private Integer score;
 	
 	Label scoreLabel;
@@ -25,7 +25,7 @@ public class HUD {
 	Label trucksLabel;
 	Label timeCountLabel;
 	Label scoreCountLabel;
-	Label trucksCountLabel;	//Mic: we could put mini images of the trucks instead of using an int for the lives
+	Label trucksCountLabel;	//we could put mini images of the trucks instead of using an int for the lives
 	
 	
 	public HUD(SpriteBatch sb) {
@@ -34,11 +34,11 @@ public class HUD {
 		trucks = 4;
 		
 		viewport = new ScreenViewport(new OrthographicCamera());
-		stage = new Stage(viewport, sb);	//Mic: Where we are going to put the HUD elements 
+		stage = new Stage(viewport, sb);	//Where we are going to put the HUD elements 
 		
-		Table table = new Table();	//Mic: this allows to put widgets in the scene in a clean and ordered way
-		table.top();	//Mic: puts widgets from the top instead of from the centre
-		table.setFillParent(true);	//Mic: makes the table the same size of the stage
+		Table tableHUD = new Table();	//this allows to put widgets in the scene in a clean and ordered way
+		tableHUD.top();	// puts widgets from the top instead of from the centre
+		tableHUD.setFillParent(true);	//makes the table the same size of the stage
 		
 		timeCountLabel = new Label(String.format("%05d", timeCount), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 		timeLabel = new Label("TIME:", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
@@ -47,14 +47,15 @@ public class HUD {
 		trucksLabel = new Label("TRUCKS:", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 		trucksCountLabel = new Label(String.format("%01d", trucks), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 		
-		table.add(timeLabel).expandX().padBottom(10);
-		table.add(timeCountLabel).expandX().padTop(10);
-		table.add(scoreLabel).expandX().padTop(10);			//Mic: expandX so that all elements take up the same amount of space
-		table.add(scoreCountLabel).expandX().padTop(10);
-		table.add(trucksLabel).expandX().padTop(10);
-		table.add(trucksCountLabel).expandX().padTop(10);
+
+		tableHUD.add(timeLabel).expandX().padBottom(10);
+		tableHUD.add(timeCountLabel).expandX().padTop(10);
+		tableHUD.add(scoreLabel).expandX().padTop(10);			// expandX so that all elements take up the same amount of space
+		tableHUD.add(scoreCountLabel).expandX().padTop(10);
+		tableHUD.add(trucksLabel).expandX().padTop(10);
+		tableHUD.add(trucksCountLabel).expandX().padTop(10);
 		
-		stage.addActor(table);
+		stage.addActor(tableHUD);
 		
 	}
 	

@@ -25,7 +25,7 @@ public abstract class Entity extends GameObject{
 
 	@Override
 	public void Render(SpriteBatch batch) {
-		//batch.draw(GetSprite(), GetPos().x, GetPos().y, GetSize().x, GetSize().y);
+//		batch.draw(GetSprite(), GetPos().x, GetPos().y, GetSize().x, GetSize().y);
 	}
 }
 

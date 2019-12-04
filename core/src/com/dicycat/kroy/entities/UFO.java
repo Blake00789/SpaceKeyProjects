@@ -34,7 +34,8 @@ public class UFO extends Entity {
 		
 		//TEST
 		if (gameScreen.GetPlayer() != null) {
-			gameScreen.DrawLine(GetCentre(), gameScreen.GetPlayer().GetCentre(), 3, Color.BLUE);
+//			gameScreen.DrawLine(GetCentre(), gameScreen.GetPlayer().GetCentre(), 3, Color.BLUE); // debug line drawn between ufo and truck
+//			gameScreen.DrawLine(new Vector2(getX(), getY()), new Vector2(gameScreen.GetPlayer().getX(), gameScreen.GetPlayer().getY()), 3, Color.BLUE); // debug line drawn between ufo and truck
 		}
 	}
 	
