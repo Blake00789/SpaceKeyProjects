@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Matrix3;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.dicycat.kroy.GameObject;
@@ -80,11 +81,11 @@ public class FireTruck extends Entity{
 			movement.nor(); // Vector3 method to normalise coordinate vector
 			movement.mul(distance); // multiplies normalised vector by distance to represent speed truck should be travelling
 
-			Vector2 newPos = new Vector2(this.getPosition());
+			Vector2 newPos = new Vector2(getPosition());
 			if (!isOnCollidableTile(newPos.add(movement.x,0))) { // Checks whether changing updating x direction puts truck on a collidable tile
 					setPosition(newPos); // updates x direction
 			}
-			newPos = new Vector2(this.getPosition());
+			newPos = new Vector2(getPosition());
 			if (!isOnCollidableTile(newPos.add(0,movement.y))) { // Checks whether changing updating y direction puts truck on a collidable tile
 				setPosition(newPos); // updates y direction
 			}
@@ -138,6 +139,7 @@ public class FireTruck extends Entity{
 		}
 		return false;
 	}
+	
 //	@Override
 //	public Texture getTexture() { //MC
 //		if (this.getRotation() == 90) {

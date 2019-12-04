@@ -53,7 +53,7 @@ public abstract class GameObject {	//Basic object for all displayable objects
 	public int getTextureWidth() { return sprite.getTexture().getWidth(); }
 	public int getTextureHeight() {	return sprite.getTexture().getHeight(); }
 	public Sprite getSprite() { return sprite; }
-	public Vector2 GetPosition() { return new Vector2(getX(), getY());  }
+	public Vector2 getPosition() { return new Vector2(getX(), getY());  }
 
 	public Vector2 GetCentre() {	//Return centre of GameObject
 
