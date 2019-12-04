@@ -23,6 +23,7 @@ import com.dicycat.kroy.debug.DebugLine;
 import com.dicycat.kroy.debug.DebugRect;
 import com.dicycat.kroy.entities.FireTruck;
 import com.dicycat.kroy.entities.UFO;
+import com.dicycat.kroy.gamemap.TiledGameMap;
 import com.dicycat.kroy.scenes.HUD;
 import com.dicycat.kroy.scenes.PauseWindow;
 
@@ -30,34 +31,36 @@ import com.dicycat.kroy.scenes.PauseWindow;
 public class GameScreen implements Screen{
 
 	public static GameScreen mainGameScreen;
-	
+
 	Boolean showDebug = true;
-	
+
 	Kroy game;
 	private OrthographicCamera gamecam;	//m 	//follows along what the port displays
 	private Viewport gameport; 	//m
 	private HUD hud;	//m
 	public static boolean FOLLOWCAMERA = true;
 	private PauseWindow pauseWindow;
-	
+	public static TiledGameMap gameMap;
+
 	FireTruck player; //Reference to the player
 	List<GameObject> gameObjects;	//List of active game objects
 	List<GameObject> toAdd;
-	List<DebugDraw> debugObjects; //List of debug items 
-	
+	List<DebugDraw> debugObjects; //List of debug items
+
 	public static enum State{
 		PAUSE,
 		RUN,
 		RESUME
 	}
-	
-	
+
+
 
 	public GameScreen(Kroy _game) {
 		game = _game;
 		gamecam = new OrthographicCamera();    //m
 		gameport = new FitViewport(Kroy.width, Kroy.height, gamecam);	//m //Mic:could also use StretchViewPort to make the screen stretch instead of adapt
-		hud = new HUD(game.batch);												//or FitPort to make it fit into a specific width/height ratio
+		hud = new HUD(game.batch);
+		gameMap = new TiledGameMap();											//or FitPort to make it fit into a specific width/height ratio
 
 		pauseWindow = new PauseWindow();
 		pauseWindow.visibility(false);
@@ -76,7 +79,7 @@ public class GameScreen implements Screen{
 		toAdd = new ArrayList<GameObject>();
 		gameObjects = new ArrayList<GameObject>();
 		debugObjects = new ArrayList<DebugDraw>();
-		player = new FireTruck(this, new Vector2(0, 0));
+		player = new FireTruck(this, new Vector2(1530, 1300));
 		gameObjects.add(player);	//Player	//Mic:modified from (100, 100) to (0, 0)
 		gameObjects.add(new UFO(this, new Vector2(0, 200)));	//UFO	//Mic:modified from (480,580) to (0, 200)
 		//gameObjects.add(new Bullet(this, new Vector2(10, 10), new Vector2(1,5), 50, 500));	//Bullet
@@ -84,41 +87,42 @@ public class GameScreen implements Screen{
 	}
 
 	//@Override
-	
+
 	public static State state = State.RUN;
-	
+
 	public void render(float delta) {		//Called every frame
-		
+
 		Gdx.input.setInputProcessor(pauseWindow.stage);
 		pauseWindow.stage.act();
-		
+
 		switch (state) {
 		case RUN:
 		if (Gdx.input.isKeyPressed(Keys.P) || Gdx.input.isKeyPressed(Keys.O) || Gdx.input.isKeyPressed(Keys.M)){
 			pauseWindow.visibility(true);
 			pause();
 		}
-			
-		Gdx.gl.glClearColor(.47f, .66f, .29f, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
+		gameMap.renderRoads(gamecam);
+
+
 		game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
 		game.batch.setProjectionMatrix(gamecam.combined);	//Mic:only renders the part of the map where the camera is
 		game.batch.begin(); // Game loop Start
-		
+
 		UpdateLoop();	//Update all game objects
 
 		game.batch.end();
-		
+
+		gameMap.renderBuildings(gamecam);
+
 
 		hud.stage.draw();
 		pauseWindow.stage.draw();
-					
+
 		//DrawDebug(); //Draw all debug items as they have to be drawn outside the batch
 		if (showDebug) {
 			DrawDebug(); //Draw all debug items as they have to be drawn outside the batch
 		}
-        
+
 		break;
 		case PAUSE:
 			pauseWindow.stage.draw();
@@ -129,7 +133,7 @@ public class GameScreen implements Screen{
 			setGameState(State.RUN);
 			break;
 		}
-		
+
 
 	}
 
@@ -137,7 +141,7 @@ public class GameScreen implements Screen{
 	private void UpdateLoop() {
 		List<GameObject> toRemove = new ArrayList<GameObject>();;
 		for (GameObject gObject : gameObjects) {	//Go through every game object
-			gObject.Update();//Update the game object
+			gObject.Update();							//Update the game object
 			if (gObject.CheckRemove()) {				//Check if game object is to be removed
 				toRemove.add(gObject);					//Set it to be removed
 			}else {
@@ -151,7 +155,6 @@ public class GameScreen implements Screen{
 			gameObjects.add(aObject);
 		}
 		toAdd.clear();
-
 	}
 
 	public void AddGameObject(GameObject gameObject) {	//Add a game object next frame
@@ -183,13 +186,13 @@ public class GameScreen implements Screen{
 		debugObjects.add(new DebugRect(bottomLeft, dimensions, lineWidth, colour));
 	}
 
-	public void updateCamera() {// updates the position of the camera to have the truck centre		
+	public void updateCamera() {// updates the position of the camera to have the truck centre
 		gamecam.position.lerp(new Vector3(player.getX(),player.getY(),gamecam.position.z),0.1f);
 		gamecam.update();
 	}
 
 
-	
+
 	//public void DrawRect(Vector2 centre, Vector2 dimensions, int lineWidth, Color colour) {
 	//	debugObjects.add(new DebugRect(centre, dimensions, lineWidth, colour));
 	//}

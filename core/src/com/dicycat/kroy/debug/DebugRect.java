@@ -7,14 +7,14 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 
 public class DebugRect extends DebugDraw {
-	Vector2 centre;
+	Vector2 bottomLeft;
 	Vector2 dimensions;
 	int lineWidth;
 	Color color;
 
-	public DebugRect(Vector2 center, Vector2 size, int width, Color colour) {
+	public DebugRect(Vector2 bLeft, Vector2 size, int width, Color colour) {
 		super();
-		centre = center;
+		bottomLeft = bLeft;
 		dimensions = size;
 		lineWidth = width;
 		color = colour;
@@ -27,7 +27,7 @@ public class DebugRect extends DebugDraw {
         debugRenderer.setProjectionMatrix(projectionMatrix);
         debugRenderer.begin(ShapeRenderer.ShapeType.Line);
         debugRenderer.setColor(color);
-        debugRenderer.rect(centre.x - (dimensions.x/2), centre.y - (dimensions.y/2), dimensions.x, dimensions.y);
+        debugRenderer.rect(bottomLeft.x, bottomLeft.y, dimensions.x, dimensions.y);
         debugRenderer.end();
         Gdx.gl.glLineWidth(1);
     }
