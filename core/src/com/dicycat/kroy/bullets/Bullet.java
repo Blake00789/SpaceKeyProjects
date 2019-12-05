@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.dicycat.kroy.GameObject;
 import com.dicycat.kroy.gamemap.TiledGameMap;
@@ -15,6 +17,7 @@ public class Bullet extends GameObject {
 	private Vector2 velocity;	//Direction and amount to travel
 	private float maxDist;		//Max distance to travel
 	private float travelDist; 	//Distance left to travel
+	private Circle hitbox;
 
 
 	public Bullet(Vector2 spawnPos, Vector2 direction, int _speed, float range) {	//Constructor
@@ -22,6 +25,7 @@ public class Bullet extends GameObject {
 		speed = _speed;
 		velocity = direction.scl(speed);
 		maxDist = range;
+		hitbox = new Circle(spawnPos.x, spawnPos.y, 10);
 	}
 
 	public void Fire(Vector2 initial) {	//Reset bullet
@@ -57,7 +61,7 @@ public class Bullet extends GameObject {
 		if (truck.isAlive()) {
 			if(Intersector.overlaps(hitbox, truck.getHitbox())){
 				truck.ApplyDamage(1);
-				setRemove(true);
+				remove = true;
 			}
 		}
 	}

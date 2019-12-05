@@ -31,7 +31,7 @@ public class FireTruck extends Entity{
 	TextureRegion[][] textureByDirection;
 
 	public FireTruck(Vector2 spawnPos) {	//Constructor
-		super(spawnPos, GameScreen.mainGameScreen.textures.Truck(), new Vector2(50,100));
+		super(spawnPos, GameScreen.mainGameScreen.textures.Truck(), new Vector2(25,50));
 		textureByDirection = TextureRegion.split(new Texture("FireTruck.png"), 32, 32);
 //		atlas = new TextureAtlas("FireTruck.txt"); //MC
 //		fireTruckSprites = atlas.createSprites();//MC
@@ -117,13 +117,13 @@ public class FireTruck extends Entity{
 			}
 
 			moveInDirection(keyDetect);
-			if (gameScreen.FOLLOWCAMERA) {
-				gameScreen.updateCamera();// Updates the screen position to always have the truck roughly centre
+			if (GameScreen.mainGameScreen.FOLLOWCAMERA) {
+				GameScreen.mainGameScreen.updateCamera();// Updates the screen position to always have the truck roughly centre
 			}
 		  //Move the hitbox to it's new centered position according to the sprites position.
 		  hitbox.setX(GetCentre().x);
 		  hitbox.setY(GetCentre().y);
-		  gameScreen.DrawRect(new Vector2(hitbox.x, hitbox.y), new Vector2(hitbox.width, hitbox.height), 2, Color.GREEN);
+		  GameScreen.mainGameScreen.DrawRect(new Vector2(hitbox.x, hitbox.y), new Vector2(hitbox.width, hitbox.height), 2, Color.GREEN);
 	    }
 	}
 

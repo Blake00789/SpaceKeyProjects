@@ -83,7 +83,7 @@ public class GameScreen implements Screen{
 		toAdd = new ArrayList<GameObject>();
 		gameObjects = new ArrayList<GameObject>();
 		debugObjects = new ArrayList<DebugDraw>();
-		player = new FireTruck(this, new Vector2(1530, 1300));
+		player = new FireTruck(new Vector2(1530, 1300));
 		gameObjects.add(player);	//Player	//Mic:modified from (100, 100) to (0, 0)
 		gameObjects.add(new UFO(new Vector2(1600, 1200)));	//UFO	//Mic:modified from (480,580) to (0, 200)
 		//gameObjects.add(new Bullet(this, new Vector2(10, 10), new Vector2(1,5), 50, 500));	//Bullet
