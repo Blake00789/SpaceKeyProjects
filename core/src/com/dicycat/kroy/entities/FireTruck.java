@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Rectangle;
@@ -28,8 +30,8 @@ public class FireTruck extends Entity{
 	TextureAtlas atlas; //MC
 	TextureRegion[][] textureByDirection;
 
-	public FireTruck(GameScreen gScreen, Vector2 spawnPos) {	//Constructor
-		super(gScreen, spawnPos, new Texture("FireTruck.png"), new Vector2(25,50));
+	public FireTruck(Vector2 spawnPos) {	//Constructor
+		super(spawnPos, GameScreen.mainGameScreen.textures.Truck(), new Vector2(50,100));
 		textureByDirection = TextureRegion.split(new Texture("FireTruck.png"), 32, 32);
 //		atlas = new TextureAtlas("FireTruck.txt"); //MC
 //		fireTruckSprites = atlas.createSprites();//MC
@@ -118,7 +120,6 @@ public class FireTruck extends Entity{
 			if (gameScreen.FOLLOWCAMERA) {
 				gameScreen.updateCamera();// Updates the screen position to always have the truck roughly centre
 			}
-      gameScreen.DrawRect(GetCentre(), new Vector2(20, 20), 2, Color.FIREBRICK);
 		  //Move the hitbox to it's new centered position according to the sprites position.
 		  hitbox.setX(GetCentre().x);
 		  hitbox.setY(GetCentre().y);
@@ -130,6 +131,13 @@ public class FireTruck extends Entity{
 		return this.hitbox;
 	}
 
+	@Override
+	public void Render(SpriteBatch batch) {
+		batch.setColor(0.1f * healthPoints, 0.1f * healthPoints, 0.1f * healthPoints, 1);
+		super.Render(batch);
+		batch.setColor(Color.WHITE);
+	}
+
 	public boolean isOnCollidableTile(Vector2 pos) {
 		if(GameScreen.gameMap.getTileTypeByLocation(0, pos.x, pos.y).isCollidable()
 				||GameScreen.gameMap.getTileTypeByLocation(0, pos.x + this.getWidth(), pos.y).isCollidable()
@@ -139,7 +147,7 @@ public class FireTruck extends Entity{
 		}
 		return false;
 	}
-	
+
 //	@Override
 //	public Texture getTexture() { //MC
 //		if (this.getRotation() == 90) {

@@ -9,34 +9,37 @@ import com.dicycat.kroy.bullets.Pattern;
 import com.dicycat.kroy.screens.GameScreen;
 
 public class UFO extends Entity {
-	
+
 	BulletDispenser dispenser;
 
-	public UFO(GameScreen gScreen, Vector2 spawnPos) {
-		super(gScreen, spawnPos, new Texture("ufo.png"), new Vector2(80, 80));
+	public UFO(Vector2 spawnPos) {
+		super(spawnPos, GameScreen.mainGameScreen.textures.UFO(), new Vector2(80, 80));
 		dispenser = new BulletDispenser(this);
-		dispenser.AddPattern(new Pattern(270, false, 100, 500, 0.5f, 8, 5));
-		dispenser.AddPattern(new Pattern(270, false, 100, 500, 0.3f, 12, 2));
+		dispenser.AddPattern(new Pattern(180, 300, 800, 0.1f, 20, 1, 0.5f));
+		dispenser.AddPattern(new Pattern(100, 500, 0.5f, 8, 5, 0.5f));
+		dispenser.AddPattern(new Pattern(0, 50, 800, 2f, 3, 36, 4));
+		dispenser.AddPattern(new Pattern(200, 600, 0.3f, 12, 2, 0.3f));
+		dispenser.AddPattern(new Pattern(false, 0, 3, 100, 900, 0.02f, 1, 0.2f));
+		dispenser.AddPattern(new Pattern(true, 0, 1, 100, 900, 0.02f, 1, 1.2f));
 	}
 
 	@Override
 	public void Update() {
 		//movement
-		
+
 		//weapons
 		Bullet[] toShoot = dispenser.Update(true);
 		if (toShoot != null) {
 			for (Bullet bullet : toShoot) {
 				bullet.Fire(GetCentre());
-				gameScreen.AddGameObject(bullet);
+				GameScreen.mainGameScreen.AddGameObject(bullet);
 			}
 		}
-		
+
 		//TEST
-		if (gameScreen.GetPlayer() != null) {
-//			gameScreen.DrawLine(GetCentre(), gameScreen.GetPlayer().GetCentre(), 3, Color.BLUE); // debug line drawn between ufo and truck
-//			gameScreen.DrawLine(new Vector2(getX(), getY()), new Vector2(gameScreen.GetPlayer().getX(), gameScreen.GetPlayer().getY()), 3, Color.BLUE); // debug line drawn between ufo and truck
+		if (GameScreen.mainGameScreen.GetPlayer().isAlive()) {
+			GameScreen.mainGameScreen.DrawLine(GetCentre(), GameScreen.mainGameScreen.GetPlayer().GetCentre(), 3, Color.BLUE);
 		}
 	}
-	
+
 }

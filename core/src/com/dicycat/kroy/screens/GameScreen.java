@@ -9,6 +9,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dicycat.kroy.GameObject;
+import com.dicycat.kroy.GameTextures;
 import com.dicycat.kroy.Kroy;
 import com.dicycat.kroy.debug.DebugCircle;
 import com.dicycat.kroy.debug.DebugDraw;
@@ -31,6 +33,7 @@ import com.dicycat.kroy.scenes.PauseWindow;
 public class GameScreen implements Screen{
 
 	public static GameScreen mainGameScreen;
+	public GameTextures textures;
 
 	Boolean showDebug = true;
 
@@ -53,7 +56,7 @@ public class GameScreen implements Screen{
 		RESUME
 	}
 
-
+	public float gameTimer; //Timer to destroy station
 
 	public GameScreen(Kroy _game) {
 		game = _game;
@@ -64,7 +67,8 @@ public class GameScreen implements Screen{
 
 		pauseWindow = new PauseWindow();
 		pauseWindow.visibility(false);
-
+		textures = new GameTextures();
+		gameTimer = 60 * 15; //Set timer to 15 minutes
 		if (mainGameScreen == null) {
 			mainGameScreen = this;
 		}
@@ -81,7 +85,7 @@ public class GameScreen implements Screen{
 		debugObjects = new ArrayList<DebugDraw>();
 		player = new FireTruck(this, new Vector2(1530, 1300));
 		gameObjects.add(player);	//Player	//Mic:modified from (100, 100) to (0, 0)
-		gameObjects.add(new UFO(this, new Vector2(0, 200)));	//UFO	//Mic:modified from (480,580) to (0, 200)
+		gameObjects.add(new UFO(new Vector2(1600, 1200)));	//UFO	//Mic:modified from (480,580) to (0, 200)
 		//gameObjects.add(new Bullet(this, new Vector2(10, 10), new Vector2(1,5), 50, 500));	//Bullet
 
 	}
@@ -108,6 +112,12 @@ public class GameScreen implements Screen{
 		game.batch.setProjectionMatrix(gamecam.combined);	//Mic:only renders the part of the map where the camera is
 		game.batch.begin(); // Game loop Start
 
+		gameTimer -= delta;
+		if (gameTimer <= 0) {
+			//Destroy station
+			System.err.println("Timer!");	//Temp test
+		}
+
 		UpdateLoop();	//Update all game objects
 
 		game.batch.end();
@@ -119,6 +129,9 @@ public class GameScreen implements Screen{
 		pauseWindow.stage.draw();
 
 		//DrawDebug(); //Draw all debug items as they have to be drawn outside the batch
+
+		System.out.println("Render calls:" + game.batch.renderCalls + " | FPS:" + Gdx.graphics.getFramesPerSecond());
+
 		if (showDebug) {
 			DrawDebug(); //Draw all debug items as they have to be drawn outside the batch
 		}
@@ -139,13 +152,13 @@ public class GameScreen implements Screen{
 
 	//region Game Logic
 	private void UpdateLoop() {
-		List<GameObject> toRemove = new ArrayList<GameObject>();;
+		List<GameObject> toRemove = new ArrayList<GameObject>();
 		for (GameObject gObject : gameObjects) {	//Go through every game object
 			gObject.Update();							//Update the game object
 			if (gObject.CheckRemove()) {				//Check if game object is to be removed
 				toRemove.add(gObject);					//Set it to be removed
 			}else {
-				game.batch.draw(gObject.getTexture(), gObject.getX(), gObject.getY(), gObject.getOriginX(), gObject.getOriginY(), gObject.getWidth(), gObject.getHeight(), gObject.getXScale(), gObject.getYScale(), gObject.getRotation(), 0, 0, gObject.getTextureWidth(), gObject.getTextureHeight(), false, false);
+				gObject.Render(game.batch);
 			}
 		}
 		for (GameObject rObject : toRemove) {	//Remove game objects set for removal
@@ -223,6 +236,7 @@ public class GameScreen implements Screen{
 
 	@Override
 	public void dispose() {
+		mainGameScreen = null;
 		game.batch.dispose();
 	}
 
