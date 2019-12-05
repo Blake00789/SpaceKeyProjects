@@ -122,8 +122,8 @@ public class FireTruck extends Entity{
 			}
 		  //Move the hitbox to it's new centered position according to the sprites position.
 		  hitbox.setCenter(GetCentre().x, GetCentre().y);
-		  GameScreen.mainGameScreen.DrawRect(new Vector2(hitbox.x, hitbox.y), new Vector2(hitbox.width, hitbox.height), 2, Color.GREEN);
 	    }
+		GameScreen.mainGameScreen.DrawRect(new Vector2(hitbox.x, hitbox.y), new Vector2(hitbox.width, hitbox.height), 2, Color.GREEN);
 	}
 
 	public Rectangle getHitbox(){
