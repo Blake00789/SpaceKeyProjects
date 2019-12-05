@@ -31,7 +31,7 @@ public class PauseWindow {
 	NinePatch patch = new NinePatch(new Texture("loool.jpg"), 3, 3, 3, 3);
 	NinePatchDrawable background = new NinePatchDrawable(patch);
 	
-    Skin skin = new Skin(Gdx.files.internal("gdx-skins-master\\\\gdx-holo\\\\skin\\\\uiskin.json"));
+    Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 //    FileHandle atlasFile = fileHandle.sibling("uiskin.atlas");
 //    Skin skin = new Skin(fileHandle);
     public TextButton resume = new TextButton("RESUME", skin);
