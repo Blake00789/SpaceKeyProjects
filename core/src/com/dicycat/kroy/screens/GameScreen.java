@@ -24,6 +24,7 @@ import com.dicycat.kroy.debug.DebugDraw;
 import com.dicycat.kroy.debug.DebugLine;
 import com.dicycat.kroy.debug.DebugRect;
 import com.dicycat.kroy.entities.FireTruck;
+import com.dicycat.kroy.entities.Fortress;
 import com.dicycat.kroy.entities.UFO;
 import com.dicycat.kroy.gamemap.TiledGameMap;
 import com.dicycat.kroy.scenes.HUD;
@@ -49,6 +50,7 @@ public class GameScreen implements Screen{
 	List<GameObject> gameObjects;	//List of active game objects
 	List<GameObject> toAdd;
 	List<DebugDraw> debugObjects; //List of debug items
+	List<GameObject> fortresses; //List of all fortresses
 
 	public static enum State{
 		PAUSE,
@@ -86,8 +88,15 @@ public class GameScreen implements Screen{
 		player = new FireTruck(new Vector2(1530, 1300));
 		gamecam.translate(new Vector2(player.getX(),player.getY()));// sets initial Camera position
 		gameObjects.add(player);	//Player	//Mic:modified from (100, 100) to (0, 0)
-		gameObjects.add(new UFO(new Vector2(1600, 1200)));	//UFO	//Mic:modified from (480,580) to (0, 200)
-		//gameObjects.add(new Bullet(this, new Vector2(10, 10), new Vector2(1,5), 50, 500));	//Bullet
+		
+		Fortress f1 = new Fortress(new Vector2(900, 1700));
+		Fortress f2 = new Fortress(new Vector2(1900, 900));
+		Fortress f3 = new Fortress(new Vector2(550, 950));
+		Fortress f4 = new Fortress(new Vector2(1800, 2000));
+		gameObjects.add(f1);
+		gameObjects.add(f2);
+		gameObjects.add(f3);
+		gameObjects.add(f4);
 
 	}
 
@@ -130,8 +139,6 @@ public class GameScreen implements Screen{
 		pauseWindow.stage.draw();
 
 		//DrawDebug(); //Draw all debug items as they have to be drawn outside the batch
-
-		System.out.println("Render calls:" + game.batch.renderCalls + " | FPS:" + Gdx.graphics.getFramesPerSecond());
 
 		if (showDebug) {
 			DrawDebug(); //Draw all debug items as they have to be drawn outside the batch
