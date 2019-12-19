@@ -43,6 +43,7 @@ public class FireTruck extends Entity{
 		textureByDirection = TextureRegion.split(new Texture("FireTruck.png"), 32, 32);
 		range = 500f;
 		firing = false;
+		water= new WaterStream(Vector2.Zero);
 //		atlas = new TextureAtlas("FireTruck.txt"); //MC
 //		fireTruckSprites = atlas.createSprites();//MC
 
@@ -168,7 +169,6 @@ public class FireTruck extends Entity{
 			water.setRemove(true);
 		}else if(!firing){					//Adds the water stream if something comes into range
 			firing=true;
-			water= new WaterStream(new Vector2(0,0));
 			GameScreen.mainGameScreen.AddGameObject(water);
 
 		}
