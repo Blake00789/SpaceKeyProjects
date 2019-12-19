@@ -23,10 +23,19 @@ public class Fortress extends Entity {
 		dispenser.AddPattern(new Pattern(true, 0, 1, 100, 900, 0.02f, 1, 1.2f));
 	}
 
+	public Boolean playerInRadius() {
+		Vector2 currentCoords = GameScreen.mainGameScreen.GetPlayer().GetCentre(); // get current player coordinates
+		if (Vector2.dst(currentCoords.x, currentCoords.y, GetCentre().x, GetCentre().y) < radius ) { // checks the distance between the two entities
+			return true; // returns true if distance between entity and player is less than radius of item
+		}else {
+			return false; // returns false otherwise
+		}
+	}
+	
 	@Override
 	public void Update() {
 		//weapons
-		Bullet[] toShoot = dispenser.Update(true);
+		Bullet[] toShoot = dispenser.Update(playerInRadius());
 		if (toShoot != null) {
 			for (Bullet bullet : toShoot) {
 				bullet.Fire(GetCentre());
@@ -35,9 +44,9 @@ public class Fortress extends Entity {
 		}
 
 		//TEST
-		if (GameScreen.mainGameScreen.GetPlayer().isAlive()) {
-			GameScreen.mainGameScreen.DrawLine(GetCentre(), GameScreen.mainGameScreen.GetPlayer().GetCentre(), 3, Color.BLUE);
-		}
+//		if (GameScreen.mainGameScreen.GetPlayer().isAlive()) {
+//			GameScreen.mainGameScreen.DrawLine(GetCentre(), GameScreen.mainGameScreen.GetPlayer().GetCentre(), 3, Color.BLUE);
+//		}
 	}
 
 }

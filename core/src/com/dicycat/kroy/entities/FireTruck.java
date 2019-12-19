@@ -54,8 +54,6 @@ public class FireTruck extends Entity{
 
 		if (keyPressed != 0) { // will not run main logic if no key is pressed
 
-			String[] keys = {"up","down","left","right"};
-
 			float posChange = speed * Gdx.graphics.getDeltaTime();	//Get how far the truck can move this frame
 			Matrix3 distance = new Matrix3().setToScaling(posChange,posChange); // Matrix to scale the final normalised vector to the correct distance
 
@@ -100,7 +98,7 @@ public class FireTruck extends Entity{
 	public void Update()
 	{
 
-		if (Gdx.input.isKeyPressed(Keys.ANY_KEY)) {
+		if (true) {
 			int keyDetect = 0;
 
 			if (Gdx.input.isKeyPressed(Keys.UP)) {	//Check all inputs for player movement
@@ -114,6 +112,8 @@ public class FireTruck extends Entity{
 			}
 			if (Gdx.input.isKeyPressed(Keys.LEFT)) {
 				keyDetect += 1000;
+			}if (Gdx.input.isKeyPressed(Keys.SPACE)) {
+				System.out.println("Coords: " + GetCentre());
 			}
 
 			moveInDirection(keyDetect);
@@ -146,35 +146,6 @@ public class FireTruck extends Entity{
 		}
 		return false;
 	}
-
-//	@Override
-//	public Texture getTexture() { //MC
-//		if (this.getRotation() == 90) {
-//			return textureByDirection[0][0].getTexture();
-//		}
-//		if (this.getRotation() == 270) {
-//			return textureByDirection[0][0].getTexture();
-//		}
-//		if (this.getRotation() == 0) {
-//			return textureByDirection[0][0].getTexture();
-//		}
-//		if (this.getRotation() == 180) {
-//			return textureByDirection[0][0].getTexture();
-//		}
-//		if (this.getRotation() == 135) {
-//			return textureByDirection[0][0].getTexture();
-//		}
-//		if (this.getRotation() == 225) {
-//			return textureByDirection[0][0].getTexture();
-//		}
-//		if (this.getRotation() == 315) {
-//			return textureByDirection[0][0].getTexture();
-//		}
-//		if (this.getRotation() == 45) {
-//			return textureByDirection[0][0].getTexture();
-//		}
-//		return textureByDirection[0][0].getTexture();
-//	}
 
 
 

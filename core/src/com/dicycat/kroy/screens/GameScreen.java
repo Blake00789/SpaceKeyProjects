@@ -89,14 +89,11 @@ public class GameScreen implements Screen{
 		gamecam.translate(new Vector2(player.getX(),player.getY()));// sets initial Camera position
 		gameObjects.add(player);	//Player	//Mic:modified from (100, 100) to (0, 0)
 		
-		Fortress f1 = new Fortress(new Vector2(900, 1700));
-		Fortress f2 = new Fortress(new Vector2(1900, 900));
-		Fortress f3 = new Fortress(new Vector2(550, 950));
-		Fortress f4 = new Fortress(new Vector2(1800, 2000));
-		gameObjects.add(f1);
-		gameObjects.add(f2);
-		gameObjects.add(f3);
-		gameObjects.add(f4);
+		Vector2[] fortressCoords = {new Vector2(900, 1700), new Vector2(1900,900), new Vector2(550, 950), new Vector2(1800,2000)};// List of all fortress Coordinates (currently eyeballed on where they need to be)
+		for (Vector2 v: fortressCoords) {// Loop to place all Fortresses based on vectors defined in fortressCoords
+			Fortress f = new Fortress(v);
+			gameObjects.add(f);
+		}
 
 	}
 
@@ -211,13 +208,6 @@ public class GameScreen implements Screen{
 		gamecam.position.lerp(new Vector3(player.getX(),player.getY(),gamecam.position.z),0.1f);
 		gamecam.update();
 	}
-
-
-
-	//public void DrawRect(Vector2 centre, Vector2 dimensions, int lineWidth, Color colour) {
-	//	debugObjects.add(new DebugRect(centre, dimensions, lineWidth, colour));
-	//}
-
 
 	@Override
 	public void resize(int width, int height) {

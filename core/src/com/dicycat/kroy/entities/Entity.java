@@ -17,7 +17,7 @@ public abstract class Entity extends GameObject{
 	public Entity(Vector2 spawnPos, Texture img, Vector2 imSize) {
 		super(spawnPos, img, imSize);
 		healthPoints = 10;
-		radius = 50;
+		radius = 500;
 		changePosition(spawnPos);
 	}
 
@@ -26,7 +26,7 @@ public abstract class Entity extends GameObject{
 		// TODO Auto-generated method stub
 
 	}
-
+	
 	public Boolean isAlive() {
 		return (healthPoints > 0) && !remove;
 	}
