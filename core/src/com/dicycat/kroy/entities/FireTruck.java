@@ -24,6 +24,10 @@ import java.util.HashMap;
 
 public class FireTruck extends Entity{
 	private int speed = 600;	//How fast the truck can move
+	private int flowRate = 50;	//How fast the truck can dispense water
+	private int maxWater = 1400; //How much water the truck can hold
+	private int currentWater = 1400; //Current amount of water 
+	
 	private Rectangle hitbox = new Rectangle(20, 45, 20, 20);
 
 	protected HashMap<String,Integer> directions = new HashMap<String,Integer>(); // Dictionary to store the possible directions the truck can face
