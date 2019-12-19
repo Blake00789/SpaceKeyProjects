@@ -47,8 +47,8 @@ public abstract class GameObject {	//Basic object for all displayable objects
 	public Boolean CheckRemove() { return remove; }
 	public float getOriginX () { return sprite.getOriginX(); } // returns centre of sprite (25, 50) Use GetCentre for position on screen
 	public float getOriginY() {return sprite.getOriginY(); }
-	public  float getXScale() { return 1; }
-	public float getYScale() { return 1; }
+	public  float getXScale() { return sprite.getScaleX(); }
+	public float getYScale() { return sprite.getScaleY(); }
 	public float getRotation() { return rotation; }
 	public int getTextureWidth() { return sprite.getTexture().getWidth(); }
 	public int getTextureHeight() {	return sprite.getTexture().getHeight(); }
@@ -73,6 +73,15 @@ public abstract class GameObject {	//Basic object for all displayable objects
 	public void setRotation(float degrees) { // sets direction "degrees" to the direction currently facing
 		rotation = degrees;
 	}
+	
 
+	public void setRemove(Boolean x){
+		if(x){
+			remove = true;
+		}
+		else{
+			remove = false;
+		}
+	}
 
 }
