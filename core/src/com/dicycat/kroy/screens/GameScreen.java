@@ -25,6 +25,7 @@ import com.dicycat.kroy.debug.DebugLine;
 import com.dicycat.kroy.debug.DebugRect;
 import com.dicycat.kroy.entities.FireTruck;
 import com.dicycat.kroy.entities.UFO;
+import com.dicycat.kroy.misc.WaterStream;
 import com.dicycat.kroy.gamemap.TiledGameMap;
 import com.dicycat.kroy.scenes.HUD;
 import com.dicycat.kroy.scenes.PauseWindow;
@@ -35,7 +36,7 @@ public class GameScreen implements Screen{
 	public static GameScreen mainGameScreen;
 	public GameTextures textures;
 
-	Boolean showDebug = true;
+	Boolean showDebug = false;
 
 	Kroy game;
 	private OrthographicCamera gamecam;	//m 	//follows along what the port displays
@@ -46,6 +47,7 @@ public class GameScreen implements Screen{
 	public static TiledGameMap gameMap;
 
 	FireTruck player; //Reference to the player
+	WaterStream waterStream; // Water stream on the screen
 	List<GameObject> gameObjects;	//List of active game objects
 	List<GameObject> toAdd;
 	List<DebugDraw> debugObjects; //List of debug items
@@ -118,7 +120,8 @@ public class GameScreen implements Screen{
 			//Destroy station
 			System.err.println("Timer!");	//Temp test
 		}
-
+		
+		
 		UpdateLoop();	//Update all game objects
 
 		game.batch.end();
@@ -177,6 +180,10 @@ public class GameScreen implements Screen{
 
 	public FireTruck GetPlayer() {
 		return player;
+	}
+
+	public WaterStream getWaterStream() {
+		return waterStream;
 	}
 
 	private void DrawDebug() {		//Draws all debug objects for one frame
@@ -243,6 +250,14 @@ public class GameScreen implements Screen{
 
 	public void setGameState(State s){
 	    GameScreen.state = s;
+	}
+
+	public GameObject getGameObject(int index) {
+		if (index <= (gameObjects.size()-1)) {
+			return gameObjects.get(index);
+		}else {
+			return null;
+		}
 	}
 
 	public void clickCheck() {
