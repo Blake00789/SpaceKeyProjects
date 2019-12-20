@@ -13,7 +13,6 @@ import com.dicycat.kroy.screens.GameScreen;
 public class Fortress extends Entity {
 
 	BulletDispenser dispenser;
-	Boolean weaponEnabled = true;
 	
 	public Fortress(Vector2 spawnPos) {
 		super(spawnPos, new Texture("TempFortress.png"), new Vector2(256,218), 100);
@@ -35,9 +34,8 @@ public class Fortress extends Entity {
 		}
 	}
 	
-	private void Die() {
+	private void Die() { // Overwritten die implementation allows for removal from gameObjects List so to remove functionality but to display the broken building graphic
 		sprite.setTexture(new Texture("TempFortressDead.png"));
-		weaponEnabled = false;
 		setRemove(true);
 		displayable = true;
 	}
@@ -52,25 +50,14 @@ public class Fortress extends Entity {
 	@Override
 	public void Update() {
 		//weapons
-		
-		if (weaponEnabled) {
-			Bullet[] toShoot = dispenser.Update(playerInRadius());
-			if (toShoot != null) {
-				for (Bullet bullet : toShoot) {
-					bullet.Fire(GetCentre());
-					GameScreen.mainGameScreen.AddGameObject(bullet);
-				}
+
+		Bullet[] toShoot = dispenser.Update(playerInRadius());
+		if (toShoot != null) {
+			for (Bullet bullet : toShoot) {
+				bullet.Fire(GetCentre());
+				GameScreen.mainGameScreen.AddGameObject(bullet);
 			}
 		}
-			
-		if (Gdx.input.isKeyPressed(Keys.L)) { // temp to test broken tester
-			Die();
-		}
-
-		//TEST
-//		if (GameScreen.mainGameScreen.GetPlayer().isAlive()) {
-//			GameScreen.mainGameScreen.DrawLine(GetCentre(), GameScreen.mainGameScreen.GetPlayer().GetCentre(), 3, Color.BLUE);
-//		}
 	}
 
 }

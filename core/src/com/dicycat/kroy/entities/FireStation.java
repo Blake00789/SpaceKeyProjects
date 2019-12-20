@@ -1,6 +1,8 @@
 package com.dicycat.kroy.entities;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.dicycat.kroy.screens.GameScreen;
@@ -11,16 +13,9 @@ public class FireStation extends Entity {
 		super(spawnPos, new Texture("FireStationTemp.png"), new Vector2(298,175), Integer.MAX_VALUE);
 			
 	}
+
 	
-	public void healTruck() {
-		
-	}
-	
-	public void refilTruck() {
-		
-	}
-	
-	private void Die() {
+	private void Die() { // Overwritten die implementation allows for removal from gameObjects List so to remove functionality but to display the broken building graphic
 		sprite.setTexture(new Texture("FireStationTempDead.png"));
 		setRemove(true);
 		displayable = true;
@@ -29,6 +24,10 @@ public class FireStation extends Entity {
 	public void Update(){
 		if(playerInRadius()){
 			GameScreen.mainGameScreen.GetPlayer().increaseWater();
+		}
+		
+		if (Gdx.input.isKeyPressed(Keys.L)) { // temp to test broken tester
+			Die();
 		}
 	}
 
