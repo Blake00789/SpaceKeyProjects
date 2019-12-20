@@ -37,7 +37,7 @@ public abstract class Entity extends GameObject{
 			Die();
 		}
 	}
-
+	
 	private void Die() {
 		remove = true;
 	}

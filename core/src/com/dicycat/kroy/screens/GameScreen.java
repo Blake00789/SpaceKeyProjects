@@ -49,7 +49,7 @@ public class GameScreen implements Screen{
 
 	FireTruck player; //Reference to the player
 	WaterStream waterStream; // Water stream on the screen
-	List<GameObject> gameObjects;	//List of active game objects
+	List<GameObject> gameObjects, deadObjects;	//List of active game objects
 	List<GameObject> toAdd;
 	List<DebugDraw> debugObjects; //List of debug items
 	List<GameObject> fortresses; //List of all fortresses
@@ -86,6 +86,7 @@ public class GameScreen implements Screen{
 	public void show() {	//Screen first shown
 		toAdd = new ArrayList<GameObject>();
 		gameObjects = new ArrayList<GameObject>();
+		deadObjects = new ArrayList<GameObject>();
 		debugObjects = new ArrayList<DebugDraw>();
 		player = new FireTruck(new Vector2(1530, 1300));
 		gamecam.translate(new Vector2(player.getX(),player.getY()));// sets initial Camera position
@@ -161,6 +162,9 @@ public class GameScreen implements Screen{
 	//region Game Logic
 	private void UpdateLoop() {
 		List<GameObject> toRemove = new ArrayList<GameObject>();
+//		ArrayList<GameObject> tempList = new ArrayList<GameObject>();
+//		tempList.addAll(deadObjects);
+//		tempList.addAll(gameObjects);
 		for (GameObject gObject : gameObjects) {	//Go through every game object
 			gObject.Update();							//Update the game object
 			if (gObject.CheckRemove()) {				//Check if game object is to be removed
@@ -171,11 +175,19 @@ public class GameScreen implements Screen{
 		}
 		for (GameObject rObject : toRemove) {	//Remove game objects set for removal
 			gameObjects.remove(rObject);
+			if (rObject.checkDisplayable()) {
+				deadObjects.add(rObject);
+			}
 		}
 		for (GameObject aObject : toAdd) {		//Add game objects to be added
 			gameObjects.add(aObject);
 		}
 		toAdd.clear();
+	
+		for (GameObject dObject : deadObjects) { // loops through the destroyed but displayed items
+			dObject.Render(game.batch);
+		}
+			
 	}
 
 	public void AddGameObject(GameObject gameObject) {	//Add a game object next frame

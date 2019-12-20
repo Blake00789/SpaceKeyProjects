@@ -119,7 +119,7 @@ public class FireTruck extends Entity{
 	}
 
 	public void Update(){
-
+		GameScreen.mainGameScreen.DrawCircle(new Vector2(GetCentre().x, GetCentre().y), range, 2, Color.BLUE);
 		if (true) {
 			int keyDetect = 0;
 
@@ -165,6 +165,7 @@ public class FireTruck extends Entity{
 			firing=false;
 			water.setRemove(true);
 		}else if(!firing){					//Adds the water stream if something comes into range
+			water= new WaterStream(Vector2.Zero);
 			firing=true;
 			GameScreen.mainGameScreen.AddGameObject(water);
 
@@ -210,7 +211,7 @@ public class FireTruck extends Entity{
 			tempGameObject=GameScreen.mainGameScreen.getGameObject(counter);
 			if (tempGameObject==null) {
 				x=false;
-			}else if (((tempGameObject instanceof UFO) && (Vector2.dst(tempGameObject.getX(), tempGameObject.getY(), GetCentre().x, GetCentre().y)<range))){  //checks if entity is in range and is an enemy
+			}else if ((((tempGameObject instanceof Fortress) || (tempGameObject instanceof UFO)) && (Vector2.dst(tempGameObject.GetCentre().x, tempGameObject.GetCentre().y, GetCentre().x, GetCentre().y)<range))){  //checks if entity is in range and is an enemy
 				tempArray.add(tempGameObject);
 			}
 

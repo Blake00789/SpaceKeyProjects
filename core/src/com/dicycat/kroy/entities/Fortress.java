@@ -13,6 +13,7 @@ import com.dicycat.kroy.screens.GameScreen;
 public class Fortress extends Entity {
 
 	BulletDispenser dispenser;
+	Boolean weaponEnabled = true;
 	
 	public Fortress(Vector2 spawnPos) {
 		super(spawnPos, new Texture("TempFortress.png"), new Vector2(256,218), 100);
@@ -34,23 +35,36 @@ public class Fortress extends Entity {
 		}
 	}
 	
-	private void displayDead() {// Set texture to broken
+	private void Die() {
 		sprite.setTexture(new Texture("TempFortressDead.png"));
+		weaponEnabled = false;
+		setRemove(true);
+		displayable = true;
+	}
+	
+	public void ApplyDamage(float damage) {
+		healthPoints -= damage;
+		if (healthPoints <= 0) {
+			Die();
+		}
 	}
 	
 	@Override
 	public void Update() {
 		//weapons
-		Bullet[] toShoot = dispenser.Update(playerInRadius());
-		if (toShoot != null) {
-			for (Bullet bullet : toShoot) {
-				bullet.Fire(GetCentre());
-				GameScreen.mainGameScreen.AddGameObject(bullet);
+		
+		if (weaponEnabled) {
+			Bullet[] toShoot = dispenser.Update(playerInRadius());
+			if (toShoot != null) {
+				for (Bullet bullet : toShoot) {
+					bullet.Fire(GetCentre());
+					GameScreen.mainGameScreen.AddGameObject(bullet);
+				}
 			}
 		}
-		
+			
 		if (Gdx.input.isKeyPressed(Keys.L)) { // temp to test broken tester
-			displayDead();
+			Die();
 		}
 
 		//TEST
