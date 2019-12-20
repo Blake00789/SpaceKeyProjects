@@ -23,7 +23,7 @@ public class FireStation extends Entity {
 
 	public void Update(){
 		if(playerInRadius()){
-			GameScreen.mainGameScreen.GetPlayer().increaseWater();
+			GameScreen.mainGameScreen.GetPlayer().atStation();
 		}
 		
 		if (Gdx.input.isKeyPressed(Keys.L)) { // temp to test broken tester
