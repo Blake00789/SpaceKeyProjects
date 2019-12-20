@@ -162,9 +162,6 @@ public class GameScreen implements Screen{
 	//region Game Logic
 	private void UpdateLoop() {
 		List<GameObject> toRemove = new ArrayList<GameObject>();
-//		ArrayList<GameObject> tempList = new ArrayList<GameObject>();
-//		tempList.addAll(deadObjects);
-//		tempList.addAll(gameObjects);
 		for (GameObject gObject : gameObjects) {	//Go through every game object
 			gObject.Update();							//Update the game object
 			if (gObject.CheckRemove()) {				//Check if game object is to be removed
