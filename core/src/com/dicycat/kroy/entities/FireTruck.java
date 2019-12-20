@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.dicycat.kroy.misc.WaterBar;
 import com.dicycat.kroy.misc.WaterStream;
 import java.util.ArrayList;
 import com.badlogic.gdx.utils.Array;
@@ -24,14 +25,16 @@ import java.util.HashMap;
 
 public class FireTruck extends Entity{
 	private int speed = 600;	//How fast the truck can move
-	private int flowRate = 50;	//How fast the truck can dispense water
-	private int maxWater = 1400; //How much water the truck can hold
-	private int currentWater = 1400; //Current amount of water 
+	private float flowRate = 1;	//How fast the truck can dispense water
+	private float maxWater = 150; //How much water the truck can hold
+	private float currentWater = 150; //Current amount of water 
+	private boolean debug;
 	
 	private Rectangle hitbox = new Rectangle(20, 45, 20, 20);
 
 	protected HashMap<String,Integer> directions = new HashMap<String,Integer>(); // Dictionary to store the possible directions the truck can face
 	WaterStream water;
+	WaterBar tank;
 	boolean firing;
 	float range;
 	Array<Sprite> fireTruckSprites; //MC
@@ -39,14 +42,17 @@ public class FireTruck extends Entity{
 	TextureRegion[][] textureByDirection;
 
 	public FireTruck(Vector2 spawnPos) {	//Constructor
-		super(spawnPos, GameScreen.mainGameScreen.textures.Truck(), new Vector2(25,50));
+		super(spawnPos, GameScreen.mainGameScreen.textures.Truck(), new Vector2(25,50), 100);
 		textureByDirection = TextureRegion.split(new Texture("FireTruck.png"), 32, 32);
-		range = 500f;
+		range = 300f;
 		firing = false;
 		water= new WaterStream(Vector2.Zero);
 //		atlas = new TextureAtlas("FireTruck.txt"); //MC
 //		fireTruckSprites = atlas.createSprites();//MC
-
+		
+		debug=true;
+		tank= new WaterBar(new Vector2(0,0));
+		GameScreen.mainGameScreen.AddGameObject(tank);
 
 		directions.put("n",0);
 		directions.put("w",90);
@@ -144,27 +150,18 @@ public class FireTruck extends Entity{
       	hitbox.setX(GetCentre().x);
 		hitbox.setY(GetCentre().y);
 		GameScreen.mainGameScreen.DrawRect(new Vector2(hitbox.x, hitbox.y), new Vector2(hitbox.width, hitbox.height), 2, Color.GREEN);
-
-		//debug stuff
-		boolean x = true;
-		int counter = 1;
-		GameObject tempGameObject;
-		while (x){
-			tempGameObject=GameScreen.mainGameScreen.getGameObject(counter);
-			if (tempGameObject instanceof WaterStream) {
-				System.out.println(tempGameObject);
-			}else if (tempGameObject==null) {
-				x=false;
-			}
-			++counter;
+		
+		//water bar update
+		if(debug) {
+			tank.setPosition(GetCentre().add(0,20));
+			tank.setTankDisplay((currentWater/maxWater)*50);
 		}
-
 
 		//player firing
 
-		ArrayList<Float> inRange = EntitiesInRange();		//find list of enemies in range
+		ArrayList<GameObject> inRange = EntitiesInRange();		//find list of enemies in range
 
-		if(inRange.isEmpty()){				//Removes the water stream if nothing is in range
+		if(inRange.isEmpty() || (currentWater<=0)){				//Removes the water stream if nothing is in range
 			firing=false;
 			water.setRemove(true);
 		}else if(!firing){					//Adds the water stream if something comes into range
@@ -173,35 +170,39 @@ public class FireTruck extends Entity{
 
 		}
 
-		if (firing) {					//check if any enemy is in range
+		if (firing) {					//check if any enemy is in range and firetruck has water
 			PlayerFire(inRange);
 		}
 	}
 
 
-	private void PlayerFire(ArrayList<Float> targets) {		//Method to find and aim at the nearest target from an ArrayList of coordinates
-		float nearestEnemyX=targets.get(0);
-		float nearestEnemyY=targets.get(1);				//set nearest enemy to max value
+	private void PlayerFire(ArrayList<GameObject> targets) {		//Method to find and aim at the nearest target from an ArrayList of coordinates
+		GameObject currentGameObject=targets.get(0);
+		GameObject nearestEnemy=targets.get(0);				//set nearest enemy to the first gameobject
 
 
-		for (int i=2;i<targets.size();i=i+2) {									//iterates through inRange to find the closest enemy from x and y values
-			if(Vector2.dst(nearestEnemyX, nearestEnemyY, GetCentre().x, GetCentre().y)>Vector2.dst(targets.get(i),targets.get(i+1),GetCentre().x,GetCentre().y)) {	//checks if the current enemy is the new nearest enemy
-				nearestEnemyX=targets.get(i);
-				nearestEnemyY=targets.get(i+1);
+		for (int i=1;i<targets.size();i=i+1) {									//iterates through inRange to find the closest gameobject
+			currentGameObject=targets.get(i);
+			if(Vector2.dst(nearestEnemy.GetCentre().x, nearestEnemy.GetCentre().y, GetCentre().x, GetCentre().y)>Vector2.dst(currentGameObject.GetCentre().x,currentGameObject.GetCentre().y,GetCentre().x,GetCentre().y)) {	//checks if the current enemy is the new nearest enemy
+				nearestEnemy=targets.get(i);
 			}
 		}
-
+		
 		Vector2 direction = new Vector2();
-		direction.set(new Vector2(nearestEnemyX,nearestEnemyY).sub(GetCentre()));
-		float angle = direction.angle();
+		direction.set(new Vector2(nearestEnemy.GetCentre().x,nearestEnemy.GetCentre().y).sub(GetCentre()));		//creates a vector2 distance of the line between the firetruck and the nearest enemy
+		float angle = direction.angle();												//works out the angle that the water needs
 
-		water.setRotation(angle);
+		water.setRotation(angle);									//adjusts the water sprite to the correct length, position and angle
 		water.setRange(direction.len());
 		water.setPosition(GetCentre().add(direction.scl(0.5f)));
+	
+		((Entity) nearestEnemy).ApplyDamage(1*flowRate);
+		currentWater=currentWater-flowRate;
+		
 	}
 
-	private ArrayList<Float> EntitiesInRange(){	//method to return an array of x,y coordinates of all Enemies in range
-		ArrayList<Float> tempArray = new ArrayList<Float>();
+	private ArrayList<GameObject> EntitiesInRange(){	//method to return an array of x,y coordinates of all Enemies in range
+		ArrayList<GameObject> tempArray = new ArrayList<GameObject>();
 		boolean x = true;
 		int counter = 1;
 		GameObject tempGameObject;
@@ -210,8 +211,7 @@ public class FireTruck extends Entity{
 			if (tempGameObject==null) {
 				x=false;
 			}else if (((tempGameObject instanceof UFO) && (Vector2.dst(tempGameObject.getX(), tempGameObject.getY(), GetCentre().x, GetCentre().y)<range))){  //checks if entity is in range and is an enemy
-				tempArray.add(tempGameObject.getX()+(tempGameObject.getWidth())/2);
-				tempArray.add(tempGameObject.getY()+(tempGameObject.getHeight())/2);
+				tempArray.add(tempGameObject);
 			}
 
 			++counter;

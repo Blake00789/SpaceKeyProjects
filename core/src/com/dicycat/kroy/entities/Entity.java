@@ -14,9 +14,9 @@ public abstract class Entity extends GameObject{
 	protected int radius;
 	protected TiledGameMap map;
 
-	public Entity(Vector2 spawnPos, Texture img, Vector2 imSize) {
+	public Entity(Vector2 spawnPos, Texture img, Vector2 imSize,int health) {
 		super(spawnPos, img, imSize);
-		healthPoints = 10;
+		healthPoints = health;
 		radius = 500;
 		changePosition(spawnPos);
 	}
@@ -26,12 +26,12 @@ public abstract class Entity extends GameObject{
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	public Boolean isAlive() {
 		return (healthPoints > 0) && !remove;
 	}
 
-	public void ApplyDamage(int damage) {
+	public void ApplyDamage(float damage) {
 		healthPoints -= damage;
 		if (healthPoints <= 0) {
 			Die();

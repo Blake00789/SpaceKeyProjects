@@ -90,7 +90,7 @@ public class GameScreen implements Screen{
 		player = new FireTruck(new Vector2(1530, 1300));
 		gamecam.translate(new Vector2(player.getX(),player.getY()));// sets initial Camera position
 		gameObjects.add(player);	//Player	//Mic:modified from (100, 100) to (0, 0)
-		
+
 		Vector2[] fortressCoords = {new Vector2(900, 1700), new Vector2(1900,900), new Vector2(550, 950), new Vector2(1800,2000)};// List of all fortress Coordinates (currently eyeballed on where they need to be)
 		for (Vector2 v: fortressCoords) {// Loop to place all Fortresses based on vectors defined in fortressCoords
 			Fortress f = new Fortress(v);
@@ -126,8 +126,8 @@ public class GameScreen implements Screen{
 			//Destroy station
 			System.err.println("Timer!");	//Temp test
 		}
-		
-		
+
+
 		UpdateLoop();	//Update all game objects
 
 		game.batch.end();
