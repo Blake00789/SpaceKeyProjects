@@ -227,9 +227,12 @@ public class FireTruck extends Entity{
 		return this.hitbox;
 	}
 
-	public void increaseWater(){
+	public void atStation(){
 		if(!(currentWater >= maxWater)){
 			currentWater += 2;
+		}
+		if(!(healthPoints >= 100)){
+			healthPoints += 2;
 		}
 	}
 

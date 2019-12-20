@@ -14,7 +14,7 @@ public class FireStation extends Entity {
 
 	public void Update(){
 		if(playerInRadius()){
-			GameScreen.mainGameScreen.GetPlayer().increaseWater();
+			GameScreen.mainGameScreen.GetPlayer().atStation();
 		}
 	}
 
