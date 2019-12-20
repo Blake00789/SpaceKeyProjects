@@ -89,6 +89,7 @@ public class GameScreen implements Screen{
 		gamecam.translate(new Vector2(player.getX(),player.getY()));// sets initial Camera position
 		gameObjects.add(player);	//Player	//Mic:modified from (100, 100) to (0, 0)
 		gameObjects.add(new UFO(new Vector2(1600, 1200)));	//UFO	//Mic:modified from (480,580) to (0, 200)
+		gameObjects.add(new UFO(new Vector2(1000, 1000)));
 		//gameObjects.add(new Bullet(this, new Vector2(10, 10), new Vector2(1,5), 50, 500));	//Bullet
 
 	}

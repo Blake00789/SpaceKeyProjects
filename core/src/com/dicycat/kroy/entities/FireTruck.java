@@ -24,9 +24,9 @@ import java.util.HashMap;
 
 public class FireTruck extends Entity{
 	private int speed = 600;	//How fast the truck can move
-	private int flowRate = 50;	//How fast the truck can dispense water
-	private int maxWater = 1400; //How much water the truck can hold
-	private int currentWater = 1400; //Current amount of water 
+	private int flowRate = 1;	//How fast the truck can dispense water
+	private int maxWater = 150; //How much water the truck can hold
+	private int currentWater = 150; //Current amount of water 
 	
 	private Rectangle hitbox = new Rectangle(20, 45, 20, 20);
 
@@ -163,7 +163,7 @@ public class FireTruck extends Entity{
 
 		ArrayList<GameObject> inRange = EntitiesInRange();		//find list of enemies in range
 
-		if(inRange.isEmpty()){				//Removes the water stream if nothing is in range
+		if(inRange.isEmpty() || (currentWater<=0)){				//Removes the water stream if nothing is in range
 			firing=false;
 			water.setRemove(true);
 		}else if(!firing){					//Adds the water stream if something comes into range
@@ -173,7 +173,7 @@ public class FireTruck extends Entity{
 
 		}
 
-		if (firing) {					//check if any enemy is in range
+		if (firing) {					//check if any enemy is in range and firetruck has water
 			PlayerFire(inRange);
 		}
 	}
@@ -199,7 +199,9 @@ public class FireTruck extends Entity{
 		water.setRange(direction.len());
 		water.setPosition(GetCentre().add(direction.scl(0.5f)));
 	
-		((Entity) nearestEnemy).ApplyDamage(1);
+		((Entity) nearestEnemy).ApplyDamage(1*flowRate);
+		currentWater=currentWater-flowRate;
+		
 	}
 
 	private ArrayList<GameObject> EntitiesInRange(){	//method to return an array of x,y coordinates of all Enemies in range
