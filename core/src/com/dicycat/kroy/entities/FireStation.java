@@ -9,5 +9,19 @@ public class FireStation extends Entity {
 		super(spawnPos, new Texture("FireStationTemp.png"), new Vector2(298,175), Integer.MAX_VALUE);
 			
 	}
+	
+	public void healTruck() {
+		
+	}
+	
+	public void refilTruck() {
+		
+	}
+	
+	private void Die() {
+		sprite.setTexture(new Texture("FireStationTempDead.png"));
+		setRemove(true);
+		displayable = true;
+	}
 
 }
