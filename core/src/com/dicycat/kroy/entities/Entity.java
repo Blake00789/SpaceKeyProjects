@@ -31,7 +31,7 @@ public abstract class Entity extends GameObject{
 		return (healthPoints > 0) && !remove;
 	}
 
-	public void ApplyDamage(int damage) {
+	public void ApplyDamage(float damage) {
 		healthPoints -= damage;
 		if (healthPoints <= 0) {
 			Die();

@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.dicycat.kroy.misc.WaterBar;
 import com.dicycat.kroy.misc.WaterStream;
 import java.util.ArrayList;
 import com.badlogic.gdx.utils.Array;
@@ -24,14 +25,16 @@ import java.util.HashMap;
 
 public class FireTruck extends Entity{
 	private int speed = 600;	//How fast the truck can move
-	private int flowRate = 1;	//How fast the truck can dispense water
-	private int maxWater = 150; //How much water the truck can hold
-	private int currentWater = 150; //Current amount of water 
+	private float flowRate = 1;	//How fast the truck can dispense water
+	private float maxWater = 150; //How much water the truck can hold
+	private float currentWater = 150; //Current amount of water 
+	private boolean debug;
 	
 	private Rectangle hitbox = new Rectangle(20, 45, 20, 20);
 
 	protected HashMap<String,Integer> directions = new HashMap<String,Integer>(); // Dictionary to store the possible directions the truck can face
 	WaterStream water;
+	WaterBar tank;
 	boolean firing;
 	float range;
 	Array<Sprite> fireTruckSprites; //MC
@@ -45,7 +48,10 @@ public class FireTruck extends Entity{
 		firing = false;
 //		atlas = new TextureAtlas("FireTruck.txt"); //MC
 //		fireTruckSprites = atlas.createSprites();//MC
-
+		
+		debug=true;
+		tank= new WaterBar(new Vector2(0,0));
+		GameScreen.mainGameScreen.AddGameObject(tank);
 
 		directions.put("n",0);
 		directions.put("w",90);
@@ -143,21 +149,12 @@ public class FireTruck extends Entity{
       	hitbox.setX(GetCentre().x);
 		hitbox.setY(GetCentre().y);
 		GameScreen.mainGameScreen.DrawRect(new Vector2(hitbox.x, hitbox.y), new Vector2(hitbox.width, hitbox.height), 2, Color.GREEN);
-
-		//debug stuff
-		boolean x = true;
-		int counter = 1;
-		GameObject tempGameObject;
-		while (x){
-			tempGameObject=GameScreen.mainGameScreen.getGameObject(counter);
-			if (tempGameObject instanceof WaterStream) {
-				System.out.println(tempGameObject);
-			}else if (tempGameObject==null) {
-				x=false;
-			}
-			++counter;
+		
+		//water bar update
+		if(debug) {
+			tank.setPosition(GetCentre().add(0,20));
+			tank.setTankDisplay((currentWater/maxWater)*50);
 		}
-
 
 		//player firing
 
