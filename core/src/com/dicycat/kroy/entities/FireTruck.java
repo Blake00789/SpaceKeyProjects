@@ -227,6 +227,12 @@ public class FireTruck extends Entity{
 		return this.hitbox;
 	}
 
+	public void increaseWater(){
+		if(!(currentWater >= maxWater)){
+			currentWater += 2;
+		}
+	}
+
 	@Override
 	public void Render(SpriteBatch batch) {
 		batch.setColor(0.1f * healthPoints, 0.1f * healthPoints, 0.1f * healthPoints, 1);

@@ -23,6 +23,7 @@ import com.dicycat.kroy.debug.DebugCircle;
 import com.dicycat.kroy.debug.DebugDraw;
 import com.dicycat.kroy.debug.DebugLine;
 import com.dicycat.kroy.debug.DebugRect;
+import com.dicycat.kroy.entities.FireStation;
 import com.dicycat.kroy.entities.FireTruck;
 import com.dicycat.kroy.entities.Fortress;
 import com.dicycat.kroy.entities.UFO;
@@ -91,7 +92,8 @@ public class GameScreen implements Screen{
 		player = new FireTruck(new Vector2(1530, 1300));
 		gamecam.translate(new Vector2(player.getX(),player.getY()));// sets initial Camera position
 		gameObjects.add(player);	//Player	//Mic:modified from (100, 100) to (0, 0)
-
+		FireStation fireStation = new FireStation(new Vector2(1200,800));
+		gameObjects.add(fireStation);
 		Vector2[] fortressCoords = {new Vector2(900, 1700), new Vector2(1900,900), new Vector2(550, 950), new Vector2(1800,2000)};// List of all fortress Coordinates (currently eyeballed on where they need to be)
 		for (Vector2 v: fortressCoords) {// Loop to place all Fortresses based on vectors defined in fortressCoords
 			Fortress f = new Fortress(v);
