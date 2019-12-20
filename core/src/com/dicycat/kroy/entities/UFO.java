@@ -13,7 +13,7 @@ public class UFO extends Entity {
 	BulletDispenser dispenser;
 
 	public UFO(Vector2 spawnPos) {
-		super(spawnPos, GameScreen.mainGameScreen.textures.UFO(), new Vector2(80, 80));
+		super(spawnPos, GameScreen.mainGameScreen.textures.UFO(), new Vector2(80, 80), 100);
 		dispenser = new BulletDispenser(this);
 		dispenser.AddPattern(new Pattern(180, 300, 800, 0.1f, 20, 1, 0.5f));
 		//dispenser.AddPattern(new Pattern(100, 500, 0.5f, 8, 5, 0.5f));
