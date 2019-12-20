@@ -1,5 +1,7 @@
 package com.dicycat.kroy.entities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
@@ -32,6 +34,10 @@ public class Fortress extends Entity {
 		}
 	}
 	
+	private void displayDead() {// Set texture to broken
+		sprite.setTexture(new Texture("TempFortressDead.png"));
+	}
+	
 	@Override
 	public void Update() {
 		//weapons
@@ -41,6 +47,10 @@ public class Fortress extends Entity {
 				bullet.Fire(GetCentre());
 				GameScreen.mainGameScreen.AddGameObject(bullet);
 			}
+		}
+		
+		if (Gdx.input.isKeyPressed(Keys.L)) { // temp to test broken tester
+			displayDead();
 		}
 
 		//TEST
