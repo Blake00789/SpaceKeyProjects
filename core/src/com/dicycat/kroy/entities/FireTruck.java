@@ -135,13 +135,10 @@ public class FireTruck extends Entity{
 			if (GameScreen.mainGameScreen.FOLLOWCAMERA) {
 				GameScreen.mainGameScreen.updateCamera();// Updates the screen position to always have the truck roughly centre
 			}
-		  //Move the hitbox to it's new centered position according to the sprites position.
-		  hitbox.setCenter(GetCentre().x, GetCentre().y);
 	    }
-		GameScreen.mainGameScreen.DrawRect(GetCentre(), new Vector2(20, 20), 2, Color.FIREBRICK);
 		//Move the hitbox to it's new centered position according to the sprites position.
-      	hitbox.setX(GetCentre().x);
-		hitbox.setY(GetCentre().y);
+      	hitbox.setX(GetCentre().x - 10);
+		hitbox.setY(GetCentre().y - 10);
 		GameScreen.mainGameScreen.DrawRect(new Vector2(hitbox.x, hitbox.y), new Vector2(hitbox.width, hitbox.height), 2, Color.GREEN);
 
 		//debug stuff
