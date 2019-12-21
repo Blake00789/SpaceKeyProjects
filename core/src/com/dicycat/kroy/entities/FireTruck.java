@@ -13,6 +13,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.dicycat.kroy.misc.WaterStream;
+import java.util.ArrayList;
 import com.badlogic.gdx.utils.Array;
 import com.dicycat.kroy.GameObject;
 import com.dicycat.kroy.gamemap.TiledGameMap;
@@ -22,10 +24,16 @@ import java.util.HashMap;
 
 public class FireTruck extends Entity{
 	private int speed = 600;	//How fast the truck can move
+	private int flowRate = 50;	//How fast the truck can dispense water
+	private int maxWater = 1400; //How much water the truck can hold
+	private int currentWater = 1400; //Current amount of water 
+	
 	private Rectangle hitbox = new Rectangle(20, 45, 20, 20);
 
 	protected HashMap<String,Integer> directions = new HashMap<String,Integer>(); // Dictionary to store the possible directions the truck can face
-
+	WaterStream water;
+	boolean firing;
+	float range;
 	Array<Sprite> fireTruckSprites; //MC
 	TextureAtlas atlas; //MC
 	TextureRegion[][] textureByDirection;
@@ -33,6 +41,8 @@ public class FireTruck extends Entity{
 	public FireTruck(Vector2 spawnPos) {	//Constructor
 		super(spawnPos, GameScreen.mainGameScreen.textures.Truck(), new Vector2(25,50));
 		textureByDirection = TextureRegion.split(new Texture("FireTruck.png"), 32, 32);
+		range = 500f;
+		firing = false;
 //		atlas = new TextureAtlas("FireTruck.txt"); //MC
 //		fireTruckSprites = atlas.createSprites();//MC
 
@@ -97,8 +107,13 @@ public class FireTruck extends Entity{
 		}
 	}
 
-	public void Update()
-	{
+
+	public boolean checkEntities() {
+
+		return false;
+	}
+
+	public void Update(){
 
 		if (Gdx.input.isKeyPressed(Keys.ANY_KEY)) {
 			int keyDetect = 0;
@@ -120,11 +135,89 @@ public class FireTruck extends Entity{
 			if (GameScreen.mainGameScreen.FOLLOWCAMERA) {
 				GameScreen.mainGameScreen.updateCamera();// Updates the screen position to always have the truck roughly centre
 			}
-		  //Move the hitbox to it's new centered position according to the sprites position.
-		  hitbox.setCenter(GetCentre().x, GetCentre().y);
 	    }
+		//Move the hitbox to it's new centered position according to the sprites position.
+      	hitbox.setX(GetCentre().x - 10);
+		hitbox.setY(GetCentre().y - 10);
 		GameScreen.mainGameScreen.DrawRect(new Vector2(hitbox.x, hitbox.y), new Vector2(hitbox.width, hitbox.height), 2, Color.GREEN);
+
+		//debug stuff
+		boolean x = true;
+		int counter = 1;
+		GameObject tempGameObject;
+		while (x){
+			tempGameObject=GameScreen.mainGameScreen.getGameObject(counter);
+			if (tempGameObject instanceof WaterStream) {
+				System.out.println(tempGameObject);
+			}else if (tempGameObject==null) {
+				x=false;
+			}
+			++counter;
+		}
+
+
+		//player firing
+
+		ArrayList<Float> inRange = EntitiesInRange();		//find list of enemies in range
+
+		if(inRange.isEmpty()){				//Removes the water stream if nothing is in range
+			firing=false;
+			water.setRemove(true);
+		}else if(!firing){					//Adds the water stream if something comes into range
+			firing=true;
+			water= new WaterStream(new Vector2(0,0));
+			GameScreen.mainGameScreen.AddGameObject(water);
+
+		}
+
+		if (firing) {					//check if any enemy is in range
+			PlayerFire(inRange);
+		}
 	}
+
+
+	private void PlayerFire(ArrayList<Float> targets) {		//Method to find and aim at the nearest target from an ArrayList of coordinates
+		float nearestEnemyX=targets.get(0);
+		float nearestEnemyY=targets.get(1);				//set nearest enemy to max value
+
+
+		for (int i=2;i<targets.size();i=i+2) {									//iterates through inRange to find the closest enemy from x and y values
+			if(Vector2.dst(nearestEnemyX, nearestEnemyY, GetCentre().x, GetCentre().y)>Vector2.dst(targets.get(i),targets.get(i+1),GetCentre().x,GetCentre().y)) {	//checks if the current enemy is the new nearest enemy
+				nearestEnemyX=targets.get(i);
+				nearestEnemyY=targets.get(i+1);
+			}
+		}
+
+		Vector2 direction = new Vector2();
+		direction.set(new Vector2(nearestEnemyX,nearestEnemyY).sub(GetCentre()));
+		float angle = direction.angle();
+
+		water.setRotation(angle);
+		water.setRange(direction.len());
+		water.setPosition(GetCentre().add(direction.scl(0.5f)));
+	}
+
+	private ArrayList<Float> EntitiesInRange(){	//method to return an array of x,y coordinates of all Enemies in range
+		ArrayList<Float> tempArray = new ArrayList<Float>();
+		boolean x = true;
+		int counter = 1;
+		GameObject tempGameObject;
+		while (x){
+			tempGameObject=GameScreen.mainGameScreen.getGameObject(counter);
+			if (tempGameObject==null) {
+				x=false;
+			}else if (((tempGameObject instanceof UFO) && (Vector2.dst(tempGameObject.getX(), tempGameObject.getY(), GetCentre().x, GetCentre().y)<range))){  //checks if entity is in range and is an enemy
+				tempArray.add(tempGameObject.getX()+(tempGameObject.getWidth())/2);
+				tempArray.add(tempGameObject.getY()+(tempGameObject.getHeight())/2);
+			}
+
+			++counter;
+		}
+
+		return (tempArray);
+	}
+
+
 
 	public Rectangle getHitbox(){
 		return this.hitbox;

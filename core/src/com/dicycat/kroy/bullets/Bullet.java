@@ -51,6 +51,7 @@ public class Bullet extends GameObject {
 			remove = true;
 		}
 		move(posChange); // update bullet position
+
 		//Moves hitbox according to the sprite.
 		hitbox.x = GetCentre().x;
 		hitbox.y = GetCentre().y;
@@ -64,6 +65,7 @@ public class Bullet extends GameObject {
 				remove = true;
 			}
 		}
+
 	}
 
 	public Circle GetHitbox(){
