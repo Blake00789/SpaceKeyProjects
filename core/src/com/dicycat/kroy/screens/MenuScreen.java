@@ -19,6 +19,8 @@ import com.dicycat.kroy.Kroy;
   private Viewport gameport; 	//m
   private Texture playBTN;
   private Texture playBTN_ACTIVE;
+  private Texture controlsBTN;
+  private Texture controlsBTN_ACTIVE;
   private Texture exitBTN;
   private Texture exitBTN_ACTIVE;
   private Texture minigameBTN;
@@ -44,6 +46,8 @@ import com.dicycat.kroy.Kroy;
 	  this.game = game; 
 	  exitBTN = new Texture("exit.png"); 	//in later stages we could also have buttonActive and buttonInactive
 	  exitBTN_ACTIVE = new Texture("exitActive.png");
+	  controlsBTN = new Texture("controls.png"); 	//in later stages we could also have buttonActive and buttonInactive
+	  controlsBTN_ACTIVE = new Texture("controls_active.png");
 	  playBTN = new Texture("newgame.png");
 	  playBTN_ACTIVE = new Texture("newActive.png");
 	  minigameBTN = new Texture("minigame.png");
@@ -108,6 +112,8 @@ import com.dicycat.kroy.Kroy;
 	  
   	}
   
+
+
   
   
   
