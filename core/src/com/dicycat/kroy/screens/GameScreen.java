@@ -38,7 +38,7 @@ public class GameScreen implements Screen{
 	public static GameScreen mainGameScreen;
 	public GameTextures textures;
 
-	Boolean showDebug = false;
+	Boolean showDebug = true;
 
 	Kroy game;
 	private OrthographicCamera gamecam;	//m 	//follows along what the port displays
