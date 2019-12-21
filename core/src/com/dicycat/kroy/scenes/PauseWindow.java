@@ -67,6 +67,7 @@ public class PauseWindow {
 	public void visibility(boolean state){
 		this.table.setVisible(state);
 	}
+
 	
 	
 }

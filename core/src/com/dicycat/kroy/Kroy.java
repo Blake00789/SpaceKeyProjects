@@ -2,6 +2,8 @@ package com.dicycat.kroy;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dicycat.kroy.screens.GameOverScreen;
+import com.dicycat.kroy.screens.GameScreen;
 import com.dicycat.kroy.screens.MenuScreen;
 
 public class Kroy extends Game {
@@ -14,7 +16,7 @@ public class Kroy extends Game {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		this.setScreen(new MenuScreen(this));
+		this.setScreen(new GameOverScreen(this));
 	}
 
 	@Override
@@ -25,4 +27,9 @@ public class Kroy extends Game {
 	@Override
 	public void dispose () {
 	}
+	
+	public void gameOverScreenSwitch() {
+		 setScreen(new GameOverScreen(this));
+	}
+	
 }

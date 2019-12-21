@@ -64,7 +64,7 @@ public class GameScreen implements Screen{
 		game = _game;
 		gamecam = new OrthographicCamera();    //m
 		gameport = new FitViewport(Kroy.width, Kroy.height, gamecam);	//m //Mic:could also use StretchViewPort to make the screen stretch instead of adapt
-		hud = new HUD(game.batch);
+		hud = new HUD(game.batch, this.game);
 		gameMap = new TiledGameMap();											//or FitPort to make it fit into a specific width/height ratio
 
 		pauseWindow = new PauseWindow();
@@ -104,7 +104,7 @@ public class GameScreen implements Screen{
 
 		switch (state) {
 		case RUN:
-		if (Gdx.input.isKeyPressed(Keys.P) || Gdx.input.isKeyPressed(Keys.O) || Gdx.input.isKeyPressed(Keys.M)){
+		if (Gdx.input.isKeyPressed(Keys.P) || Gdx.input.isKeyPressed(Keys.O) || Gdx.input.isKeyPressed(Keys.M)|| Gdx.input.isKeyPressed(Keys.ESCAPE)){
 			pauseWindow.visibility(true);
 			pause();
 		}
@@ -121,7 +121,10 @@ public class GameScreen implements Screen{
 			System.err.println("Timer!");	//Temp test
 		}
 		
-		
+
+		hud.update(delta);
+
+
 		UpdateLoop();	//Update all game objects
 
 		game.batch.end();
@@ -245,7 +248,6 @@ public class GameScreen implements Screen{
 	@Override
 	public void dispose() {
 		mainGameScreen = null;
-		game.batch.dispose();
 	}
 
 	public void setGameState(State s){
@@ -265,7 +267,7 @@ public class GameScreen implements Screen{
 		pauseWindow.resume.addListener(new ClickListener() {
 	    	@Override
 	    	public void clicked(InputEvent event, float x, float y) {
-				pauseWindow.visibility(false);
+	    		pauseWindow.visibility(false);
 				resume();
 	    	}
 	    });
@@ -281,10 +283,11 @@ public class GameScreen implements Screen{
 			pauseWindow.menu.addListener(new ClickListener() {
 		    	@Override
 		    	public void clicked(InputEvent event, float x, float y) {
+		    		dispose();
 		    		game.setScreen(new MenuScreen(game));
-		    		game.dispose();
 		    		return;
 		    		}
 		    });
 	}
+	
 }
