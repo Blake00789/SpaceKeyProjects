@@ -23,7 +23,9 @@ import com.dicycat.kroy.debug.DebugCircle;
 import com.dicycat.kroy.debug.DebugDraw;
 import com.dicycat.kroy.debug.DebugLine;
 import com.dicycat.kroy.debug.DebugRect;
+import com.dicycat.kroy.entities.FireStation;
 import com.dicycat.kroy.entities.FireTruck;
+import com.dicycat.kroy.entities.Fortress;
 import com.dicycat.kroy.entities.UFO;
 import com.dicycat.kroy.misc.WaterStream;
 import com.dicycat.kroy.gamemap.TiledGameMap;
@@ -36,7 +38,7 @@ public class GameScreen implements Screen{
 	public static GameScreen mainGameScreen;
 	public GameTextures textures;
 
-	Boolean showDebug = false;
+	Boolean showDebug = true;
 
 	Kroy game;
 	private OrthographicCamera gamecam;	//m 	//follows along what the port displays
@@ -48,9 +50,10 @@ public class GameScreen implements Screen{
 
 	FireTruck player; //Reference to the player
 	WaterStream waterStream; // Water stream on the screen
-	List<GameObject> gameObjects;	//List of active game objects
+	List<GameObject> gameObjects, deadObjects;	//List of active game objects
 	List<GameObject> toAdd;
 	List<DebugDraw> debugObjects; //List of debug items
+	List<GameObject> fortresses; //List of all fortresses
 
 	public static enum State{
 		PAUSE,
@@ -84,12 +87,18 @@ public class GameScreen implements Screen{
 	public void show() {	//Screen first shown
 		toAdd = new ArrayList<GameObject>();
 		gameObjects = new ArrayList<GameObject>();
+		deadObjects = new ArrayList<GameObject>();
 		debugObjects = new ArrayList<DebugDraw>();
 		player = new FireTruck(new Vector2(1530, 1300));
 		gamecam.translate(new Vector2(player.getX(),player.getY()));// sets initial Camera position
 		gameObjects.add(player);	//Player	//Mic:modified from (100, 100) to (0, 0)
-		gameObjects.add(new UFO(new Vector2(1600, 1200)));	//UFO	//Mic:modified from (480,580) to (0, 200)
-		//gameObjects.add(new Bullet(this, new Vector2(10, 10), new Vector2(1,5), 50, 500));	//Bullet
+		FireStation fireStation = new FireStation(new Vector2(1200,800));
+		gameObjects.add(fireStation);
+		Vector2[] fortressCoords = {new Vector2(900, 1700), new Vector2(1900,900), new Vector2(550, 950), new Vector2(1800,2000)};// List of all fortress Coordinates (currently eyeballed on where they need to be)
+		for (Vector2 v: fortressCoords) {// Loop to place all Fortresses based on vectors defined in fortressCoords
+			Fortress f = new Fortress(v);
+			gameObjects.add(f);
+		}
 
 	}
 
@@ -120,7 +129,7 @@ public class GameScreen implements Screen{
 			//Destroy station
 			System.err.println("Timer!");	//Temp test
 		}
-		
+
 
 		hud.update(delta);
 
@@ -136,8 +145,6 @@ public class GameScreen implements Screen{
 		pauseWindow.stage.draw();
 
 		//DrawDebug(); //Draw all debug items as they have to be drawn outside the batch
-
-		System.out.println("Render calls:" + game.batch.renderCalls + " | FPS:" + Gdx.graphics.getFramesPerSecond());
 
 		if (showDebug) {
 			DrawDebug(); //Draw all debug items as they have to be drawn outside the batch
@@ -170,11 +177,19 @@ public class GameScreen implements Screen{
 		}
 		for (GameObject rObject : toRemove) {	//Remove game objects set for removal
 			gameObjects.remove(rObject);
+			if (rObject.checkDisplayable()) {
+				deadObjects.add(rObject);
+			}
 		}
 		for (GameObject aObject : toAdd) {		//Add game objects to be added
 			gameObjects.add(aObject);
 		}
 		toAdd.clear();
+
+		for (GameObject dObject : deadObjects) { // loops through the destroyed but displayed items
+			dObject.Render(game.batch);
+		}
+
 	}
 
 	public void AddGameObject(GameObject gameObject) {	//Add a game object next frame
@@ -214,13 +229,6 @@ public class GameScreen implements Screen{
 		gamecam.position.lerp(new Vector3(player.getX(),player.getY(),gamecam.position.z),0.1f);
 		gamecam.update();
 	}
-
-
-
-	//public void DrawRect(Vector2 centre, Vector2 dimensions, int lineWidth, Color colour) {
-	//	debugObjects.add(new DebugRect(centre, dimensions, lineWidth, colour));
-	//}
-
 
 	@Override
 	public void resize(int width, int height) {
@@ -289,5 +297,5 @@ public class GameScreen implements Screen{
 		    		}
 		    });
 	}
-	
+
 }

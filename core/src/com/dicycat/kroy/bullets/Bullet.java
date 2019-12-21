@@ -61,7 +61,7 @@ public class Bullet extends GameObject {
 		FireTruck truck = GameScreen.mainGameScreen.GetPlayer();
 		if (truck.isAlive()) {
 			if(Intersector.overlaps(hitbox, truck.getHitbox())){
-				truck.ApplyDamage(1);
+				truck.ApplyDamage(10);
 				remove = true;
 			}
 		}

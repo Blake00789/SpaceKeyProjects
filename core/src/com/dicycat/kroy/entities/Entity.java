@@ -13,11 +13,13 @@ public abstract class Entity extends GameObject{
 	protected int healthPoints;
 	protected int radius;
 	protected TiledGameMap map;
+	protected int maxHealthPoints;
 
-	public Entity(Vector2 spawnPos, Texture img, Vector2 imSize) {
+	public Entity(Vector2 spawnPos, Texture img, Vector2 imSize,int health) {
 		super(spawnPos, img, imSize);
-		healthPoints = 10;
-		radius = 50;
+		healthPoints = health;
+		maxHealthPoints = health;
+		radius = 500;
 		changePosition(spawnPos);
 	}
 
@@ -31,13 +33,13 @@ public abstract class Entity extends GameObject{
 		return (healthPoints > 0) && !remove;
 	}
 
-	public void ApplyDamage(int damage) {
+	public void ApplyDamage(float damage) {
 		healthPoints -= damage;
 		if (healthPoints <= 0) {
 			Die();
 		}
 	}
-
+	
 	private void Die() {
 		remove = true;
 	}
