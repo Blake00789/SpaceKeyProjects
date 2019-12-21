@@ -120,29 +120,28 @@ public class FireTruck extends Entity{
 
 	public void Update(){
 		GameScreen.mainGameScreen.DrawCircle(new Vector2(GetCentre().x, GetCentre().y), range, 2, Color.BLUE);
-		if (true) {
-			int keyDetect = 0;
 
-			if (Gdx.input.isKeyPressed(Keys.UP)) {	//Check all inputs for player movement
-				keyDetect += 1;
-			}
-			if (Gdx.input.isKeyPressed(Keys.DOWN)) {
-				keyDetect += 10;
-			}
-			if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
-				keyDetect += 100;
-			}
-			if (Gdx.input.isKeyPressed(Keys.LEFT)) {
-				keyDetect += 1000;
-			}if (Gdx.input.isKeyPressed(Keys.SPACE)) {
-				System.out.println("Coords: " + GetCentre());
-			}
+		int keyDetect = 0;
 
-			moveInDirection(keyDetect);
-			if (GameScreen.mainGameScreen.FOLLOWCAMERA) {
-				GameScreen.mainGameScreen.updateCamera();// Updates the screen position to always have the truck roughly centre
-			}
-	    }
+		if (Gdx.input.isKeyPressed(Keys.UP)) {	//Check all inputs for player movement
+		    keyDetect += 1;
+		}
+		if (Gdx.input.isKeyPressed(Keys.DOWN)) {
+		    keyDetect += 10;
+		}
+		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+		    keyDetect += 100;
+		}
+		if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+		    keyDetect += 1000;
+		}if (Gdx.input.isKeyPressed(Keys.SPACE)) {
+		    System.out.println("Coords: " + GetCentre());
+		}
+
+		moveInDirection(keyDetect);
+		if (GameScreen.mainGameScreen.FOLLOWCAMERA) {
+		    GameScreen.mainGameScreen.updateCamera();// Updates the screen position to always have the truck roughly centre
+		}
 		//Move the hitbox to it's new centered position according to the sprites position.
         hitbox.setCenter(GetCentre().x, GetCentre().y);
 		GameScreen.mainGameScreen.DrawRect(new Vector2(hitbox.x, hitbox.y), new Vector2(hitbox.width, hitbox.height), 2, Color.GREEN);
