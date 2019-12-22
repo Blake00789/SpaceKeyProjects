@@ -298,4 +298,10 @@ public class GameScreen implements Screen{
 		    });
 	}
 
+	public HUD getHud(){
+		return hud;
+	}
+
+
+
 }

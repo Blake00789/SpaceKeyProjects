@@ -28,6 +28,7 @@ public class Fortress extends Entity {
 	public Boolean playerInRadius() {
 		Vector2 currentCoords = GameScreen.mainGameScreen.GetPlayer().GetCentre(); // get current player coordinates
 		if (Vector2.dst(currentCoords.x, currentCoords.y, GetCentre().x, GetCentre().y) < radius ) { // checks the distance between the two entities
+			GameScreen.mainGameScreen.getHud().updateScore(2);
 			return true; // returns true if distance between entity and player is less than radius of item
 		}else {
 			return false; // returns false otherwise
@@ -36,6 +37,7 @@ public class Fortress extends Entity {
 	
 	private void Die() { // Overwritten die implementation allows for removal from gameObjects List so to remove functionality but to display the broken building graphic
 		sprite.setTexture(new Texture("TempFortressDead.png"));
+		GameScreen.mainGameScreen.getHud().updateScore(1000);
 		setRemove(true);
 		displayable = true;
 	}
