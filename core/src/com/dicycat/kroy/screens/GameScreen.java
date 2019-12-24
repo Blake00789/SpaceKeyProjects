@@ -30,9 +30,7 @@ import com.dicycat.kroy.entities.UFO;
 import com.dicycat.kroy.misc.WaterStream;
 import com.dicycat.kroy.gamemap.TiledGameMap;
 import com.dicycat.kroy.scenes.HUD;
-import com.dicycat.kroy.scenes.OptionsWindow;
 import com.dicycat.kroy.scenes.PauseWindow;
-import com.dicycat.kroy.scenes.OptionsWindow.State;
 
 
 public class GameScreen implements Screen{
@@ -40,17 +38,14 @@ public class GameScreen implements Screen{
 	public static GameScreen mainGameScreen;
 	public GameTextures textures;
 
+	Boolean showDebug = true;
 
-	public static Boolean showDebug = false;
-
-
-	public static Kroy game;
+	Kroy game;
 	private OrthographicCamera gamecam;	//m 	//follows along what the port displays
 	private Viewport gameport; 	//m
 	private HUD hud;	//m
 	public static boolean FOLLOWCAMERA = true;
-	public static PauseWindow pauseWindow;
-	public static OptionsWindow optionsWindow;
+	private PauseWindow pauseWindow;
 	public static TiledGameMap gameMap;
 
 	FireTruck player; //Reference to the player
@@ -63,8 +58,7 @@ public class GameScreen implements Screen{
 	public static enum State{
 		PAUSE,
 		RUN,
-		RESUME,
-		OPTIONS,
+		RESUME
 	}
 
 	public float gameTimer; //Timer to destroy station
@@ -78,8 +72,6 @@ public class GameScreen implements Screen{
 
 		pauseWindow = new PauseWindow();
 		pauseWindow.visibility(false);
-		optionsWindow = new OptionsWindow();
-		optionsWindow.visibility(false);
 		textures = new GameTextures();
 		gameTimer = 60 * 15; //Set timer to 15 minutes
 		if (mainGameScreen == null) {
@@ -116,9 +108,13 @@ public class GameScreen implements Screen{
 
 	public void render(float delta) {		//Called every frame
 
+		Gdx.input.setInputProcessor(pauseWindow.stage);
+		pauseWindow.stage.act();
+
 		switch (state) {
 		case RUN:
 		if (Gdx.input.isKeyPressed(Keys.P) || Gdx.input.isKeyPressed(Keys.O) || Gdx.input.isKeyPressed(Keys.M)|| Gdx.input.isKeyPressed(Keys.ESCAPE)){
+			pauseWindow.visibility(true);
 			pause();
 		}
 		gameMap.renderRoads(gamecam);
@@ -147,7 +143,6 @@ public class GameScreen implements Screen{
 
 		hud.stage.draw();
 		pauseWindow.stage.draw();
-		optionsWindow.stage.draw();
 
 		//DrawDebug(); //Draw all debug items as they have to be drawn outside the batch
 
@@ -157,25 +152,12 @@ public class GameScreen implements Screen{
 
 		break;
 		case PAUSE:
-			optionsWindow.visibility(false);
-			pauseWindow.visibility(true);
 			pauseWindow.stage.draw();
-			pauseWindow.stage.act();
-			Gdx.input.setInputProcessor(pauseWindow.stage);
-			optionsWindow.stage.draw();
-			pauseWindow.clickCheck();
+			clickCheck();
 			break;
 		case RESUME:
 			pauseWindow.visibility(false);
 			setGameState(State.RUN);
-			break;
-		case OPTIONS:
-			optionsWindow.visibility(true);
-    		pauseWindow.visibility(false);
-    		optionsWindow.stage.act();
-			Gdx.input.setInputProcessor(optionsWindow.stage);
-			optionsWindow.stage.draw();
-			optionsWindow.clickCheck(false);
 			break;
 		}
 
@@ -276,7 +258,7 @@ public class GameScreen implements Screen{
 		mainGameScreen = null;
 	}
 
-	public static void setGameState(State s){
+	public void setGameState(State s){
 	    GameScreen.state = s;
 	}
 
@@ -287,6 +269,39 @@ public class GameScreen implements Screen{
 			return null;
 		}
 	}
+
+	public void clickCheck() {
+		//resume button
+		pauseWindow.resume.addListener(new ClickListener() {
+	    	@Override
+	    	public void clicked(InputEvent event, float x, float y) {
+	    		pauseWindow.visibility(false);
+				resume();
+	    	}
+	    });
+
+		//exit button
+		pauseWindow.exit.addListener(new ClickListener() {
+	    	@Override
+	    	public void clicked(InputEvent event, float x, float y) {
+	    		Gdx.app.exit();
+	    	}
+	    });
+		//menu button
+			pauseWindow.menu.addListener(new ClickListener() {
+		    	@Override
+		    	public void clicked(InputEvent event, float x, float y) {
+		    		dispose();
+		    		game.setScreen(new MenuScreen(game));
+		    		return;
+		    		}
+		    });
+	}
+
+	public HUD getHud(){
+		return hud;
+	}
+
 
 
 }

@@ -31,8 +31,7 @@ public class HUD {
 	Label trucksLabel;
 	Label worldTimerLabel;
 	Label scoreCountLabel;
-	Label trucksCountLabel;	
-	Label spaceLabel;
+	Label trucksCountLabel;	//we could put mini images of the trucks instead of using an int for the lives
 	
 	
 	public HUD(SpriteBatch sb, Kroy game) {
@@ -50,15 +49,12 @@ public class HUD {
 		scoreLabel = new Label("SCORE:", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 		trucksLabel = new Label("TRUCKS:", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 		trucksCountLabel = new Label(String.format("%01d", trucks), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-		spaceLabel = new Label("                         ", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 		
 
 		tableHUD.add(timeLabel).expandX().padTop(10);
 		tableHUD.add(worldTimerLabel).expandX().padTop(10);
-		tableHUD.add(spaceLabel).expandX().padTop(10);
 		tableHUD.add(scoreLabel).expandX().padTop(10);			// expandX so that all elements take up the same amount of space
 		tableHUD.add(scoreCountLabel).expandX().padTop(10);
-		tableHUD.add(spaceLabel).expandX().padTop(10);
 		tableHUD.add(trucksLabel).expandX().padTop(10);
 		tableHUD.add(trucksCountLabel).expandX().padTop(10);
 		
