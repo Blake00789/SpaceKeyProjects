@@ -180,10 +180,6 @@ public class GameOverScreen implements Screen{
 	  }
 	  
 	  @Override public void dispose() { // TODO Auto-generated method stub
-//		  playBTN.dispose();
-//		  exitBTN.dispose();
-//		  background.dispose();
-//		  pm.dispose();
 	  }
 	  
 	  }

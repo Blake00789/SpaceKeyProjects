@@ -23,8 +23,8 @@ public class FireTruckSelectionScene {
 	NinePatchDrawable background = new NinePatchDrawable(new NinePatch(new Texture("Grey.png"), 3, 3, 3, 3));
 	
     Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
-//    FileHandle atlasFile = fileHandle.sibling("uiskin.atlas");
-//    Skin skin = new Skin(fileHandle);
+    
+    //Buttons initialised, labelled and stylised
     public TextButton truckButton1 = new TextButton("Speed", skin);
     public TextButton truckButton2 = new TextButton("Damage", skin);
     public TextButton truckButton3 = new TextButton("Capacity", skin);
@@ -39,12 +39,18 @@ public class FireTruckSelectionScene {
 		stage = new Stage(viewport, sb);
 
 		table.setBackground(background);
+		
+		// Images added to the screen
 		table.add(new Image(new Texture("FireTruck1.png")));
 		table.add(new Image(new Texture("FireTruck2.png")));
 		table.add(new Image(new Texture("FireTruck3.png")));
 		table.add(new Image(new Texture("FireTruck4.png")));
+		
 		table.row();
-	    table.add(truckButton1).width(cw/3.0f);
+	    
+		
+		// Buttons added to the screen
+		table.add(truckButton1).width(cw/3.0f);
 	    table.add(truckButton2).width(cw/3.0f);
 	    table.add(truckButton3).width(cw/3.0f);
 	    table.add(truckButton4).width(cw/3.0f);

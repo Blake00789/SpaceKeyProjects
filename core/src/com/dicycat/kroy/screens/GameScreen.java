@@ -48,9 +48,9 @@ public class GameScreen implements Screen{
 	public static boolean FOLLOWCAMERA = true;
 	private PauseWindow pauseWindow;
 	public static TiledGameMap gameMap;
-	//speed, flowrate, maxwater, range
-	private Float[][] truckStats = {{1200f, 1f, 150f, 300f},{600f, 2f, 150f, 300f},{600f, 1f, 300f, 300f},{600f, 1f, 150f, 600f}};
-	private int truckNum;
+	private Float[][] truckStats = {{1200f, 1f, 150f, 300f},{600f, 2f, 150f, 300f},{600f, 1f, 300f, 300f},{600f, 1f, 150f, 600f}};//Each list is a configuration of a specific truck. 
+																												//List setup is {Float speed, Float flowRate, Float waterCapacity, Float range} 
+	private int truckNum; // Idenfies the truck thats selected in the menu screen
 	
 	
 	FireTruck player; //Reference to the player

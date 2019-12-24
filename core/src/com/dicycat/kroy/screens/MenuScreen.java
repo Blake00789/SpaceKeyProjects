@@ -69,7 +69,7 @@ import com.dicycat.kroy.screens.GameScreen.State;
 	  
   }
   
-  public static enum State{
+  public static enum State{// Used to define the current state of the screen, MAINMENU is used mostly but then TRUCKSELECT used when the "NewGame" button has been pressed
 	  MAINMENU,
 	  TRUCKSELECT
   }
@@ -83,7 +83,7 @@ import com.dicycat.kroy.screens.GameScreen.State;
   @Override public void render(float delta) { 
 
 		  switch(state) {
-		  case MAINMENU:			  
+		  case MAINMENU:	// Display all buttons and the main menu		  
 			  stage.act();	//allows the stage to interact with user input
 			  
 			  game.batch.setProjectionMatrix(gamecam.combined);
@@ -101,8 +101,8 @@ import com.dicycat.kroy.screens.GameScreen.State;
 				  if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 					  this.dispose();
 					  game.batch.end();
-					  fireTruckSelector.visibility(true);
-					  setGameState(State.TRUCKSELECT);
+					  fireTruckSelector.visibility(true);// display the truck selection window
+					  setGameState(State.TRUCKSELECT);// set the game state to run and run the selection screen code
 					  return;
 				  }
 			  } else {
@@ -131,11 +131,11 @@ import com.dicycat.kroy.screens.GameScreen.State;
 					  game.batch.end();
 				  
 			  break;
-		  case TRUCKSELECT:
+		  case TRUCKSELECT: // Ran when the new game button pressed
 			  Gdx.input.setInputProcessor(fireTruckSelector.stage);
 			  fireTruckSelector.stage.act();
 			  fireTruckSelector.stage.draw();
-			  clickCheck();
+			  clickCheck(); 
 			  break;
 			  }
 		  }
@@ -144,7 +144,7 @@ import com.dicycat.kroy.screens.GameScreen.State;
 	    MenuScreen.state = s;
 	}
   
-	public void clickCheck() {
+	public void clickCheck() {// checks if any of the buttons have been pressed
 		//Truck 1 Selected
 		fireTruckSelector.truckButton1.addListener(new ClickListener() {
 			@Override

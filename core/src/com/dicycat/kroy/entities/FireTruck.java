@@ -57,8 +57,6 @@ public class FireTruck extends Entity{
 				
 		firing = false;
 		water= new WaterStream(Vector2.Zero);
-//		atlas = new TextureAtlas("FireTruck.txt"); //MC
-//		fireTruckSprites = atlas.createSprites();//MC
 
 		debug=true;
 		tank= new WaterBar(new Vector2(0,0));
