@@ -28,8 +28,8 @@ public class Kroy extends Game {
 	public void dispose () {
 	}
 	
-	public void gameOverScreenSwitch() {
-		 setScreen(new GameOverScreen(this));
+	public void gameOverScreenSwitch(int truckNum) {
+		 setScreen(new GameOverScreen(this, truckNum));
 	}
 	
 }

@@ -43,6 +43,7 @@ public class GameOverScreen implements Screen{
 	  private Integer scaleScore = 2;
 	  private float padScore;
 	  private float padTop;
+	  private int truckNum;
 	  
 	  //private Texture background;
 
@@ -68,11 +69,12 @@ public class GameOverScreen implements Screen{
 	  int yHotSpot = 0;
 	  
 	  
-	  public GameOverScreen(Kroy game) { 
+	  public GameOverScreen(Kroy game, int truckNum) { 
 		  this.game = game; 
 		  gamecam = new OrthographicCamera();    //m
 		  gameport = new FitViewport(Kroy.width, Kroy.height, gamecam);
 		  stage = new Stage(gameport);
+		  this.truckNum = truckNum;
 		  
 		  Table table = new Table();	//this allows to put widgets in the scene in a clean and ordered way
 		  table.setFillParent(true);
@@ -108,7 +110,7 @@ public class GameOverScreen implements Screen{
 	  
 	  
 	  
-	  @Override public void render(float delta) { 
+	  @Override public void render(float delta) {
 		  
 		  stage.act();	//allows the stage to interact with user input
 		  
@@ -132,7 +134,7 @@ public class GameOverScreen implements Screen{
 			  if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 				  this.dispose();
 				  game.batch.end();
-				  game.setScreen(new GameScreen(game));
+				  game.setScreen(new GameScreen(game,truckNum));
 				  return;
 			  }
 		  } else {

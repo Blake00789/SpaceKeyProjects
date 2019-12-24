@@ -29,6 +29,7 @@ import com.dicycat.kroy.entities.Fortress;
 import com.dicycat.kroy.entities.UFO;
 import com.dicycat.kroy.misc.WaterStream;
 import com.dicycat.kroy.gamemap.TiledGameMap;
+import com.dicycat.kroy.scenes.FireTruckSelectionScene;
 import com.dicycat.kroy.scenes.HUD;
 import com.dicycat.kroy.scenes.PauseWindow;
 
@@ -47,7 +48,11 @@ public class GameScreen implements Screen{
 	public static boolean FOLLOWCAMERA = true;
 	private PauseWindow pauseWindow;
 	public static TiledGameMap gameMap;
-
+	//speed, flowrate, maxwater, range
+	private Float[][] truckStats = {{1200f, 1f, 150f, 300f},{600f, 2f, 150f, 300f},{600f, 1f, 300f, 300f},{600f, 1f, 150f, 600f}};
+	private int truckNum;
+	
+	
 	FireTruck player; //Reference to the player
 	WaterStream waterStream; // Water stream on the screen
 	List<GameObject> gameObjects, deadObjects;	//List of active game objects
@@ -63,7 +68,7 @@ public class GameScreen implements Screen{
 
 	public float gameTimer; //Timer to destroy station
 
-	public GameScreen(Kroy _game) {
+	public GameScreen(Kroy _game, int truckNum) {
 		game = _game;
 		gamecam = new OrthographicCamera();    //m
 		gameport = new FitViewport(Kroy.width, Kroy.height, gamecam);	//m //Mic:could also use StretchViewPort to make the screen stretch instead of adapt
@@ -72,7 +77,7 @@ public class GameScreen implements Screen{
 
 		pauseWindow = new PauseWindow();
 		pauseWindow.visibility(false);
-		textures = new GameTextures();
+		textures = new GameTextures(truckNum);
 		gameTimer = 60 * 15; //Set timer to 15 minutes
 		if (mainGameScreen == null) {
 			mainGameScreen = this;
@@ -80,6 +85,7 @@ public class GameScreen implements Screen{
 		else {
 			System.err.println("Duplicate GameScreens");
 		}
+		this.truckNum = truckNum;
 
 	}
 
@@ -89,9 +95,9 @@ public class GameScreen implements Screen{
 		gameObjects = new ArrayList<GameObject>();
 		deadObjects = new ArrayList<GameObject>();
 		debugObjects = new ArrayList<DebugDraw>();
-		player = new FireTruck(new Vector2(1530, 1300));
+		player = new FireTruck(new Vector2(1530, 1300),truckStats[truckNum]);
 		gamecam.translate(new Vector2(player.getX(),player.getY()));// sets initial Camera position
-		gameObjects.add(player);	//Player	//Mic:modified from (100, 100) to (0, 0)
+		gameObjects.add(player);	//Player	
 		FireStation fireStation = new FireStation(new Vector2(1200,800));
 		gameObjects.add(fireStation);
 		Vector2[] fortressCoords = {new Vector2(900, 1700), new Vector2(1900,900), new Vector2(550, 950), new Vector2(1800,2000)};// List of all fortress Coordinates (currently eyeballed on where they need to be)
@@ -275,6 +281,7 @@ public class GameScreen implements Screen{
 		pauseWindow.resume.addListener(new ClickListener() {
 	    	@Override
 	    	public void clicked(InputEvent event, float x, float y) {
+	    		System.out.println("test");
 	    		pauseWindow.visibility(false);
 				resume();
 	    	}

@@ -6,9 +6,11 @@ public class GameTextures {	//Ensures multiple similar sprites use same texture 
 	Texture truck;
 	Texture ufo;
 	Texture bullet;
+	String[] trucks = {"fireTruck1.png", "fireTruck2.png", "fireTruck3.png", "fireTruck4.png"};
 	
-	public GameTextures() {
-		truck = new Texture("fireTruck.png");
+	public GameTextures(int truckNum) {
+		
+		truck = new Texture(trucks[truckNum]);
 		ufo = new Texture("ufo.png");
 		bullet = new Texture("singleP.png");
 	}

@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.dicycat.kroy.GameObject;
 
 public class WaterBar extends GameObject{
-
+	
 	public WaterBar(Vector2 spawnPos) {
 		super(spawnPos, new Texture("Blue.png"), new Vector2(1,1));
 	}

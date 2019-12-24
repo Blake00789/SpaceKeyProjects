@@ -24,10 +24,10 @@ import java.util.Dictionary;
 import java.util.HashMap;
 
 public class FireTruck extends Entity{
-	private int speed = 600;	//How fast the truck can move
-	private float flowRate = 1;	//How fast the truck can dispense water
-	private float maxWater = 150; //How much water the truck can hold
-	private float currentWater = 150; //Current amount of water
+	private float speed;	//How fast the truck can move
+	private float flowRate;	//How fast the truck can dispense water
+	private float maxWater; //How much water the truck can hold
+	private float currentWater; //Current amount of water
 	private boolean debug;
 
 	private Rectangle hitbox = new Rectangle(20, 45, 20, 20);
@@ -41,10 +41,20 @@ public class FireTruck extends Entity{
 	TextureAtlas atlas; //MC
 	TextureRegion[][] textureByDirection;
 
-	public FireTruck(Vector2 spawnPos) {	//Constructor
+	public FireTruck(Vector2 spawnPos, Float[] truckStats) {	//Constructor
 		super(spawnPos, GameScreen.mainGameScreen.textures.Truck(), new Vector2(25,50), 100);
-		textureByDirection = TextureRegion.split(new Texture("FireTruck.png"), 32, 32);
-		range = 300f;
+		
+		for (Float f: truckStats) {
+			System.out.println(f);
+		}
+		
+		textureByDirection = TextureRegion.split(GameScreen.mainGameScreen.textures.Truck(), 32, 32);
+		speed = truckStats[0];
+		flowRate = truckStats[1];
+		maxWater = truckStats[2];
+		currentWater = truckStats[2];
+		range = truckStats[3];
+				
 		firing = false;
 		water= new WaterStream(Vector2.Zero);
 //		atlas = new TextureAtlas("FireTruck.txt"); //MC
