@@ -8,14 +8,15 @@ import com.dicycat.kroy.gamemap.TiledGameMap;
 import com.dicycat.kroy.screens.GameScreen;
 
 public abstract class GameObject {	//Basic object for all displayable objects
-	//protected GameScreen gameScreen;	//Reference to the gameScreen to be displayed on
-	protected Sprite sprite;			//Sprite of the object
-	protected Boolean remove;			//Should this GameObject be removed?
-	protected float rotation = 0;		//Current angle the truck is facing in degrees
+	//protected GameScreen gameScreen;				//Reference to the gameScreen to be displayed on
+	protected Sprite sprite;						//Sprite of the object
+	protected Boolean remove, displayable;			//Should this GameObject be removed? Should this item be displayed?
+	protected float rotation = 0;	//Current angle the truck is facing in degrees
 
 	public GameObject(Vector2 spawnPos, Texture image, Vector2 imSize) {	//Constructor; takes the screen to be put on, spawn position vector, image and a vector for its size
 		sprite = new Sprite(image,(int) spawnPos.x ,(int) spawnPos.y ,(int) imSize.x,(int) imSize.y); // sprite class stores the texture position and size of the object
 		remove = false;
+		displayable = false;
 
 	}
 
@@ -54,12 +55,11 @@ public abstract class GameObject {	//Basic object for all displayable objects
 	public int getTextureHeight() {	return sprite.getTexture().getHeight(); }
 	public Sprite getSprite() { return sprite; }
 	public Vector2 getPosition() { return new Vector2(getX(), getY());  }
+	public boolean checkDisplayable() { return displayable; }
 
 	public Vector2 GetCentre() {	//Return centre of GameObject
 
 		return new Vector2(getOriginX()+getX(), getOriginY()+getY());
-
-		//return new Vector2(sprite.getX() + (sprite.getWidth()/2), sprite.getY() + (sprite.getHeight()/2));  //not working
 
 	}
 
@@ -76,12 +76,7 @@ public abstract class GameObject {	//Basic object for all displayable objects
 	
 
 	public void setRemove(Boolean x){
-		if(x){
-			remove = true;
-		}
-		else{
-			remove = false;
-		}
+		remove = x;
 	}
 
 }

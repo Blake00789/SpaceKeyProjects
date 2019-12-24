@@ -26,8 +26,6 @@ public class HUD {
 	private static Integer score = 0;
 	private static float timeCount = 0;
 	
-	private static Integer scoreMultiplier = 3;
-	
 	Label scoreLabel;
 	Label timeLabel;
 	Label trucksLabel;
@@ -74,7 +72,6 @@ public class HUD {
 			worldTimer++;
 			worldTimerLabel.setText(String.format("%05d", worldTimer));
 			timeCount =0;
-			score += scoreMultiplier;
 			scoreCountLabel.setText(String.format("%06d", score));
 		}
 	}
@@ -94,6 +91,18 @@ public class HUD {
 	
 	public static Integer getFinalScore() {
 		return score;
+	}
+
+	public static void setScore(Integer x){
+		score = x;
+	}
+
+	public static Integer getScore(){
+		return score;
+	}
+
+	public static void updateScore(Integer x){
+		score += x;
 	}
 	
 }
