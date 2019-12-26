@@ -17,19 +17,19 @@ public class TiledGameMap{
 	OrthogonalTiledMapRenderer tiledMapRenderer;
 	
 	public TiledGameMap() {
-		tiledMap = new TmxMapLoader().load("YorkCityMap.tmx");
+		tiledMap = new TmxMapLoader().load("YorkMap.tmx");
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 	}
 
 
 	public void renderRoads(OrthographicCamera camera) {
 		tiledMapRenderer.setView(camera);
-		tiledMapRenderer.render(new int[] {1});
+		tiledMapRenderer.render(new int[] {1,2});
 	}
 	
 	public void renderBuildings(OrthographicCamera camera) {
 		tiledMapRenderer.setView(camera);
-		tiledMapRenderer.render(new int[] {2,3});
+		tiledMapRenderer.render(new int[] {3,4});
 	}
 
 
