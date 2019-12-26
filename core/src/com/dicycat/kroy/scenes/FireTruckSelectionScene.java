@@ -59,9 +59,6 @@ public class FireTruckSelectionScene {
 	    stage.addActor(table);
 	    
 	    
-	    
-	    
-	    
 	}
 	
 	public void visibility(boolean state){

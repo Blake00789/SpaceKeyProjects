@@ -31,6 +31,7 @@ import com.dicycat.kroy.misc.WaterStream;
 import com.dicycat.kroy.gamemap.TiledGameMap;
 import com.dicycat.kroy.scenes.FireTruckSelectionScene;
 import com.dicycat.kroy.scenes.HUD;
+import com.dicycat.kroy.scenes.OptionsWindow;
 import com.dicycat.kroy.scenes.PauseWindow;
 
 
@@ -39,14 +40,15 @@ public class GameScreen implements Screen{
 	public static GameScreen mainGameScreen;
 	public GameTextures textures;
 
-	Boolean showDebug = true;
+	public static Boolean showDebug = true;
 
-	Kroy game;
+	public Kroy game;
 	private OrthographicCamera gamecam;	//m 	//follows along what the port displays
 	private Viewport gameport; 	//m
 	private HUD hud;	//m
 	public static boolean FOLLOWCAMERA = true;
 	private PauseWindow pauseWindow;
+	public static OptionsWindow optionsWindow;
 	public static TiledGameMap gameMap;
 	private Float[][] truckStats = {{1200f, 1f, 150f, 300f},{600f, 2f, 150f, 300f},{600f, 1f, 300f, 300f},{600f, 1f, 150f, 600f}};//Each list is a configuration of a specific truck. 
 																												//List setup is {Float speed, Float flowRate, Float waterCapacity, Float range} 
@@ -63,7 +65,8 @@ public class GameScreen implements Screen{
 	public static enum State{
 		PAUSE,
 		RUN,
-		RESUME
+		RESUME,
+		OPTIONS
 	}
 
 	public float gameTimer; //Timer to destroy station
@@ -77,6 +80,8 @@ public class GameScreen implements Screen{
 
 		pauseWindow = new PauseWindow();
 		pauseWindow.visibility(false);
+		optionsWindow = new OptionsWindow();
+		optionsWindow.visibility(false);
 		textures = new GameTextures(truckNum);
 		gameTimer = 60 * 15; //Set timer to 15 minutes
 		if (mainGameScreen == null) {
@@ -114,7 +119,7 @@ public class GameScreen implements Screen{
 
 	public void render(float delta) {		//Called every frame
 
-		Gdx.input.setInputProcessor(pauseWindow.stage);
+		Gdx.input.setInputProcessor(pauseWindow.stage);  //DA CONTROLLARE
 		pauseWindow.stage.act();
 
 		switch (state) {
@@ -264,7 +269,7 @@ public class GameScreen implements Screen{
 		mainGameScreen = null;
 	}
 
-	public void setGameState(State s){
+	public static void setGameState(State s){
 	    GameScreen.state = s;
 	}
 
