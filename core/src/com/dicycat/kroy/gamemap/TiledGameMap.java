@@ -1,6 +1,5 @@
 package com.dicycat.kroy.gamemap;
 
-import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -9,7 +8,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector2;
 
 public class TiledGameMap{
 	
@@ -21,23 +19,20 @@ public class TiledGameMap{
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 	}
 
-
-	public void renderRoads(OrthographicCamera camera) {
+	// Renders the ground layer of the TiledGameMap
+	public void renderGround(OrthographicCamera camera) {
 		tiledMapRenderer.setView(camera);
 		tiledMapRenderer.render(new int[] {1,2});
 	}
 	
+	// Renders the buildings layer and the windows layer of the TiledGameMap
 	public void renderBuildings(OrthographicCamera camera) {
 		tiledMapRenderer.setView(camera);
 		tiledMapRenderer.render(new int[] {3,4});
 	}
 
-
-
-
 	public void update(float delta) {
 		// TODO Auto-generated method stub
-
 	}
 
 
@@ -45,24 +40,19 @@ public class TiledGameMap{
 		tiledMap.dispose();
 	}
 
-
-	public TileType getTileTypeByCoordinate(int layer, int col, int row) {
+	// Returns the TileType at (x,y) on a given layer
+	public TileType getTileTypeByLocation(int layer, float x, float y) {
+		int col = (int) x/TileType.TILE_SIZE;
+		int row = (int) x/TileType.TILE_SIZE;
 		Cell cell = ((TiledMapTileLayer) tiledMap.getLayers().get(layer)).getCell(col,row);
 		if (cell != null) {
 			TiledMapTile tile = cell.getTile();
-			
 			if (tile != null) {
-				int id = tile.getId();
-				return TileType.getTileTypeByID(id);
+				return TileType.getTileTypeByID(tile.getId());
 			}
 		}
 		return null;
 	}
-	
-	public TileType getTileTypeByLocation(int layer, float x, float y) {
-		return this.getTileTypeByCoordinate(layer, (int)(x/TileType.TILE_SIZE), (int)(y/TileType.TILE_SIZE));
-	}
-
 
 	public int getWidth() {
 		return ((TiledMapTileLayer) tiledMap.getLayers().get(0)).getWidth();
@@ -76,24 +66,6 @@ public class TiledGameMap{
 
 	public int getLayers() {
 		return tiledMap.getLayers().getCount();
-	}
-	
-	public int getPixelWidth() {
-		return this.getWidth() * TileType.TILE_SIZE;
-	}
-	
-	public int getPixelHeight() {
-		return this.getHeight() * TileType.TILE_SIZE;
-	}
-	
-	public boolean isOnRoad(Vector2 pos, int entityWidth, int entityHeight) {
-		if(this.getTileTypeByLocation(0, pos.x, pos.y).isCollidable()
-				||this.getTileTypeByLocation(0, pos.x + entityWidth, pos.y).isCollidable()
-				||this.getTileTypeByLocation(0, pos.x, pos.y+entityHeight).isCollidable()
-				||this.getTileTypeByLocation(0, pos.x+entityWidth, pos.y+entityHeight).isCollidable()) {
-			return false;
-		}
-		return true;
 	}
 
 }
