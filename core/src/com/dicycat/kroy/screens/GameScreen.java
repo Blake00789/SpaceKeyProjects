@@ -50,11 +50,11 @@ public class GameScreen implements Screen{
 	private PauseWindow pauseWindow;
 	public static OptionsWindow optionsWindow;
 	public static TiledGameMap gameMap;
-	private Float[][] truckStats = {{600f, 1f, 150f, 300f},{300f, 2f, 150f, 300f},{300f, 1f, 300f, 300f},{300f, 1f, 150f, 600f}};//Each list is a configuration of a specific truck. 																											//List setup is {Float speed, Float flowRate, Float waterCapacity, Float range} 
+	private Float[][] truckStats = {{600f, 1f, 150f, 300f},{300f, 2f, 150f, 300f},{300f, 1f, 300f, 300f},{300f, 1f, 150f, 600f}};//Each list is a configuration of a specific truck. 																											//List setup is {Float speed, Float flowRate, Float waterCapacity, Float range}
 	private int truckNum; // Idenfies the truck thats selected in the menu screen
 	private List<GameObject> objectsToRender = new ArrayList<GameObject>(); // List of game objects that have been updated but need rendering
-	
-	
+
+
 	FireTruck player; //Reference to the player
 	WaterStream waterStream; // Water stream on the screen
 	List<GameObject> gameObjects, deadObjects;	//List of active game objects
@@ -101,9 +101,9 @@ public class GameScreen implements Screen{
 		deadObjects = new ArrayList<GameObject>();
 		debugObjects = new ArrayList<DebugDraw>();
 		player = new FireTruck(new Vector2(1530, 1300),truckStats[truckNum]); // Initialises the FireTruck
-		
+
 		gamecam.translate(new Vector2(player.getX(),player.getY()));// sets initial Camera position
-		gameObjects.add(player);	//Player	
+		gameObjects.add(player);	//Player
 		FireStation fireStation = new FireStation(new Vector2(1200,800));
 		gameObjects.add(fireStation);
 		Vector2[] fortressCoords = {new Vector2(900, 1700), new Vector2(1900,900), new Vector2(550, 950), new Vector2(1800,2000)};// List of all fortress Coordinates (currently eyeballed on where they need to be)
@@ -129,13 +129,13 @@ public class GameScreen implements Screen{
 			pauseWindow.visibility(true);
 			pause();
 		}
-		
 
-		
+
+
 		UpdateLoop(); //Update all game objects positions but does not render them as to be able to render everything as quickly as possible
-		
-		gameMap.renderRoads(gamecam); // Render the background roads, fields and rivers
-		
+
+		gameMap.renderGround(gamecam); // Render the background roads, fields and rivers
+
 		game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
 		game.batch.setProjectionMatrix(gamecam.combined);	//Mic:only renders the part of the map where the camera is
 		game.batch.begin(); // Game loop Start
@@ -148,13 +148,13 @@ public class GameScreen implements Screen{
 
 
 		hud.update(delta);
-		
+
 		renderObjects(); // Renders objects specified in the UpdateLoop() called previously
-		
+
 		game.batch.end();
 
 		gameMap.renderBuildings(gamecam); // Renders the buildings and the foreground items which are not entities
-		
+
 
 		hud.stage.draw();
 		pauseWindow.stage.draw();
@@ -206,7 +206,7 @@ public class GameScreen implements Screen{
 		}
 
 	}
-	
+
 	public void renderObjects() {// Renders the objects in "objectsToRender" then clears the list
 		for (GameObject object : objectsToRender) {
 			object.Render(game.batch);

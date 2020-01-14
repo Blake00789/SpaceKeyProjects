@@ -245,6 +245,7 @@ public class FireTruck extends Entity{
 		batch.setColor(Color.WHITE);
 	}
 
+	//Checks whether any part of the truck would be on a collidable tile if the truck were at "pos"
 	public boolean isOnCollidableTile(Vector2 pos) {
 		if(GameScreen.gameMap.getTileTypeByLocation(0, pos.x, pos.y).isCollidable()
 				||GameScreen.gameMap.getTileTypeByLocation(0, pos.x + this.getWidth(), pos.y).isCollidable()
