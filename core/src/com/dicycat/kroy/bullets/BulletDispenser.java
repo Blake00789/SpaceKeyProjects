@@ -51,7 +51,7 @@ public class BulletDispenser {
 				bulletTimer = 0;
 				Bullet[] toFire;	//Stores bullets to be fired
 				if (firingPattern.Aim()) {
-					Vector2 targetDirection = new Vector2(GameScreen.mainGameScreen.GetPlayer().GetCentre().x - owner.GetCentre().x, GameScreen.mainGameScreen.GetPlayer().GetCentre().y - owner.GetCentre().y); //Aim from entity to player
+					Vector2 targetDirection = new Vector2(GameScreen.mainGameScreen.GetPlayer().getCentre().x - owner.getCentre().x, GameScreen.mainGameScreen.GetPlayer().getCentre().y - owner.getCentre().y); //Aim from entity to player
 					
 					toFire = firingPattern.AimedSet(currentBullet, targetDirection);
 				}else {

@@ -43,4 +43,8 @@ public abstract class Entity extends GameObject{
 	private void Die() {
 		remove = true;
 	}
+	
+	public Integer getHealthPoints() {
+		return healthPoints;
+	}
 }

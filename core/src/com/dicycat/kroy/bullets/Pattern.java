@@ -68,7 +68,6 @@ public class Pattern {
 				direction.setAngle(degree + ((j - offset) * 10) + xtra);
 				bullets[i][j] = new Bullet(Vector2.Zero, direction, speed, range); //Create bullet
 			}
-			System.out.println(i);
 		}
 	}
 

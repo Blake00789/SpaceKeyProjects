@@ -57,7 +57,7 @@ public abstract class GameObject {	//Basic object for all displayable objects
 	public Vector2 getPosition() { return new Vector2(getX(), getY());  }
 	public boolean checkDisplayable() { return displayable; }
 
-	public Vector2 GetCentre() {	//Return centre of GameObject
+	public Vector2 getCentre() {	//Return centre of GameObject
 
 		return new Vector2(getOriginX()+getX(), getOriginY()+getY());
 

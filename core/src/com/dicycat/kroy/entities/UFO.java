@@ -31,14 +31,14 @@ public class UFO extends Entity {
 		Bullet[] toShoot = dispenser.Update(true);
 		if (toShoot != null) {
 			for (Bullet bullet : toShoot) {
-				bullet.Fire(GetCentre());
+				bullet.Fire(getCentre());
 				GameScreen.mainGameScreen.AddGameObject(bullet);
 			}
 		}
 
 		//TEST
 		if (GameScreen.mainGameScreen.GetPlayer().isAlive()) {
-			GameScreen.mainGameScreen.DrawLine(GetCentre(), GameScreen.mainGameScreen.GetPlayer().GetCentre(), 3, Color.BLUE);
+			GameScreen.mainGameScreen.DrawLine(getCentre(), GameScreen.mainGameScreen.GetPlayer().getCentre(), 3, Color.BLUE);
 		}
 
 	}

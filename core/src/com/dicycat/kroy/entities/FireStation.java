@@ -32,8 +32,8 @@ public class FireStation extends Entity {
 	}
 
 	public Boolean playerInRadius() {
-		Vector2 currentCoords = GameScreen.mainGameScreen.GetPlayer().GetCentre(); // get current player coordinates
-		if (Vector2.dst(currentCoords.x, currentCoords.y, GetCentre().x, GetCentre().y) < radius ) { // checks the distance between the two entities
+		Vector2 currentCoords = GameScreen.mainGameScreen.GetPlayer().getCentre(); // get current player coordinates
+		if (Vector2.dst(currentCoords.x, currentCoords.y, getCentre().x, getCentre().y) < radius ) { // checks the distance between the two entities
 			return true; // returns true if distance between entity and player is less than radius of item
 		}else {
 			return false; // returns false otherwise

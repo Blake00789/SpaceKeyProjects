@@ -293,6 +293,10 @@ public class GameScreen implements Screen{
 			return null;
 		}
 	}
+	
+	public List<GameObject> getGameObjects(){
+		return gameObjects;
+	}
 
 	public void clickCheck() {
 		//resume button
