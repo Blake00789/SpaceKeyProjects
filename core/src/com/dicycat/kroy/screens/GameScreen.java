@@ -106,12 +106,14 @@ public class GameScreen implements Screen{
 		gameObjects.add(player);	//Player
 		FireStation fireStation = new FireStation(new Vector2(1200,800));
 		gameObjects.add(fireStation);
+		
 		Vector2[] fortressCoords = {new Vector2(900, 1700), new Vector2(1900,900), new Vector2(550, 950), new Vector2(1800,2000)};// List of all fortress Coordinates (currently eyeballed on where they need to be)
 		for (Vector2 v: fortressCoords) {// Loop to place all Fortresses based on vectors defined in fortressCoords
 			Fortress f = new Fortress(v);
 			gameObjects.add(f);
 		}
 
+		
 	}
 
 	//@Override
@@ -134,7 +136,7 @@ public class GameScreen implements Screen{
 
 		UpdateLoop(); //Update all game objects positions but does not render them as to be able to render everything as quickly as possible
 
-		gameMap.renderGround(gamecam); // Render the background roads, fields and rivers
+		gameMap.renderRoads(gamecam); // Render the background roads, fields and rivers
 
 		game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
 		game.batch.setProjectionMatrix(gamecam.combined);	//Mic:only renders the part of the map where the camera is
