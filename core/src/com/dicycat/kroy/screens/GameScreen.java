@@ -128,7 +128,7 @@ public class GameScreen implements Screen{
 			pauseWindow.visibility(true);
 			pause();
 		}
-		gameMap.renderGround(gamecam);
+		gameMap.renderRoads(gamecam);
 
 
 		game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
