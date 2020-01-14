@@ -187,28 +187,28 @@ import com.dicycat.kroy.screens.GameScreen.State;
 		fireTruckSelector.truckButton1.addListener(new ClickListener() {
 			@Override
 	    	public void clicked(InputEvent event, float x, float y) {
-				startGame(0);
+				startGame(0);//Game begun with 0 (Speed) as the truck selected
 	    	}
 	    });
 		//Truck 2 Selected
 		fireTruckSelector.truckButton2.addListener(new ClickListener() {
 	    	@Override
 	    	public void clicked(InputEvent event, float x, float y) {
-	    		startGame(1);
+	    		startGame(1);//Game begun with 1 (Damage) as the truck selected
 	    	}
 	    });
 		//Truck 3 Selected
 		fireTruckSelector.truckButton3.addListener(new ClickListener() {
 	    	@Override
 	    	public void clicked(InputEvent event, float x, float y) {
-	    		startGame(2);
+	    		startGame(2);//Game begun with 2 (Capacity) as the truck selected
 	    	}
 	    });
 		//Truck 4 Selected
 		fireTruckSelector.truckButton4.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				startGame(3);
+				startGame(3);//Game begun with 3 (Range) as the truck selected
 				
 			}
 	    });

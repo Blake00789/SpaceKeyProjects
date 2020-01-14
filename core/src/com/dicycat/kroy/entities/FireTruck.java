@@ -32,7 +32,10 @@ public class FireTruck extends Entity{
 
 	private Rectangle hitbox = new Rectangle(20, 45, 20, 20);
 
-	protected HashMap<String,Integer> directions = new HashMap<String,Integer>(); // Dictionary to store the possible directions the truck can face
+	protected final HashMap<String,Integer> DIRECTIONS = new HashMap<String,Integer>(); // Dictionary to store the possible directions the truck can face based on a key code created later
+	protected final int[] ARROWKEYS = {Keys.UP, Keys.DOWN, Keys.RIGHT, Keys.LEFT}; // List of the arrow keys to be able to iterate through them later on
+	protected Integer direction = 0; // Direction the truck is facing
+	
 	WaterStream water;
 	WaterBar tank;
 	boolean firing;
@@ -44,16 +47,25 @@ public class FireTruck extends Entity{
 	public FireTruck(Vector2 spawnPos, Float[] truckStats) {	//Constructor
 		super(spawnPos, GameScreen.mainGameScreen.textures.Truck(), new Vector2(25,50), 100);
 		
-		for (Float f: truckStats) {
-			System.out.println(f);
-		}
+
+		DIRECTIONS.put("n",0);		//North Facing Direction (up arrow)
+		DIRECTIONS.put("w",90);		//West Facing Direction (left arrow)
+		DIRECTIONS.put("s",180);	//South Facing Direction (down arrow)
+		DIRECTIONS.put("e",270);	//East Facing Direction (right arrow)
+
+		DIRECTIONS.put("nw",45);	//up and left arrows
+		DIRECTIONS.put("sw",135);	//down and left arrows
+		DIRECTIONS.put("se",225);	//down and right arrows
+		DIRECTIONS.put("ne",315);	//up and right arrows
+		DIRECTIONS.put("",0); 		// included so that if multiple keys in the opposite direction are pressed, the truck faces north
 		
 		textureByDirection = TextureRegion.split(GameScreen.mainGameScreen.textures.Truck(), 32, 32);
-		speed = truckStats[0];
-		flowRate = truckStats[1];
-		maxWater = truckStats[2];
-		currentWater = truckStats[2];
-		range = truckStats[3];
+		
+		speed = truckStats[0]; 			// Speed value of the truck
+		flowRate = truckStats[1];		// Flow rate of the truck (referred to as the damage of the truck in game)
+		maxWater = truckStats[2];		// Capacity of the truck
+		currentWater = truckStats[2];	// amount of water left, initialised as full in the beginning
+		range = truckStats[3];			// Range of the truck
 				
 		firing = false;
 		water= new WaterStream(Vector2.Zero);
@@ -62,91 +74,74 @@ public class FireTruck extends Entity{
 		tank= new WaterBar(new Vector2(0,0));
 		GameScreen.mainGameScreen.AddGameObject(tank);
 
-		directions.put("n",0);
-		directions.put("w",90);
-		directions.put("s",180);
-		directions.put("e",270);
 
-		directions.put("nw",45);
-		directions.put("sw",135);
-		directions.put("se",225);
-		directions.put("ne",315);
-		directions.put("",0); // included so that if multiple keys in the opposite direction are pressed, the truck faces north
 
 	}
+	
+	public void moveInDirection() {//When called, this method moves the truck by 1 unit of movement in the direction calculated in "updateDirection()"
+		
+		Vector2 movement = new Vector2(1,0); // movement represents where the truck is moving to. Initially set to (1,0) as this represents a unit vector
 
-	public void moveInDirection(int keyPressed) {// movement method for fireTruck, keyPressed is a 4 bit code of 0s and 1s, where a 1 represents a certain arrow/WASD key
+		movement.setAngle(direction+90); // rotates the vector to whatever angle it needs to face. 90 is added in order to get the keys matching up to movement in the right direction
+		
+		float posChange = speed * Gdx.graphics.getDeltaTime();	//Sets how far the truck can move this frame in the x and y direction
+		Matrix3 distance = new Matrix3().setToScaling(posChange,posChange); // Matrix to scale the final normalised vector to the correct distance
+				
+		movement.nor(); // Normalises the vector to be a unit vector
+		movement.mul(distance); // Multiplies the directional vector by the correct amount to make sure the truck moves the right amount
+		
+		Vector2 newPos = new Vector2(getPosition());
+		if (!isOnCollidableTile(newPos.add(movement.x,0))) { // Checks whether changing updating x direction puts truck on a collidable tile
+				setPosition(newPos); // updates x direction
+		}
+		newPos = new Vector2(getPosition());
+		if (!isOnCollidableTile(newPos.add(0,movement.y))) { // Checks whether changing updating y direction puts truck on a collidable tile
+			setPosition(newPos); // updates y direction
+		}
 
-		if (keyPressed != 0) { // will not run main logic if no key is pressed
+		setRotation(direction);// updates truck direction
+	}
 
-			float posChange = speed * Gdx.graphics.getDeltaTime();	//Get how far the truck can move this frame
-			Matrix3 distance = new Matrix3().setToScaling(posChange,posChange); // Matrix to scale the final normalised vector to the correct distance
-
-			Vector3 movement = new Vector3(0,0,1); // vector to store the movement of the truck for this frame
-			Vector3[] translations = {new Vector3(0, 1,1),new Vector3(0, -1,1), new Vector3(1, 0,1), new Vector3(-1,0,1)}; // Array of Vectors to store
-																																//the possible movements the truck can make
-			String directionKey = ""; // string to convert keyPressed code into dictionary key to get direction
+	public Integer updateDirection() {// Method checks any arrow keys currently pressed and then converts them into a integer direction
+		
+			String directionKey = ""; //
 			String[] directionKeys = {"n", "s", "e", "w"}; // alphabet of directionKey
-
-			for (int i = 0; i <= 3; i ++) {// loop to make calculate movement changes, works by detecting any 1s in relevant slots then making changes as set up in the arrays above
-				if (keyPressed%2 == 1) {
+			
+			for (int i = 0; i <= 3; i++) {// loops through the 4 arrow keys (Stored as KEYS above) 
+				if (Gdx.input.isKeyPressed(ARROWKEYS[i])) {
 					directionKey+=directionKeys[i];
-					movement.add(translations[i]);
 				}
-				keyPressed = (int) Math.floor(keyPressed/10);
 			}
-
+			
 			if (directionKey.contains("ns")) {// makes sure direction doesn't change if both up and down are pressed
 				directionKey = directionKey.substring(2);
 			}
-			if (directionKey.contains("ew")) {// makes sure direction doesn't change if both up and down are pressed
+			if (directionKey.contains("ew")) {// makes sure direction doesn't change if both left and right are pressed
 				directionKey = directionKey.substring(0, directionKey.length()-2);
 			}
+			
+			return DIRECTIONS.get(directionKey);
 
-			movement.nor(); // Vector3 method to normalise coordinate vector
-			movement.mul(distance); // multiplies normalised vector by distance to represent speed truck should be travelling
-
-			Vector2 newPos = new Vector2(getPosition());
-			if (!isOnCollidableTile(newPos.add(movement.x,0))) { // Checks whether changing updating x direction puts truck on a collidable tile
-					setPosition(newPos); // updates x direction
-			}
-			newPos = new Vector2(getPosition());
-			if (!isOnCollidableTile(newPos.add(0,movement.y))) { // Checks whether changing updating y direction puts truck on a collidable tile
-				setPosition(newPos); // updates y direction
-			}
-
-			setRotation(directions.get(directionKey));// updates truck direction
-
-		}
 	}
-
-
+	
+	
 	public boolean checkEntities() {
 
 		return false;
 	}
 
 	public void Update(){
-		GameScreen.mainGameScreen.DrawCircle(new Vector2(GetCentre().x, GetCentre().y), range, 2, Color.BLUE);
 
-		int keyDetect = 0;
-
-		if (Gdx.input.isKeyPressed(Keys.UP)) {	//Check all inputs for player movement
-		    keyDetect += 1;
+		
+		if (Gdx.input.isKeyPressed(ARROWKEYS[0])||
+				Gdx.input.isKeyPressed(ARROWKEYS[1])||
+				Gdx.input.isKeyPressed(ARROWKEYS[2])||
+				Gdx.input.isKeyPressed(ARROWKEYS[3])) { // Runs movement code if any arrow key pressed
+			
+			direction = updateDirection(); // updates direction based on current keyboard input
+			moveInDirection(); // moves in the direction previously specified
 		}
-		if (Gdx.input.isKeyPressed(Keys.DOWN)) {
-		    keyDetect += 10;
-		}
-		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
-		    keyDetect += 100;
-		}
-		if (Gdx.input.isKeyPressed(Keys.LEFT)) {
-		    keyDetect += 1000;
-		}if (Gdx.input.isKeyPressed(Keys.SPACE)) {
-		    System.out.println("Coords: " + GetCentre());
-		}
-
-		moveInDirection(keyDetect);
+		
 		if (GameScreen.mainGameScreen.FOLLOWCAMERA) {
 		    GameScreen.mainGameScreen.updateCamera();// Updates the screen position to always have the truck roughly centre
 		}
@@ -228,6 +223,10 @@ public class FireTruck extends Entity{
 
 	public Rectangle getHitbox(){
 		return this.hitbox;
+	}
+	
+	public Integer getDirection() {
+		return direction;
 	}
 
 	public void atStation(){
