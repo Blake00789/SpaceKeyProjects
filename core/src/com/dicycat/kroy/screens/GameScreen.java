@@ -9,6 +9,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -107,12 +108,14 @@ public class GameScreen implements Screen{
 		FireStation fireStation = new FireStation(new Vector2(1200,800));
 		gameObjects.add(fireStation);
 		
-		Vector2[] fortressCoords = {new Vector2(900, 1700), new Vector2(1900,900), new Vector2(550, 950), new Vector2(1800,2000)};// List of all fortress Coordinates (currently eyeballed on where they need to be)
-		for (Vector2 v: fortressCoords) {// Loop to place all Fortresses based on vectors defined in fortressCoords
-			Fortress f = new Fortress(v);
-			gameObjects.add(f);
-		}
-
+//		Vector2[] fortressCoords = {new Vector2(900, 1700), new Vector2(1900,900), new Vector2(550, 950), new Vector2(1800,2000)};// List of all fortress Coordinates (currently eyeballed on where they need to be)
+//		for (Vector2 v: fortressCoords) {// Loop to place all Fortresses based on vectors defined in fortressCoords
+//			Fortress f = new Fortress(v);
+//			gameObjects.add(f);
+//		}
+		
+		gameObjects.add(new Fortress(new Vector2(2903,3211), new Texture("cliffords tower.png")));
+		gameObjects.add(new Fortress(new Vector2(3200,5681), new Texture("york minster.png")));
 		
 	}
 
