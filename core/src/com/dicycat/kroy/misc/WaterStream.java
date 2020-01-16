@@ -8,7 +8,7 @@ import com.dicycat.kroy.GameObject;
 public class WaterStream extends GameObject{
 
 	public WaterStream(Vector2 spawnPos) {
-		super(spawnPos, new Texture("Blue.png"), new Vector2(1,1));
+		super(spawnPos, new Texture("lightBlue.png"), new Vector2(1,1));
 	}
 	
 	public void setRange(float x){
