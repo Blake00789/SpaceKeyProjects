@@ -1,7 +1,6 @@
 package com.dicycat.kroy.scenes;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
@@ -18,34 +17,33 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dicycat.kroy.Kroy;
 import com.dicycat.kroy.screens.GameScreen;
 import com.dicycat.kroy.screens.MenuScreen;
-import com.dicycat.kroy.screens.GameScreen.State;
 
 public class OptionsWindow {
 	
-	public static Stage stage;
-	public static Table table = new Table();
-	SpriteBatch sb = Kroy.batch;
-	private static NinePatch patch = new NinePatch(new Texture("loool.jpg"), 3, 3, 3, 3);
-	private static NinePatchDrawable background = new NinePatchDrawable(patch);
+	public Stage stage;
+	public Table table = new Table();
+	SpriteBatch sb;
+	private NinePatch patch = new NinePatch(new Texture("loool.jpg"), 3, 3, 3, 3);
+	private NinePatchDrawable background = new NinePatchDrawable(patch);
 	
-    private static Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+    private Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 
     //options page 1
-    private static TextButton music = new TextButton("MUSIC", skin);
-    private static TextButton debug = new TextButton("DEBUG", skin);
-    private static TextButton back = new TextButton("BACK", skin);
+    private TextButton music = new TextButton("MUSIC", skin);
+    private TextButton debug = new TextButton("DEBUG", skin);
+    private TextButton back = new TextButton("BACK", skin);
     
     //music options page
-    private static TextButton stopMusic = new TextButton("STOP MUSIC", skin);
-    private static TextButton playMusic = new TextButton("PLAY MUSIC", skin);
-    private static TextButton volumeDown = new TextButton("MUTE VOLUME", skin);
-    private static TextButton volumeUp = new TextButton("UNMUTE VOLUME", skin);
-    private static TextButton backFromMusic = new TextButton("BACK", skin);
+    private TextButton stopMusic = new TextButton("STOP MUSIC", skin);
+    private TextButton playMusic = new TextButton("PLAY MUSIC", skin);
+    private TextButton volumeDown = new TextButton("MUTE VOLUME", skin);
+    private TextButton volumeUp = new TextButton("UNMUTE VOLUME", skin);
+    private TextButton backFromMusic = new TextButton("BACK", skin);
     
     //debug options page
-    private static TextButton showDebug = new TextButton("SHOW DEBUG", skin);
-    private static TextButton hideDebug = new TextButton("HIDE DEBUG", skin);
-    private static TextButton backFromDebug = new TextButton("BACK", skin);
+    private TextButton showDebug = new TextButton("SHOW DEBUG", skin);
+    private TextButton hideDebug = new TextButton("HIDE DEBUG", skin);
+    private TextButton backFromDebug = new TextButton("BACK", skin);
     
     public static State state = State.PAGE1;
     
@@ -55,12 +53,9 @@ public class OptionsWindow {
 		DEBUG,
 	}
     
-    private static float sw = Gdx.graphics.getWidth();
-    private static float cw = sw * 0.7f;
     
-    
-	public OptionsWindow() {
-		
+	public OptionsWindow(Kroy game) {
+		sb = game.batch;
 		Viewport viewport = new ScreenViewport(new OrthographicCamera());
 		stage = new Stage(viewport, sb);
 
@@ -184,35 +179,35 @@ public class OptionsWindow {
 		    });
 	}
 
-	public static void updateDraw() {
+	public void updateDraw() {
 		switch(state) {
 		case PAGE1:
 			table.row();
-		    table.add(music).width(cw/3.0f);
+		    table.add(music).width(Kroy.CentreWidth());
 			table.row();
-		    table.add(debug).width(cw/3.0f);
+		    table.add(debug).width(Kroy.CentreWidth());
 		    table.row();
-		    table.add(back).width(cw/3.0f);
+		    table.add(back).width(Kroy.CentreWidth());
 		    break;
 		case MUSIC:
 			table.row();
-		    table.add(playMusic).width(cw/3.0f);
+		    table.add(playMusic).width(Kroy.CentreWidth());
 		    table.row();
-		    table.add(stopMusic).width(cw/3.0f);
+		    table.add(stopMusic).width(Kroy.CentreWidth());
 		    table.row();
-		    table.add(volumeDown).width(cw/3.0f);
+		    table.add(volumeDown).width(Kroy.CentreWidth());
 		    table.row();
-		    table.add(volumeUp).width(cw/3.0f);
+		    table.add(volumeUp).width(Kroy.CentreWidth());
 		    table.row();
-		    table.add(backFromMusic).width(cw/3.0f);
+		    table.add(backFromMusic).width(Kroy.CentreWidth());
 		    break;
 		case DEBUG:
 			table.row();
-		    table.add(showDebug).width(cw/3.0f);
+		    table.add(showDebug).width(Kroy.CentreWidth());
 		    table.row();
-		    table.add(hideDebug).width(cw/3.0f);
+		    table.add(hideDebug).width(Kroy.CentreWidth());
 		    table.row();
-		    table.add(backFromDebug).width(cw/3.0f);
+		    table.add(backFromDebug).width(Kroy.CentreWidth());
 		    break;
 		}
 		

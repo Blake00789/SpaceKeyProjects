@@ -1,6 +1,5 @@
 package com.dicycat.kroy.scenes;
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -11,12 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dicycat.kroy.Kroy;
-import com.dicycat.kroy.screens.GameOverScreen;
-import com.dicycat.kroy.screens.GameScreen;
 
 public class HUD {
-	
-	private Kroy game; 
 	public Stage stage;
 	private Viewport viewport;	//creating new port so that the HUD stays locked while map can move around independently
 	
@@ -35,7 +30,6 @@ public class HUD {
 	
 	
 	public HUD(SpriteBatch sb, Kroy game) {
-		this.game = game; 
 		viewport = new ScreenViewport(new OrthographicCamera());
 		stage = new Stage(viewport, sb);	//Where we are going to put the HUD elements 
 		

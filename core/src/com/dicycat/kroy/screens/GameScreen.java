@@ -77,11 +77,11 @@ public class GameScreen implements Screen{
 		game = _game;
 		gamecam = new OrthographicCamera();    //m
 		gameport = new FitViewport(Kroy.width, Kroy.height, gamecam);	//m //Mic:could also use StretchViewPort to make the screen stretch instead of adapt
-		hud = new HUD(Kroy.batch, this.game);
+		hud = new HUD(game.batch, this.game);
 		gameMap = new TiledGameMap();											//or FitPort to make it fit into a specific width/height ratio
-		pauseWindow = new PauseWindow();
+		pauseWindow = new PauseWindow(game);
 		pauseWindow.visibility(false);
-		optionsWindow = new OptionsWindow();
+		optionsWindow = new OptionsWindow(game);
 		optionsWindow.visibility(false);
 		textures = new GameTextures(truckNum);
 		spawnPosition = new Vector2(3750, 4000);
@@ -128,15 +128,15 @@ public class GameScreen implements Screen{
 
 			gameMap.renderRoads(gamecam); // Render the background roads, fields and rivers
 
-			Kroy.batch.setProjectionMatrix(hud.stage.getCamera().combined);
-			Kroy.batch.setProjectionMatrix(gamecam.combined);	//Mic:only renders the part of the map where the camera is
-			Kroy.batch.begin(); // Game loop Start
+			game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+			game.batch.setProjectionMatrix(gamecam.combined);	//Mic:only renders the part of the map where the camera is
+			game.batch.begin(); // Game loop Start
 
 			hud.update(delta);
 
 			renderObjects(); // Renders objects specified in the UpdateLoop() called previously
 
-			Kroy.batch.end();
+			game.batch.end();
 
 			gameMap.renderBuildings(gamecam); // Renders the buildings and the foreground items which are not entities
 
@@ -195,7 +195,7 @@ public class GameScreen implements Screen{
 
 	public void renderObjects() {// Renders the objects in "objectsToRender" then clears the list
 		for (GameObject object : objectsToRender) {
-			object.Render(Kroy.batch);
+			object.Render(game.batch);
 		}
 		objectsToRender.clear();
 	}
@@ -256,10 +256,7 @@ public class GameScreen implements Screen{
 	}
 
 	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-
-	}
+	public void hide() {}
 
 	@Override
 	public void dispose() {
