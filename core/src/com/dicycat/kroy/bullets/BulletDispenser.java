@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.dicycat.kroy.entities.Entity;
 import com.dicycat.kroy.screens.GameScreen;
+import com.dicycat.kroy.Kroy;
 
 public class BulletDispenser {
 
@@ -51,7 +52,7 @@ public class BulletDispenser {
 				bulletTimer = 0;
 				Bullet[] toFire;	//Stores bullets to be fired
 				if (firingPattern.Aim()) {
-					Vector2 targetDirection = new Vector2(GameScreen.mainGameScreen.GetPlayer().getCentre().x - owner.getCentre().x, GameScreen.mainGameScreen.GetPlayer().getCentre().y - owner.getCentre().y); //Aim from entity to player
+					Vector2 targetDirection = new Vector2(Kroy.mainGameScreen.getPlayer().getCentre().x - owner.getCentre().x, Kroy.mainGameScreen.getPlayer().getCentre().y - owner.getCentre().y); //Aim from entity to player
 					
 					toFire = firingPattern.AimedSet(currentBullet, targetDirection);
 				}else {

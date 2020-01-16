@@ -11,6 +11,7 @@ import com.dicycat.kroy.GameObject;
 import com.dicycat.kroy.gamemap.TiledGameMap;
 import com.dicycat.kroy.entities.FireTruck;
 import com.dicycat.kroy.screens.GameScreen;
+import com.dicycat.kroy.Kroy;
 
 public class Bullet extends GameObject {
 	private int speed;			//Speed of the bullet
@@ -21,7 +22,7 @@ public class Bullet extends GameObject {
 
 
 	public Bullet(Vector2 spawnPos, Vector2 direction, int _speed, float range) {	//Constructor
-		super(spawnPos, GameScreen.mainGameScreen.textures.Bullet(), new Vector2(20,20));
+		super(spawnPos, Kroy.mainGameScreen.textures.Bullet(), new Vector2(20,20));
 		speed = _speed;
 		velocity = direction.scl(speed);
 		maxDist = range;
@@ -58,7 +59,7 @@ public class Bullet extends GameObject {
 		//Debug to draw the hitbox.
 		//gameScreen.DrawCircle(new Vector2(hitbox.x, hitbox.y), hitbox.radius, 2, Color.RED);	//No, big lag
 		//Check to see if bullet collides with the players truck.
-		FireTruck truck = GameScreen.mainGameScreen.GetPlayer();
+		FireTruck truck = Kroy.mainGameScreen.getPlayer();
 		if (truck.isAlive()) {
 			if(Intersector.overlaps(hitbox, truck.getHitbox())){
 				truck.ApplyDamage(10);

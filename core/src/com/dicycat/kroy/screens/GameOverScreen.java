@@ -80,7 +80,7 @@ public class GameOverScreen implements Screen{
 		  table.setFillParent(true);
 		  table.top();
 		  
-		  score = HUD.getFinalScore();
+		  score = Kroy.mainGameScreen.getHud().getFinalScore();
 		  
 		  scoreLabel = new Label("YOUR SCORE:", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 		  scoreNumberLabel = new Label(String.format("%05d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
@@ -134,7 +134,7 @@ public class GameOverScreen implements Screen{
 			  if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 				  this.dispose();
 				  game.batch.end();
-				  game.setScreen(new GameScreen(game,truckNum));
+				  game.newGame(truckNum);
 				  return;
 			  }
 		  } else {
@@ -148,7 +148,7 @@ public class GameOverScreen implements Screen{
 			  game.batch.draw(menuBTN_ACTIVE, x_axis_centered, minigameBTN_y, BTN_WIDTH, BTN_HEIGHT);
 			  if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 				  dispose();
-				  game.setScreen(new MenuScreen(game));
+				  game.backToMenu();
 			  }
 		  } else {
 			  game.batch.draw(menuBTN, x_axis_centered, minigameBTN_y, BTN_WIDTH, BTN_HEIGHT);

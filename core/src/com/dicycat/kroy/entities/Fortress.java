@@ -9,6 +9,7 @@ import com.dicycat.kroy.bullets.Bullet;
 import com.dicycat.kroy.bullets.BulletDispenser;
 import com.dicycat.kroy.bullets.Pattern;
 import com.dicycat.kroy.screens.GameScreen;
+import com.dicycat.kroy.Kroy;
 
 public class Fortress extends Entity {
 
@@ -26,18 +27,18 @@ public class Fortress extends Entity {
 	}
 
 	public Boolean playerInRadius() {
-		Vector2 currentCoords = GameScreen.mainGameScreen.GetPlayer().getCentre(); // get current player coordinates
+		Vector2 currentCoords = Kroy.mainGameScreen.getPlayer().getCentre(); // get current player coordinates
 		if (Vector2.dst(currentCoords.x, currentCoords.y, getCentre().x, getCentre().y) < radius ) { // checks the distance between the two entities
-			GameScreen.mainGameScreen.getHud().updateScore(2);
+			Kroy.mainGameScreen.getHud().updateScore(2);
 			return true; // returns true if distance between entity and player is less than radius of item
 		}else {
 			return false; // returns false otherwise
 		}
 	}
 	
-	private void Die() { // Overwritten die implementation allows for removal from gameObjects List so to remove functionality but to display the broken building graphic
+	protected void Die() { // Overwritten die implementation allows for removal from gameObjects List so to remove functionality but to display the broken building graphic
 		sprite.setTexture(new Texture("TempFortressDead.png"));
-		GameScreen.mainGameScreen.getHud().updateScore(1000);
+		Kroy.mainGameScreen.getHud().updateScore(1000);
 		setRemove(true);
 		displayable = true;
 	}
@@ -57,7 +58,7 @@ public class Fortress extends Entity {
 		if (toShoot != null) {
 			for (Bullet bullet : toShoot) {
 				bullet.Fire(getCentre());
-				GameScreen.mainGameScreen.AddGameObject(bullet);
+				Kroy.mainGameScreen.AddGameObject(bullet);
 			}
 		}
 	}

@@ -103,10 +103,10 @@ public class OptionsWindow {
 		    	public void clicked(InputEvent event, float x, float y) {
 		    		visibility(false);
 		    		if (fromMenu == false) {
-		    			GameScreen.setGameState(GameScreen.State.PAUSE);
+		    			Kroy.mainGameScreen.setGameState(GameScreen.State.PAUSE);
 		    			return;
 		    		} else if (fromMenu) {
-		    			MenuScreen.state = MenuScreen.State.MAINMENU;
+		    			Kroy.mainMenuScreen.state = MenuScreen.State.MAINMENU;
 		    			return;
 		    		}
 		    	}

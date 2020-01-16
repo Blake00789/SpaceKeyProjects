@@ -21,10 +21,10 @@ public class HUD {
 	private Viewport viewport;	//creating new port so that the HUD stays locked while map can move around independently
 	
 	
-	private static Integer trucks = 4;
-	private static Integer worldTimer = 0;	//change to float maybe
-	private static Integer score = 0;
-	private static float timeCount = 0;
+	private Integer trucks = 4;
+	private Integer worldTimer = 0;	//change to float maybe
+	private Integer score = 0;
+	private float timeCount = 0;
 	
 	Label scoreLabel;
 	Label timeLabel;
@@ -70,34 +70,34 @@ public class HUD {
 			timeCount =0;
 			scoreCountLabel.setText(String.format("%06d", score));
 		}
+		trucksCountLabel.setText(String.format("%01d", trucks)); // Updates the label for the amount of lives left
 	}
 	
-	public static void updateLives() {
-		if (trucks>0) {
+	public void updateLives() {
+		if (trucks>1) {
 			trucks -= 1;
 		} else {
 			gameOver();
 		}
-		}
-	
-	public static void gameOver() {
-		Kroy.batch.dispose();
-		
 	}
 	
-	public static Integer getFinalScore() {
+	public void gameOver() {
+		Kroy.mainGameScreen.gameOver();		
+	}
+	
+	public Integer getFinalScore() {
 		return score;
 	}
 
-	public static void setScore(Integer x){
+	public void setScore(Integer x){
 		score = x;
 	}
 
-	public static Integer getScore(){
+	public Integer getScore(){
 		return score;
 	}
 
-	public static void updateScore(Integer x){
+	public void updateScore(Integer x){
 		score += x;
 	}
 	

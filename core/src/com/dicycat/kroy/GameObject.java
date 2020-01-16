@@ -78,5 +78,9 @@ public abstract class GameObject {	//Basic object for all displayable objects
 	public void setRemove(Boolean x){
 		remove = x;
 	}
+	
+	protected void Die() {
+		remove = true;
+	}
 
 }
