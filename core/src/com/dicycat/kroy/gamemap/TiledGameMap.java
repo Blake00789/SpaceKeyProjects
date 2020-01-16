@@ -1,7 +1,5 @@
 package com.dicycat.kroy.gamemap;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
@@ -21,20 +19,17 @@ public class TiledGameMap{
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 	}
 
-//Renders all the ground layers of the map
+	//Renders all the ground layers of the map
 	public void renderRoads(OrthographicCamera camera) {
 		tiledMapRenderer.setView(camera);
 		tiledMapRenderer.render(new int[] {1,2});
 	}
 
-//Renders the building layer and the window layer of the map
+	//Renders the building layer and the window layer of the map
 	public void renderBuildings(OrthographicCamera camera) {
 		tiledMapRenderer.setView(camera);
 		tiledMapRenderer.render(new int[] {3,4});
 	}
-
-
-
 
 	public void update(float delta) {
 		// TODO Auto-generated method stub
@@ -46,7 +41,7 @@ public class TiledGameMap{
 		tiledMap.dispose();
 	}
 
-//Returns the tile type at a row/column for a particular layer
+	//Returns the tile type at a row/column for a particular layer
 	public TileType getTileTypeByCoordinate(int layer, int col, int row) {
 		Cell cell = ((TiledMapTileLayer) tiledMap.getLayers().get(layer)).getCell(col,row);
 		if (cell != null) {
@@ -60,7 +55,7 @@ public class TiledGameMap{
 		return null;
 	}
 	
-//Returns the tile type at a pixel position for a particular layer
+	//Returns the tile type at a pixel position for a particular layer
 	public TileType getTileTypeByLocation(int layer, float x, float y) {
 		return this.getTileTypeByCoordinate(layer, (int)(x/TileType.TILE_SIZE), (int)(y/TileType.TILE_SIZE));
 	}

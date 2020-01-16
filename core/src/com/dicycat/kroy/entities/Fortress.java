@@ -1,23 +1,19 @@
 package com.dicycat.kroy.entities;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.dicycat.kroy.Kroy;
 import com.dicycat.kroy.bullets.Bullet;
 import com.dicycat.kroy.bullets.BulletDispenser;
 import com.dicycat.kroy.bullets.Pattern;
-import com.dicycat.kroy.screens.GameScreen;
-import com.dicycat.kroy.Kroy;
 
 public class Fortress extends Entity {
 
 	BulletDispenser dispenser;
 	private Texture deadTexture;
-	
-	public Fortress(Vector2 spawnPos, Texture fortressTexture, Texture deadTexture) {
-		super(spawnPos, fortressTexture, new Vector2(256,218), 100);
+
+	public Fortress(Vector2 spawnPos, Texture fortressTexture, Texture deadTexture, Vetor2 size) {
+		super(spawnPos, fortressTexture, size, 100);
 		this.deadTexture = deadTexture;
 		dispenser = new BulletDispenser(this);
 		dispenser.AddPattern(new Pattern(180, 300, 800, 0.1f, 20, 1, 0.5f));
@@ -37,21 +33,21 @@ public class Fortress extends Entity {
 			return false; // returns false otherwise
 		}
 	}
-	
+
 	protected void Die() { // Overwritten die implementation allows for removal from gameObjects List so to remove functionality but to display the broken building graphic
 		sprite.setTexture(deadTexture);
 		Kroy.mainGameScreen.getHud().updateScore(1000);
 		setRemove(true);
 		displayable = true;
 	}
-	
+
 	public void ApplyDamage(float damage) {
 		healthPoints -= damage;
 		if (healthPoints <= 0) {
 			Die();
 		}
 	}
-	
+
 	@Override
 	public void Update() {
 		//weapons

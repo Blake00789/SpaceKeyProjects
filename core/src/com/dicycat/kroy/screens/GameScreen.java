@@ -25,9 +25,8 @@ import com.dicycat.kroy.debug.DebugRect;
 import com.dicycat.kroy.entities.FireStation;
 import com.dicycat.kroy.entities.FireTruck;
 import com.dicycat.kroy.entities.Fortress;
-import com.dicycat.kroy.entities.UFO;
-import com.dicycat.kroy.misc.WaterStream;
 import com.dicycat.kroy.gamemap.TiledGameMap;
+import com.dicycat.kroy.misc.WaterStream;
 import com.dicycat.kroy.scenes.HUD;
 import com.dicycat.kroy.scenes.OptionsWindow;
 import com.dicycat.kroy.scenes.PauseWindow;
@@ -35,6 +34,12 @@ import com.dicycat.kroy.scenes.PauseWindow;
 
 public class GameScreen implements Screen{
 
+	public static enum State{
+		PAUSE,
+		RUN,
+		RESUME,
+		OPTIONS
+	}
 	public GameTextures textures;
 
 	public static Boolean showDebug = false;
@@ -47,24 +52,24 @@ public class GameScreen implements Screen{
 	private PauseWindow pauseWindow;
 	public static OptionsWindow optionsWindow;
 	public static TiledGameMap gameMap;
-	private Float[][] truckStats = {{450f, 1f, 75f, 300f},{300f, 1.5f, 75f, 300f},{300f, 1f, 100f, 300f},{300f, 1f, 75f, 400f}};//Each list is a configuration of a specific truck. {speed, flowRate, capcity, range}																										//List setup is {Float speed, Float flowRate, Float waterCapacity, Float range}
-	private int truckNum; // Idenfies the truck thats selected in the menu screen
+	private Float[][] truckStats = {//Each list is a configuration of a specific truck. {speed, flowRate, capcity, range}
+			{450f, 1f, 75f, 300f},		//Speed
+			{300f, 1.5f, 75f, 300f},	//Flow rate
+			{300f, 1f, 100f, 300f},		//Capacity
+			{300f, 1f, 75f, 400f}		//Range
+			};
+	private int truckNum; // Identifies the truck thats selected in the menu screen
 	private List<GameObject> objectsToRender = new ArrayList<GameObject>(); // List of game objects that have been updated but need rendering
 
-
+	private Vector2 spawnPosition;	//Coords the player spawns at
+	FireStation fireStation;	//Reference to fire statiom
 	FireTruck player; //Reference to the player
 	WaterStream waterStream; // Water stream on the screen
 	List<GameObject> gameObjects, deadObjects;	//List of active game objects
 	List<GameObject> toAdd;
 	List<DebugDraw> debugObjects; //List of debug items
 	List<GameObject> fortresses; //List of all fortresses
-
-	public static enum State{
-		PAUSE,
-		RUN,
-		RESUME,
-		OPTIONS
-	}
+	public State state = State.RUN;
 
 	public float gameTimer; //Timer to destroy station
 
@@ -74,17 +79,14 @@ public class GameScreen implements Screen{
 		gameport = new FitViewport(Kroy.width, Kroy.height, gamecam);	//m //Mic:could also use StretchViewPort to make the screen stretch instead of adapt
 		hud = new HUD(Kroy.batch, this.game);
 		gameMap = new TiledGameMap();											//or FitPort to make it fit into a specific width/height ratio
-
-
-
 		pauseWindow = new PauseWindow();
 		pauseWindow.visibility(false);
 		optionsWindow = new OptionsWindow();
 		optionsWindow.visibility(false);
 		textures = new GameTextures(truckNum);
+		spawnPosition = new Vector2(3750, 4000);
 		gameTimer = 60 * 15; //Set timer to 15 minutes
 		this.truckNum = truckNum;
-
 	}
 
 	@Override
@@ -93,84 +95,69 @@ public class GameScreen implements Screen{
 		gameObjects = new ArrayList<GameObject>();
 		deadObjects = new ArrayList<GameObject>();
 		debugObjects = new ArrayList<DebugDraw>();
-		player = new FireTruck(new Vector2(1530, 1300),truckStats[truckNum]); // Initialises the FireTruck
+		player = new FireTruck(spawnPosition.cpy(),truckStats[truckNum]); // Initialises the FireTruck
 
 		gamecam.translate(new Vector2(player.getX(),player.getY()));// sets initial Camera position
 		gameObjects.add(player);	//Player
 
-		FireStation fireStation = new FireStation(new Vector2(1200,800));
+		fireStation = new FireStation(new Vector2(1200,800));
 		gameObjects.add(fireStation);
-
-//		Vector2[] fortressCoords = {new Vector2(900, 1700), new Vector2(1900,900), new Vector2(550, 950), new Vector2(1800,2000)};// List of all fortress Coordinates (currently eyeballed on where they need to be)
-//		for (Vector2 v: fortressCoords) {// Loop to place all Fortresses based on vectors defined in fortressCoords
-//			Fortress f = new Fortress(v);
-//			gameObjects.add(f);
-//		}
-
-		gameObjects.add(new Fortress(new Vector2(2903,3211), new Texture("cliffords tower.png"), new Texture("cliffords tower flooded.png")));
-		gameObjects.add(new Fortress(new Vector2(3200,5681), new Texture("york minster.png"), new Texture("york minster flooded.png")));
+		gameObjects.add(new Fortress(new Vector2(2903,3211), new Texture("cliffords tower.png"), new Texture("cliffords tower flooded.png"), new Vector2(256, 218)));
+		gameObjects.add(new Fortress(new Vector2(3200,5681), new Texture("york minster.png"), new Texture("york minster flooded.png"), new Vector2(256, 300)));
+		gameObjects.add(new Fortress(new Vector2(2050,1937), new Texture("york museum.png"), new Texture ("york museum.png"), new Vector2(400, 240)));
 
 	}
 
-	//@Override
-
-	public State state = State.RUN;
 
 	public void render(float delta) {		//Called every frame
 		Gdx.input.setInputProcessor(pauseWindow.stage);  //DA CONTROLLARE
 		pauseWindow.stage.act();
 
 		switch (state) {
-		case RUN:
-		if (Gdx.input.isKeyPressed(Keys.P) || Gdx.input.isKeyPressed(Keys.O) || Gdx.input.isKeyPressed(Keys.M)|| Gdx.input.isKeyPressed(Keys.ESCAPE)){
-			pauseWindow.visibility(true);
-			pause();
-		}
+			case RUN:
+			if (Gdx.input.isKeyPressed(Keys.P) || Gdx.input.isKeyPressed(Keys.O) || Gdx.input.isKeyPressed(Keys.M)|| Gdx.input.isKeyPressed(Keys.ESCAPE)){
+				pauseWindow.visibility(true);
+				pause();
+			}
+			gameTimer -= delta;		//Decrement timer
+			if (gameTimer <= 0) {		//Once timer is over
+				fireStation.ApplyDamage(100);	//Destroy fire station
+			}
 
+			UpdateLoop(); //Update all game objects positions but does not render them as to be able to render everything as quickly as possible
 
+			gameMap.renderRoads(gamecam); // Render the background roads, fields and rivers
 
-		UpdateLoop(); //Update all game objects positions but does not render them as to be able to render everything as quickly as possible
+			Kroy.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+			Kroy.batch.setProjectionMatrix(gamecam.combined);	//Mic:only renders the part of the map where the camera is
+			Kroy.batch.begin(); // Game loop Start
 
-		gameMap.renderRoads(gamecam); // Render the background roads, fields and rivers
+			hud.update(delta);
 
-		Kroy.batch.setProjectionMatrix(hud.stage.getCamera().combined);
-		Kroy.batch.setProjectionMatrix(gamecam.combined);	//Mic:only renders the part of the map where the camera is
-		Kroy.batch.begin(); // Game loop Start
+			renderObjects(); // Renders objects specified in the UpdateLoop() called previously
 
-		gameTimer -= delta;
-		if (gameTimer <= 0) {
-			//Destroy station
-			System.err.println("Timer!");	//Temp test
-		}
+			Kroy.batch.end();
 
+			gameMap.renderBuildings(gamecam); // Renders the buildings and the foreground items which are not entities
 
-		hud.update(delta);
-
-		renderObjects(); // Renders objects specified in the UpdateLoop() called previously
-
-		Kroy.batch.end();
-
-		gameMap.renderBuildings(gamecam); // Renders the buildings and the foreground items which are not entities
-
-
-		hud.stage.draw();
-		pauseWindow.stage.draw();
-
-		//DrawDebug(); //Draw all debug items as they have to be drawn outside the batch
-
-		if (showDebug) {
-			DrawDebug(); //Draw all debug items as they have to be drawn outside the batch
-		}
-
-		break;
-		case PAUSE:
+			hud.stage.draw();
 			pauseWindow.stage.draw();
-			clickCheck();
+
+			if (showDebug) {
+				DrawDebug(); //Draw all debug items as they have to be drawn outside the batch
+			}
+
 			break;
-		case RESUME:
-			pauseWindow.visibility(false);
-			setGameState(State.RUN);
-			break;
+			case PAUSE:
+				pauseWindow.stage.draw();
+				clickCheck();
+				break;
+			case RESUME:
+				pauseWindow.visibility(false);
+				setGameState(State.RUN);
+				break;
+			default:
+				break;
 		}
 
 	}
@@ -313,14 +300,14 @@ public class GameScreen implements Screen{
 	    	}
 	    });
 		//menu button
-			pauseWindow.menu.addListener(new ClickListener() {
-		    	@Override
-		    	public void clicked(InputEvent event, float x, float y) {
-		    		dispose();
-		    		game.backToMenu();
-		    		return;
-		    		}
-		    });
+		pauseWindow.menu.addListener(new ClickListener() {
+	    	@Override
+	    	public void clicked(InputEvent event, float x, float y) {
+	    		dispose();
+	    		game.backToMenu();
+	    		return;
+	    		}
+	    });
 	}
 
 	public HUD getHud(){
@@ -333,7 +320,7 @@ public class GameScreen implements Screen{
 
 	public void respawn() {
 		hud.updateLives();
-		player = new FireTruck(new Vector2(1530, 1300),truckStats[truckNum]);
+		player = new FireTruck(spawnPosition.cpy(),truckStats[truckNum]);
 		gameObjects.add(player);
 
 	}
