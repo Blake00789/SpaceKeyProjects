@@ -11,7 +11,7 @@ public class Kroy extends Game {
 	
 	public static GameScreen mainGameScreen;
 	public static MenuScreen mainMenuScreen;
-	public static SpriteBatch batch;
+	public SpriteBatch batch;
 	
 	@Override
 	public void create () {
@@ -37,5 +37,9 @@ public class Kroy extends Game {
 		mainMenuScreen.state = MenuScreen.State.MAINMENU; // sets menu screen back to the original state
 		mainMenuScreen.setCurrentlyRunningGame(false); //Tells the screen not to block any button pushes which would initialisze a new game again
 		setScreen(mainMenuScreen); // displays the menu screen
+	}
+	
+	public static int CentreWidth() {
+		return width / 3;
 	}
 }

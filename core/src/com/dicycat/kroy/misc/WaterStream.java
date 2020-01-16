@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.dicycat.kroy.GameObject;
-import com.dicycat.kroy.screens.GameScreen;
 
 public class WaterStream extends GameObject{
 
@@ -17,15 +16,11 @@ public class WaterStream extends GameObject{
 	}
 
 	@Override
-	public void Update() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void Update() {}
 
 	@Override
 	public void Render(SpriteBatch batch) {
 		super.Render(batch);
-		
 	}
 
 }

@@ -19,7 +19,7 @@ public class FireTruckSelectionScene {
 
 	public Stage stage;
 	public Table table = new Table();
-	SpriteBatch sb = Kroy.batch;
+	SpriteBatch sb;
 	NinePatchDrawable background = new NinePatchDrawable(new NinePatch(new Texture("Grey.png"), 3, 3, 3, 3));
 	
     Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
@@ -33,8 +33,8 @@ public class FireTruckSelectionScene {
     float cw = sw * 0.7f;
     
     
-	public FireTruckSelectionScene() {
-			    
+	public FireTruckSelectionScene(Kroy game) {
+		sb = game.batch;
 		Viewport viewport = new ScreenViewport(new OrthographicCamera());
 		stage = new Stage(viewport, sb);
 
