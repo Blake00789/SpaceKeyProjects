@@ -11,8 +11,8 @@ public class Fortress extends Entity {
 
 	BulletDispenser dispenser;
 	
-	public Fortress(Vector2 spawnPos, Texture fortressTexture) {
-		super(spawnPos, fortressTexture, new Vector2(256,218), 100);
+	public Fortress(Vector2 spawnPos, Texture fortressTexture, Vector2 size) {
+		super(spawnPos, fortressTexture, size, 100);
 		dispenser = new BulletDispenser(this);
 		dispenser.AddPattern(new Pattern(180, 300, 800, 0.1f, 20, 1, 0.5f));
 		dispenser.AddPattern(new Pattern(100, 500, 0.5f, 8, 5, 0.5f));

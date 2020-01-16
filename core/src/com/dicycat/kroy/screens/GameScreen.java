@@ -34,6 +34,12 @@ import com.dicycat.kroy.scenes.PauseWindow;
 
 public class GameScreen implements Screen{
 
+	public static enum State{
+		PAUSE,
+		RUN,
+		RESUME,
+		OPTIONS
+	}
 	public GameTextures textures;
 
 	public static Boolean showDebug = false;
@@ -55,6 +61,7 @@ public class GameScreen implements Screen{
 	private int truckNum; // Identifies the truck thats selected in the menu screen
 	private List<GameObject> objectsToRender = new ArrayList<GameObject>(); // List of game objects that have been updated but need rendering
 
+	private Vector2 spawnPosition;	//Coords the player spawns at
 	FireStation fireStation;	//Reference to fire statiom
 	FireTruck player; //Reference to the player
 	WaterStream waterStream; // Water stream on the screen
@@ -62,13 +69,7 @@ public class GameScreen implements Screen{
 	List<GameObject> toAdd;
 	List<DebugDraw> debugObjects; //List of debug items
 	List<GameObject> fortresses; //List of all fortresses
-
-	public static enum State{
-		PAUSE,
-		RUN,
-		RESUME,
-		OPTIONS
-	}
+	public State state = State.RUN;
 
 	public float gameTimer; //Timer to destroy station
 
@@ -83,6 +84,7 @@ public class GameScreen implements Screen{
 		optionsWindow = new OptionsWindow();
 		optionsWindow.visibility(false);
 		textures = new GameTextures(truckNum);
+		spawnPosition = new Vector2(3750, 4000);
 		gameTimer = 60 * 15; //Set timer to 15 minutes
 		this.truckNum = truckNum;
 	}
@@ -93,7 +95,7 @@ public class GameScreen implements Screen{
 		gameObjects = new ArrayList<GameObject>();
 		deadObjects = new ArrayList<GameObject>();
 		debugObjects = new ArrayList<DebugDraw>();
-		player = new FireTruck(new Vector2(1530, 1300),truckStats[truckNum]); // Initialises the FireTruck
+		player = new FireTruck(spawnPosition.cpy(),truckStats[truckNum]); // Initialises the FireTruck
 
 		gamecam.translate(new Vector2(player.getX(),player.getY()));// sets initial Camera position
 		gameObjects.add(player);	//Player
@@ -101,14 +103,11 @@ public class GameScreen implements Screen{
 		fireStation = new FireStation(new Vector2(1200,800));
 		gameObjects.add(fireStation);
 
-		gameObjects.add(new Fortress(new Vector2(2903,3211), new Texture("cliffords tower.png")));
-		gameObjects.add(new Fortress(new Vector2(3200,5681), new Texture("york minster.png")));
+		gameObjects.add(new Fortress(new Vector2(2903,3211), new Texture("cliffords tower.png"), new Vector2(256, 218)));
+		gameObjects.add(new Fortress(new Vector2(3200,5681), new Texture("york minster.png"), new Vector2(256, 300)));
 
 	}
 
-	//@Override
-
-	public State state = State.RUN;
 
 	public void render(float delta) {		//Called every frame
 		Gdx.input.setInputProcessor(pauseWindow.stage);  //DA CONTROLLARE
@@ -120,8 +119,10 @@ public class GameScreen implements Screen{
 				pauseWindow.visibility(true);
 				pause();
 			}
-	
-	
+			gameTimer -= delta;		//Decrement timer
+			if (gameTimer <= 0) {		//Once timer is over
+				fireStation.ApplyDamage(100);	//Destroy fire station
+			}
 	
 			UpdateLoop(); //Update all game objects positions but does not render them as to be able to render everything as quickly as possible
 	
@@ -130,12 +131,6 @@ public class GameScreen implements Screen{
 			Kroy.batch.setProjectionMatrix(hud.stage.getCamera().combined);
 			Kroy.batch.setProjectionMatrix(gamecam.combined);	//Mic:only renders the part of the map where the camera is
 			Kroy.batch.begin(); // Game loop Start
-	
-			gameTimer -= delta;		//Decrement timer
-			if (gameTimer <= 0) {		//Once timer is over
-				fireStation.ApplyDamage(100);	//Destroy fire station
-			}
-	
 	
 			hud.update(delta);
 	
@@ -325,7 +320,7 @@ public class GameScreen implements Screen{
 
 	public void respawn() {
 		hud.updateLives();
-		player = new FireTruck(new Vector2(1530, 1300),truckStats[truckNum]);
+		player = new FireTruck(spawnPosition.cpy(),truckStats[truckNum]);
 		gameObjects.add(player);
 
 	}
