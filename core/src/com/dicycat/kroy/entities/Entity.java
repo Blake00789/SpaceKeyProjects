@@ -47,8 +47,4 @@ public abstract class Entity extends GameObject{
 	public Integer getHealthPoints() {
 		return healthPoints;
 	}
-	
-	public void setHealthPoints(int health) {
-		healthPoints=health;
-	}
 }

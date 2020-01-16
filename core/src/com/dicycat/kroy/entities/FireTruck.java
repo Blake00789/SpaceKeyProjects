@@ -240,7 +240,7 @@ public class FireTruck extends Entity{
 			currentWater += 2;
 		}
 		if(!(healthPoints >= 100)){
-			setHealthPoints(healthPoints += 2);
+			healthPoints += 2;
 		}
 	}
 
