@@ -7,7 +7,11 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector2;
+
+/**
+ * @author Martha Cartwright
+ *
+ */
 
 public class TiledGameMap{
 	
@@ -19,15 +23,21 @@ public class TiledGameMap{
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 	}
 
-	//Renders all the ground layers of the map
+
+	/**
+	 * Renders the road layer of the map
+	 * @param camera
+	 */
 	public void renderRoads(OrthographicCamera camera) {
 		tiledMapRenderer.setView(camera);
 		tiledMapRenderer.render(new int[] {1,2});
 	}
 
-	//Renders the building layer and the window layer of the map
-	
 
+	/**
+	 * Renders the building layer and the window layer of the map
+	 * @param camera
+	 */
 	public void renderBuildings(OrthographicCamera camera) {
 		tiledMapRenderer.setView(camera);
 		tiledMapRenderer.render(new int[] {3,4});
@@ -45,7 +55,7 @@ public class TiledGameMap{
 
 
 	/**
-	 * Returns the tile type at a row/column for a particular layer
+	 * Gets the tile type at a row/column for a particular layer
 	 * @param layer
 	 * @param col
 	 * @param row
@@ -66,7 +76,7 @@ public class TiledGameMap{
 	
 
 	/**
-	 * Returns the tile type at a pixel position for a particular layer
+	 * Gets the tile type at a pixel position for a particular layer
 	 * @param layer
 	 * @param x
 	 * @param y
@@ -77,11 +87,19 @@ public class TiledGameMap{
 	}
 
 
+	/**
+	 * Gets the width of the map in tiles
+	 * @return width
+	 */
 	public int getWidth() {
 		return ((TiledMapTileLayer) tiledMap.getLayers().get(0)).getWidth();
 	}
 
 
+	/**
+	 * Gets the height of the map in tiles
+	 * @return height
+	 */
 	public int getHeight() {
 		return ((TiledMapTileLayer) tiledMap.getLayers().get(0)).getHeight();
 	}
@@ -91,10 +109,19 @@ public class TiledGameMap{
 		return tiledMap.getLayers().getCount();
 	}
 	
+	
+	/**
+	 * Gets the width of the map in pixels
+	 * @return width
+	 */
 	public int getPixelWidth() {
 		return this.getWidth() * TileType.TILE_SIZE;
 	}
 	
+	/**
+	 * Gets the height of the map in pixels
+	 * @return height
+	 */
 	public int getPixelHeight() {
 		return this.getHeight() * TileType.TILE_SIZE;
 	}
