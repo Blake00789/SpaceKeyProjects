@@ -7,10 +7,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -30,7 +28,6 @@ import com.dicycat.kroy.entities.Fortress;
 import com.dicycat.kroy.entities.UFO;
 import com.dicycat.kroy.misc.WaterStream;
 import com.dicycat.kroy.gamemap.TiledGameMap;
-import com.dicycat.kroy.scenes.FireTruckSelectionScene;
 import com.dicycat.kroy.scenes.HUD;
 import com.dicycat.kroy.scenes.OptionsWindow;
 import com.dicycat.kroy.scenes.PauseWindow;
@@ -38,10 +35,9 @@ import com.dicycat.kroy.scenes.PauseWindow;
 
 public class GameScreen implements Screen{
 
-	public static GameScreen mainGameScreen;
 	public GameTextures textures;
 
-	public static Boolean showDebug = true;
+	public static Boolean showDebug = false;
 
 	public Kroy game;
 	private OrthographicCamera gamecam;	//m 	//follows along what the port displays
@@ -51,7 +47,7 @@ public class GameScreen implements Screen{
 	private PauseWindow pauseWindow;
 	public static OptionsWindow optionsWindow;
 	public static TiledGameMap gameMap;
-	private Float[][] truckStats = {{600f, 1f, 150f, 300f},{300f, 2f, 150f, 300f},{300f, 1f, 300f, 300f},{300f, 1f, 150f, 600f}};//Each list is a configuration of a specific truck. 																											//List setup is {Float speed, Float flowRate, Float waterCapacity, Float range}
+	private Float[][] truckStats = {{450f, 1f, 75f, 300f},{300f, 1.5f, 75f, 300f},{300f, 1f, 100f, 300f},{300f, 1f, 75f, 400f}};//Each list is a configuration of a specific truck. {speed, flowRate, capcity, range}																										//List setup is {Float speed, Float flowRate, Float waterCapacity, Float range}
 	private int truckNum; // Idenfies the truck thats selected in the menu screen
 	private List<GameObject> objectsToRender = new ArrayList<GameObject>(); // List of game objects that have been updated but need rendering
 
@@ -76,8 +72,10 @@ public class GameScreen implements Screen{
 		game = _game;
 		gamecam = new OrthographicCamera();    //m
 		gameport = new FitViewport(Kroy.width, Kroy.height, gamecam);	//m //Mic:could also use StretchViewPort to make the screen stretch instead of adapt
-		hud = new HUD(game.batch, this.game);
+		hud = new HUD(Kroy.batch, this.game);
 		gameMap = new TiledGameMap();											//or FitPort to make it fit into a specific width/height ratio
+
+
 
 		pauseWindow = new PauseWindow();
 		pauseWindow.visibility(false);
@@ -85,12 +83,6 @@ public class GameScreen implements Screen{
 		optionsWindow.visibility(false);
 		textures = new GameTextures(truckNum);
 		gameTimer = 60 * 15; //Set timer to 15 minutes
-		if (mainGameScreen == null) {
-			mainGameScreen = this;
-		}
-		else {
-			System.err.println("Duplicate GameScreens");
-		}
 		this.truckNum = truckNum;
 
 	}
@@ -105,26 +97,26 @@ public class GameScreen implements Screen{
 
 		gamecam.translate(new Vector2(player.getX(),player.getY()));// sets initial Camera position
 		gameObjects.add(player);	//Player
+
 		FireStation fireStation = new FireStation(new Vector2(1200,800));
 		gameObjects.add(fireStation);
-		
+
 //		Vector2[] fortressCoords = {new Vector2(900, 1700), new Vector2(1900,900), new Vector2(550, 950), new Vector2(1800,2000)};// List of all fortress Coordinates (currently eyeballed on where they need to be)
 //		for (Vector2 v: fortressCoords) {// Loop to place all Fortresses based on vectors defined in fortressCoords
 //			Fortress f = new Fortress(v);
 //			gameObjects.add(f);
 //		}
-		
+
 		gameObjects.add(new Fortress(new Vector2(2903,3211), new Texture("cliffords tower.png")));
 		gameObjects.add(new Fortress(new Vector2(3200,5681), new Texture("york minster.png")));
-		
+
 	}
 
 	//@Override
 
-	public static State state = State.RUN;
+	public State state = State.RUN;
 
 	public void render(float delta) {		//Called every frame
-
 		Gdx.input.setInputProcessor(pauseWindow.stage);  //DA CONTROLLARE
 		pauseWindow.stage.act();
 
@@ -141,9 +133,9 @@ public class GameScreen implements Screen{
 
 		gameMap.renderRoads(gamecam); // Render the background roads, fields and rivers
 
-		game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
-		game.batch.setProjectionMatrix(gamecam.combined);	//Mic:only renders the part of the map where the camera is
-		game.batch.begin(); // Game loop Start
+		Kroy.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+		Kroy.batch.setProjectionMatrix(gamecam.combined);	//Mic:only renders the part of the map where the camera is
+		Kroy.batch.begin(); // Game loop Start
 
 		gameTimer -= delta;
 		if (gameTimer <= 0) {
@@ -156,7 +148,7 @@ public class GameScreen implements Screen{
 
 		renderObjects(); // Renders objects specified in the UpdateLoop() called previously
 
-		game.batch.end();
+		Kroy.batch.end();
 
 		gameMap.renderBuildings(gamecam); // Renders the buildings and the foreground items which are not entities
 
@@ -181,14 +173,13 @@ public class GameScreen implements Screen{
 			break;
 		}
 
-
 	}
 
 	//region Game Logic
 	private void UpdateLoop() {
 		List<GameObject> toRemove = new ArrayList<GameObject>();
 		for (GameObject gObject : gameObjects) {	//Go through every game object
-			gObject.Update();							//Update the game object
+			gObject.Update();						//Update the game object
 			if (gObject.CheckRemove()) {				//Check if game object is to be removed
 				toRemove.add(gObject);					//Set it to be removed
 			}else {
@@ -209,12 +200,15 @@ public class GameScreen implements Screen{
 		for (GameObject dObject : deadObjects) { // loops through the destroyed but displayed items (such as destroyed bases)
 			objectsToRender.add(dObject);
 		}
+		if (player.CheckRemove()) {
+			respawn();
+		}
 
 	}
 
 	public void renderObjects() {// Renders the objects in "objectsToRender" then clears the list
 		for (GameObject object : objectsToRender) {
-			object.Render(game.batch);
+			object.Render(Kroy.batch);
 		}
 		objectsToRender.clear();
 	}
@@ -223,7 +217,7 @@ public class GameScreen implements Screen{
 		toAdd.add(gameObject);
 	}
 
-	public FireTruck GetPlayer() {
+	public FireTruck getPlayer() {
 		return player;
 	}
 
@@ -282,11 +276,11 @@ public class GameScreen implements Screen{
 
 	@Override
 	public void dispose() {
-		mainGameScreen = null;
+		Kroy.mainGameScreen = null;
 	}
 
-	public static void setGameState(State s){
-	    GameScreen.state = s;
+	public void setGameState(State s){
+	    state = s;
 	}
 
 	public GameObject getGameObject(int index) {
@@ -296,7 +290,7 @@ public class GameScreen implements Screen{
 			return null;
 		}
 	}
-	
+
 	public List<GameObject> getGameObjects(){
 		return gameObjects;
 	}
@@ -323,7 +317,7 @@ public class GameScreen implements Screen{
 		    	@Override
 		    	public void clicked(InputEvent event, float x, float y) {
 		    		dispose();
-		    		game.setScreen(new MenuScreen(game));
+		    		game.backToMenu();
 		    		return;
 		    		}
 		    });
@@ -331,6 +325,17 @@ public class GameScreen implements Screen{
 
 	public HUD getHud(){
 		return hud;
+	}
+
+	public void gameOver() {
+		game.setScreen(new GameOverScreen(game, truckNum));
+	}
+
+	public void respawn() {
+		hud.updateLives();
+		player = new FireTruck(new Vector2(1530, 1300),truckStats[truckNum]);
+		gameObjects.add(player);
+
 	}
 
 

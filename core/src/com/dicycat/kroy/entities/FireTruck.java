@@ -18,6 +18,7 @@ import com.dicycat.kroy.misc.WaterStream;
 import java.util.ArrayList;
 import com.badlogic.gdx.utils.Array;
 import com.dicycat.kroy.GameObject;
+import com.dicycat.kroy.Kroy;
 import com.dicycat.kroy.gamemap.TiledGameMap;
 import com.dicycat.kroy.screens.GameScreen;
 import java.util.Dictionary;
@@ -35,7 +36,7 @@ public class FireTruck extends Entity{
 	protected final HashMap<String,Integer> DIRECTIONS = new HashMap<String,Integer>(); // Dictionary to store the possible directions the truck can face based on a key code created later
 	protected final int[] ARROWKEYS = {Keys.UP, Keys.DOWN, Keys.RIGHT, Keys.LEFT}; // List of the arrow keys to be able to iterate through them later on
 	protected Integer direction = 0; // Direction the truck is facing
-	
+
 	WaterStream water;
 	StatBar tank;
 	StatBar healthBar;
@@ -46,8 +47,8 @@ public class FireTruck extends Entity{
 	TextureRegion[][] textureByDirection;
 
 	public FireTruck(Vector2 spawnPos, Float[] truckStats) {	//Constructor
-		super(spawnPos, GameScreen.mainGameScreen.textures.Truck(), new Vector2(25,50), 100);
-		
+		super(spawnPos, Kroy.mainGameScreen.textures.Truck(), new Vector2(25,50), 100);
+
 
 		DIRECTIONS.put("n",0);		//North Facing Direction (up arrow)
 		DIRECTIONS.put("w",90);		//West Facing Direction (left arrow)
@@ -59,43 +60,43 @@ public class FireTruck extends Entity{
 		DIRECTIONS.put("se",225);	//down and right arrows
 		DIRECTIONS.put("ne",315);	//up and right arrows
 		DIRECTIONS.put("",0); 		// included so that if multiple keys in the opposite direction are pressed, the truck faces north
-		
-		textureByDirection = TextureRegion.split(GameScreen.mainGameScreen.textures.Truck(), 32, 32);
-		
+
+		textureByDirection = TextureRegion.split(Kroy.mainGameScreen.textures.Truck(), 32, 32);
+
 		speed = truckStats[0]; 			// Speed value of the truck
 		flowRate = truckStats[1];		// Flow rate of the truck (referred to as the damage of the truck in game)
 		maxWater = truckStats[2];		// Capacity of the truck
 		currentWater = truckStats[2];	// amount of water left, initialised as full in the beginning
 		range = truckStats[3];			// Range of the truck
-				
+
 		firing = false;
 		water= new WaterStream(Vector2.Zero);
 
 		debug=true;
-		
+
 		tank= new StatBar(new Vector2(0,0), "Blue.png");
-		GameScreen.mainGameScreen.AddGameObject(tank);
-		
+		Kroy.mainGameScreen.AddGameObject(tank);
+
 		healthBar= new StatBar(new Vector2(0,0), "Green.png");
-		GameScreen.mainGameScreen.AddGameObject(healthBar);
+		Kroy.mainGameScreen.AddGameObject(healthBar);
 
 
 
 
 	}
-	
+
 	public void moveInDirection() {//When called, this method moves the truck by 1 unit of movement in the direction calculated in "updateDirection()"
-		
+
 		Vector2 movement = new Vector2(1,0); // movement represents where the truck is moving to. Initially set to (1,0) as this represents a unit vector
 
 		movement.setAngle(direction+90); // rotates the vector to whatever angle it needs to face. 90 is added in order to get the keys matching up to movement in the right direction
-		
+
 		float posChange = speed * Gdx.graphics.getDeltaTime();	//Sets how far the truck can move this frame in the x and y direction
 		Matrix3 distance = new Matrix3().setToScaling(posChange,posChange); // Matrix to scale the final normalised vector to the correct distance
-				
+
 		movement.nor(); // Normalises the vector to be a unit vector
 		movement.mul(distance); // Multiplies the directional vector by the correct amount to make sure the truck moves the right amount
-		
+
 		Vector2 newPos = new Vector2(getPosition());
 		if (!isOnCollidableTile(newPos.add(movement.x,0))) { // Checks whether changing updating x direction puts truck on a collidable tile
 				setPosition(newPos); // updates x direction
@@ -109,28 +110,28 @@ public class FireTruck extends Entity{
 	}
 
 	public Integer updateDirection() {// Method checks any arrow keys currently pressed and then converts them into a integer direction
-		
+
 			String directionKey = ""; //
 			String[] directionKeys = {"n", "s", "e", "w"}; // alphabet of directionKey
-			
-			for (int i = 0; i <= 3; i++) {// loops through the 4 arrow keys (Stored as KEYS above) 
+
+			for (int i = 0; i <= 3; i++) {// loops through the 4 arrow keys (Stored as KEYS above)
 				if (Gdx.input.isKeyPressed(ARROWKEYS[i])) {
 					directionKey+=directionKeys[i];
 				}
 			}
-			
+
 			if (directionKey.contains("ns")) {// makes sure direction doesn't change if both up and down are pressed
 				directionKey = directionKey.substring(2);
 			}
 			if (directionKey.contains("ew")) {// makes sure direction doesn't change if both left and right are pressed
 				directionKey = directionKey.substring(0, directionKey.length()-2);
 			}
-			
+
 			return DIRECTIONS.get(directionKey);
 
 	}
-	
-	
+
+
 	public boolean checkEntities() {
 
 		return false;
@@ -138,34 +139,37 @@ public class FireTruck extends Entity{
 
 	public void Update(){
 
-		
+		if (Gdx.input.isKeyPressed(Keys.SPACE)) {
+			System.out.println(getCentre());
+		}
+
 		if (Gdx.input.isKeyPressed(ARROWKEYS[0])||
 				Gdx.input.isKeyPressed(ARROWKEYS[1])||
 				Gdx.input.isKeyPressed(ARROWKEYS[2])||
 				Gdx.input.isKeyPressed(ARROWKEYS[3])) { // Runs movement code if any arrow key pressed
-			
+
 			direction = updateDirection(); // updates direction based on current keyboard input
 			moveInDirection(); // moves in the direction previously specified
 		}
-		
-		if (GameScreen.mainGameScreen.FOLLOWCAMERA) {
-		    GameScreen.mainGameScreen.updateCamera();// Updates the screen position to always have the truck roughly centre
+
+		if (Kroy.mainGameScreen.FOLLOWCAMERA) {
+		    Kroy.mainGameScreen.updateCamera();// Updates the screen position to always have the truck roughly centre
 		}
 		//Move the hitbox to it's new centered position according to the sprites position.
         hitbox.setCenter(getCentre().x, getCentre().y);
-		GameScreen.mainGameScreen.DrawRect(new Vector2(hitbox.x, hitbox.y), new Vector2(hitbox.width, hitbox.height), 2, Color.GREEN);
+        if (debug) {
+        	Kroy.mainGameScreen.DrawRect(new Vector2(hitbox.x, hitbox.y), new Vector2(hitbox.width, hitbox.height), 2, Color.GREEN);
+        	Kroy.mainGameScreen.DrawCircle(getCentre(), range, 1, Color.BLUE);
+        }
+		
 
 		//water bar update
 		tank.setPosition(getCentre().add(0,20));
 		tank.setBarDisplay((currentWater/maxWater)*50);
-		
-		//health bar update
-		System.out.println(maxHealthPoints);
-		System.out.println(healthPoints);
-		
+
 		healthBar.setPosition(getCentre().add(0,25));
 		healthBar.setBarDisplay((healthPoints*50)/maxHealthPoints);
-		
+
 		//player firing
 
 		ArrayList<GameObject> inRange = EntitiesInRange();		//find list of enemies in range
@@ -176,7 +180,7 @@ public class FireTruck extends Entity{
 		}else if(!firing){					//Adds the water stream if something comes into range
 			water= new WaterStream(Vector2.Zero);
 			firing=true;
-			GameScreen.mainGameScreen.AddGameObject(water);		//initialises water as a WaterStream
+			Kroy.mainGameScreen.AddGameObject(water);		//initialises water as a WaterStream
 
 		}
 
@@ -184,7 +188,7 @@ public class FireTruck extends Entity{
 			PlayerFire(inRange);
 		}
 	}
-
+	
 
 	private void PlayerFire(ArrayList<GameObject> targets) {		//Method to find and aim at the nearest target from an ArrayList of Gameobjects
 		GameObject currentGameObject=targets.get(0);
@@ -206,15 +210,15 @@ public class FireTruck extends Entity{
 		water.setRange(direction.len());
 		water.setPosition(getCentre().add(direction.scl(0.5f)));
 
-		((Entity) nearestEnemy).ApplyDamage(1*flowRate);			//applys damage to the nearest enemy
+		((Entity) nearestEnemy).ApplyDamage(flowRate);			//applys damage to the nearest enemy
 		currentWater=currentWater-flowRate;							//reduces the tank by amount of water used
 
 	}
 
 	private ArrayList<GameObject> EntitiesInRange(){	//method to return an array of all enemy GameObjects in range
 		ArrayList<GameObject> outputArray = new ArrayList<GameObject>();	//create arraylist to output enemies in range
-		
-		for (GameObject currentObject : GameScreen.mainGameScreen.getGameObjects()) {		//iterates through all game objects
+
+		for (GameObject currentObject : Kroy.mainGameScreen.getGameObjects()) {		//iterates through all game objects
 			if ((currentObject instanceof Fortress) && (objectInRange(currentObject))){  	//checks if entity is in range and is an enemy
 				outputArray.add(currentObject);												//adds the current entity to the output arraylist
 			}
@@ -222,15 +226,23 @@ public class FireTruck extends Entity{
 
 		return (outputArray);
 	}
-	
+
 	public boolean objectInRange(GameObject object) {		//method to check if a gameobject is in range of the firetruck
 		return (Vector2.dst(object.getCentre().x, object.getCentre().y, getCentre().x, getCentre().y)<range);
+	}
+
+	@Override
+	protected void Die() {
+		remove = true;
+		water.setRemove(true);
+		tank.setRemove(true);
+		healthBar.setRemove(true);
 	}
 
 	public Rectangle getHitbox(){
 		return this.hitbox;
 	}
-	
+
 	public Integer getDirection() {
 		return direction;
 	}
@@ -239,16 +251,14 @@ public class FireTruck extends Entity{
 		if(!(currentWater >= maxWater)){
 			currentWater += 2;
 		}
-		if(!(healthPoints >= 100)){
+		if(!(healthPoints >= maxHealthPoints)){
 			healthPoints += 2;
 		}
 	}
 
 	@Override
 	public void Render(SpriteBatch batch) {
-		batch.setColor(0.1f * healthPoints, 0.1f * healthPoints, 0.1f * healthPoints, 1);
 		super.Render(batch);
-		batch.setColor(Color.WHITE);
 	}
 
 	public boolean isOnCollidableTile(Vector2 pos) {
