@@ -100,11 +100,11 @@ public class GameScreen implements Screen{
 		gamecam.translate(new Vector2(player.getX(),player.getY()));// sets initial Camera position
 		gameObjects.add(player);	//Player
 
-		fireStation = new FireStation(new Vector2(1200,800));
+		fireStation = new FireStation(new Vector2(3650,4050));
 		gameObjects.add(fireStation);
 
 		gameObjects.add(new Fortress(new Vector2(2903,3211), new Texture("cliffords tower.png"), new Vector2(256, 218)));
-		gameObjects.add(new Fortress(new Vector2(3200,5681), new Texture("york minster.png"), new Vector2(256, 300)));
+		gameObjects.add(new Fortress(new Vector2(3200,5681), new Texture("york minster.png"), new Vector2(256, 320)));
 		gameObjects.add(new Fortress(new Vector2(2050,1937), new Texture("york museum.png"), new Vector2(400, 240)));
 
 	}
