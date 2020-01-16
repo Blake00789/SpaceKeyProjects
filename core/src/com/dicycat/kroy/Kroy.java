@@ -13,8 +13,11 @@ public class Kroy extends Game {
 	public static MenuScreen mainMenuScreen;
 	public SpriteBatch batch;
 	
+	private Integer highScore;
+	
 	@Override
 	public void create () {
+		highScore = 6000;		//TODO: Load high score from external 
 		batch = new SpriteBatch();
 		mainMenuScreen = new MenuScreen(this);
 		this.setScreen(mainMenuScreen);
@@ -41,5 +44,14 @@ public class Kroy extends Game {
 	
 	public static int CentreWidth() {
 		return width / 3;
+	}
+	
+	public void setHighScore(Integer highScore) {
+		this.highScore = highScore;
+		//TODO: Write new high score to external
+	}
+	
+	public Integer getHighScore() {
+		return highScore;
 	}
 }

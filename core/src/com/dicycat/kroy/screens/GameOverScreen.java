@@ -22,7 +22,6 @@ public class GameOverScreen implements Screen{
 	  private Viewport gameport; 	//m
 	  
 	  private Stage stage;
-	  //private Viewport viewport;
 	  
 	  public boolean result = true; //to change based on whether game is won or lost
 	  
@@ -35,6 +34,7 @@ public class GameOverScreen implements Screen{
 	  private Texture menuBTN_ACTIVE = new Texture("menuActive.png");
 	  
 	  private Integer score;
+	  private Integer highScore; 
 	  private Label scoreLabel;
 	  private Label scoreNumberLabel;
 	  private Label highScoreLabel;
@@ -43,8 +43,6 @@ public class GameOverScreen implements Screen{
 	  private float padScore;
 	  private float padTop;
 	  private int truckNum;
-	  
-	  //private Texture background;
 
 	  //coordinates for gameoverIMG, Play and Exit buttons 
 	  private int gameOverIMG_WIDTH = 400;
@@ -80,11 +78,16 @@ public class GameOverScreen implements Screen{
 		  table.top();
 		  
 		  score = Kroy.mainGameScreen.getHud().getFinalScore();
+		  highScore = game.getHighScore();
+		  if (score > highScore) {
+			  highScore = score;
+			  game.setHighScore(highScore);
+		  }
 		  
 		  scoreLabel = new Label("YOUR SCORE:", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 		  scoreNumberLabel = new Label(String.format("%05d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 		  highScoreLabel = new Label("HIGH SCORE:", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-		  highScoreNumberLabel = new Label(String.format("%05d", highScoreNumberLabel), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+		  highScoreNumberLabel = new Label(String.format("%05d", highScore), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 		  
 		  padScore = (Kroy.width/2)-scoreLabel.getWidth()-10;
 		  padTop = (Kroy.height/2);
@@ -101,16 +104,13 @@ public class GameOverScreen implements Screen{
 		  table.add(highScoreNumberLabel).padRight(padScore);
 		  
 		  stage.addActor(table);
-		  
 	  }
 	  
+	  @Override 
+	  public void show() {}
 	  
-	  @Override public void show() {}
-	  
-	  
-	  
-	  @Override public void render(float delta) {
-		  
+	  @Override 
+	  public void render(float delta) {
 		  stage.act();	//allows the stage to interact with user input
 		  
 		  game.batch.setProjectionMatrix(gamecam.combined);
@@ -159,29 +159,24 @@ public class GameOverScreen implements Screen{
 		  
 	  	}
 	  
-	  
-	  
-	  
-	  @Override public void resize(int width, int height) { 
+	  @Override 
+	  public void resize(int width, int height) { 
 		  gameport.update(width, height);
 	  }
 	  
-	  @Override public void pause() { // TODO Auto-generated method stub
+	  @Override 
+	  public void pause() {}
 	  
-	  }
+	  @Override 
+	  public void resume() {}
 	  
-	  @Override public void resume() { // TODO Auto-generated method stub
+	  @Override 
+	  public void hide() {}
 	  
-	  }
+	  @Override 
+	  public void dispose() {}
 	  
-	  @Override public void hide() { // TODO Auto-generated method stub
-	  
-	  }
-	  
-	  @Override public void dispose() { // TODO Auto-generated method stub
-	  }
-	  
-	  }
+	}
 	 
 
 

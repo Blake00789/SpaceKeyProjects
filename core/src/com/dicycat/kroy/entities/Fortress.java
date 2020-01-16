@@ -12,9 +12,9 @@ public class Fortress extends Entity {
 
 	BulletDispenser dispenser;
 	StatBar healthBar;
+	Texture deadTexture;
 	
-	public Fortress(Vector2 spawnPos, Texture fortressTexture, Vector2 size) {
-		//super(spawnPos, fortressTexture, Vector2.Zero, 500);
+	public Fortress(Vector2 spawnPos, Texture fortressTexture, Texture deadTexture, Vector2 size) {
 		super(spawnPos, fortressTexture, size, 500);
 		dispenser = new BulletDispenser(this);
 		dispenser.AddPattern(new Pattern(180, 300, 800, 0.1f, 20, 1, 0.5f));
@@ -24,6 +24,8 @@ public class Fortress extends Entity {
 		dispenser.AddPattern(new Pattern(false, 0, 3, 100, 900, 0.02f, 1, 0.2f));
 		dispenser.AddPattern(new Pattern(true, 0, 1, 100, 900, 0.02f, 1, 1.2f));
 
+		this.deadTexture = deadTexture;
+		Kroy.mainGameScreen.AddFortress();
 		healthBar = new StatBar(new Vector2(getCentre().x, getCentre().y + 100), "Red.png", 10);
 		Kroy.mainGameScreen.AddGameObject(healthBar);
 	}
@@ -39,11 +41,15 @@ public class Fortress extends Entity {
 	}
 	
 	protected void Die() { // Overwritten die implementation allows for removal from gameObjects List so to remove functionality but to display the broken building graphic
-		sprite.setTexture(new Texture("TempFortressDead.png"));
+		sprite.setTexture(deadTexture);
 		Kroy.mainGameScreen.getHud().updateScore(1000);
 		setRemove(true);
 		healthBar.setRemove(true);
 		displayable = true;
+		Kroy.mainGameScreen.RemoveFortress();
+		if (Kroy.mainGameScreen.fortressesLeft() == 0) {	//If last fortress
+			Kroy.mainGameScreen.gameOver(); 					//End game
+		}
 	}
 	
 	public void ApplyDamage(float damage) {
