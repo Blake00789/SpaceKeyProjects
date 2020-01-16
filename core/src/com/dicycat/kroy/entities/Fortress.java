@@ -12,7 +12,7 @@ public class Fortress extends Entity {
 	BulletDispenser dispenser;
 	private Texture deadTexture;
 
-	public Fortress(Vector2 spawnPos, Texture fortressTexture, Texture deadTexture, Vetor2 size) {
+	public Fortress(Vector2 spawnPos, Texture fortressTexture, Texture deadTexture, Vector2 size) {
 		super(spawnPos, fortressTexture, size, 100);
 		this.deadTexture = deadTexture;
 		dispenser = new BulletDispenser(this);
