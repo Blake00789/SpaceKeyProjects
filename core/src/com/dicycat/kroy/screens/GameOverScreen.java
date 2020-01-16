@@ -23,7 +23,7 @@ public class GameOverScreen implements Screen{
 	  
 	  private Stage stage;
 	  
-	  public boolean result = true; //to change based on whether game is won or lost
+	  public boolean result; //to change based on whether game is won or lost
 	  
 	  private Texture gameOverIMG= new Texture("gameover.png");
 	  private Texture youWonIMG= new Texture("youwon.png");
@@ -66,8 +66,9 @@ public class GameOverScreen implements Screen{
 	  int yHotSpot = 0;
 	  
 	  
-	  public GameOverScreen(Kroy game, int truckNum) { 
+	  public GameOverScreen(Kroy game, int truckNum, Boolean result) { 
 		  this.game = game; 
+		  this.result = result;
 		  gamecam = new OrthographicCamera();    //m
 		  gameport = new FitViewport(Kroy.width, Kroy.height, gamecam);
 		  stage = new Stage(gameport);

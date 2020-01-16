@@ -48,7 +48,7 @@ public class Fortress extends Entity {
 		displayable = true;
 		Kroy.mainGameScreen.RemoveFortress();
 		if (Kroy.mainGameScreen.fortressesLeft() == 0) {	//If last fortress
-			Kroy.mainGameScreen.gameOver(); 					//End game
+			Kroy.mainGameScreen.gameOver(true); 					//End game WIN
 		}
 	}
 	

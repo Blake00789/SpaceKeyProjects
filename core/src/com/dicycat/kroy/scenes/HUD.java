@@ -76,7 +76,7 @@ public class HUD {
 	}
 	
 	public void gameOver() {
-		Kroy.mainGameScreen.gameOver();		
+		Kroy.mainGameScreen.gameOver(false);	//Lose
 	}
 	
 	public Integer getFinalScore() {

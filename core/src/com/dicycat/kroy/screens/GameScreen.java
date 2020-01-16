@@ -319,8 +319,8 @@ public class GameScreen implements Screen{
 		return fortressesCount;
 	}
 
-	public void gameOver() {
-		game.setScreen(new GameOverScreen(game, truckNum));
+	public void gameOver(boolean won) {
+		game.setScreen(new GameOverScreen(game, truckNum, won));
 	}
 
 	public void respawn() {
