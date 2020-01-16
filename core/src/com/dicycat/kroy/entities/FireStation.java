@@ -7,7 +7,7 @@ import com.dicycat.kroy.Kroy;
 public class FireStation extends Entity {
 
 	public FireStation(Vector2 spawnPos) {
-		super(spawnPos, new Texture("FireStationTemp.png"), new Vector2(298,175), 100);
+		super(spawnPos, new Texture("fire station.png"), new Vector2(175,175), 100);
 	}
 	
 	protected void Die() { // Overwritten die implementation allows for removal from gameObjects List so to remove functionality but to display the broken building graphic
