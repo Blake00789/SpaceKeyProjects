@@ -14,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dicycat.kroy.Kroy;
-import com.dicycat.kroy.scenes.HUD;
 
 public class GameOverScreen implements Screen{
 	
@@ -23,7 +22,7 @@ public class GameOverScreen implements Screen{
 	  private Viewport gameport; 	//m
 	  
 	  private Stage stage;
-	  private Viewport viewport;
+	  //private Viewport viewport;
 	  
 	  public boolean result = true; //to change based on whether game is won or lost
 	  

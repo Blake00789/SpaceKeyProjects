@@ -56,11 +56,6 @@ public class PauseWindow {
 	    
 		table.setFillParent(true);
 	    stage.addActor(table);
-	    
-	    
-	    
-	    
-	    
 	}
 	
 	public void visibility(boolean state){

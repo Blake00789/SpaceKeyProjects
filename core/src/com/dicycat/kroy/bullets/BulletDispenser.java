@@ -5,9 +5,8 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.dicycat.kroy.entities.Entity;
-import com.dicycat.kroy.screens.GameScreen;
 import com.dicycat.kroy.Kroy;
+import com.dicycat.kroy.entities.Entity;
 
 public class BulletDispenser {
 

@@ -1,17 +1,12 @@
 package com.dicycat.kroy.bullets;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.dicycat.kroy.GameObject;
-import com.dicycat.kroy.gamemap.TiledGameMap;
-import com.dicycat.kroy.entities.FireTruck;
-import com.dicycat.kroy.screens.GameScreen;
 import com.dicycat.kroy.Kroy;
+import com.dicycat.kroy.entities.FireTruck;
 
 public class Bullet extends GameObject {
 	private int speed;			//Speed of the bullet

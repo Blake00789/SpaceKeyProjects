@@ -1,28 +1,24 @@
 package com.dicycat.kroy.entities;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
-import com.dicycat.kroy.misc.StatBar;
-import com.dicycat.kroy.misc.WaterStream;
-import java.util.ArrayList;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.dicycat.kroy.GameObject;
 import com.dicycat.kroy.Kroy;
-import com.dicycat.kroy.gamemap.TiledGameMap;
+import com.dicycat.kroy.misc.StatBar;
+import com.dicycat.kroy.misc.WaterStream;
 import com.dicycat.kroy.screens.GameScreen;
-import java.util.Dictionary;
-import java.util.HashMap;
 
 public class FireTruck extends Entity{
 	private float speed;	//How fast the truck can move
@@ -48,7 +44,6 @@ public class FireTruck extends Entity{
 
 	public FireTruck(Vector2 spawnPos, Float[] truckStats) {	//Constructor
 		super(spawnPos, Kroy.mainGameScreen.textures.Truck(), new Vector2(25,50), 100);
-
 
 		DIRECTIONS.put("n",0);		//North Facing Direction (up arrow)
 		DIRECTIONS.put("w",90);		//West Facing Direction (left arrow)
@@ -131,7 +126,6 @@ public class FireTruck extends Entity{
 
 	}
 
-
 	public boolean checkEntities() {
 
 		return false;
@@ -152,9 +146,8 @@ public class FireTruck extends Entity{
 			moveInDirection(); // moves in the direction previously specified
 		}
 
-		if (Kroy.mainGameScreen.FOLLOWCAMERA) {
-		    Kroy.mainGameScreen.updateCamera();// Updates the screen position to always have the truck roughly centre
-		}
+		Kroy.mainGameScreen.updateCamera();// Updates the screen position to always have the truck roughly centre
+		
 		//Move the hitbox to it's new centered position according to the sprites position.
         hitbox.setCenter(getCentre().x, getCentre().y);
         if (debug) {
@@ -171,7 +164,6 @@ public class FireTruck extends Entity{
 		healthBar.setBarDisplay((healthPoints*50)/maxHealthPoints);
 
 		//player firing
-
 		ArrayList<GameObject> inRange = EntitiesInRange();		//find list of enemies in range
 
 		if(inRange.isEmpty() || (currentWater<=0)){				//Removes the water stream if nothing is in range

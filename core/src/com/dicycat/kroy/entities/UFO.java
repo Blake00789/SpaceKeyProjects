@@ -1,13 +1,11 @@
 package com.dicycat.kroy.entities;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.dicycat.kroy.Kroy;
 import com.dicycat.kroy.bullets.Bullet;
 import com.dicycat.kroy.bullets.BulletDispenser;
 import com.dicycat.kroy.bullets.Pattern;
-import com.dicycat.kroy.screens.GameScreen;
-import com.dicycat.kroy.Kroy;
 
 public class UFO extends Entity {
 

@@ -1,11 +1,9 @@
 package com.dicycat.kroy;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.dicycat.kroy.gamemap.TiledGameMap;
-import com.dicycat.kroy.screens.GameScreen;
 
 public abstract class GameObject {	//Basic object for all displayable objects
 	//protected GameScreen gameScreen;				//Reference to the gameScreen to be displayed on
