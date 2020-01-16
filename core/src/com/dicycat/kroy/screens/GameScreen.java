@@ -52,7 +52,7 @@ public class GameScreen implements Screen{
 	private PauseWindow pauseWindow;
 	public static OptionsWindow optionsWindow;
 	public static TiledGameMap gameMap;
-	private Float[][] truckStats = {//Each list is a configuration of a specific truck. {speed, flowRate, capcity, range}	
+	private Float[][] truckStats = {//Each list is a configuration of a specific truck. {speed, flowRate, capcity, range}
 			{450f, 1f, 75f, 300f},		//Speed
 			{300f, 1.5f, 75f, 300f},	//Flow rate
 			{300f, 1f, 100f, 300f},		//Capacity
@@ -123,30 +123,30 @@ public class GameScreen implements Screen{
 			if (gameTimer <= 0) {		//Once timer is over
 				fireStation.ApplyDamage(100);	//Destroy fire station
 			}
-	
+
 			UpdateLoop(); //Update all game objects positions but does not render them as to be able to render everything as quickly as possible
-	
+
 			gameMap.renderRoads(gamecam); // Render the background roads, fields and rivers
-	
+
 			Kroy.batch.setProjectionMatrix(hud.stage.getCamera().combined);
 			Kroy.batch.setProjectionMatrix(gamecam.combined);	//Mic:only renders the part of the map where the camera is
 			Kroy.batch.begin(); // Game loop Start
-	
+
 			hud.update(delta);
-	
+
 			renderObjects(); // Renders objects specified in the UpdateLoop() called previously
-	
+
 			Kroy.batch.end();
-	
+
 			gameMap.renderBuildings(gamecam); // Renders the buildings and the foreground items which are not entities
-	
+
 			hud.stage.draw();
 			pauseWindow.stage.draw();
-	
+
 			if (showDebug) {
 				DrawDebug(); //Draw all debug items as they have to be drawn outside the batch
 			}
-	
+
 			break;
 			case PAUSE:
 				pauseWindow.stage.draw();

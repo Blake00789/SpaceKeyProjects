@@ -12,7 +12,7 @@ public class GameTextures {	//Ensures multiple similar sprites use same texture 
 		
 		truck = new Texture(trucks[truckNum]);
 		ufo = new Texture("ufo.png");
-		bullet = new Texture("singleP.png");
+		bullet = new Texture("bullet.png");
 	}
 	
 	public Texture Truck() {
