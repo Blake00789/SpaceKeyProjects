@@ -69,15 +69,11 @@ public class FireTruck extends Entity{
 
 		debug=true;
 
-		tank= new StatBar(new Vector2(0,0), "Blue.png");
+		tank= new StatBar(new Vector2(0,0), "Blue.png", 3);
 		Kroy.mainGameScreen.AddGameObject(tank);
 
-		healthBar= new StatBar(new Vector2(0,0), "Green.png");
+		healthBar= new StatBar(new Vector2(0,0), "Green.png", 3);
 		Kroy.mainGameScreen.AddGameObject(healthBar);
-
-
-
-
 	}
 
 	public void moveInDirection() {//When called, this method moves the truck by 1 unit of movement in the direction calculated in "updateDirection()"
@@ -173,7 +169,6 @@ public class FireTruck extends Entity{
 			water= new WaterStream(Vector2.Zero);
 			firing=true;
 			Kroy.mainGameScreen.AddGameObject(water);		//initialises water as a WaterStream
-
 		}
 
 		if (firing) {					//if the player is firing runs the PlayerFire method

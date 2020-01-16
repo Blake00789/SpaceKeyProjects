@@ -15,7 +15,6 @@ public abstract class GameObject {	//Basic object for all displayable objects
 		sprite = new Sprite(image,(int) spawnPos.x ,(int) spawnPos.y ,(int) imSize.x,(int) imSize.y); // sprite class stores the texture position and size of the object
 		remove = false;
 		displayable = false;
-
 	}
 
 	public abstract void Update(); //Called every frame | Update the game object
@@ -27,7 +26,7 @@ public abstract class GameObject {	//Basic object for all displayable objects
 	public void changePosition(Vector2 v) { // changes current position by vector x
 		sprite.setX(getX() + v.x);
 		sprite.setY(getY() + v.y);
-		}
+	}
 
 	public void addX(float x) {
 		sprite.setX(sprite.getX() + x);
@@ -56,16 +55,14 @@ public abstract class GameObject {	//Basic object for all displayable objects
 	public boolean checkDisplayable() { return displayable; }
 
 	public Vector2 getCentre() {	//Return centre of GameObject
-
 		return new Vector2(getOriginX()+getX(), getOriginY()+getY());
-
 	}
 
 	//Setters
 	public void setPosition(Vector2 pos) {
 		sprite.setX(pos.x);
 		sprite.setY(pos.y);
-		}
+	}
 
 
 	public void setRotation(float degrees) { // sets direction "degrees" to the direction currently facing

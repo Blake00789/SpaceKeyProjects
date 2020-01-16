@@ -52,11 +52,11 @@ public class GameScreen implements Screen{
 	private PauseWindow pauseWindow;
 	public static OptionsWindow optionsWindow;
 	public static TiledGameMap gameMap;
-	private Float[][] truckStats = {//Each list is a configuration of a specific truck. {speed, flowRate, capcity, range}
-			{450f, 1f, 75f, 300f},		//Speed
-			{300f, 1.5f, 75f, 300f},	//Flow rate
-			{300f, 1f, 100f, 300f},		//Capacity
-			{300f, 1f, 75f, 400f}		//Range
+	private Float[][] truckStats = {	//Each list is a configuration of a specific truck. {speed, flowRate, capcity, range}
+			{450f, 1f, 400f, 300f},		//Speed
+			{300f, 1.5f, 400f, 300f},	//Flow rate
+			{300f, 1f, 500f, 300f},		//Capacity
+			{300f, 1f, 400f, 450f}		//Range
 			};
 	private int truckNum; // Identifies the truck thats selected in the menu screen
 	private List<GameObject> objectsToRender = new ArrayList<GameObject>(); // List of game objects that have been updated but need rendering
