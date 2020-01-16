@@ -107,8 +107,8 @@ public class GameScreen implements Screen{
 //			gameObjects.add(f);
 //		}
 
-		gameObjects.add(new Fortress(new Vector2(2903,3211), new Texture("cliffords tower.png")));
-		gameObjects.add(new Fortress(new Vector2(3200,5681), new Texture("york minster.png")));
+		gameObjects.add(new Fortress(new Vector2(2903,3211), new Texture("cliffords tower.png"), new Texture("cliffords tower flooded.png")));
+		gameObjects.add(new Fortress(new Vector2(3200,5681), new Texture("york minster.png"), new Texture("york minster flooded.png")));
 
 	}
 
