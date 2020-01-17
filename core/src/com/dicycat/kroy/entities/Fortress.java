@@ -13,7 +13,6 @@ public class Fortress extends Entity {
 	private BulletDispenser dispenser;
 	private Texture deadTexture;
 	private StatBar healthBar;
-	private Texture deadTexture;
 
 	public Fortress(Vector2 spawnPos, Texture fortressTexture, Texture deadTexture, Vector2 size) {
 		super(spawnPos, fortressTexture, size, 500);

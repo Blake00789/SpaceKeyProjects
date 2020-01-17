@@ -98,12 +98,12 @@ public class GameScreen implements Screen{
 
 		gamecam.translate(new Vector2(player.getX(),player.getY()));// sets initial Camera position
 		gameObjects.add(player);	//Player
-
-		fireStation = new FireStation(new Vector2(3650,4050));
+		
+		fireStation = new FireStation();
 		gameObjects.add(fireStation);
 		gameObjects.add(new Fortress(new Vector2(2903,3211), new Texture("cliffords tower.png"), new Texture("cliffords tower dead.png"), new Vector2(256, 218)));
 		gameObjects.add(new Fortress(new Vector2(3200,5681), new Texture("york minster.png"), new Texture("york minster dead.png"), new Vector2(256, 320)));
-		gameObjects.add(new Fortress(new Vector2(2050,1937), new Texture("york museum.png"), new Texture("york museum dead.png"), new Vector2(400, 240)));=
+		gameObjects.add(new Fortress(new Vector2(2050,1937), new Texture("york museum.png"), new Texture("york museum dead.png"), new Vector2(400, 240)));
 
 	}
 
@@ -320,6 +320,10 @@ public class GameScreen implements Screen{
 
 	public void gameOver(boolean won) {
 		game.setScreen(new GameOverScreen(game, truckNum, won));
+	}
+
+	public Vector2 getSpawnPosition() {
+		return spawnPosition;
 	}
 
 	public void respawn() {

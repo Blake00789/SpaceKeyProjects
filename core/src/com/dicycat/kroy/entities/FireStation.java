@@ -6,10 +6,12 @@ import com.dicycat.kroy.Kroy;
 
 public class FireStation extends Entity {
 
-	public FireStation(Vector2 spawnPos) {
-		super(spawnPos, new Texture("fire station.png"), new Vector2(175,175), 100);
+	private static Texture texture = new Texture("FireStationTemp.png");
+
+	public FireStation() {
+		super(new Vector2(Kroy.mainGameScreen.getSpawnPosition().add(-(texture.getWidth()/2), 100)), texture, new Vector2(texture.getWidth(),texture.getHeight()), 100);
 	}
-	
+
 	protected void Die() { // Overwritten die implementation allows for removal from gameObjects List so to remove functionality but to display the broken building graphic
 		sprite.setTexture(new Texture("FireStationTempDead.png"));
 		setRemove(true);
