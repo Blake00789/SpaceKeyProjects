@@ -26,7 +26,9 @@ public class BulletDispenser {
 	float patternTimer;		//Time since last pattern
 	float bulletTimer;		//Time since last bullet
 	
-	//Constructor
+	/**
+	 * @param creator Owner of the BulletDispenser
+	 */
 	public BulletDispenser(Entity creator)
 	{
 		owner = creator;

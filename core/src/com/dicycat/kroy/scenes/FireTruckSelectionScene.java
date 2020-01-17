@@ -15,6 +15,11 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dicycat.kroy.Kroy;
 
+/**
+* 
+* @author 
+*
+*/
 public class FireTruckSelectionScene {
 
 	public Stage stage;
@@ -33,6 +38,9 @@ public class FireTruckSelectionScene {
     float cw = sw * 0.7f;
     
     
+	/**
+	 * @param game
+	 */
 	public FireTruckSelectionScene(Kroy game) {
 		sb = game.batch;
 		Viewport viewport = new ScreenViewport(new OrthographicCamera());
@@ -61,6 +69,9 @@ public class FireTruckSelectionScene {
 	    
 	}
 	
+	/**
+	 * @param state
+	 */
 	public void visibility(boolean state){
 		this.table.setVisible(state);
 	}

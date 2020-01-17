@@ -21,6 +21,12 @@ public class Fortress extends Entity {
 	private Texture deadTexture;
 	private StatBar healthBar;
 
+	/**
+	 * @param spawnPos
+	 * @param fortressTexture
+	 * @param deadTexture
+	 * @param size
+	 */
 	public Fortress(Vector2 spawnPos, Texture fortressTexture, Texture deadTexture, Vector2 size) {
 		super(spawnPos, fortressTexture, size, 500);
 		dispenser = new BulletDispenser(this);
@@ -37,11 +43,14 @@ public class Fortress extends Entity {
 		Kroy.mainGameScreen.AddGameObject(healthBar);
 	}
 
+	/**
+	 * Removes from active pool and displays destroyed state
+	 */
 	@Override
-	protected void Die() { // Overwritten die implementation allows for removal from gameObjects List so to remove functionality but to display the broken building graphic
+	protected void Die() {
+		super.Die();
 		sprite.setTexture(deadTexture);
 		Kroy.mainGameScreen.getHud().updateScore(1000);
-		setRemove(true);
 		healthBar.setRemove(true);
 		displayable = true;
 		Kroy.mainGameScreen.RemoveFortress();
@@ -62,6 +71,9 @@ public class Fortress extends Entity {
 		healthBar.setBarDisplay((healthPoints*500)/maxHealthPoints);
 	}
 
+	/**
+	 *
+	 */
 	@Override
 	public void Update() {
 		//weapons

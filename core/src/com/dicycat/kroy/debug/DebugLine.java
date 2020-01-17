@@ -33,7 +33,7 @@ public class DebugLine extends DebugDraw {
 	}
 
 	@Override
-	public void Draw(Matrix4 projectionMatrix)	//Draw a coloured line between 2 points
+	public void Draw(Matrix4 projectionMatrix)
     {
         Gdx.gl.glLineWidth(lineWidth);
         debugRenderer.setProjectionMatrix(projectionMatrix);

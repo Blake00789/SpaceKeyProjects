@@ -18,7 +18,12 @@ import com.dicycat.kroy.Kroy;
 import com.dicycat.kroy.scenes.FireTruckSelectionScene;
 import com.dicycat.kroy.scenes.OptionsWindow;
   
- public class MenuScreen implements Screen{
+ /**
+  * 
+ * @author 
+ *
+ */
+public class MenuScreen implements Screen{
   
   private Kroy game; 
   private OrthographicCamera gamecam;	//m
@@ -46,7 +51,25 @@ import com.dicycat.kroy.scenes.OptionsWindow;
   
   FireTruckSelectionScene fireTruckSelector;
   boolean currentlyRunningGame = false;
+
+  /**
+   *  Used to define the current state of the screen, 
+   *  MAINMENU is used mostly but then TRUCKSELECT used when the "NewGame" button has been pressed  
+   * 
+   * @author 
+   *
+   */
+  public static enum State {
+	  MAINMENU,
+	  TRUCKSELECT,
+	  OPTIONS
+  }
   
+  public State state = State.MAINMENU;
+  
+  /**
+   * @param game
+   */
   public MenuScreen(Kroy game) { 
 	  this.game = game; 
 	  exitBTN = new Texture("exit.png"); 	//in later stages we could also have buttonActive and buttonInactive
@@ -75,19 +98,12 @@ import com.dicycat.kroy.scenes.OptionsWindow;
 	  
   }
   
-  public static enum State{// Used to define the current state of the screen, MAINMENU is used mostly but then TRUCKSELECT used when the "NewGame" button has been pressed
-	  MAINMENU,
-	  TRUCKSELECT,
-	  OPTIONS
-  }
-  
-  public State state = State.MAINMENU;
-  
   @Override 
   public void show() {}
   
-  
-  
+  /**
+   *
+   */
   @Override 
   public void render(float delta) { 
 	  
@@ -167,11 +183,17 @@ import com.dicycat.kroy.scenes.OptionsWindow;
 		  }
   	}
   
+	/**
+	 * @param s
+	 */
 	public void setGameState(State s){
 	    this.state = s;
 	}
   
-	public void clickCheck() {// checks if any of the buttons have been pressed
+	/**
+	 * Checks if any of the buttons have been pressed
+	 */
+	public void clickCheck() {
 		//Truck 1 Selected
 		fireTruckSelector.truckButton1.addListener(new ClickListener() {
 			@Override
@@ -216,10 +238,16 @@ import com.dicycat.kroy.scenes.OptionsWindow;
 	} 
   
   
+  /**
+   * @param state
+   */
   public void setCurrentlyRunningGame(boolean state) {
 	  currentlyRunningGame = state;
   }
   
+  /**
+   *
+   */
   @Override 
   public void resize(int width, int height) {
 	  gameport.update(width, height);

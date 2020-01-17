@@ -14,6 +14,9 @@ import com.dicycat.kroy.Kroy;
 public class FireStation extends Entity {
 	private static Texture texture = new Texture("FireStationTemp.png");
 
+	/**
+	 * 
+	 */
 	public FireStation() {
 		super(new Vector2(Kroy.mainGameScreen.getSpawnPosition().add(-(texture.getWidth()/2), 100)), texture, new Vector2(texture.getWidth(),texture.getHeight()), 100);
 	}
@@ -28,6 +31,9 @@ public class FireStation extends Entity {
 		displayable = true;
 	}
 
+	/**
+	 *
+	 */
 	public void Update(){
 		if(playerInRadius()){
 			Kroy.mainGameScreen.getPlayer().replenish();

@@ -17,12 +17,18 @@ public class UFO extends Entity {
 
 	BulletDispenser dispenser;
 
+	/**
+	 * @param spawnPos
+	 */
 	public UFO(Vector2 spawnPos) {
 		super(spawnPos, Kroy.mainGameScreen.textures.UFO(), new Vector2(80, 80), 100);
 		dispenser = new BulletDispenser(this);
 		dispenser.AddPattern(new Pattern(180, 300, 800, 0.1f, 20, 1, 0.5f));
 	}
 
+	/**
+	 *
+	 */
 	@Override
 	public void Update() {
 		//movement

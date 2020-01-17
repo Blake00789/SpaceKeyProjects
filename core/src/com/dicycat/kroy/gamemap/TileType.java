@@ -3,6 +3,11 @@ package com.dicycat.kroy.gamemap;
 
 import java.util.HashMap;
 
+/**
+* 
+* @author 
+*
+*/
 public enum TileType {
 	
 //	PAVEMENT1(8, true),

@@ -38,11 +38,18 @@ public class Kroy extends Game {
 	@Override
 	public void dispose () {}
 	
-	public void newGame(int truckNum) {// Call to generate a brand new GameScreen which runs a new game
+	/**
+	 * Call to generate a brand new GameScreen which runs a new game
+	 * @param truckNum  Selected truck
+	 */
+	public void newGame(int truckNum) {
 		mainGameScreen = new GameScreen(this,truckNum);// Initialise new game
 		setScreen(mainGameScreen);// Display new game
 	}
 
+	/**
+	 * Return back to the menu screen
+	 */
 	public void backToMenu() {
 		mainMenuScreen.state = MenuScreen.State.MAINMENU; // sets menu screen back to the original state
 		mainMenuScreen.setCurrentlyRunningGame(false); //Tells the screen not to block any button pushes which would initialisze a new game again
@@ -50,6 +57,7 @@ public class Kroy extends Game {
 	}
 	
 	/**
+	 * Centre of the screen width
 	 * @return centre of the screen width
 	 */
 	public static int CentreWidth() {

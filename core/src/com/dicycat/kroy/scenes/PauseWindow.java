@@ -14,6 +14,11 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dicycat.kroy.Kroy;
 
+/**
+* 
+* @author 
+*
+*/
 public class PauseWindow {
 	
 	public Stage stage;
@@ -28,6 +33,9 @@ public class PauseWindow {
     public TextButton menu = new TextButton("MENU", skin);
     
     
+	/**
+	 * @param game
+	 */
 	public PauseWindow(Kroy game) {
 		sb = game.batch;
 		Viewport viewport = new ScreenViewport(new OrthographicCamera());
@@ -45,6 +53,9 @@ public class PauseWindow {
 	    stage.addActor(table);
 	}
 	
+	/**
+	 * @param state
+	 */
 	public void visibility(boolean state){
 		this.table.setVisible(state);
 	}

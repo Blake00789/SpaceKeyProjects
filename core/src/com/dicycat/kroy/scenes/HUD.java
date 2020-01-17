@@ -11,6 +11,11 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dicycat.kroy.Kroy;
 
+/**
+* 
+* @author 
+*
+*/
 public class HUD {
 	public Stage stage;
 	private Viewport viewport;	//creating new port so that the HUD stays locked while map can move around independently
@@ -28,6 +33,10 @@ public class HUD {
 	Label trucksCountLabel;	//we could put mini images of the trucks instead of using an int for the lives
 	
 	
+	/**
+	 * @param sb
+	 * @param game
+	 */
 	public HUD(SpriteBatch sb, Kroy game) {
 		viewport = new ScreenViewport(new OrthographicCamera());
 		stage = new Stage(viewport, sb);	//Where we are going to put the HUD elements 
@@ -55,6 +64,9 @@ public class HUD {
 		
 	}
 	
+	/**
+	 * @param dt
+	 */
 	public void update(float dt) {
 		timeCount += dt;
 		if (timeCount >= 1) {
@@ -65,6 +77,9 @@ public class HUD {
 		}
 	}
 	
+	/**
+	 * 
+	 */
 	public void updateLives() {
 		if (trucks>1) {
 			trucks -= 1;
@@ -74,6 +89,9 @@ public class HUD {
 		}
 	}
 	
+	/**
+	 * Ends the game with the lose state
+	 */
 	public void gameOver() {
 		Kroy.mainGameScreen.gameOver(false);	//Lose
 	}
@@ -90,6 +108,9 @@ public class HUD {
 		return score;
 	}
 
+	/**
+	 * @param x
+	 */
 	public void updateScore(Integer x){
 		score += x;
 	}

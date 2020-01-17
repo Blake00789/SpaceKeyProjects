@@ -15,6 +15,11 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dicycat.kroy.Kroy;
 
+/**
+* 
+* @author 
+*
+*/
 public class GameOverScreen implements Screen{
 	
 	private Kroy game; 
@@ -66,7 +71,12 @@ public class GameOverScreen implements Screen{
 	  int yHotSpot = 0;
 	  
 	  
-	  public GameOverScreen(Kroy game, int truckNum, Boolean result) { 
+	  /**
+	 * @param game
+	 * @param truckNum
+	 * @param result
+	 */
+	public GameOverScreen(Kroy game, int truckNum, Boolean result) { 
 		  this.game = game; 
 		  this.result = result;
 		  gamecam = new OrthographicCamera();    //m
@@ -110,6 +120,9 @@ public class GameOverScreen implements Screen{
 	  @Override 
 	  public void show() {}
 	  
+	  /**
+	   *
+	   */
 	  @Override 
 	  public void render(float delta) {
 		  stage.act();	//allows the stage to interact with user input
@@ -160,6 +173,9 @@ public class GameOverScreen implements Screen{
 		  
 	  	}
 	  
+	  /**
+	   *
+	   */
 	  @Override 
 	  public void resize(int width, int height) { 
 		  gameport.update(width, height);
@@ -177,7 +193,7 @@ public class GameOverScreen implements Screen{
 	  @Override 
 	  public void dispose() {}
 	  
-	}
+}
 	 
 
 

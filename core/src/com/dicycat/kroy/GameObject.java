@@ -22,13 +22,25 @@ public abstract class GameObject {
 		displayable = false;
 	}
 
-	public abstract void Update(); //Called every frame | Update the game object
+	/**
+	 * Called every frame.
+	 * Update the game object.
+	 */
+	public abstract void Update();
 
-	public void Render(SpriteBatch batch) { //Called every frame | Render the object
+	/**
+	 * Render the object.
+	 * @param batch Batch to render
+	 */
+	public void Render(SpriteBatch batch) {
 		batch.draw(getTexture(), getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getXScale(), getYScale(), getRotation(), 0, 0, getTextureWidth(), getTextureHeight(), false, false);
 	}
 
-	public void changePosition(Vector2 v) { // changes current position by vector x
+	/**
+	 * changes current position by vector v
+	 * @param v Vector to move
+	 */
+	public void changePosition(Vector2 v) {
 		sprite.setX(getX() + v.x);
 		sprite.setY(getY() + v.y);
 	}
@@ -59,7 +71,11 @@ public abstract class GameObject {
 	public Vector2 getPosition() { return new Vector2(getX(), getY());  }
 	public boolean checkDisplayable() { return displayable; }
 
-	public Vector2 getCentre() {	//Return centre of GameObject
+	/**
+	 * Return centre of GameObject
+	 * @return Centre of GameObject
+	 */
+	public Vector2 getCentre() {
 		return new Vector2(getOriginX()+getX(), getOriginY()+getY());
 	}
 
@@ -69,7 +85,11 @@ public abstract class GameObject {
 		sprite.setY(pos.y);
 	}
 
-	public void setRotation(float degrees) { // sets direction "degrees" to the direction currently facing
+	/**
+	 * sets direction "degrees" to the direction currently facing
+	 * @param degrees direction to face
+	 */
+	public void setRotation(float degrees) {
 		rotation = degrees;
 	}
 
@@ -77,6 +97,9 @@ public abstract class GameObject {
 		remove = x;
 	}
 	
+	/**
+	 * 
+	 */
 	protected void Die() {
 		remove = true;
 	}

@@ -27,14 +27,14 @@ public class Pattern {
 	 * @param multi How many bullets per shot (spread)
 	 * @param cooldown Time after pattern to wait before firing the next pattern
 	 */
-	public Pattern(int degree, int speed, int range, float timeBetweenShots, int patternLength, int multi, float cooldown) {	//Constructor
+	public Pattern(int degree, int speed, int range, float timeBetweenShots, int patternLength, int multi, float cooldown) {
 		aim = false;
 		waitTime = timeBetweenShots;
 		bullets = new Bullet[patternLength][multi];
 		this.cooldown = cooldown;
 		offset = (multi - (multi % 2)) / 2;
 		xtra = (1-(multi % 2)) * 5;
-		degree = 90 - degree;	//Convert normal bearings (0 is up, clockwise) to libgdx Vector2 degrees (0 is right, anti-clockwise)
+		degree = 90 - degree;	//Convert normal bearings (0 is up, clockwise) to LIBGDX Vector2 degrees (0 is right, anti-clockwise)
 
 		Vector2 direction = Vector2.Zero;
 		for (int i = 0; i < patternLength; i++) {
@@ -55,7 +55,7 @@ public class Pattern {
 	 * @param multi How many bullets per shot (spread)
 	 * @param cooldown Time after pattern to wait before firing the next pattern
 	 */
-	public Pattern(int speed, int range, float timeBetweenShots, int patternLength, int multi, float cooldown) {	//Constructor
+	public Pattern(int speed, int range, float timeBetweenShots, int patternLength, int multi, float cooldown) {
 		this.aim = true;
 		waitTime = timeBetweenShots;
 		bullets = new Bullet[patternLength][multi];

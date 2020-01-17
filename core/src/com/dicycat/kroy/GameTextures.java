@@ -17,6 +17,9 @@ public class GameTextures {
 	String[] trucks = {"fireTruck1.png", "fireTruck2.png", "fireTruck3.png", "fireTruck4.png"};
 	
 	
+	/**
+	 * @param truckNum Which truck texture to get
+	 */
 	public GameTextures(int truckNum) {
 		truck = new Texture(trucks[truckNum]);
 		ufo = new Texture("ufo.png");

@@ -46,7 +46,11 @@ public class FireTruck extends Entity{
 	TextureAtlas atlas;
 	TextureRegion[][] textureByDirection;
 
-	public FireTruck(Vector2 spawnPos, Float[] truckStats) {	//Constructor
+	/**
+	 * @param spawnPos
+	 * @param truckStats
+	 */
+	public FireTruck(Vector2 spawnPos, Float[] truckStats) {
 		super(spawnPos, Kroy.mainGameScreen.textures.Truck(), new Vector2(25,50), 100);
 
 		DIRECTIONS.put("n",0);			//North Facing Direction (up arrow)
@@ -129,6 +133,9 @@ public class FireTruck extends Entity{
 			return DIRECTIONS.get(directionKey);
 	}
 
+	/**
+	 *
+	 */
 	public void Update(){
 		if (Gdx.input.isKeyPressed(ARROWKEYS[0]) ||
 				Gdx.input.isKeyPressed(ARROWKEYS[1]) ||
@@ -174,6 +181,9 @@ public class FireTruck extends Entity{
 	}
 	
 
+	/**
+	 * @param targets
+	 */
 	private void PlayerFire(ArrayList<GameObject> targets) {		//Method to find and aim at the nearest target from an ArrayList of Gameobjects
 		GameObject currentGameObject=targets.get(0);
 		GameObject nearestEnemy=targets.get(0);				//set nearest enemy to the first gameobject
@@ -197,7 +207,11 @@ public class FireTruck extends Entity{
 		currentWater=currentWater-flowRate;						//reduces the tank by amount of water used
 	}
 
-	private ArrayList<GameObject> EntitiesInRange(){	//method to return an array of all enemy GameObjects in range
+	/**
+	 * Returns an array of all enemy GameObjects in range
+	 * @return
+	 */
+	private ArrayList<GameObject> EntitiesInRange(){
 		ArrayList<GameObject> outputArray = new ArrayList<GameObject>();	//create array list to output enemies in range
 
 		for (GameObject currentObject : Kroy.mainGameScreen.getGameObjects()) {		//iterates through all game objects
@@ -218,6 +232,9 @@ public class FireTruck extends Entity{
 		return (Vector2.dst(object.getCentre().x, object.getCentre().y, getCentre().x, getCentre().y)<range);
 	}
 
+	/**
+	 *
+	 */
 	@Override
 	protected void Die() {
 		super.Die();
@@ -246,6 +263,10 @@ public class FireTruck extends Entity{
 		}
 	}
 
+	/**
+	 * @param pos
+	 * @return
+	 */
 	public boolean isOnCollidableTile(Vector2 pos) {
 		if(GameScreen.gameMap.getTileTypeByLocation(0, pos.x, pos.y).isCollidable()
 				||GameScreen.gameMap.getTileTypeByLocation(0, pos.x + this.getWidth(), pos.y).isCollidable()

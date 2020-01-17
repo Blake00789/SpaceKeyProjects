@@ -18,6 +18,11 @@ import com.dicycat.kroy.Kroy;
 import com.dicycat.kroy.screens.GameScreen;
 import com.dicycat.kroy.screens.MenuScreen;
 
+/**
+* 
+* @author 
+*
+*/
 public class OptionsWindow {
 	
 	public Stage stage;
@@ -47,6 +52,12 @@ public class OptionsWindow {
     
     public static State state = State.PAGE1;
     
+    /**
+     * 
+     * 
+     * @author 
+     *
+     */
     public static enum State{
 		PAGE1,
 		MUSIC,
@@ -54,6 +65,9 @@ public class OptionsWindow {
 	}
     
     
+	/**
+	 * @param game
+	 */
 	public OptionsWindow(Kroy game) {
 		sb = game.batch;
 		Viewport viewport = new ScreenViewport(new OrthographicCamera());
@@ -64,14 +78,15 @@ public class OptionsWindow {
 		updateDraw();
 	}
 	
-	
 	public void visibility(boolean state){
 		this.table.setVisible(state);
 	}
-
 	
-	
-	public void clickCheck(final boolean fromMenu) {		//takes screen as attribute cuz the 'back' button behaves differently based on whether the optionwindow was called from menu or gamescreen
+	/**
+	 * Takes screen as attribute cuz the 'back' button behaves differently based on whether the optionwindow was called from menu or gamescreen
+	 * @param fromMenu
+	 */
+	public void clickCheck(final boolean fromMenu) {
 	//page 1
 		//resume button
 		this.music.addListener(new ClickListener() {
@@ -179,36 +194,39 @@ public class OptionsWindow {
 		    });
 	}
 
+	/**
+	 * 
+	 */
 	public void updateDraw() {
 		switch(state) {
-		case PAGE1:
-			table.row();
-		    table.add(music).width(Kroy.CentreWidth());
-			table.row();
-		    table.add(debug).width(Kroy.CentreWidth());
-		    table.row();
-		    table.add(back).width(Kroy.CentreWidth());
-		    break;
-		case MUSIC:
-			table.row();
-		    table.add(playMusic).width(Kroy.CentreWidth());
-		    table.row();
-		    table.add(stopMusic).width(Kroy.CentreWidth());
-		    table.row();
-		    table.add(volumeDown).width(Kroy.CentreWidth());
-		    table.row();
-		    table.add(volumeUp).width(Kroy.CentreWidth());
-		    table.row();
-		    table.add(backFromMusic).width(Kroy.CentreWidth());
-		    break;
-		case DEBUG:
-			table.row();
-		    table.add(showDebug).width(Kroy.CentreWidth());
-		    table.row();
-		    table.add(hideDebug).width(Kroy.CentreWidth());
-		    table.row();
-		    table.add(backFromDebug).width(Kroy.CentreWidth());
-		    break;
+			case PAGE1:
+				table.row();
+			    table.add(music).width(Kroy.CentreWidth());
+				table.row();
+			    table.add(debug).width(Kroy.CentreWidth());
+			    table.row();
+			    table.add(back).width(Kroy.CentreWidth());
+			    break;
+			case MUSIC:
+				table.row();
+			    table.add(playMusic).width(Kroy.CentreWidth());
+			    table.row();
+			    table.add(stopMusic).width(Kroy.CentreWidth());
+			    table.row();
+			    table.add(volumeDown).width(Kroy.CentreWidth());
+			    table.row();
+			    table.add(volumeUp).width(Kroy.CentreWidth());
+			    table.row();
+			    table.add(backFromMusic).width(Kroy.CentreWidth());
+			    break;
+			case DEBUG:
+				table.row();
+			    table.add(showDebug).width(Kroy.CentreWidth());
+			    table.row();
+			    table.add(hideDebug).width(Kroy.CentreWidth());
+			    table.row();
+			    table.add(backFromDebug).width(Kroy.CentreWidth());
+			    break;
 		}
 		
 		table.setFillParent(true);

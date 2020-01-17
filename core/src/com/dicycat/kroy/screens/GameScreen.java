@@ -77,6 +77,10 @@ public class GameScreen implements Screen{
 
 	public float gameTimer; //Timer to destroy station
 
+	/**
+	 * @param _game
+	 * @param truckNum
+	 */
 	public GameScreen(Kroy _game, int truckNum) {
 		game = _game;
 		gamecam = new OrthographicCamera();
@@ -171,11 +175,11 @@ public class GameScreen implements Screen{
 	}
 
 	/**
-	 * Updates all the active gameobjects and adds them to the render queue
-	 * Removes gameobjects from the active pool if they are marked for removal
-	 * Adds new gameobjects
-	 * Adds dead objects to render queue
-	 * Respawns the player if necessary
+	 * Updates all the active gameobjects and adds them to the render queue.
+	 * Removes gameobjects from the active pool if they are marked for removal.
+	 * Adds new gameobjects.
+	 * Adds dead objects to render queue.
+	 * Respawns the player if necessary.
 	 */
 	private void UpdateLoop() {
 		List<GameObject> toRemove = new ArrayList<GameObject>();
@@ -310,10 +314,17 @@ public class GameScreen implements Screen{
 		Kroy.mainGameScreen = null;
 	}
 
+	/**
+	 * @param s
+	 */
 	public void setGameState(State s){
 	    state = s;
 	}
 
+	/**
+	 * @param index
+	 * @return
+	 */
 	public GameObject getGameObject(int index) {
 		if (index <= (gameObjects.size()-1)) {
 			return gameObjects.get(index);
@@ -322,6 +333,9 @@ public class GameScreen implements Screen{
 		}
 	}
 
+	/**
+	 * @return
+	 */
 	public List<GameObject> getGameObjects(){
 		return gameObjects;
 	}
@@ -357,10 +371,6 @@ public class GameScreen implements Screen{
 	    });
 	}
 
-	public HUD getHud(){
-		return hud;
-	}
-
 	/**
 	 * Add one fortress to the count
 	 */
@@ -391,10 +401,6 @@ public class GameScreen implements Screen{
 		game.setScreen(new GameOverScreen(game, truckNum, won));
 	}
 
-	public Vector2 getSpawnPosition() {
-		return spawnPosition;
-	}
-
 	/**
 	 * Respawns the player at the spawn position and updates the HUD
 	 */
@@ -402,5 +408,13 @@ public class GameScreen implements Screen{
 		hud.updateLives();
 		player = new FireTruck(spawnPosition.cpy(),truckStats[truckNum]);
 		gameObjects.add(player);
+	}
+	
+	public HUD getHud(){
+		return hud;
+	}
+
+	public Vector2 getSpawnPosition() {
+		return spawnPosition;
 	}
 }
