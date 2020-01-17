@@ -9,8 +9,8 @@ import com.dicycat.kroy.bullets.Pattern;
 import com.dicycat.kroy.misc.StatBar;
 
 /**
- * Static hostile Entity
- * Fires at the player when within its radius
+ * Static hostile Entity.
+ * Fires at the player when within its radius.
  * 
  * @author 
  *

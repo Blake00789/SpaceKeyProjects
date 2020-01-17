@@ -9,7 +9,7 @@ import com.dicycat.kroy.gamemap.TiledGameMap;
 /**
  * Class for interactive gameObjects
  * 
- * @author Riju
+ * @author Riju De
  *
  */
 public abstract class Entity extends GameObject{
@@ -20,10 +20,10 @@ public abstract class Entity extends GameObject{
 	protected int maxHealthPoints;
 
 	/**
-	 * @param SpawnPos the position the entity will spawn at.
-	 * @param Img the texture of the entity.
-	 * @param ImSize size of the entity. Can be used to resize large/small textures
-	 * @param Health hit points of the entity
+	 * @param spawnPos The position the entity will spawn at.
+	 * @param img The texture of the entity.
+	 * @param imSize Size of the entity. Can be used to resize large/small textures
+	 * @param health Hit points of the entity
 	 */
 	public Entity(Vector2 spawnPos, Texture img, Vector2 imSize,int health) {
 		super(spawnPos, img, imSize);
@@ -41,7 +41,7 @@ public abstract class Entity extends GameObject{
 
 	/**
 	 * Checks if the Entity still has health and is not marked for removal
-	 * @return alive (healthPoints > 0) && !remove
+	 * @return alive Is health above 0 and is not marked for removal
 	 */
 	public Boolean isAlive() {
 		return (healthPoints > 0) && !remove;

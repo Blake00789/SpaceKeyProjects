@@ -7,9 +7,10 @@ import com.dicycat.kroy.bullets.BulletDispenser;
 import com.dicycat.kroy.bullets.Pattern;
 
 /**
+ * Mobile hostile entity.
+ * Fires at the player when within range.
  * 
- * 
- * @author Riju
+ * @author Riju De
  *
  */
 public class UFO extends Entity {

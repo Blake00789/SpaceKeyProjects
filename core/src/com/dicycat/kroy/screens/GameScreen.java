@@ -32,6 +32,12 @@ import com.dicycat.kroy.scenes.OptionsWindow;
 import com.dicycat.kroy.scenes.PauseWindow;
 
 
+/**
+ * Contains the main game logic
+ * 
+ * @author riju8
+ *
+ */
 public class GameScreen implements Screen{
 
 	public static enum State{
@@ -45,9 +51,9 @@ public class GameScreen implements Screen{
 	public static Boolean showDebug = false;
 
 	public Kroy game;
-	private OrthographicCamera gamecam;	//m 	//follows along what the port displays
-	private Viewport gameport; 	//m
-	private HUD hud;	//m
+	private OrthographicCamera gamecam;	//follows along what the port displays
+	private Viewport gameport;
+	private HUD hud;
 	private PauseWindow pauseWindow;
 	public static OptionsWindow optionsWindow;
 	public static TiledGameMap gameMap;
@@ -73,10 +79,10 @@ public class GameScreen implements Screen{
 
 	public GameScreen(Kroy _game, int truckNum) {
 		game = _game;
-		gamecam = new OrthographicCamera();    //m
-		gameport = new FitViewport(Kroy.width, Kroy.height, gamecam);	//m //Mic:could also use StretchViewPort to make the screen stretch instead of adapt
+		gamecam = new OrthographicCamera();
+		gameport = new FitViewport(Kroy.width, Kroy.height, gamecam);	//Mic:could also use StretchViewPort to make the screen stretch instead of adapt
 		hud = new HUD(game.batch, this.game);
-		gameMap = new TiledGameMap();											//or FitPort to make it fit into a specific width/height ratio
+		gameMap = new TiledGameMap();										//or FitPort to make it fit into a specific width/height ratio
 		pauseWindow = new PauseWindow(game);
 		pauseWindow.visibility(false);
 		optionsWindow = new OptionsWindow(game);
@@ -87,15 +93,18 @@ public class GameScreen implements Screen{
 		this.truckNum = truckNum;
 	}
 
+	/**
+	 * Screen first shown
+	 */
 	@Override
-	public void show() {	//Screen first shown
+	public void show() {
 		toAdd = new ArrayList<GameObject>();
 		gameObjects = new ArrayList<GameObject>();
 		deadObjects = new ArrayList<GameObject>();
 		debugObjects = new ArrayList<DebugDraw>();
 		player = new FireTruck(spawnPosition.cpy(),truckStats[truckNum]); // Initialises the FireTruck
 
-		gamecam.translate(new Vector2(player.getX(),player.getY()));// sets initial Camera position
+		gamecam.translate(new Vector2(player.getX(),player.getY())); // sets initial Camera position
 		gameObjects.add(player);	//Player
 		
 		fireStation = new FireStation();
@@ -106,8 +115,11 @@ public class GameScreen implements Screen{
 
 	}
 
-	public void render(float delta) {		//Called every frame
-		Gdx.input.setInputProcessor(pauseWindow.stage);  //DA CONTROLLARE
+	/**
+	 * Called every frame
+	 */
+	public void render(float delta) {
+		Gdx.input.setInputProcessor(pauseWindow.stage);  //Set input processor
 		pauseWindow.stage.act();
 
 		switch (state) {
@@ -234,14 +246,35 @@ public class GameScreen implements Screen{
 		debugObjects.clear();
 	}
 
+	/**
+	 * Draw a debug line
+	 * @param start Start of the line
+	 * @param end End of the line
+	 * @param lineWidth Width of the line
+	 * @param colour Colour of the line
+	 */
 	public void DrawLine(Vector2 start, Vector2 end, int lineWidth, Color colour) {
 		debugObjects.add(new DebugLine(start, end, lineWidth, colour));
 	}
 
+	/**
+	 * Draw a debug circle (outline)
+	 * @param position Centre of the circle
+	 * @param radius Radius of the circle
+	 * @param lineWidth Width of the outline
+	 * @param colour Colour of the line
+	 */
 	public void DrawCircle(Vector2 position, float radius, int lineWidth, Color colour) {
 		debugObjects.add(new DebugCircle(position, radius, lineWidth, colour));
 	}
 
+	/**
+	 * Draw a debug rectangle (outline)
+	 * @param bottomLeft Bottom left point of the rectangle
+	 * @param dimensions Dimensions of the rectangle (Width, Length)
+	 * @param lineWidth Width of the outline
+	 * @param colour Colour of the line
+	 */
 	public void DrawRect(Vector2 bottomLeft, Vector2 dimensions, int lineWidth, Color colour) {
 		debugObjects.add(new DebugRect(bottomLeft, dimensions, lineWidth, colour));
 	}
@@ -293,7 +326,10 @@ public class GameScreen implements Screen{
 		return gameObjects;
 	}
 
-	public void clickCheck() {
+	/**
+	 * Checks the pause buttons
+	 */
+	private void clickCheck() {
 		//resume button
 		pauseWindow.resume.addListener(new ClickListener() {
 	    	@Override
@@ -325,18 +361,32 @@ public class GameScreen implements Screen{
 		return hud;
 	}
 
-	public void AddFortress() {	//Add one fortress to the count
+	/**
+	 * Add one fortress to the count
+	 */
+	public void AddFortress() {
 		fortressesCount++;
 	}
 
-	public void RemoveFortress() {	//Remove one fortress to the count
+	/**
+	 * Remove one fortress to the count
+	 */
+	public void RemoveFortress() {
 		fortressesCount--;
 	}
 
-	public int fortressesLeft() {	//How many fortresses are left?
+	/**
+	 * How many fortresses are left?
+	 * @return Number of fortresses remaining
+	 */
+	public int fortressesLeft() {
 		return fortressesCount;
 	}
 
+	/**
+	 * Switch to the game over screen
+	 * @param won Did the player reach the win state?
+	 */
 	public void gameOver(boolean won) {
 		game.setScreen(new GameOverScreen(game, truckNum, won));
 	}

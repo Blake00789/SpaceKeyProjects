@@ -19,10 +19,10 @@ import com.dicycat.kroy.misc.WaterStream;
 import com.dicycat.kroy.screens.GameScreen;
 
 /**
- * Controlled by the player
- * Automatically fires at hostile enemies when they're within range
+ * Controlled by the player.
+ * Automatically fires at hostile enemies when they're within range.
  * 
- * @author Riju
+ * @author Riju De
  *
  */
 public class FireTruck extends Entity{
@@ -42,8 +42,8 @@ public class FireTruck extends Entity{
 	StatBar healthBar;
 	boolean firing;
 	float range;
-	Array<Sprite> fireTruckSprites; //MC
-	TextureAtlas atlas; //MC
+	Array<Sprite> fireTruckSprites;
+	TextureAtlas atlas;
 	TextureRegion[][] textureByDirection;
 
 	public FireTruck(Vector2 spawnPos, Float[] truckStats) {	//Constructor
@@ -211,7 +211,7 @@ public class FireTruck extends Entity{
 
 	/**
 	 * Check if a game object is in range of the fire truck
-	 * @param Object to check
+	 * @param object Object to check
 	 * @return Is the object within range?
 	 */
 	public boolean objectInRange(GameObject object) {

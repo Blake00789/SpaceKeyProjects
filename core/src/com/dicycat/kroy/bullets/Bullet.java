@@ -11,7 +11,7 @@ import com.dicycat.kroy.entities.FireTruck;
 /**
  * Projectile fired by hostile entities
  * 
- * @author Riju
+ * @author Riju De
  *
  */
 public class Bullet extends GameObject {
@@ -37,7 +37,7 @@ public class Bullet extends GameObject {
 	}
 
 	/**
-	 * Reactivate the bullet & reset position
+	 * Reactivate the bullet and reset position
 	 * @param initial position to set at
 	 */
 	public void Fire(Vector2 initial) {
@@ -49,7 +49,7 @@ public class Bullet extends GameObject {
 
 	/**
 	 * Calculate velocity of the bullet (Translation per frame)
-	 * @param newDir new direction of the bullet
+	 * @param newDir New direction of the bullet
 	 */
 	public void ChangeDirection(Vector2 newDir) {
 		velocity = newDir.scl(speed);

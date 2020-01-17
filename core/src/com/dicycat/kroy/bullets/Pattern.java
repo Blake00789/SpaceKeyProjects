@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Stores patterns of bullets to fire
  * 
- * @author Riju
+ * @author Riju De
  *
  */
 public class Pattern {

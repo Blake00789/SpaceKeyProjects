@@ -8,7 +8,7 @@ import com.dicycat.kroy.screens.MenuScreen;
 /**
  * Main game class
  * 
- * @author Riju
+ * @author Riju De
  *
  */
 
@@ -50,12 +50,16 @@ public class Kroy extends Game {
 	}
 	
 	/**
-	 * @return
+	 * @return centre of the screen width
 	 */
 	public static int CentreWidth() {
 		return width / 3;
 	}
 	
+	/**
+	 * Set the high score
+	 * @param highScore The new high score
+	 */
 	public void setHighScore(Integer highScore) {
 		this.highScore = highScore;
 		//TODO: Write new high score to external

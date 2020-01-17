@@ -9,6 +9,8 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 /**
+ * 
+ * 
  * @author Martha Cartwright
  *
  */
@@ -26,7 +28,7 @@ public class TiledGameMap{
 
 	/**
 	 * Renders the road layer of the map
-	 * @param camera
+	 * @param camera Active camera
 	 */
 	public void renderRoads(OrthographicCamera camera) {
 		tiledMapRenderer.setView(camera);
@@ -36,7 +38,7 @@ public class TiledGameMap{
 
 	/**
 	 * Renders the building layer and the window layer of the map
-	 * @param camera
+	 * @param camera Active camera
 	 */
 	public void renderBuildings(OrthographicCamera camera) {
 		tiledMapRenderer.setView(camera);
@@ -50,13 +52,12 @@ public class TiledGameMap{
 		tiledMap.dispose();
 	}
 
-
 	/**
 	 * Gets the tile type at a row/column for a particular layer
-	 * @param layer
-	 * @param col
-	 * @param row
-	 * @return tileType
+	 * @param layer Layer to check
+	 * @param col Column where tile is located
+	 * @param row Row where tile is located
+	 * @return tileType The type of tile at the given location of the given layer
 	 */
 	public TileType getTileTypeByCoordinate(int layer, int col, int row) {
 		Cell cell = ((TiledMapTileLayer) tiledMap.getLayers().get(layer)).getCell(col,row);
@@ -74,10 +75,10 @@ public class TiledGameMap{
 
 	/**
 	 * Gets the tile type at a pixel position for a particular layer
-	 * @param layer
-	 * @param x
-	 * @param y
-	 * @return tileType
+	 * @param layer Layer to check
+	 * @param x X position
+	 * @param y Y position
+	 * @return tileType The type of tile at the given location of the given layer
 	 */
 	public TileType getTileTypeByLocation(int layer, float x, float y) {
 		return this.getTileTypeByCoordinate(layer, (int)(x/TileType.TILE_SIZE), (int)(y/TileType.TILE_SIZE));
@@ -86,7 +87,7 @@ public class TiledGameMap{
 
 	/**
 	 * Gets the width of the map in tiles
-	 * @return width
+	 * @return width Map tile width
 	 */
 	public int getWidth() {
 		return ((TiledMapTileLayer) tiledMap.getLayers().get(0)).getWidth();
@@ -95,13 +96,17 @@ public class TiledGameMap{
 
 	/**
 	 * Gets the height of the map in tiles
-	 * @return height
+	 * @return height Map tile height
 	 */
 	public int getHeight() {
 		return ((TiledMapTileLayer) tiledMap.getLayers().get(0)).getHeight();
 	}
 
 
+	/**
+	 * Get the number of layers in the map
+	 * @return Number of layers
+	 */
 	public int getLayers() {
 		return tiledMap.getLayers().getCount();
 	}
@@ -109,7 +114,7 @@ public class TiledGameMap{
 	
 	/**
 	 * Gets the width of the map in pixels
-	 * @return width
+	 * @return width Map pixel width
 	 */
 	public int getPixelWidth() {
 		return this.getWidth() * TileType.TILE_SIZE;
@@ -117,7 +122,7 @@ public class TiledGameMap{
 	
 	/**
 	 * Gets the height of the map in pixels
-	 * @return height
+	 * @return height Map pixel height
 	 */
 	public int getPixelHeight() {
 		return this.getHeight() * TileType.TILE_SIZE;

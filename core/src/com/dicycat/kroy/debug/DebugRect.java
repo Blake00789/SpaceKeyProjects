@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Draw a debug rectangle
  * 
- * @author riju8
+ * @author Riju De
  *
  */
 public class DebugRect extends DebugDraw {

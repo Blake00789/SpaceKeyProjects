@@ -3,11 +3,11 @@ package com.dicycat.kroy;
 import com.badlogic.gdx.graphics.Texture;
 
 /**
- * Stores textures for classes to reference
- * This means multiple of the same sprite use the same reference
- * Because of this, render calls are reduced
+ * Stores textures for classes to reference.
+ * This means multiple of the same sprite use the same reference.
+ * Because of this, render calls are reduced.
  * 
- * @author Riju
+ * @author Riju De
  *
  */
 public class GameTextures {

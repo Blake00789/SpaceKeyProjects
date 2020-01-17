@@ -11,7 +11,7 @@ import com.dicycat.kroy.entities.Entity;
 /**
  * Stores and handles firing of patterns
  * 
- * @author Riju
+ * @author Riju De
  *
  */
 public class BulletDispenser {

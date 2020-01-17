@@ -5,8 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.dicycat.kroy.Kroy;
 
 /**
- * Static friendly Entity
- * Player heals and replenishes water when within its radius
+ * Static friendly Entity.
+ * Player heals and replenishes water when within its radius.
  * 
  * @author 
  *

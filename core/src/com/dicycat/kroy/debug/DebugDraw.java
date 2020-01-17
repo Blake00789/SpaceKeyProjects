@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Matrix4;
 /**
  * Draws debug shapes
  * 
- * @author riju8
+ * @author Riju De
  *
  */
 public abstract class DebugDraw {

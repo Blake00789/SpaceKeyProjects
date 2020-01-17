@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 /**
  * Basic object for all displayable objects
  *  
- * @author Riju
+ * @author Riju De
  *
  */
 public abstract class GameObject {

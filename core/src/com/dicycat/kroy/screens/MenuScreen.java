@@ -83,11 +83,13 @@ import com.dicycat.kroy.scenes.OptionsWindow;
   
   public State state = State.MAINMENU;
   
-  @Override public void show() {}
+  @Override 
+  public void show() {}
   
   
   
-  @Override public void render(float delta) { 
+  @Override 
+  public void render(float delta) { 
 	  
 	  switch(state) {
 		  case MAINMENU:	// Display all buttons and the main menu		  
@@ -202,29 +204,37 @@ import com.dicycat.kroy.scenes.OptionsWindow;
 	}
 
 
-  public void startGame(int truckNum) {
+	/**
+	 * 
+	 * @param truckNum Type of truck selected
+ 	 */
+	public void startGame(int truckNum) {
 		 if (!currentlyRunningGame) {	// Checks if a new GameScren is currently running and either makes one or ignores the commands
 			 currentlyRunningGame = true; // Makes sure that only one GameScreen is opened at once
 			 game.newGame(truckNum); // Calls the function in Kroy to start a new game
 		 }
-  } 
+	} 
   
   
   public void setCurrentlyRunningGame(boolean state) {
 	  currentlyRunningGame = state;
   }
   
-  @Override public void resize(int width, int height) {
+  @Override 
+  public void resize(int width, int height) {
 	  gameport.update(width, height);
   }
   
-  @Override public void pause() {}
+  @Override 
+  public void pause() {}
   
-  @Override public void resume() {}
+  @Override 
+  public void resume() {}
   
-  @Override public void hide() {}
+  @Override 
+  public void hide() {}
   
-  @Override public void dispose() {}
-
+  @Override 
+  public void dispose() {}
  }
  
