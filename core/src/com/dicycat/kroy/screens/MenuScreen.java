@@ -29,7 +29,7 @@ import com.dicycat.kroy.scenes.OptionsWindow;
   private OptionsWindow optionsWindow;
   
   public static Music music = Gdx.audio.newMusic(Gdx.files.internal("gamemusic.mp3"));
-  public static double musicVolume = 8.0;
+  public static float musicVolume = 0.4f;
 
   //coordinates for Play and Exit buttons 
   private int BTN_WIDTH = 250;
@@ -44,7 +44,7 @@ import com.dicycat.kroy.scenes.OptionsWindow;
   int xHotSpot = pm.getWidth() / 3;	//where the cursor's aim is 
   int yHotSpot = 0;
   
-  FireTruckSelectionScene fireTruckSelector = new FireTruckSelectionScene();
+  FireTruckSelectionScene fireTruckSelector;
   boolean currentlyRunningGame = false;
   
   public MenuScreen(Kroy game) { 
@@ -63,13 +63,14 @@ import com.dicycat.kroy.scenes.OptionsWindow;
 	  gameport = new FitViewport(Kroy.width, Kroy.height, gamecam);
 	  stage = new Stage(gameport);
 	  
+	  fireTruckSelector = new FireTruckSelectionScene(game);
 	  fireTruckSelector.visibility(false);
 	  
 	  music.play();
 	  music.setLooping(true);  
 	  music.setVolume((float)musicVolume);  
 	  
-	  optionsWindow = new OptionsWindow();
+	  optionsWindow = new OptionsWindow(game);
 	  optionsWindow.visibility(false);
 	  
   }
@@ -80,7 +81,7 @@ import com.dicycat.kroy.scenes.OptionsWindow;
 	  OPTIONS
   }
   
-  public static State state = State.MAINMENU;
+  public State state = State.MAINMENU;
   
   @Override public void show() {}
   
@@ -89,85 +90,83 @@ import com.dicycat.kroy.scenes.OptionsWindow;
   @Override public void render(float delta) { 
 	  
 	  switch(state) {
-	  case MAINMENU:	// Display all buttons and the main menu		  
-		  stage.act();	//allows the stage to interact with user input
-		  
-		  Kroy.batch.setProjectionMatrix(gamecam.combined);
-		  Kroy.batch.begin();
-		  
-		  Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, xHotSpot, yHotSpot));
-		  Kroy.batch.draw(background, 0, 0);
-		 
-		  Kroy.batch.draw(minigameBTN, x_axis_centered, minigameBTN_y, BTN_WIDTH, BTN_HEIGHT);
-		
-		
-		  //for play button: checks if the position of the cursor is inside the coordinates of the button
-		  if(( (Gdx.input.getX() < (x_axis_centered + BTN_WIDTH)) && (Gdx.input.getX() > x_axis_centered) ) && ( (Kroy.height - Gdx.input.getY() > playBTN_y ) && (Kroy.height - Gdx.input.getY() < (playBTN_y + BTN_HEIGHT)) ) ){
-			  Kroy.batch.draw(playBTN_ACTIVE, x_axis_centered, playBTN_y, BTN_WIDTH, BTN_HEIGHT);
-			  if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-				  this.dispose();
-				  Kroy.batch.end();
-				  fireTruckSelector.visibility(true);// display the truck selection window
-				  setGameState(State.TRUCKSELECT);// set the game state to run and run the selection screen code
-				  return;
-			  }
-		  } else {
-			  Kroy.batch.draw(playBTN, x_axis_centered, playBTN_y, BTN_WIDTH, BTN_HEIGHT);
-		  }
-		  
-		//for exit button
-		  if(( (Gdx.input.getX() < (x_axis_centered + BTN_WIDTH)) && (Gdx.input.getX() > x_axis_centered) ) && ( (Kroy.height - Gdx.input.getY() > exitBTN_y ) && (Kroy.height - Gdx.input.getY() < (exitBTN_y + BTN_HEIGHT)) ) ){
-			  Kroy.batch.draw(exitBTN_ACTIVE, x_axis_centered, exitBTN_y, BTN_WIDTH, BTN_HEIGHT);
-			  if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-				  Gdx.app.exit();
-			  }
-		  } else {
-			  Kroy.batch.draw(exitBTN, x_axis_centered, exitBTN_y, BTN_WIDTH, BTN_HEIGHT);
-		  }
-			
-		  //for minigame button
-		  if(( (Gdx.input.getX() < (x_axis_centered + BTN_WIDTH)) && (Gdx.input.getX() > x_axis_centered) ) && ( (Kroy.height - Gdx.input.getY() > minigameBTN_y ) && (Kroy.height - Gdx.input.getY() < (minigameBTN_y + BTN_HEIGHT)) ) ){
-			  Kroy.batch.draw(minigameBTN_ACTIVE, x_axis_centered, minigameBTN_y, BTN_WIDTH, BTN_HEIGHT);
-			  if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-				  //what shall we put?
-					  }
-				  } else {
-					  Kroy.batch.draw(minigameBTN, x_axis_centered, minigameBTN_y, BTN_WIDTH, BTN_HEIGHT);
-				  }
-
-					  //for options button
-		  if(( (Gdx.input.getX() < (x_axis_centered + BTN_WIDTH)) && (Gdx.input.getX() > x_axis_centered) ) && ( (Kroy.height - Gdx.input.getY() > optionsBTN_y ) && (Kroy.height - Gdx.input.getY() < (optionsBTN_y + BTN_HEIGHT)) ) ){
-			  Kroy.batch.draw(optionsBTN_ACTIVE, x_axis_centered, optionsBTN_y, BTN_WIDTH, BTN_HEIGHT);
-			  if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-				  //game.batch.end();
-				  optionsWindow.visibility(true);
-				  setGameState(State.OPTIONS);
-			  }
-		  } else {
-			  Kroy.batch.draw(optionsBTN, x_axis_centered, optionsBTN_y, BTN_WIDTH, BTN_HEIGHT);
-		  }
-		  Kroy.batch.end();
+		  case MAINMENU:	// Display all buttons and the main menu		  
+			  stage.act();	//allows the stage to interact with user input
 			  
-		  break;
-	  case TRUCKSELECT: // Ran when the new game button pressed
-		  Gdx.input.setInputProcessor(fireTruckSelector.stage);
-		  fireTruckSelector.stage.act();
-		  fireTruckSelector.stage.draw();
-		  clickCheck();//Checks for any button presses
-		  break;
-	  case OPTIONS:
-		  Gdx.input.setInputProcessor(OptionsWindow.stage);
-		  OptionsWindow.stage.act();
-		  OptionsWindow.stage.draw();
-		  optionsWindow.clickCheck(true);
-		  break;
+			  game.batch.setProjectionMatrix(gamecam.combined);
+			  game.batch.begin();
+			  
+			  Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, xHotSpot, yHotSpot));
+			  game.batch.draw(background, 0, 0);
+			 
+			  game.batch.draw(minigameBTN, x_axis_centered, minigameBTN_y, BTN_WIDTH, BTN_HEIGHT);
+			
+			
+			  //for play button: checks if the position of the cursor is inside the coordinates of the button
+			  if(( (Gdx.input.getX() < (x_axis_centered + BTN_WIDTH)) && (Gdx.input.getX() > x_axis_centered) ) && ( (Kroy.height - Gdx.input.getY() > playBTN_y ) && (Kroy.height - Gdx.input.getY() < (playBTN_y + BTN_HEIGHT)) ) ){
+				  game.batch.draw(playBTN_ACTIVE, x_axis_centered, playBTN_y, BTN_WIDTH, BTN_HEIGHT);
+				  if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+					  this.dispose();
+					  game.batch.end();
+					  fireTruckSelector.visibility(true);// display the truck selection window
+					  setGameState(State.TRUCKSELECT);// set the game state to run and run the selection screen code
+					  return;
+				  }
+			  } else {
+				  game.batch.draw(playBTN, x_axis_centered, playBTN_y, BTN_WIDTH, BTN_HEIGHT);
+			  }
+			  
+			//for exit button
+			  if(( (Gdx.input.getX() < (x_axis_centered + BTN_WIDTH)) && (Gdx.input.getX() > x_axis_centered) ) && ( (Kroy.height - Gdx.input.getY() > exitBTN_y ) && (Kroy.height - Gdx.input.getY() < (exitBTN_y + BTN_HEIGHT)) ) ){
+				  game.batch.draw(exitBTN_ACTIVE, x_axis_centered, exitBTN_y, BTN_WIDTH, BTN_HEIGHT);
+				  if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+					  Gdx.app.exit();
+				  }
+			  } else {
+				  game.batch.draw(exitBTN, x_axis_centered, exitBTN_y, BTN_WIDTH, BTN_HEIGHT);
+			  }
+				
+			  //for minigame button
+			  if(( (Gdx.input.getX() < (x_axis_centered + BTN_WIDTH)) && (Gdx.input.getX() > x_axis_centered) ) && ( (Kroy.height - Gdx.input.getY() > minigameBTN_y ) && (Kroy.height - Gdx.input.getY() < (minigameBTN_y + BTN_HEIGHT)) ) ){
+				  game.batch.draw(minigameBTN_ACTIVE, x_axis_centered, minigameBTN_y, BTN_WIDTH, BTN_HEIGHT);
+				  if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+					  //what shall we put?
+						  }
+					  } else {
+						  game.batch.draw(minigameBTN, x_axis_centered, minigameBTN_y, BTN_WIDTH, BTN_HEIGHT);
+					  }
+	
+						  //for options button
+			  if(( (Gdx.input.getX() < (x_axis_centered + BTN_WIDTH)) && (Gdx.input.getX() > x_axis_centered) ) && ( (Kroy.height - Gdx.input.getY() > optionsBTN_y ) && (Kroy.height - Gdx.input.getY() < (optionsBTN_y + BTN_HEIGHT)) ) ){
+				  game.batch.draw(optionsBTN_ACTIVE, x_axis_centered, optionsBTN_y, BTN_WIDTH, BTN_HEIGHT);
+				  if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+					  //game.batch.end();
+					  optionsWindow.visibility(true);
+					  setGameState(State.OPTIONS);
+				  }
+			  } else {
+				  game.batch.draw(optionsBTN, x_axis_centered, optionsBTN_y, BTN_WIDTH, BTN_HEIGHT);
+			  }
+			  game.batch.end();
+				  
+			  break;
+		  case TRUCKSELECT: // Ran when the new game button pressed
+			  Gdx.input.setInputProcessor(fireTruckSelector.stage);
+			  fireTruckSelector.stage.act();
+			  fireTruckSelector.stage.draw();
+			  clickCheck();//Checks for any button presses
+			  break;
+		  case OPTIONS:
+			  Gdx.input.setInputProcessor(optionsWindow.stage);
+			  optionsWindow.stage.act();
+			  optionsWindow.stage.draw();
+			  optionsWindow.clickCheck(true);
+			  break;
 		  }
-	  
-
-		  }
+  	}
   
 	public void setGameState(State s){
-	    MenuScreen.state = s;
+	    this.state = s;
 	}
   
 	public void clickCheck() {// checks if any of the buttons have been pressed
@@ -219,20 +218,13 @@ import com.dicycat.kroy.scenes.OptionsWindow;
 	  gameport.update(width, height);
   }
   
-  @Override public void pause() { // TODO Auto-generated method stub
+  @Override public void pause() {}
   
-  }
+  @Override public void resume() {}
   
-  @Override public void resume() { // TODO Auto-generated method stub
-	  
-  }
+  @Override public void hide() {}
   
-  @Override public void hide() { // TODO Auto-generated method stub
-  
-  }
-  
-  @Override public void dispose() { // TODO Auto-generated method stub
-  }
+  @Override public void dispose() {}
 
  }
  
