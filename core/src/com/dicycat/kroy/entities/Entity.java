@@ -6,6 +6,12 @@ import com.dicycat.kroy.GameObject;
 import com.dicycat.kroy.Kroy;
 import com.dicycat.kroy.gamemap.TiledGameMap;
 
+/**
+ * Class for interactive gameObjects
+ * 
+ * @author Riju
+ *
+ */
 public abstract class Entity extends GameObject{
 
 	protected int healthPoints;
@@ -13,6 +19,12 @@ public abstract class Entity extends GameObject{
 	protected TiledGameMap map;
 	protected int maxHealthPoints;
 
+	/**
+	 * @param SpawnPos the position the entity will spawn at.
+	 * @param Img the texture of the entity.
+	 * @param ImSize size of the entity. Can be used to resize large/small textures
+	 * @param Health hit points of the entity
+	 */
 	public Entity(Vector2 spawnPos, Texture img, Vector2 imSize,int health) {
 		super(spawnPos, img, imSize);
 		healthPoints = health;
@@ -21,20 +33,35 @@ public abstract class Entity extends GameObject{
 		changePosition(spawnPos);
 	}
 
+	/**
+	 * Method is called every frame (If added to the gameobjects list in GameScreen)
+	 */
 	@Override
 	public void Update() {}	//Called every frame
 
+	/**
+	 * Checks if the Entity still has health and is not marked for removal
+	 * @return alive (healthPoints > 0) && !remove
+	 */
 	public Boolean isAlive() {
 		return (healthPoints > 0) && !remove;
 	}
 
-	public void ApplyDamage(float damage) {	//Apply x amount of damage to the entity
+	/**
+	 * Apply x amount of damage to the entity
+	 * @param damage Amount of damage to inflict on the Entity
+	 */
+	public void ApplyDamage(float damage) {	
 		healthPoints -= damage;
 		if (healthPoints <= 0) {
 			Die();
 		}
 	}
 
+	/**
+	 * Checks if the player is within the radius of the Entity
+	 * @return playerInRadius
+	 */
 	protected Boolean playerInRadius() {
 		Vector2 currentCoords = Kroy.mainGameScreen.getPlayer().getCentre(); // get current player coordinates
 		if (Vector2.dst(currentCoords.x, currentCoords.y, getCentre().x, getCentre().y) < radius ) { // checks the distance between the two entities
@@ -47,5 +74,4 @@ public abstract class Entity extends GameObject{
 	public Integer getHealthPoints(){
 		return healthPoints;
 	}
-
 }

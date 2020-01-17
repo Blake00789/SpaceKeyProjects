@@ -15,7 +15,6 @@ public class HUD {
 	public Stage stage;
 	private Viewport viewport;	//creating new port so that the HUD stays locked while map can move around independently
 	
-	
 	private Integer trucks = 4;
 	private Integer worldTimer = 0;	//change to float maybe
 	private Integer score = 0;
@@ -64,12 +63,12 @@ public class HUD {
 			timeCount =0;
 			scoreCountLabel.setText(String.format("%06d", score));
 		}
-		trucksCountLabel.setText(String.format("%01d", trucks)); // Updates the label for the amount of lives left
 	}
 	
 	public void updateLives() {
 		if (trucks>1) {
 			trucks -= 1;
+			trucksCountLabel.setText(String.format("%01d", trucks)); // Updates the label for the amount of lives left
 		} else {
 			gameOver();
 		}
@@ -94,6 +93,5 @@ public class HUD {
 	public void updateScore(Integer x){
 		score += x;
 	}
-	
 }
 

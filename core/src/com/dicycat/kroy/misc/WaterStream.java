@@ -22,5 +22,4 @@ public class WaterStream extends GameObject{
 	public void Render(SpriteBatch batch) {
 		super.Render(batch);
 	}
-
 }

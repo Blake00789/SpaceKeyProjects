@@ -48,7 +48,6 @@ public class GameScreen implements Screen{
 	private OrthographicCamera gamecam;	//m 	//follows along what the port displays
 	private Viewport gameport; 	//m
 	private HUD hud;	//m
-	public static boolean FOLLOWCAMERA = true;
 	private PauseWindow pauseWindow;
 	public static OptionsWindow optionsWindow;
 	public static TiledGameMap gameMap;
@@ -159,7 +158,13 @@ public class GameScreen implements Screen{
 		}
 	}
 
-	//region Game Logic
+	/**
+	 * Updates all the active gameobjects and adds them to the render queue
+	 * Removes gameobjects from the active pool if they are marked for removal
+	 * Adds new gameobjects
+	 * Adds dead objects to render queue
+	 * Respawns the player if necessary
+	 */
 	private void UpdateLoop() {
 		List<GameObject> toRemove = new ArrayList<GameObject>();
 		for (GameObject gObject : gameObjects) {	//Go through every game object
@@ -179,28 +184,38 @@ public class GameScreen implements Screen{
 		for (GameObject aObject : toAdd) {		//Add game objects to be added
 			gameObjects.add(aObject);
 		}
-		toAdd.clear();// Clears list as not to add new objects twice
+		toAdd.clear();	// Clears list as not to add new objects twice
 
 		for (GameObject dObject : deadObjects) { // loops through the destroyed but displayed items (such as destroyed bases)
 			objectsToRender.add(dObject);
 		}
-		if (player.CheckRemove()) {
+		if (player.CheckRemove()) {	//If the player is set for removal, respawn
 			respawn();
 		}
-
 	}
 
-	public void renderObjects() {// Renders the objects in "objectsToRender" then clears the list
+	/**
+	 * Renders the objects in "objectsToRender" then clears the list
+	 */
+	public void renderObjects() {
 		for (GameObject object : objectsToRender) {
 			object.Render(game.batch);
 		}
 		objectsToRender.clear();
 	}
 
-	public void AddGameObject(GameObject gameObject) {	//Add a game object next frame
+	/**
+	 * Add a game object next frame
+	 * @param gameObject gameObject to be added
+	 */
+	public void AddGameObject(GameObject gameObject) {
 		toAdd.add(gameObject);
 	}
 
+	/**
+	 * Allows external classes to access the player
+	 * @return player
+	 */
 	public FireTruck getPlayer() {
 		return player;
 	}
@@ -209,7 +224,10 @@ public class GameScreen implements Screen{
 		return waterStream;
 	}
 
-	private void DrawDebug() {		//Draws all debug objects for one frame
+	/**
+	 * Draws all debug objects for one frame
+	 */
+	private void DrawDebug() {
 		for (DebugDraw dObject : debugObjects) {
 			dObject.Draw(gamecam.combined);
 		}
@@ -224,13 +242,14 @@ public class GameScreen implements Screen{
 		debugObjects.add(new DebugCircle(position, radius, lineWidth, colour));
 	}
 
-
-
 	public void DrawRect(Vector2 bottomLeft, Vector2 dimensions, int lineWidth, Color colour) {
 		debugObjects.add(new DebugRect(bottomLeft, dimensions, lineWidth, colour));
 	}
 
-	public void updateCamera() {// updates the position of the camera to have the truck centre
+	/**
+	 * Updates the position of the camera to have the truck centre
+	 */
+	public void updateCamera() {
 		gamecam.position.lerp(new Vector3(player.getX(),player.getY(),gamecam.position.z),0.1f);// sets the new camera position based on the current position of the FireTruck
 		gamecam.update();
 	}
@@ -298,7 +317,7 @@ public class GameScreen implements Screen{
 	    		dispose();
 	    		game.backToMenu();
 	    		return;
-	    		}
+	    	}
 	    });
 	}
 
@@ -326,13 +345,12 @@ public class GameScreen implements Screen{
 		return spawnPosition;
 	}
 
+	/**
+	 * Respawns the player at the spawn position and updates the HUD
+	 */
 	public void respawn() {
 		hud.updateLives();
 		player = new FireTruck(spawnPosition.cpy(),truckStats[truckNum]);
 		gameObjects.add(player);
-
 	}
-
-
-
 }

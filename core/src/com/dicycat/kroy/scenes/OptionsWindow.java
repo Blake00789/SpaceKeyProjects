@@ -214,5 +214,4 @@ public class OptionsWindow {
 		table.setFillParent(true);
 	    stage.addActor(table);
 	}
-
 }

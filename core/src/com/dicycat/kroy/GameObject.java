@@ -5,8 +5,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
-public abstract class GameObject {	//Basic object for all displayable objects
-	//protected GameScreen gameScreen;				//Reference to the gameScreen to be displayed on
+/**
+ * Basic object for all displayable objects
+ *  
+ * @author Riju
+ *
+ */
+public abstract class GameObject {
 	protected Sprite sprite;						//Sprite of the object
 	protected Boolean remove, displayable;			//Should this GameObject be removed? Should this item be displayed?
 	protected float rotation = 0;	//Current angle the truck is facing in degrees
@@ -64,11 +69,9 @@ public abstract class GameObject {	//Basic object for all displayable objects
 		sprite.setY(pos.y);
 	}
 
-
 	public void setRotation(float degrees) { // sets direction "degrees" to the direction currently facing
 		rotation = degrees;
 	}
-	
 
 	public void setRemove(Boolean x){
 		remove = x;
@@ -77,5 +80,4 @@ public abstract class GameObject {	//Basic object for all displayable objects
 	protected void Die() {
 		remove = true;
 	}
-
 }

@@ -2,6 +2,12 @@ package com.dicycat.kroy.bullets;
 
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * Stores patterns of bullets to fire
+ * 
+ * @author Riju
+ *
+ */
 public class Pattern {
 	private Bullet[][] bullets;	//Bullets to fire
 	private float waitTime;		//Time between bullets
@@ -10,15 +16,25 @@ public class Pattern {
 	int offset;
 	int xtra;
 
-	//Static directional
-	public Pattern(int degree, int speed, int range, float timeBetweenBullets, int patternLength, int multi, float cooldown) {	//Constructor
+	
+	/**
+	 * Create a static directional pattern, fires in a single defined direction
+	 * @param degree Direction to shoot
+	 * @param speed Speed of the bullets
+	 * @param range Distance each bullet travels
+	 * @param timeBetweenShots Time before the next shot
+	 * @param patternLength How many shots in the pattern
+	 * @param multi How many bullets per shot (spread)
+	 * @param cooldown Time after pattern to wait before firing the next pattern
+	 */
+	public Pattern(int degree, int speed, int range, float timeBetweenShots, int patternLength, int multi, float cooldown) {	//Constructor
 		aim = false;
-		waitTime = timeBetweenBullets;
+		waitTime = timeBetweenShots;
 		bullets = new Bullet[patternLength][multi];
 		this.cooldown = cooldown;
 		offset = (multi - (multi % 2)) / 2;
 		xtra = (1-(multi % 2)) * 5;
-		degree = 90 - degree;	//Convert normal bearings (0 is up, clockwise) to libgdx Vector2 degrees (0 is right, anticlockwise)
+		degree = 90 - degree;	//Convert normal bearings (0 is up, clockwise) to libgdx Vector2 degrees (0 is right, anti-clockwise)
 
 		Vector2 direction = Vector2.Zero;
 		for (int i = 0; i < patternLength; i++) {
@@ -30,10 +46,18 @@ public class Pattern {
 		}
 	}
 	
-	//Aimed shot
-	public Pattern(int speed, int range, float timeBetweenBullets, int patternLength, int multi, float cooldown) {	//Constructor
+	/**
+	 * Create an aimed pattern
+	 * @param speed Speed of the bullets
+	 * @param range Distance each bullet travels
+	 * @param timeBetweenShots Time before the next shot
+	 * @param patternLength How many shots in the pattern
+	 * @param multi How many bullets per shot (spread)
+	 * @param cooldown Time after pattern to wait before firing the next pattern
+	 */
+	public Pattern(int speed, int range, float timeBetweenShots, int patternLength, int multi, float cooldown) {	//Constructor
 		this.aim = true;
-		waitTime = timeBetweenBullets;
+		waitTime = timeBetweenShots;
 		bullets = new Bullet[patternLength][multi];
 		this.cooldown = cooldown;
 		offset = (multi - (multi % 2)) / 2;
@@ -47,17 +71,27 @@ public class Pattern {
 		}
 	}
 
-	//Spiral
-	public Pattern(Boolean clockwise, int startAngle, int rotations, int speed, int range, float timeBetweenBullets, int multi, float cooldown) {
+	/**
+	 * Create a spiral pattern
+	 * @param clockwise Should the spiral spin clockwise?
+	 * @param startAngle Starting direction of the spiral
+	 * @param rotations How many full rotations to perform
+	 * @param speed Speed of the bullets
+	 * @param range Distance each bullet travels
+	 * @param timeBetweenShots Time before the next shot
+	 * @param multi How many bullets per shot (spread)
+	 * @param cooldown Time after pattern to wait before firing the next pattern
+	 */
+	public Pattern(Boolean clockwise, int startAngle, int rotations, int speed, int range, float timeBetweenShots, int multi, float cooldown) {
 		aim = false;
-		waitTime = timeBetweenBullets;
+		waitTime = timeBetweenShots;
 		int patternLength = rotations * 36;
 		bullets = new Bullet[patternLength][multi];
 		this.cooldown = cooldown;
 		offset = (multi - (multi % 2)) / 2;
 		xtra = (1-(multi % 2)) * 5;
 
-		int degree;	//Convert normal bearings (0 is up, clockwise) to libgdx Vector2 degrees (0 is right, anticlockwise)
+		int degree;	//Convert normal bearings (0 is up, clockwise) to LIBGDX Vector2 degrees (0 is right, anti-clockwise)
 
 		Vector2 direction = Vector2.Zero;
 		for (int i = 0; i < patternLength; i++) {
@@ -71,10 +105,19 @@ public class Pattern {
 		}
 	}
 
+	/**
+	 * @param set The set of bullets to fire
+	 * @return Set of bullets to fire
+	 */
 	public Bullet[] BulletSet(int set) {
 		return bullets[set];
 	}
 
+	/**
+	 * @param set The set of bullets to fire
+	 * @param aimDir The direction the bullets should fire
+	 * @return Set of aimed bullets to fire
+	 */
 	public Bullet[] AimedSet(int set, Vector2 aimDir) {
 		Vector2 direction;
 		for (int i = 0; i < bullets[set].length; i++) {
@@ -85,7 +128,8 @@ public class Pattern {
 		return bullets[set];
 	}
 
-	public Boolean Aim() { return aim; }	//Getters
+	//Getters
+	public Boolean Aim() { return aim; }	
 	public Bullet[][] Bullets(){return bullets;}
 	public float WaitTime(){return waitTime;}
 	public float Cooldown(){return cooldown;}

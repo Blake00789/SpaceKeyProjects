@@ -6,12 +6,24 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * Draws a circle debug
+ * 
+ * @author riju8
+ *
+ */
 public class DebugCircle extends DebugDraw {
 	Vector2 position;
 	float radius;
 	int lineWidth;
 	Color color;
 
+	/**
+	 * @param pos Position to draw at
+	 * @param rad Radius of the circle
+	 * @param width Width of the line
+	 * @param colour Colour to draw
+	 */
 	public DebugCircle(Vector2 pos, float rad, int width, Color colour) {
 		super();
 		position = pos;

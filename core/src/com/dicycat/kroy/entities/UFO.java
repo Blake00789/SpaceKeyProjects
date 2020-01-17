@@ -1,12 +1,17 @@
 package com.dicycat.kroy.entities;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.dicycat.kroy.Kroy;
 import com.dicycat.kroy.bullets.Bullet;
 import com.dicycat.kroy.bullets.BulletDispenser;
 import com.dicycat.kroy.bullets.Pattern;
 
+/**
+ * 
+ * 
+ * @author Riju
+ *
+ */
 public class UFO extends Entity {
 
 	BulletDispenser dispenser;
@@ -15,11 +20,6 @@ public class UFO extends Entity {
 		super(spawnPos, Kroy.mainGameScreen.textures.UFO(), new Vector2(80, 80), 100);
 		dispenser = new BulletDispenser(this);
 		dispenser.AddPattern(new Pattern(180, 300, 800, 0.1f, 20, 1, 0.5f));
-		//dispenser.AddPattern(new Pattern(100, 500, 0.5f, 8, 5, 0.5f));
-		//dispenser.AddPattern(new Pattern(0, 50, 800, 2f, 3, 36, 4));
-		//dispenser.AddPattern(new Pattern(200, 600, 0.3f, 12, 2, 0.3f));
-		//dispenser.AddPattern(new Pattern(false, 0, 3, 100, 900, 0.02f, 1, 0.2f));
-		//dispenser.AddPattern(new Pattern(true, 0, 1, 100, 900, 0.02f, 1, 1.2f));
 	}
 
 	@Override
@@ -34,12 +34,5 @@ public class UFO extends Entity {
 				Kroy.mainGameScreen.AddGameObject(bullet);
 			}
 		}
-
-		//TEST
-		if (Kroy.mainGameScreen.getPlayer().isAlive()) {
-			Kroy.mainGameScreen.DrawLine(getCentre(), Kroy.mainGameScreen.getPlayer().getCentre(), 3, Color.BLUE);
-		}
-
 	}
-
 }

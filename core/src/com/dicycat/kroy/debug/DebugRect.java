@@ -6,12 +6,24 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * Draw a debug rectangle
+ * 
+ * @author riju8
+ *
+ */
 public class DebugRect extends DebugDraw {
 	Vector2 bottomLeft;
 	Vector2 dimensions;
 	int lineWidth;
 	Color color;
 
+	/**
+	 * @param bLeft Bottom left of the rectangle
+	 * @param size Dimensions of the rectangle (Width, Length)
+	 * @param width Width of the line
+	 * @param colour Colour to draw
+	 */
 	public DebugRect(Vector2 bLeft, Vector2 size, int width, Color colour) {
 		super();
 		bottomLeft = bLeft;

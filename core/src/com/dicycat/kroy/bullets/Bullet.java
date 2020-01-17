@@ -8,51 +8,67 @@ import com.dicycat.kroy.GameObject;
 import com.dicycat.kroy.Kroy;
 import com.dicycat.kroy.entities.FireTruck;
 
+/**
+ * Projectile fired by hostile entities
+ * 
+ * @author Riju
+ *
+ */
 public class Bullet extends GameObject {
 	private int speed;			//Speed of the bullet
 	private Vector2 velocity;	//Direction and amount to travel
 	private float maxDist;		//Max distance to travel
 	private float travelDist; 	//Distance left to travel
-	private Circle hitbox;
+	private Circle hitbox;		//Bullet hit box
 
 
-	public Bullet(Vector2 spawnPos, Vector2 direction, int _speed, float range) {	//Constructor
+	/**
+	 * @param spawnPos Position to spawn the bullet
+	 * @param direction direction the bullet will travel in
+	 * @param speed speed the bullet should travel at
+	 * @param range distance the bullet should travel before it is removed
+	 */
+	public Bullet(Vector2 spawnPos, Vector2 direction, int speed, float range) {	//Constructor
 		super(spawnPos, Kroy.mainGameScreen.textures.Bullet(), new Vector2(20,20));
-		speed = _speed;
-		velocity = direction.scl(speed);
+		this.speed = speed;
+		ChangeDirection(direction);
 		maxDist = range;
 		hitbox = new Circle(spawnPos.x, spawnPos.y, 10);
 	}
 
-	public void Fire(Vector2 initial) {	//Reset bullet
+	/**
+	 * Reactivate the bullet & reset position
+	 * @param initial position to set at
+	 */
+	public void Fire(Vector2 initial) {
 		travelDist = maxDist;
 		setPosition(initial);
 		changePosition(new Vector2(-getOriginX(), -getOriginY()));
 		remove = false;
 	}
 
+	/**
+	 * Calculate velocity of the bullet (Translation per frame)
+	 * @param newDir new direction of the bullet
+	 */
 	public void ChangeDirection(Vector2 newDir) {
 		velocity = newDir.scl(speed);
 	}
 
-	public void move(Vector2 change) { // bullet movement (vector addition)
-		Vector2 currentPos = new Vector2(getX(),getY());
-		setPosition(currentPos.add(change));
-	}
-
-	public void Update() { //Called every frame
+	@Override
+	public void Update() {
 		Vector2 posChange = velocity.cpy().scl(Gdx.graphics.getDeltaTime());	//Calculate distance to move
 		travelDist -= posChange.len();
 		if (travelDist <= 0) {		//Remove if travelled required distance
 			remove = true;
 		}
-		move(posChange); // update bullet position
+		Vector2 currentPos = new Vector2(getX(),getY());
+		setPosition(currentPos.add(posChange));
 
-		//Moves hitbox according to the sprite.
+		//Moves hit box according to the sprite.
 		hitbox.x = getCentre().x;
 		hitbox.y = getCentre().y;
-		//Debug to draw the hitbox.
-		//gameScreen.DrawCircle(new Vector2(hitbox.x, hitbox.y), hitbox.radius, 2, Color.RED);	//No, big lag
+
 		//Check to see if bullet collides with the players truck.
 		FireTruck truck = Kroy.mainGameScreen.getPlayer();
 		if (truck.isAlive()) {
@@ -67,5 +83,4 @@ public class Bullet extends GameObject {
 	public Circle GetHitbox(){
 		return this.hitbox;
 	}
-
 }

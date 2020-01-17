@@ -5,6 +5,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dicycat.kroy.screens.GameScreen;
 import com.dicycat.kroy.screens.MenuScreen;
 
+/**
+ * Main game class
+ * 
+ * @author Riju
+ *
+ */
+
 public class Kroy extends Game {
 	public static final int width = 1080;
 	public static final int height = 720;
@@ -17,7 +24,7 @@ public class Kroy extends Game {
 	
 	@Override
 	public void create () {
-		highScore = 6000;		//TODO: Load high score from external 
+		highScore = 5000;		//TODO: Load high score from external 
 		batch = new SpriteBatch();
 		mainMenuScreen = new MenuScreen(this);
 		this.setScreen(mainMenuScreen);
@@ -42,6 +49,9 @@ public class Kroy extends Game {
 		setScreen(mainMenuScreen); // displays the menu screen
 	}
 	
+	/**
+	 * @return
+	 */
 	public static int CentreWidth() {
 		return width / 3;
 	}
@@ -51,6 +61,10 @@ public class Kroy extends Game {
 		//TODO: Write new high score to external
 	}
 	
+	/**
+	 * Get the current high score
+	 * @return highScore
+	 */
 	public Integer getHighScore() {
 		return highScore;
 	}

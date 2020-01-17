@@ -79,8 +79,6 @@ public enum TileType {
 		return collidable;
 	}
 
-
-	
 	private static HashMap<Integer, TileType> tileMap;
 	
 	static {
@@ -93,5 +91,4 @@ public enum TileType {
 	public static TileType getTileTypeByID(int id) {
 		return tileMap.get(id);
 	}
-
 }

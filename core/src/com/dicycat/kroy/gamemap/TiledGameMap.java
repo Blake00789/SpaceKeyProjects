@@ -43,10 +43,7 @@ public class TiledGameMap{
 		tiledMapRenderer.render(new int[] {3,4});
 	}
 
-	public void update(float delta) {
-		// TODO Auto-generated method stub
-
-	}
+	public void update(float delta) {}
 
 
 	public void dispose() {
@@ -125,8 +122,4 @@ public class TiledGameMap{
 	public int getPixelHeight() {
 		return this.getHeight() * TileType.TILE_SIZE;
 	}
-	
-	
-	
-
 }

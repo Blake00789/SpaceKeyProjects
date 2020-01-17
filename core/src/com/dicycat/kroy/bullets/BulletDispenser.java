@@ -8,6 +8,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.dicycat.kroy.Kroy;
 import com.dicycat.kroy.entities.Entity;
 
+/**
+ * Stores and handles firing of patterns
+ * 
+ * @author Riju
+ *
+ */
 public class BulletDispenser {
 
 	List<Pattern> patterns;	//Stores all patterns
@@ -20,7 +26,8 @@ public class BulletDispenser {
 	float patternTimer;		//Time since last pattern
 	float bulletTimer;		//Time since last bullet
 	
-	public BulletDispenser(Entity creator) 		//Constructor
+	//Constructor
+	public BulletDispenser(Entity creator)
 	{
 		owner = creator;
 		patterns = new ArrayList<Pattern>();
@@ -29,7 +36,11 @@ public class BulletDispenser {
 		patternTimer = 0;
 	}
 	
-	public void AddPattern(Pattern pattern) {	//Add a pattern to the bullet dispensers arsenal
+	/**
+	 * Add a pattern to the bullet dispensers arsenal
+	 * @param pattern Pattern to add
+	 */
+	public void AddPattern(Pattern pattern) {
 		patterns.add(pattern);
 		if (patterns.size() == 1) {	//If only pattern, set as firing pattern
 			firingPattern = patterns.get(0);
@@ -37,6 +48,10 @@ public class BulletDispenser {
 		}
 	}
 	
+	/**
+	 * @param fire Should the dispenser fire?
+	 * @return bullets fired
+	 */
 	public Bullet[] Update(Boolean fire) {		//Called every frame
 		if (patterns.size() == 0) {	//No patterns -> no checks required
 			return null;

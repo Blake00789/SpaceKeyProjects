@@ -64,7 +64,4 @@ public class FireTruckSelectionScene {
 	public void visibility(boolean state){
 		this.table.setVisible(state);
 	}
-
-	
-	
 }

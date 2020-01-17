@@ -8,6 +8,13 @@ import com.dicycat.kroy.bullets.BulletDispenser;
 import com.dicycat.kroy.bullets.Pattern;
 import com.dicycat.kroy.misc.StatBar;
 
+/**
+ * Static hostile Entity
+ * Fires at the player when within its radius
+ * 
+ * @author 
+ *
+ */
 public class Fortress extends Entity {
 
 	private BulletDispenser dispenser;
@@ -30,16 +37,7 @@ public class Fortress extends Entity {
 		Kroy.mainGameScreen.AddGameObject(healthBar);
 	}
 
-	public Boolean playerInRadius() {
-		Vector2 currentCoords = Kroy.mainGameScreen.getPlayer().getCentre(); // get current player coordinates
-		if (Vector2.dst(currentCoords.x, currentCoords.y, getCentre().x, getCentre().y) < radius ) { // checks the distance between the two entities
-			Kroy.mainGameScreen.getHud().updateScore(2);
-			return true; // returns true if distance between entity and player is less than radius of item
-		}else {
-			return false; // returns false otherwise
-		}
-	}
-
+	@Override
 	protected void Die() { // Overwritten die implementation allows for removal from gameObjects List so to remove functionality but to display the broken building graphic
 		sprite.setTexture(deadTexture);
 		Kroy.mainGameScreen.getHud().updateScore(1000);
@@ -52,15 +50,16 @@ public class Fortress extends Entity {
 		}
 	}
 
+	/**
+	 * Apply x amount of damage to the entity
+	 * Updates the health bar
+	 * @param damage Amount of damage to inflict on the Entity
+	 */
+	@Override
 	public void ApplyDamage(float damage) {
-		healthPoints -= damage;
-
+		super.ApplyDamage(damage);
 		healthBar.setPosition(getCentre().add(0, (getHeight() / 2) + 25));
 		healthBar.setBarDisplay((healthPoints*500)/maxHealthPoints);
-
-		if (healthPoints <= 0) {
-			Die();
-		}
 	}
 
 	@Override
