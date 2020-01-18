@@ -12,13 +12,15 @@ import com.dicycat.kroy.Kroy;
  *
  */
 public class FireStation extends Entity {
-	private static Texture texture = new Texture("FireStationTemp.png");
-
+	
+	private static Texture textureLiving = Kroy.mainGameScreen.textures.getFireStation();
+	private static Texture texturedead = Kroy.mainGameScreen.textures.getFireStationDead();
+	
 	/**
 	 * 
 	 */
 	public FireStation() {
-		super(new Vector2(Kroy.mainGameScreen.getSpawnPosition().add(-(texture.getWidth()/2), 100)), texture, new Vector2(texture.getWidth(),texture.getHeight()), 100);
+		super(new Vector2(Kroy.mainGameScreen.getSpawnPosition().add(-(textureLiving.getWidth()/2), 100)), textureLiving, new Vector2(textureLiving.getWidth(),textureLiving.getHeight()), 100);
 	}
 
 	/**
@@ -27,7 +29,7 @@ public class FireStation extends Entity {
 	@Override
 	protected void Die() { 
 		super.Die();
-		sprite.setTexture(new Texture("FireStationTempDead.png"));
+		sprite.setTexture(texturedead);
 		displayable = true;
 	}
 

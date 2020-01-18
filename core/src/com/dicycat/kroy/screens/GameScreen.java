@@ -113,9 +113,9 @@ public class GameScreen implements Screen{
 		
 		fireStation = new FireStation();
 		gameObjects.add(fireStation);
-		gameObjects.add(new Fortress(new Vector2(2903,3211), new Texture("cliffords tower.png"), new Texture("cliffords tower dead.png"), new Vector2(256, 218)));
-		gameObjects.add(new Fortress(new Vector2(3200,5681), new Texture("york minster.png"), new Texture("york minster dead.png"), new Vector2(256, 320)));
-		gameObjects.add(new Fortress(new Vector2(2050,1937), new Texture("york museum.png"), new Texture("york museum dead.png"), new Vector2(400, 240)));
+		gameObjects.add(new Fortress(new Vector2(2903,3211),textures.getFortress(0), textures.getDeadFortress(0), new Vector2(256, 218)));
+		gameObjects.add(new Fortress(new Vector2(3200,5681), textures.getFortress(1), textures.getDeadFortress(1), new Vector2(256, 320)));
+		gameObjects.add(new Fortress(new Vector2(2050,1937), textures.getFortress(2), textures.getDeadFortress(2), new Vector2(400, 240)));
 
 	}
 
