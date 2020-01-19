@@ -14,29 +14,29 @@ public class GameTextures {
 	private Texture truck, ufo, bullet, fireStation, fireStationDead;
 	private Texture[] livingFortresses = {new Texture("cliffords tower.png"), new Texture("york minster.png"), new Texture("york museum.png")};
 	private Texture[] deadFortresses = {new Texture("cliffords tower dead.png"), new Texture("york minster dead.png"), new Texture("york museum dead.png")};
-	private String[] trucks = {"fireTruck1.png", "fireTruck2.png", "fireTruck3.png", "fireTruck4.png"};
+	private String[] truckAddress = {"fireTruck1.png", "fireTruck2.png", "fireTruck3.png", "fireTruck4.png"};
 	
 	
 	/**
 	 * @param truckNum Which truck texture to get
 	 */
 	public GameTextures(int truckNum) {
-		truck = new Texture(trucks[truckNum]);
+		truck = new Texture(truckAddress[truckNum]);
 		ufo = new Texture("ufo.png");
 		bullet = new Texture("bullet.png");
 		fireStation = new Texture("FireStationTemp.png");
 		fireStationDead = new Texture("FireStationTempDead.png");	
 	}
 	
-	public Texture Truck() {
+	public Texture getTruck() {
 		return truck;
 	}
 	
-	public Texture UFO() {
+	public Texture getUFO() {
 		return ufo;
 	}
 	
-	public Texture Bullet() {
+	public Texture getBullet() {
 		return bullet;
 	}
 	

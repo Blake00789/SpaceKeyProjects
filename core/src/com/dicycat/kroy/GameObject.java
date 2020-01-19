@@ -26,13 +26,13 @@ public abstract class GameObject {
 	 * Called every frame.
 	 * Update the game object.
 	 */
-	public abstract void Update();
+	public abstract void update();
 
 	/**
 	 * Render the object.
 	 * @param batch Batch to render
 	 */
-	public void Render(SpriteBatch batch) {
+	public void render(SpriteBatch batch) {
 		batch.draw(getTexture(), getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getXScale(), getYScale(), getRotation(), 0, 0, getTextureWidth(), getTextureHeight(), false, false);
 	}
 
@@ -45,21 +45,13 @@ public abstract class GameObject {
 		sprite.setY(getY() + v.y);
 	}
 
-	public void addX(float x) {
-		sprite.setX(sprite.getX() + x);
-	}
-
-	public void addY(float y) {
-		sprite.setY(sprite.getY() + y);
-	}
-
 	//Getters
 	public Texture getTexture() { return sprite.getTexture(); }
 	public float getHeight() { return sprite.getHeight(); }
 	public float getWidth() {return sprite.getWidth(); }
 	public float getX() { return sprite.getX(); }
 	public float getY() { return sprite.getY(); }
-	public Boolean CheckRemove() { return remove; }
+	public Boolean isRemove() { return remove; }
 	public float getOriginX () { return sprite.getOriginX(); } // returns centre of sprite (25, 50) Use GetCentre for position on screen
 	public float getOriginY() {return sprite.getOriginY(); }
 	public  float getXScale() { return sprite.getScaleX(); }
@@ -69,7 +61,7 @@ public abstract class GameObject {
 	public int getTextureHeight() {	return sprite.getTexture().getHeight(); }
 	public Sprite getSprite() { return sprite; }
 	public Vector2 getPosition() { return new Vector2(getX(), getY());  }
-	public boolean checkDisplayable() { return displayable; }
+	public boolean isDisplayable() { return displayable; }
 
 	/**
 	 * Return centre of GameObject
@@ -100,7 +92,7 @@ public abstract class GameObject {
 	/**
 	 * 
 	 */
-	protected void Die() {
+	public void die() {
 		remove = true;
 	}
 }

@@ -36,46 +36,56 @@ import com.dicycat.kroy.scenes.PauseWindow;
  * Contains the main game logic
  * 
  * @author riju8
+ * @author lnt20
  *
  */
 public class GameScreen implements Screen{
 
-	public static enum State{
+	public static enum GameScreenState{
 		PAUSE,
 		RUN,
 		RESUME,
 		OPTIONS
 	}
-	public GameTextures textures;
-
-	public static Boolean showDebug = false;
-
+	
 	public Kroy game;
+	public GameTextures textures;
+	public static Boolean showDebug = false;
+	public float gameTimer; //Timer to destroy station
+	
+	
+	public GameScreenState state = GameScreenState.RUN;
+	
+	public static TiledGameMap gameMap;
+	
 	private OrthographicCamera gamecam;	//follows along what the port displays
 	private Viewport gameport;
+	
 	private HUD hud;
 	private PauseWindow pauseWindow;
-	public static OptionsWindow optionsWindow;
-	public static TiledGameMap gameMap;
+	private OptionsWindow optionsWindow;
+
 	private Float[][] truckStats = {	//Each list is a configuration of a specific truck. {speed, flowRate, capacity, range}
 			{450f, 1f, 400f, 300f},		//Speed
 			{300f, 1.5f, 400f, 300f},	//Flow rate
 			{300f, 1f, 500f, 300f},		//Capacity
 			{300f, 1f, 400f, 450f}		//Range
 		};
+	
+	
 	private int truckNum; // Identifies the truck thats selected in the menu screen
-	private List<GameObject> objectsToRender = new ArrayList<GameObject>(); // List of game objects that have been updated but need rendering
+	private FireTruck player; //Reference to the player
+	private int lives = 4;
+	
 	private int fortressesCount;
 	private Vector2 spawnPosition;	//Coordinates the player spawns at
-	FireStation fireStation;	//Reference to fire station
-	FireTruck player; //Reference to the player
-	WaterStream waterStream; // Water stream on the screen
-	List<GameObject> gameObjects, deadObjects;	//List of active game objects
-	List<GameObject> toAdd;
-	List<DebugDraw> debugObjects; //List of debug items
-	public State state = State.RUN;
+	
+	private List<GameObject> gameObjects, deadObjects;	//List of active game objects
+	private List<GameObject> objectsToRender = new ArrayList<GameObject>(); // List of game objects that have been updated but need rendering
+	private List<GameObject> objectsToAdd;
+	private List<DebugDraw> debugObjects; //List of debug items
 
-	public float gameTimer; //Timer to destroy station
+
 
 	/**
 	 * @param _game
@@ -102,7 +112,7 @@ public class GameScreen implements Screen{
 	 */
 	@Override
 	public void show() {
-		toAdd = new ArrayList<GameObject>();
+		objectsToAdd = new ArrayList<GameObject>();
 		gameObjects = new ArrayList<GameObject>();
 		deadObjects = new ArrayList<GameObject>();
 		debugObjects = new ArrayList<DebugDraw>();
@@ -111,8 +121,7 @@ public class GameScreen implements Screen{
 		gamecam.translate(new Vector2(player.getX(),player.getY())); // sets initial Camera position
 		gameObjects.add(player);	//Player
 		
-		fireStation = new FireStation();
-		gameObjects.add(fireStation);
+		gameObjects.add(new FireStation());
 		gameObjects.add(new Fortress(new Vector2(2903,3211),textures.getFortress(0), textures.getDeadFortress(0), new Vector2(256, 218)));
 		gameObjects.add(new Fortress(new Vector2(3200,5681), textures.getFortress(1), textures.getDeadFortress(1), new Vector2(256, 320)));
 		gameObjects.add(new Fortress(new Vector2(2050,1937), textures.getFortress(2), textures.getDeadFortress(2), new Vector2(400, 240)));
@@ -133,11 +142,8 @@ public class GameScreen implements Screen{
 					pause();
 				}
 				gameTimer -= delta;		//Decrement timer
-				if (gameTimer <= 0) {		//Once timer is over
-					fireStation.ApplyDamage(100);	//Destroy fire station
-				}
 
-				UpdateLoop(); //Update all game objects positions but does not render them as to be able to render everything as quickly as possible
+				updateLoop(); //Update all game objects positions but does not render them as to be able to render everything as quickly as possible
 
 				gameMap.renderRoads(gamecam); // Render the background roads, fields and rivers
 
@@ -167,7 +173,7 @@ public class GameScreen implements Screen{
 				break;
 			case RESUME:
 				pauseWindow.visibility(false);
-				setGameState(State.RUN);
+				setGameState(GameScreenState.RUN);
 				break;
 			default:
 				break;
@@ -181,11 +187,11 @@ public class GameScreen implements Screen{
 	 * Adds dead objects to render queue.
 	 * Respawns the player if necessary.
 	 */
-	private void UpdateLoop() {
+	private void updateLoop() {
 		List<GameObject> toRemove = new ArrayList<GameObject>();
 		for (GameObject gObject : gameObjects) {	//Go through every game object
-			gObject.Update();						//Update the game object
-			if (gObject.CheckRemove()) {				//Check if game object is to be removed
+			gObject.update();						//Update the game object
+			if (gObject.isRemove()) {				//Check if game object is to be removed
 				toRemove.add(gObject);					//Set it to be removed
 			}else {
 				objectsToRender.add(gObject);
@@ -193,29 +199,29 @@ public class GameScreen implements Screen{
 		}
 		for (GameObject rObject : toRemove) {	//Remove game objects set for removal
 			gameObjects.remove(rObject);
-			if (rObject.checkDisplayable()) {
+			if (rObject.isDisplayable()) {
 				deadObjects.add(rObject);
 			}
 		}
-		for (GameObject aObject : toAdd) {		//Add game objects to be added
+		for (GameObject aObject : objectsToAdd) {		//Add game objects to be added
 			gameObjects.add(aObject);
 		}
-		toAdd.clear();	// Clears list as not to add new objects twice
+		objectsToAdd.clear();	// Clears list as not to add new objects twice
 
 		for (GameObject dObject : deadObjects) { // loops through the destroyed but displayed items (such as destroyed bases)
 			objectsToRender.add(dObject);
 		}
-		if (player.CheckRemove()) {	//If the player is set for removal, respawn
-			respawn();
+		if (player.isRemove()) {	//If the player is set for removal, respawn
+			updateLives();
 		}
 	}
 
 	/**
 	 * Renders the objects in "objectsToRender" then clears the list
 	 */
-	public void renderObjects() {
+	private void renderObjects() {
 		for (GameObject object : objectsToRender) {
-			object.Render(game.batch);
+			object.render(game.batch);
 		}
 		objectsToRender.clear();
 	}
@@ -224,8 +230,8 @@ public class GameScreen implements Screen{
 	 * Add a game object next frame
 	 * @param gameObject gameObject to be added
 	 */
-	public void AddGameObject(GameObject gameObject) {
-		toAdd.add(gameObject);
+	public void addGameObject(GameObject gameObject) {
+		objectsToAdd.add(gameObject);
 	}
 
 	/**
@@ -234,10 +240,6 @@ public class GameScreen implements Screen{
 	 */
 	public FireTruck getPlayer() {
 		return player;
-	}
-
-	public WaterStream getWaterStream() {
-		return waterStream;
 	}
 
 	/**
@@ -298,12 +300,12 @@ public class GameScreen implements Screen{
 
 	@Override
 	public void pause() {
-		setGameState(State.PAUSE);
+		setGameState(GameScreenState.PAUSE);
 	}
 
 	@Override
 	public void resume() {
-		setGameState(State.RESUME);
+		setGameState(GameScreenState.RESUME);
 	}
 
 	@Override
@@ -317,7 +319,7 @@ public class GameScreen implements Screen{
 	/**
 	 * @param s
 	 */
-	public void setGameState(State s){
+	public void setGameState(GameScreenState s){
 	    state = s;
 	}
 
@@ -338,6 +340,10 @@ public class GameScreen implements Screen{
 	 */
 	public List<GameObject> getGameObjects(){
 		return gameObjects;
+	}
+	
+	public int getLives() {
+		return lives;
 	}
 
 	/**
@@ -374,14 +380,14 @@ public class GameScreen implements Screen{
 	/**
 	 * Add one fortress to the count
 	 */
-	public void AddFortress() {
+	public void addFortress() {
 		fortressesCount++;
 	}
 
 	/**
 	 * Remove one fortress to the count
 	 */
-	public void RemoveFortress() {
+	public void removeFortress() {
 		fortressesCount--;
 	}
 
@@ -402,10 +408,21 @@ public class GameScreen implements Screen{
 	}
 
 	/**
+	 * 
+	 */
+	public void updateLives() {
+		if (lives>1) {
+			lives -= 1;
+			respawn();
+		} else {
+			gameOver(false);
+		}
+	}
+	
+	/**
 	 * Respawns the player at the spawn position and updates the HUD
 	 */
-	public void respawn() {
-		hud.updateLives();
+	public void respawn() { 
 		player = new FireTruck(spawnPosition.cpy(),truckStats[truckNum]);
 		gameObjects.add(player);
 	}

@@ -29,9 +29,9 @@ public class Bullet extends GameObject {
 	 * @param range distance the bullet should travel before it is removed
 	 */
 	public Bullet(Vector2 spawnPos, Vector2 direction, int speed, float range) {	//Constructor
-		super(spawnPos, Kroy.mainGameScreen.textures.Bullet(), new Vector2(20,20));
+		super(spawnPos, Kroy.mainGameScreen.textures.getBullet(), new Vector2(20,20));
 		this.speed = speed;
-		ChangeDirection(direction);
+		changeDirection(direction);
 		maxDist = range;
 		hitbox = new Circle(spawnPos.x, spawnPos.y, 10);
 	}
@@ -40,7 +40,7 @@ public class Bullet extends GameObject {
 	 * Reactivate the bullet and reset position
 	 * @param initial position to set at
 	 */
-	public void Fire(Vector2 initial) {
+	public void fire(Vector2 initial) {
 		travelDist = maxDist;
 		setPosition(initial);
 		changePosition(new Vector2(-getOriginX(), -getOriginY()));
@@ -51,7 +51,7 @@ public class Bullet extends GameObject {
 	 * Calculate velocity of the bullet (Translation per frame)
 	 * @param newDir New direction of the bullet
 	 */
-	public void ChangeDirection(Vector2 newDir) {
+	public void changeDirection(Vector2 newDir) {
 		velocity = newDir.scl(speed);
 	}
 
@@ -59,7 +59,7 @@ public class Bullet extends GameObject {
 	 *
 	 */
 	@Override
-	public void Update() {
+	public void update() {
 		Vector2 posChange = velocity.cpy().scl(Gdx.graphics.getDeltaTime());	//Calculate distance to move
 		travelDist -= posChange.len();
 		if (travelDist <= 0) {	//Remove if travelled required distance
@@ -76,7 +76,7 @@ public class Bullet extends GameObject {
 		FireTruck truck = Kroy.mainGameScreen.getPlayer();
 		if (truck.isAlive()) {
 			if(Intersector.overlaps(hitbox, truck.getHitbox())){
-				truck.ApplyDamage(10);
+				truck.applyDamage(10);
 				remove = true;
 			}
 		}

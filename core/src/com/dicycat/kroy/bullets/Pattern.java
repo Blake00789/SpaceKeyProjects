@@ -13,8 +13,8 @@ public class Pattern {
 	private float waitTime;		//Time between bullets
 	private Boolean aim;		//Should the bullets be targeted towards the player
 	private float cooldown; 		//Time to wait after firing pattern
-	int offset;
-	int xtra;
+	private int offset;
+	private int xtra;
 
 	
 	/**
@@ -109,7 +109,7 @@ public class Pattern {
 	 * @param set The set of bullets to fire
 	 * @return Set of bullets to fire
 	 */
-	public Bullet[] BulletSet(int set) {
+	public Bullet[] bulletSet(int set) {
 		return bullets[set];
 	}
 
@@ -118,19 +118,19 @@ public class Pattern {
 	 * @param aimDir The direction the bullets should fire
 	 * @return Set of aimed bullets to fire
 	 */
-	public Bullet[] AimedSet(int set, Vector2 aimDir) {
+	public Bullet[] aimedSet(int set, Vector2 aimDir) {
 		Vector2 direction;
 		for (int i = 0; i < bullets[set].length; i++) {
 			direction = new Vector2(1, 1);
 			direction.setAngle(aimDir.angle() + ((i - offset) * 10) + xtra);
-			bullets[set][i].ChangeDirection(direction);
+			bullets[set][i].changeDirection(direction);
 		}
 		return bullets[set];
 	}
 
 	//Getters
-	public Boolean Aim() { return aim; }	
-	public Bullet[][] Bullets(){return bullets;}
-	public float WaitTime(){return waitTime;}
-	public float Cooldown(){return cooldown;}
+	public Boolean getAim() { return aim; }	
+	public Bullet[][] getBullets(){return bullets;}
+	public float getWaitTime(){return waitTime;}
+	public float getCooldown(){return cooldown;}
 }

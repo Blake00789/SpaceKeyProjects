@@ -21,24 +21,24 @@ public class UFO extends Entity {
 	 * @param spawnPos
 	 */
 	public UFO(Vector2 spawnPos) {
-		super(spawnPos, Kroy.mainGameScreen.textures.UFO(), new Vector2(80, 80), 100);
+		super(spawnPos, Kroy.mainGameScreen.textures.getUFO(), new Vector2(80, 80), 100);
 		dispenser = new BulletDispenser(this);
-		dispenser.AddPattern(new Pattern(180, 300, 800, 0.1f, 20, 1, 0.5f));
+		dispenser.addPattern(new Pattern(180, 300, 800, 0.1f, 20, 1, 0.5f));
 	}
 
 	/**
 	 *
 	 */
 	@Override
-	public void Update() {
+	public void update() {
 		//movement
 
 		//weapons
-		Bullet[] toShoot = dispenser.Update(true);
+		Bullet[] toShoot = dispenser.update(true);
 		if (toShoot != null) {
 			for (Bullet bullet : toShoot) {
-				bullet.Fire(getCentre());
-				Kroy.mainGameScreen.AddGameObject(bullet);
+				bullet.fire(getCentre());
+				Kroy.mainGameScreen.addGameObject(bullet);
 			}
 		}
 	}

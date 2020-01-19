@@ -28,7 +28,16 @@ public class MenuScreen implements Screen{
   private Kroy game; 
   private OrthographicCamera gamecam;	//m
   private Viewport gameport; 	//m
-  private Texture playBTN, playBTN_ACTIVE, optionsBTN, optionsBTN_ACTIVE, exitBTN, exitBTN_ACTIVE, minigameBTN, minigameBTN_ACTIVE, background;
+  private Texture playButton, 
+  	playButtonActive, 
+  	optionsButton, 
+  	optionsButtonActive, 
+  	exitButton, 
+  	exitButtonActive, 
+  	minigameButton, 
+  	minigameButtonActive, 
+  	background;
+  
   private Stage stage;
   
   private OptionsWindow optionsWindow;
@@ -37,20 +46,20 @@ public class MenuScreen implements Screen{
   public static float musicVolume = 0.4f;
 
   //coordinates for Play and Exit buttons 
-  private int BTN_WIDTH = 250;
-  private int BTN_HEIGHT = 50;
-  private int x_axis_centered = (Kroy.width/2) - (BTN_WIDTH/2);
-  private int playBTN_y = (Kroy.height/2)+75;
-  private int optionsBTN_y = (Kroy.height/2);
-  private int minigameBTN_y = (Kroy.height/2)-75;
-  private int exitBTN_y = (Kroy.height/2)-150;
+  private int buttonWidth = 250;
+  private int buttonHeight = 50;
+  private int xAxisCentred = (Kroy.width/2) - (buttonWidth/2);
+  private int playButtonY = (Kroy.height/2)+75;
+  private int optionsButtonY = (Kroy.height/2);
+  private int minigameButtonY = (Kroy.height/2)-75;
+  private int exitButtonY = (Kroy.height/2)-150;
   
-  Pixmap pm = new Pixmap(Gdx.files.internal("handHD2.png")); //cursor
-  int xHotSpot = pm.getWidth() / 3;	//where the cursor's aim is 
-  int yHotSpot = 0;
+  private Pixmap pm = new Pixmap(Gdx.files.internal("handHD2.png")); //cursor
+  private int xHotSpot = pm.getWidth() / 3;	//where the cursor's aim is 
+  private int yHotSpot = 0;
   
-  FireTruckSelectionScene fireTruckSelector;
-  boolean currentlyRunningGame = false;
+  private FireTruckSelectionScene fireTruckSelector;
+  private boolean currentlyRunningGame = false;
 
   /**
    *  Used to define the current state of the screen, 
@@ -59,27 +68,27 @@ public class MenuScreen implements Screen{
    * @author 
    *
    */
-  public static enum State {
+  public static enum MenuScreenState {
 	  MAINMENU,
 	  TRUCKSELECT,
 	  OPTIONS
   }
   
-  public State state = State.MAINMENU;
+  public MenuScreenState state = MenuScreenState.MAINMENU;
   
   /**
    * @param game
    */
   public MenuScreen(Kroy game) { 
 	  this.game = game; 
-	  exitBTN = new Texture("exit.png"); 	//in later stages we could also have buttonActive and buttonInactive
-	  exitBTN_ACTIVE = new Texture("exitActive.png");
-	  optionsBTN = new Texture("options.png");
-	  optionsBTN_ACTIVE = new Texture("optionsActive.png");
-	  playBTN = new Texture("newgame.png");
-	  playBTN_ACTIVE = new Texture("newActive.png");
-	  minigameBTN = new Texture("minigame.png");
-	  minigameBTN_ACTIVE = new Texture("minigameActive.png");
+	  exitButton = new Texture("exit.png"); 	//in later stages we could also have buttonActive and buttonInactive
+	  exitButtonActive = new Texture("exitActive.png");
+	  optionsButton = new Texture("options.png");
+	  optionsButtonActive = new Texture("optionsActive.png");
+	  playButton = new Texture("newgame.png");
+	  playButtonActive = new Texture("newActive.png");
+	  minigameButton = new Texture("minigame.png");
+	  minigameButtonActive = new Texture("minigameActive.png");
 	  background = new Texture ("fireforce.png");
 	  
 	  gamecam = new OrthographicCamera();    //m
@@ -117,53 +126,53 @@ public class MenuScreen implements Screen{
 			  Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, xHotSpot, yHotSpot));
 			  game.batch.draw(background, 0, 0);
 			 
-			  game.batch.draw(minigameBTN, x_axis_centered, minigameBTN_y, BTN_WIDTH, BTN_HEIGHT);
+			  game.batch.draw(minigameButton, xAxisCentred, minigameButtonY, buttonWidth, buttonHeight);
 			
 			
 			  //for play button: checks if the position of the cursor is inside the coordinates of the button
-			  if(( (Gdx.input.getX() < (x_axis_centered + BTN_WIDTH)) && (Gdx.input.getX() > x_axis_centered) ) && ( (Kroy.height - Gdx.input.getY() > playBTN_y ) && (Kroy.height - Gdx.input.getY() < (playBTN_y + BTN_HEIGHT)) ) ){
-				  game.batch.draw(playBTN_ACTIVE, x_axis_centered, playBTN_y, BTN_WIDTH, BTN_HEIGHT);
+			  if(( (Gdx.input.getX() < (xAxisCentred + buttonWidth)) && (Gdx.input.getX() > xAxisCentred) ) && ( (Kroy.height - Gdx.input.getY() > playButtonY ) && (Kroy.height - Gdx.input.getY() < (playButtonY + buttonHeight)) ) ){
+				  game.batch.draw(playButtonActive, xAxisCentred, playButtonY, buttonWidth, buttonHeight);
 				  if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 					  this.dispose();
 					  game.batch.end();
 					  fireTruckSelector.visibility(true);// display the truck selection window
-					  setGameState(State.TRUCKSELECT);// set the game state to run and run the selection screen code
+					  setGameState(MenuScreenState.TRUCKSELECT);// set the game state to run and run the selection screen code
 					  return;
 				  }
 			  } else {
-				  game.batch.draw(playBTN, x_axis_centered, playBTN_y, BTN_WIDTH, BTN_HEIGHT);
+				  game.batch.draw(playButton, xAxisCentred, playButtonY, buttonWidth, buttonHeight);
 			  }
 			  
 			//for exit button
-			  if(( (Gdx.input.getX() < (x_axis_centered + BTN_WIDTH)) && (Gdx.input.getX() > x_axis_centered) ) && ( (Kroy.height - Gdx.input.getY() > exitBTN_y ) && (Kroy.height - Gdx.input.getY() < (exitBTN_y + BTN_HEIGHT)) ) ){
-				  game.batch.draw(exitBTN_ACTIVE, x_axis_centered, exitBTN_y, BTN_WIDTH, BTN_HEIGHT);
+			  if(( (Gdx.input.getX() < (xAxisCentred + buttonWidth)) && (Gdx.input.getX() > xAxisCentred) ) && ( (Kroy.height - Gdx.input.getY() > exitButtonY ) && (Kroy.height - Gdx.input.getY() < (exitButtonY + buttonHeight)) ) ){
+				  game.batch.draw(exitButtonActive, xAxisCentred, exitButtonY, buttonWidth, buttonHeight);
 				  if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 					  Gdx.app.exit();
 				  }
 			  } else {
-				  game.batch.draw(exitBTN, x_axis_centered, exitBTN_y, BTN_WIDTH, BTN_HEIGHT);
+				  game.batch.draw(exitButton, xAxisCentred, exitButtonY, buttonWidth, buttonHeight);
 			  }
 				
 			  //for minigame button
-			  if(( (Gdx.input.getX() < (x_axis_centered + BTN_WIDTH)) && (Gdx.input.getX() > x_axis_centered) ) && ( (Kroy.height - Gdx.input.getY() > minigameBTN_y ) && (Kroy.height - Gdx.input.getY() < (minigameBTN_y + BTN_HEIGHT)) ) ){
-				  game.batch.draw(minigameBTN_ACTIVE, x_axis_centered, minigameBTN_y, BTN_WIDTH, BTN_HEIGHT);
+			  if(( (Gdx.input.getX() < (xAxisCentred + buttonWidth)) && (Gdx.input.getX() > xAxisCentred) ) && ( (Kroy.height - Gdx.input.getY() > minigameButtonY ) && (Kroy.height - Gdx.input.getY() < (minigameButtonY + buttonHeight)) ) ){
+				  game.batch.draw(minigameButtonActive, xAxisCentred, minigameButtonY, buttonWidth, buttonHeight);
 				  if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 					  //what shall we put?
 						  }
 					  } else {
-						  game.batch.draw(minigameBTN, x_axis_centered, minigameBTN_y, BTN_WIDTH, BTN_HEIGHT);
+						  game.batch.draw(minigameButton, xAxisCentred, minigameButtonY, buttonWidth, buttonHeight);
 					  }
 	
 						  //for options button
-			  if(( (Gdx.input.getX() < (x_axis_centered + BTN_WIDTH)) && (Gdx.input.getX() > x_axis_centered) ) && ( (Kroy.height - Gdx.input.getY() > optionsBTN_y ) && (Kroy.height - Gdx.input.getY() < (optionsBTN_y + BTN_HEIGHT)) ) ){
-				  game.batch.draw(optionsBTN_ACTIVE, x_axis_centered, optionsBTN_y, BTN_WIDTH, BTN_HEIGHT);
+			  if(( (Gdx.input.getX() < (xAxisCentred + buttonWidth)) && (Gdx.input.getX() > xAxisCentred) ) && ( (Kroy.height - Gdx.input.getY() > optionsButtonY ) && (Kroy.height - Gdx.input.getY() < (optionsButtonY + buttonHeight)) ) ){
+				  game.batch.draw(optionsButtonActive, xAxisCentred, optionsButtonY, buttonWidth, buttonHeight);
 				  if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 					  //game.batch.end();
 					  optionsWindow.visibility(true);
-					  setGameState(State.OPTIONS);
+					  setGameState(MenuScreenState.OPTIONS);
 				  }
 			  } else {
-				  game.batch.draw(optionsBTN, x_axis_centered, optionsBTN_y, BTN_WIDTH, BTN_HEIGHT);
+				  game.batch.draw(optionsButton, xAxisCentred, optionsButtonY, buttonWidth, buttonHeight);
 			  }
 			  game.batch.end();
 				  
@@ -186,7 +195,7 @@ public class MenuScreen implements Screen{
 	/**
 	 * @param s
 	 */
-	public void setGameState(State s){
+	public void setGameState(MenuScreenState s){
 	    this.state = s;
 	}
   

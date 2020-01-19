@@ -16,7 +16,6 @@ public abstract class Entity extends GameObject{
 
 	protected int healthPoints;
 	protected int radius;
-	protected TiledGameMap map;
 	protected int maxHealthPoints;
 
 	/**
@@ -37,7 +36,7 @@ public abstract class Entity extends GameObject{
 	 * Method is called every frame (If added to the gameobjects list in GameScreen)
 	 */
 	@Override
-	public void Update() {}	//Called every frame
+	public void update() {}	//Called every frame
 
 	/**
 	 * Checks if the Entity still has health and is not marked for removal
@@ -51,10 +50,10 @@ public abstract class Entity extends GameObject{
 	 * Apply x amount of damage to the entity
 	 * @param damage Amount of damage to inflict on the Entity
 	 */
-	public void ApplyDamage(float damage) {	
+	public void applyDamage(float damage) {	
 		healthPoints -= damage;
 		if (healthPoints <= 0) {
-			Die();
+			die();
 		}
 	}
 

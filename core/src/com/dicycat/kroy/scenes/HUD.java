@@ -25,12 +25,12 @@ public class HUD {
 	private Integer score = 0;
 	private float timeCount = 0;
 	
-	Label scoreLabel;
-	Label timeLabel;
-	Label trucksLabel;
-	Label worldTimerLabel;
-	Label scoreCountLabel;
-	Label trucksCountLabel;	//we could put mini images of the trucks instead of using an int for the lives
+	private Label scoreLabel;
+	private Label timeLabel;
+	private Label trucksLabel;
+	private Label worldTimerLabel;
+	private Label scoreCountLabel;
+	private Label trucksCountLabel;	//we could put mini images of the trucks instead of using an int for the lives
 	
 	
 	/**
@@ -74,28 +74,11 @@ public class HUD {
 			worldTimerLabel.setText(String.format("%05d", worldTimer));
 			timeCount =0;
 			scoreCountLabel.setText(String.format("%06d", score));
+			trucksCountLabel.setText(String.format("%01d", Kroy.mainGameScreen.getLives()));
 		}
 	}
-	
-	/**
-	 * 
-	 */
-	public void updateLives() {
-		if (trucks>1) {
-			trucks -= 1;
-			trucksCountLabel.setText(String.format("%01d", trucks)); // Updates the label for the amount of lives left
-		} else {
-			gameOver();
-		}
-	}
-	
-	/**
-	 * Ends the game with the lose state
-	 */
-	public void gameOver() {
-		Kroy.mainGameScreen.gameOver(false);	//Lose
-	}
-	
+
+
 	public Integer getFinalScore() {
 		return score;
 	}

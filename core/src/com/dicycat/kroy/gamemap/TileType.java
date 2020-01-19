@@ -84,6 +84,7 @@ public enum TileType {
 		return collidable;
 	}
 
+	
 	private static HashMap<Integer, TileType> tileMap;
 	
 	static {

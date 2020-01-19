@@ -27,8 +27,8 @@ public class FireStation extends Entity {
 	 * Removes from active pool and displays destroyed state
 	 */
 	@Override
-	protected void Die() { 
-		super.Die();
+	public void die() { 
+		super.die();
 		sprite.setTexture(texturedead);
 		displayable = true;
 	}
@@ -36,9 +36,12 @@ public class FireStation extends Entity {
 	/**
 	 *
 	 */
-	public void Update(){
+	public void update(){
 		if(playerInRadius()){
 			Kroy.mainGameScreen.getPlayer().replenish();
+		}
+		if (Kroy.mainGameScreen.gameTimer <= 0) {		//Once timer is over
+			applyDamage(100);	//Destroy fire station
 		}
 	}
 }

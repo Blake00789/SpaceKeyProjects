@@ -17,8 +17,8 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 public class TiledGameMap{
 	
-	TiledMap tiledMap;
-	OrthogonalTiledMapRenderer tiledMapRenderer;
+	private TiledMap tiledMap;
+	private OrthogonalTiledMapRenderer tiledMapRenderer;
 	
 	/**
 	 * 

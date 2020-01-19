@@ -30,13 +30,13 @@ public class GameOverScreen implements Screen{
 	  
 	  public boolean result; //to change based on whether game is won or lost
 	  
-	  private Texture gameOverIMG= new Texture("gameover.png");
-	  private Texture youWonIMG= new Texture("youwon.png");
-	  private Texture youLostIMG= new Texture("youlost.png");
-	  private Texture playBTN= new Texture("newgame.png");
-	  private Texture playBTN_ACTIVE= new Texture("newActive.png");
-	  private Texture menuBTN= new Texture("menu.png");
-	  private Texture menuBTN_ACTIVE = new Texture("menuActive.png");
+	  private Texture gameOverImage= new Texture("gameover.png");
+	  private Texture youWonImage= new Texture("youwon.png");
+	  private Texture youLostImage= new Texture("youlost.png");
+	  private Texture playButton= new Texture("newgame.png");
+	  private Texture playButtonActive= new Texture("newActive.png");
+	  private Texture menuButton = new Texture("menu.png");
+	  private Texture menuButtonActive = new Texture("menuActive.png");
 	  
 	  private Integer score;
 	  private Integer highScore; 
@@ -50,25 +50,25 @@ public class GameOverScreen implements Screen{
 	  private int truckNum;
 
 	  //coordinates for gameoverIMG, Play and Exit buttons 
-	  private int gameOverIMG_WIDTH = 400;
-	  private int gameOverIMG_HEIGHT= 200;
-	  private int gameOverIMG_y = ((Kroy.height/2)+75);
-	  private int gameOverIMG_x_axis_centred = (Kroy.width/2) - (gameOverIMG_WIDTH/2);
+	  private int gameOverImageWidth = 400;
+	  private int gameOverImageHeight= 200;
+	  private int gameOverImageY = ((Kroy.height/2)+75);
+	  private int gameOverImageXAxisCentred = (Kroy.width/2) - (gameOverImageWidth/2);
 	  
-	  private int resultIMG_WIDTH = 300;
-	  private int resultIMG_HEIGHT= 100;
-	  private int resultIMG_y = ((Kroy.height/2)-20);
-	  private int resultIMG_x_axis_centred = (Kroy.width/2) - (resultIMG_WIDTH/2);
+	  private int resultingImageWidth = 300;
+	  private int resultingImgaeHeight= 100;
+	  private int resultImageY = ((Kroy.height/2)-20);
+	  private int resultImageXAxisCentred = (Kroy.width/2) - (resultingImageWidth/2);
 	  
-	  private int BTN_WIDTH = 250;
-	  private int BTN_HEIGHT = 50;
-	  private int x_axis_centered = (Kroy.width/2) - (BTN_WIDTH/2);
-	  private int playBTN_y = ((Kroy.height/2)-150);
-	  private int minigameBTN_y = (Kroy.height/2)-225;
+	  private int buttonWidth = 250;
+	  private int buttonHeight = 50;
+	  private int xAxisCentred = (Kroy.width/2) - (buttonWidth/2);
+	  private int playButtonX = ((Kroy.height/2)-150);
+	  private int minigameButtonY = (Kroy.height/2)-225;
 	  
-	  Pixmap pm = new Pixmap(Gdx.files.internal("handHD2.png")); //cursor
-	  int xHotSpot = pm.getWidth() / 3;	//where the cursor's aim is 
-	  int yHotSpot = 0;
+	  private Pixmap pm = new Pixmap(Gdx.files.internal("handHD2.png")); //cursor
+	  private int xHotSpot = pm.getWidth() / 3;	//where the cursor's aim is 
+	  private int yHotSpot = 0;
 	  
 	  
 	  /**
@@ -132,18 +132,18 @@ public class GameOverScreen implements Screen{
 		  
 		  Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, xHotSpot, yHotSpot));
 		 
-		  game.batch.draw(gameOverIMG, gameOverIMG_x_axis_centred, gameOverIMG_y, gameOverIMG_WIDTH, gameOverIMG_HEIGHT);
+		  game.batch.draw(gameOverImage, gameOverImageXAxisCentred, gameOverImageY, gameOverImageWidth, gameOverImageHeight);
 		  
 		  if (result) {
-			  game.batch.draw(youWonIMG, resultIMG_x_axis_centred, resultIMG_y, resultIMG_WIDTH, resultIMG_HEIGHT);
+			  game.batch.draw(youWonImage, resultImageXAxisCentred, resultImageY, resultingImageWidth, resultingImgaeHeight);
 		  } else {
-			  game.batch.draw(youLostIMG, resultIMG_x_axis_centred, resultIMG_y, resultIMG_WIDTH, resultIMG_HEIGHT);
+			  game.batch.draw(youLostImage, resultImageXAxisCentred, resultImageY, resultingImageWidth, resultingImgaeHeight);
 		  }
 		  
 
 		  //for play button: checks if the position of the cursor is inside the coordinates of the button
-		  if(( (Gdx.input.getX() < (x_axis_centered + BTN_WIDTH)) && (Gdx.input.getX() > x_axis_centered) ) && ( (Kroy.height - Gdx.input.getY() > playBTN_y ) && (Kroy.height - Gdx.input.getY() < (playBTN_y + BTN_HEIGHT)) ) ){
-			  game.batch.draw(playBTN_ACTIVE, x_axis_centered, playBTN_y, BTN_WIDTH, BTN_HEIGHT);
+		  if(( (Gdx.input.getX() < (xAxisCentred + buttonWidth)) && (Gdx.input.getX() > xAxisCentred) ) && ( (Kroy.height - Gdx.input.getY() > playButtonX ) && (Kroy.height - Gdx.input.getY() < (playButtonX + buttonHeight)) ) ){
+			  game.batch.draw(playButtonActive, xAxisCentred, playButtonX, buttonWidth, buttonHeight);
 			  if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 				  this.dispose();
 				  game.batch.end();
@@ -151,20 +151,20 @@ public class GameOverScreen implements Screen{
 				  return;
 			  }
 		  } else {
-			  game.batch.draw(playBTN, x_axis_centered, playBTN_y, BTN_WIDTH, BTN_HEIGHT);
+			  game.batch.draw(playButton, xAxisCentred, playButtonX, buttonWidth, buttonHeight);
 		  }
 		  
 		
 			
 		  //for minigame button
-		  if(( (Gdx.input.getX() < (x_axis_centered + BTN_WIDTH)) && (Gdx.input.getX() > x_axis_centered) ) && ( (Kroy.height - Gdx.input.getY() > minigameBTN_y ) && (Kroy.height - Gdx.input.getY() < (minigameBTN_y + BTN_HEIGHT)) ) ){
-			  game.batch.draw(menuBTN_ACTIVE, x_axis_centered, minigameBTN_y, BTN_WIDTH, BTN_HEIGHT);
+		  if(( (Gdx.input.getX() < (xAxisCentred + buttonWidth)) && (Gdx.input.getX() > xAxisCentred) ) && ( (Kroy.height - Gdx.input.getY() > minigameButtonY ) && (Kroy.height - Gdx.input.getY() < (minigameButtonY + buttonHeight)) ) ){
+			  game.batch.draw(menuButtonActive, xAxisCentred, minigameButtonY, buttonWidth, buttonHeight);
 			  if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 				  dispose();
 				  game.backToMenu();
 			  }
 		  } else {
-			  game.batch.draw(menuBTN, x_axis_centered, minigameBTN_y, BTN_WIDTH, BTN_HEIGHT);
+			  game.batch.draw(menuButton, xAxisCentred, minigameButtonY, buttonWidth, buttonHeight);
 		  }
 		  game.batch.end();
 		  

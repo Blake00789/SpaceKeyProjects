@@ -16,15 +16,15 @@ import com.dicycat.kroy.entities.Entity;
  */
 public class BulletDispenser {
 
-	List<Pattern> patterns;	//Stores all patterns
-	Pattern firingPattern; 	//Current pattern firing
-	Entity owner;			//Entity the bulletDispnser is attached to
+	private List<Pattern> patterns;	//Stores all patterns
+	private Pattern firingPattern; 	//Current pattern firing
+	private Entity owner;			//Entity the bulletDispnser is attached to
 	
-	int currentPattern;		//Current pattern to fire
-	int currentBullet;		//Current bullet to fire
-	float patternTime;		//Time between firing patterns
-	float patternTimer;		//Time since last pattern
-	float bulletTimer;		//Time since last bullet
+	private int currentPattern;		//Current pattern to fire
+	private int currentBullet;		//Current bullet to fire
+	private float patternTime;		//Time between firing patterns
+	private float patternTimer;		//Time since last pattern
+	private float bulletTimer;		//Time since last bullet
 	
 	/**
 	 * @param creator Owner of the BulletDispenser
@@ -42,11 +42,11 @@ public class BulletDispenser {
 	 * Add a pattern to the bullet dispensers arsenal
 	 * @param pattern Pattern to add
 	 */
-	public void AddPattern(Pattern pattern) {
+	public void addPattern(Pattern pattern) {
 		patterns.add(pattern);
 		if (patterns.size() == 1) {	//If only pattern, set as firing pattern
 			firingPattern = patterns.get(0);
-			patternTime = firingPattern.Cooldown();
+			patternTime = firingPattern.getCooldown();
 		}
 	}
 	
@@ -54,7 +54,7 @@ public class BulletDispenser {
 	 * @param fire Should the dispenser fire?
 	 * @return bullets fired
 	 */
-	public Bullet[] Update(Boolean fire) {		//Called every frame
+	public Bullet[] update(Boolean fire) {		//Called every frame
 		if (patterns.size() == 0) {	//No patterns -> no checks required
 			return null;
 		}
@@ -64,21 +64,21 @@ public class BulletDispenser {
 		//If should be firing, find any bullets that should be fired this frame
 		//Then reset and timers and increment bullet/pattern as needed
 		if (fire && patternTimer >= patternTime) {		
-			if (bulletTimer >= firingPattern.WaitTime()) {
+			if (bulletTimer >= firingPattern.getWaitTime()) {
 				bulletTimer = 0;
 				Bullet[] toFire;	//Stores bullets to be fired
-				if (firingPattern.Aim()) {
+				if (firingPattern.getAim()) {
 					Vector2 targetDirection = new Vector2(Kroy.mainGameScreen.getPlayer().getCentre().x - owner.getCentre().x, Kroy.mainGameScreen.getPlayer().getCentre().y - owner.getCentre().y); //Aim from entity to player
 					
-					toFire = firingPattern.AimedSet(currentBullet, targetDirection);
+					toFire = firingPattern.aimedSet(currentBullet, targetDirection);
 				}else {
-					toFire = firingPattern.BulletSet(currentBullet);
+					toFire = firingPattern.bulletSet(currentBullet);
 				}
 				currentBullet++;
-				if (currentBullet >= firingPattern.Bullets().length) {
+				if (currentBullet >= firingPattern.getBullets().length) {
 					currentPattern++;
 					currentBullet = 0;
-					patternTime = firingPattern.Cooldown();
+					patternTime = firingPattern.getCooldown();
 					patternTimer = 0;
 					if (currentPattern >= patterns.size()) {
 						currentPattern = 0;

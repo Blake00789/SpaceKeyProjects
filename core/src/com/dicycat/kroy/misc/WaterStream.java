@@ -29,5 +29,5 @@ public class WaterStream extends GameObject{
 	 *
 	 */
 	@Override
-	public void Update() {}
+	public void update() {}
 }

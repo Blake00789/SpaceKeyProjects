@@ -24,18 +24,18 @@ public class FireTruckSelectionScene {
 
 	public Stage stage;
 	public Table table = new Table();
-	SpriteBatch sb;
-	NinePatchDrawable background = new NinePatchDrawable(new NinePatch(new Texture("Grey.png"), 3, 3, 3, 3));
+	private SpriteBatch sb;
+	private NinePatchDrawable background = new NinePatchDrawable(new NinePatch(new Texture("Grey.png"), 3, 3, 3, 3));
 	
-    Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+    private Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
     
     //Buttons initialised, labelled and stylised
     public TextButton truckButton1 = new TextButton("Speed", skin);
     public TextButton truckButton2 = new TextButton("Damage", skin);
     public TextButton truckButton3 = new TextButton("Capacity", skin);
     public TextButton truckButton4 = new TextButton("Range", skin);
-    float sw = Gdx.graphics.getWidth();
-    float cw = sw * 0.7f;
+    private float sw = Gdx.graphics.getWidth();
+    private float cw = sw * 0.7f;
     
     
 	/**

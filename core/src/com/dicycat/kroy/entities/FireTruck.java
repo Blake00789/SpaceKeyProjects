@@ -37,21 +37,18 @@ public class FireTruck extends Entity{
 	protected final int[] ARROWKEYS = {Keys.UP, Keys.DOWN, Keys.RIGHT, Keys.LEFT}; // List of the arrow keys to be able to iterate through them later on
 	protected Integer direction = 0; // Direction the truck is facing
 
-	WaterStream water;
-	StatBar tank;
-	StatBar healthBar;
-	boolean firing;
-	float range;
-	Array<Sprite> fireTruckSprites;
-	TextureAtlas atlas;
-	TextureRegion[][] textureByDirection;
+	private WaterStream water;
+	private StatBar tank;
+	private StatBar healthBar;
+	private boolean firing;
+	private float range;
 
 	/**
 	 * @param spawnPos
 	 * @param truckStats
 	 */
 	public FireTruck(Vector2 spawnPos, Float[] truckStats) {
-		super(spawnPos, Kroy.mainGameScreen.textures.Truck(), new Vector2(25,50), 100);
+		super(spawnPos, Kroy.mainGameScreen.textures.getTruck(), new Vector2(25,50), 100);
 
 		DIRECTIONS.put("n",0);			//North Facing Direction (up arrow)
 		DIRECTIONS.put("w",90);			//West Facing Direction (left arrow)
@@ -64,8 +61,6 @@ public class FireTruck extends Entity{
 		DIRECTIONS.put("ne",315);		//up and right arrows
 		DIRECTIONS.put("",0); 			// included so that if multiple keys in the opposite direction are pressed, the truck faces north
 
-		textureByDirection = TextureRegion.split(Kroy.mainGameScreen.textures.Truck(), 32, 32);
-
 		speed = truckStats[0]; 			// Speed value of the truck
 		flowRate = truckStats[1];		// Flow rate of the truck (referred to as the damage of the truck in game)
 		maxWater = truckStats[2];		// Capacity of the truck
@@ -76,10 +71,10 @@ public class FireTruck extends Entity{
 		water = new WaterStream(Vector2.Zero);
 
 		tank = new StatBar(Vector2.Zero, "Blue.png", 3);
-		Kroy.mainGameScreen.AddGameObject(tank);
+		Kroy.mainGameScreen.addGameObject(tank);
 
 		healthBar= new StatBar(Vector2.Zero, "Green.png", 3);
-		Kroy.mainGameScreen.AddGameObject(healthBar);
+		Kroy.mainGameScreen.addGameObject(healthBar);
 	}
 
 	/**
@@ -136,7 +131,7 @@ public class FireTruck extends Entity{
 	/**
 	 *
 	 */
-	public void Update(){
+	public void update(){
 		if (Gdx.input.isKeyPressed(ARROWKEYS[0]) ||
 				Gdx.input.isKeyPressed(ARROWKEYS[1]) ||
 				Gdx.input.isKeyPressed(ARROWKEYS[2]) ||
@@ -164,7 +159,7 @@ public class FireTruck extends Entity{
 		healthBar.setBarDisplay((healthPoints*50)/maxHealthPoints);
 
 		//player firing
-		ArrayList<GameObject> inRange = EntitiesInRange();		//find list of enemies in range
+		ArrayList<GameObject> inRange = entitiesInRange();		//find list of enemies in range
 
 		if(inRange.isEmpty() || (currentWater<=0)){				//Removes the water stream if nothing is in range
 			firing=false;
@@ -172,11 +167,11 @@ public class FireTruck extends Entity{
 		}else if(!firing){					//Adds the water stream if something comes into range
 			water= new WaterStream(Vector2.Zero);
 			firing=true;
-			Kroy.mainGameScreen.AddGameObject(water);		//initialises water as a WaterStream
+			Kroy.mainGameScreen.addGameObject(water);		//initialises water as a WaterStream
 		}
 
 		if (firing) {					//if the player is firing runs the PlayerFire method
-			PlayerFire(inRange);
+			playerFire(inRange);
 		}
 	}
 	
@@ -184,7 +179,7 @@ public class FireTruck extends Entity{
 	/**
 	 * @param targets
 	 */
-	private void PlayerFire(ArrayList<GameObject> targets) {		//Method to find and aim at the nearest target from an ArrayList of Gameobjects
+	private void playerFire(ArrayList<GameObject> targets) {		//Method to find and aim at the nearest target from an ArrayList of Gameobjects
 		GameObject currentGameObject=targets.get(0);
 		GameObject nearestEnemy=targets.get(0);				//set nearest enemy to the first gameobject
 
@@ -203,7 +198,7 @@ public class FireTruck extends Entity{
 		water.setRange(direction.len());
 		water.setPosition(getCentre().add(direction.scl(0.5f)));
 
-		((Entity) nearestEnemy).ApplyDamage(flowRate);			//Applies damage to the nearest enemy
+		((Entity) nearestEnemy).applyDamage(flowRate);			//Applies damage to the nearest enemy
 		currentWater=currentWater-flowRate;						//reduces the tank by amount of water used
 	}
 
@@ -211,7 +206,7 @@ public class FireTruck extends Entity{
 	 * Returns an array of all enemy GameObjects in range
 	 * @return
 	 */
-	private ArrayList<GameObject> EntitiesInRange(){
+	private ArrayList<GameObject> entitiesInRange(){
 		ArrayList<GameObject> outputArray = new ArrayList<GameObject>();	//create array list to output enemies in range
 
 		for (GameObject currentObject : Kroy.mainGameScreen.getGameObjects()) {		//iterates through all game objects
@@ -236,8 +231,8 @@ public class FireTruck extends Entity{
 	 *
 	 */
 	@Override
-	protected void Die() {
-		super.Die();
+	public void die() {
+		super.die();
 		water.setRemove(true);
 		tank.setRemove(true);
 		healthBar.setRemove(true);

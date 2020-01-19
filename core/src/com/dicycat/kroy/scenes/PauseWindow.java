@@ -23,11 +23,11 @@ public class PauseWindow {
 	
 	public Stage stage;
 	public Table table = new Table();
-	SpriteBatch sb;
-	NinePatch patch = new NinePatch(new Texture("loool.jpg"), 3, 3, 3, 3);
-	NinePatchDrawable background = new NinePatchDrawable(patch);
+	private SpriteBatch sb;
+	private NinePatch patch = new NinePatch(new Texture("loool.jpg"), 3, 3, 3, 3);
+	private NinePatchDrawable background = new NinePatchDrawable(patch);
 	
-    Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+    private Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
     public TextButton resume = new TextButton("RESUME", skin);
     public TextButton exit = new TextButton("EXIT", skin);
     public TextButton menu = new TextButton("MENU", skin);

@@ -10,7 +10,7 @@ import com.dicycat.kroy.GameObject;
 *
 */
 public class StatBar extends GameObject{
-	int height;	//Height of the bar
+	private int height;	//Height of the bar
 	
 	/**
 	 * @param spawnPos
@@ -29,5 +29,5 @@ public class StatBar extends GameObject{
 		sprite.setScale(x,height);
 	}
 
-	public void Update() {}
+	public void update() {}
 }

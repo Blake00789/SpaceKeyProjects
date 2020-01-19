@@ -51,7 +51,7 @@ public class Kroy extends Game {
 	 * Return back to the menu screen
 	 */
 	public void backToMenu() {
-		mainMenuScreen.state = MenuScreen.State.MAINMENU; // sets menu screen back to the original state
+		mainMenuScreen.state = MenuScreen.MenuScreenState.MAINMENU; // sets menu screen back to the original state
 		mainMenuScreen.setCurrentlyRunningGame(false); //Tells the screen not to block any button pushes which would initialisze a new game again
 		setScreen(mainMenuScreen); // displays the menu screen
 	}

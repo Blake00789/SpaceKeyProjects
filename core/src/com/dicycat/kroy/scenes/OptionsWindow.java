@@ -27,7 +27,7 @@ public class OptionsWindow {
 	
 	public Stage stage;
 	public Table table = new Table();
-	SpriteBatch sb;
+	private SpriteBatch sb;
 	private NinePatch patch = new NinePatch(new Texture("loool.jpg"), 3, 3, 3, 3);
 	private NinePatchDrawable background = new NinePatchDrawable(patch);
 	
@@ -113,10 +113,10 @@ public class OptionsWindow {
 		    	public void clicked(InputEvent event, float x, float y) {
 		    		visibility(false);
 		    		if (fromMenu == false) {
-		    			Kroy.mainGameScreen.setGameState(GameScreen.State.PAUSE);
+		    			Kroy.mainGameScreen.setGameState(GameScreen.GameScreenState.PAUSE);
 		    			return;
 		    		} else if (fromMenu) {
-		    			Kroy.mainMenuScreen.state = MenuScreen.State.MAINMENU;
+		    			Kroy.mainMenuScreen.state = MenuScreen.MenuScreenState.MAINMENU;
 		    			return;
 		    		}
 		    	}
