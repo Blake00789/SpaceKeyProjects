@@ -19,10 +19,11 @@ import com.dicycat.kroy.screens.GameScreen;
 import com.dicycat.kroy.screens.MenuScreen;
 
 /**
-* 
-* @author 
-*
-*/
+ * Options window
+ * 
+ * @author Michele Imbriani
+ *
+ */
 public class OptionsWindow {
 	
 	public Stage stage;
@@ -53,10 +54,8 @@ public class OptionsWindow {
     public static State state = State.PAGE1;
     
     /**
-     * 
-     * 
-     * @author 
-     *
+     *	Allows to have multiple 'pages' of the Option window without
+     *	having to create several stages.
      */
     public static enum State{
 		PAGE1,
@@ -66,6 +65,10 @@ public class OptionsWindow {
     
     
 	/**
+	 * 
+	 * 	The important feature is the updateDraw() method
+	 * 	which can be found at the bottom.
+	 * 
 	 * @param game
 	 */
 	public OptionsWindow(Kroy game) {
@@ -83,7 +86,9 @@ public class OptionsWindow {
 	}
 	
 	/**
-	 * Takes screen as attribute cuz the 'back' button behaves differently based on whether the optionwindow was called from menu or gamescreen
+	 * Takes screen as attribute because the 'back' button behaves differently
+	 *  based on whether the optionwindow was called from menu or gamescreen
+	 *  
 	 * @param fromMenu
 	 */
 	public void clickCheck(final boolean fromMenu) {
@@ -195,6 +200,12 @@ public class OptionsWindow {
 	}
 
 	/**
+	 *	This function allows the table to change its content based 
+	 *	on which page of the OptionsWindow we are on.
+	 *	
+	 *	By being called in the Screen's render method, the Options window
+	 *	gets reset and refreshed every rendering loop: this way we are able to 
+	 *	have several 'pages' within the same table.
 	 * 
 	 */
 	public void updateDraw() {

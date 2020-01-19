@@ -12,10 +12,11 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dicycat.kroy.Kroy;
 
 /**
-* 
-* @author 
-*
-*/
+ * HUD window
+ * 
+ * @author Michele Imbriani
+ *
+ */
 public class HUD {
 	public Stage stage;
 	private Viewport viewport;	//creating new port so that the HUD stays locked while map can move around independently
@@ -34,8 +35,8 @@ public class HUD {
 	
 	
 	/**
-	 * @param sb
-	 * @param game
+	 * @param sb	SpriteBatch
+	 * @param game	Kroy instance
 	 */
 	public HUD(SpriteBatch sb, Kroy game) {
 		viewport = new ScreenViewport(new OrthographicCamera());
@@ -65,7 +66,10 @@ public class HUD {
 	}
 	
 	/**
-	 * @param dt
+	 * Using delta time allows to operate with the real-world time (seconds)
+	 * rather than the in-game time (which is computed using frames)
+	 * 
+	 * @param dt	Delta Time 
 	 */
 	public void update(float dt) {
 		timeCount += dt;
@@ -92,7 +96,7 @@ public class HUD {
 	}
 
 	/**
-	 * @param x
+	 * @param x		Points to be added to the score
 	 */
 	public void updateScore(Integer x){
 		score += x;

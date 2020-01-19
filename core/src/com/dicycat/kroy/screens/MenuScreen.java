@@ -18,9 +18,10 @@ import com.dicycat.kroy.Kroy;
 import com.dicycat.kroy.scenes.FireTruckSelectionScene;
 import com.dicycat.kroy.scenes.OptionsWindow;
   
- /**
-  * 
- * @author 
+/**
+ * Main Menu screen
+ * 
+ * @author Michele Imbriani
  *
  */
 public class MenuScreen implements Screen{
@@ -65,7 +66,6 @@ public class MenuScreen implements Screen{
    *  Used to define the current state of the screen, 
    *  MAINMENU is used mostly but then TRUCKSELECT used when the "NewGame" button has been pressed  
    * 
-   * @author 
    *
    */
   public static enum MenuScreenState {
@@ -111,7 +111,8 @@ public class MenuScreen implements Screen{
   public void show() {}
   
   /**
-   *
+   *	Enum allows to make the MenuScreen behave differently depending 
+   *	on whether it's in mainMenu, Options or fireTruckSelection
    */
   @Override 
   public void render(float delta) { 
@@ -193,14 +194,15 @@ public class MenuScreen implements Screen{
   	}
   
 	/**
-	 * @param s
+	 * @param state
 	 */
-	public void setGameState(MenuScreenState s){
-	    this.state = s;
+	public void setGameState(MenuScreenState state){
+	    this.state = state;
 	}
   
 	/**
 	 * Checks if any of the buttons have been pressed
+	 * and the number of the fireTruck type is passed to the new GameScreen
 	 */
 	public void clickCheck() {
 		//Truck 1 Selected
@@ -274,4 +276,4 @@ public class MenuScreen implements Screen{
   @Override 
   public void dispose() {}
  }
- 
+

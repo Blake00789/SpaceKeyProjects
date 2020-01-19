@@ -15,10 +15,11 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dicycat.kroy.Kroy;
 
 /**
-* 
-* @author 
-*
-*/
+ * Pause window
+ * 
+ * @author Michele Imbriani
+ *
+ */
 public class PauseWindow {
 	
 	public Stage stage;
@@ -54,7 +55,7 @@ public class PauseWindow {
 	}
 	
 	/**
-	 * @param state
+	 * @param state	Allows the window to be visible or hidden
 	 */
 	public void visibility(boolean state){
 		this.table.setVisible(state);

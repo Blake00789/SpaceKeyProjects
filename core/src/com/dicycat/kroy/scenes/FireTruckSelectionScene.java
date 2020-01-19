@@ -16,10 +16,11 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dicycat.kroy.Kroy;
 
 /**
-* 
-* @author 
-*
-*/
+ * Window for selecting FireTruck type
+ * 
+ * @author Luke Taylor
+ *
+ */
 public class FireTruckSelectionScene {
 
 	public Stage stage;
@@ -34,12 +35,12 @@ public class FireTruckSelectionScene {
     public TextButton truckButton2 = new TextButton("Damage", skin);
     public TextButton truckButton3 = new TextButton("Capacity", skin);
     public TextButton truckButton4 = new TextButton("Range", skin);
-    private float sw = Gdx.graphics.getWidth();
-    private float cw = sw * 0.7f;
+    private float width = Gdx.graphics.getWidth();
+    private float centre = width* 0.7f;
     
     
 	/**
-	 * @param game
+	 * @param game		Kroy instance
 	 */
 	public FireTruckSelectionScene(Kroy game) {
 		sb = game.batch;
@@ -58,10 +59,10 @@ public class FireTruckSelectionScene {
 	    
 		
 		// Buttons added to the screen
-		table.add(truckButton1).width(cw/3.0f);
-	    table.add(truckButton2).width(cw/3.0f);
-	    table.add(truckButton3).width(cw/3.0f);
-	    table.add(truckButton4).width(cw/3.0f);
+		table.add(truckButton1).width(centre/3.0f);
+	    table.add(truckButton2).width(centre/3.0f);
+	    table.add(truckButton3).width(centre/3.0f);
+	    table.add(truckButton4).width(centre/3.0f);
 	    
 		table.setFillParent(true);
 	    stage.addActor(table);
@@ -70,7 +71,7 @@ public class FireTruckSelectionScene {
 	}
 	
 	/**
-	 * @param state
+	 * @param state		Makes the window visible or hidden
 	 */
 	public void visibility(boolean state){
 		this.table.setVisible(state);
