@@ -81,7 +81,7 @@ public class MenuScreen implements Screen{
    */
   public MenuScreen(Kroy game) { 
 	  this.game = game; 
-	  exitButton = new Texture("exit.png"); 	//in later stages we could also have buttonActive and buttonInactive
+	  exitButton = new Texture("EXIT.png"); 	//in later stages we could also have buttonActive and buttonInactive
 	  exitButtonActive = new Texture("exitActive.png");
 	  optionsButton = new Texture("options.png");
 	  optionsButtonActive = new Texture("optionsActive.png");

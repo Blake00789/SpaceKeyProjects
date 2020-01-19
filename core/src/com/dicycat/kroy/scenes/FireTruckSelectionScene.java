@@ -50,10 +50,10 @@ public class FireTruckSelectionScene {
 		table.setBackground(background);
 		
 		// Images added to the screen
-		table.add(new Image(new Texture("FireTruck1.png")));
-		table.add(new Image(new Texture("FireTruck2.png")));
-		table.add(new Image(new Texture("FireTruck3.png")));
-		table.add(new Image(new Texture("FireTruck4.png")));
+		table.add(new Image(new Texture("fireTruck1.png")));
+		table.add(new Image(new Texture("fireTruck2.png")));
+		table.add(new Image(new Texture("fireTruck3.png")));
+		table.add(new Image(new Texture("fireTruck4.png")));
 		
 		table.row();
 	    

@@ -35,7 +35,7 @@ import com.dicycat.kroy.scenes.PauseWindow;
 /**
  * Contains the main game logic
  * 
- * @author riju8
+ * @author Riju De
  * @author lnt20
  *
  */
