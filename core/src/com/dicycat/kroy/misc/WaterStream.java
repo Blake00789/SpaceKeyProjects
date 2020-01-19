@@ -5,13 +5,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.dicycat.kroy.GameObject;
 
 /**
-* 
-* @author 
+* Sprite used to represent where the player is shooting
+* @author IsaacAlbiston
 *
 */
 public class WaterStream extends GameObject{
 
 	/**
+	 * initialises the water stream at a given position
 	 * @param spawnPos
 	 */
 	public WaterStream(Vector2 spawnPos) {
@@ -19,6 +20,7 @@ public class WaterStream extends GameObject{
 	}
 	
 	/**
+	 * Changes the length of the sprite to x
 	 * @param x
 	 */
 	public void setRange(float x){

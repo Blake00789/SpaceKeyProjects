@@ -129,7 +129,9 @@ public class FireTruck extends Entity{
 	}
 
 	/**
-	 *
+	 *main function of the firetruck: updates the direction in which 
+	 *the firetruck is moving in as well as rendering its asset, moving 
+	 *its hitbox and checking whether any entity is inside its range
 	 */
 	public void update(){
 		if (Gdx.input.isKeyPressed(ARROWKEYS[0]) ||
@@ -178,6 +180,7 @@ public class FireTruck extends Entity{
 
 	/**
 	 * @param targets
+	 * find and aim at the nearest target from an ArrayList of Gameobjects
 	 */
 	private void playerFire(ArrayList<GameObject> targets) {		//Method to find and aim at the nearest target from an ArrayList of Gameobjects
 		GameObject currentGameObject=targets.get(0);
@@ -228,7 +231,7 @@ public class FireTruck extends Entity{
 	}
 
 	/**
-	 *
+	 *remove the FireTruck and Statbars
 	 */
 	@Override
 	public void die() {
