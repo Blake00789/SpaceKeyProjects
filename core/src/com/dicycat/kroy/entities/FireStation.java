@@ -36,6 +36,7 @@ public class FireStation extends Entity {
 	/**
 	 *
 	 */
+	@Override
 	public void update(){
 		if(playerInRadius()){
 			Kroy.mainGameScreen.getPlayer().replenish();

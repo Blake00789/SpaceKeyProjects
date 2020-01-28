@@ -100,7 +100,7 @@ public class MenuScreen implements Screen{
 	  
 	  music.play();
 	  music.setLooping(true);  
-	  music.setVolume((float)musicVolume);  
+	  music.setVolume(musicVolume);  
 	  
 	  optionsWindow = new OptionsWindow(game);
 	  optionsWindow.visibility(false);

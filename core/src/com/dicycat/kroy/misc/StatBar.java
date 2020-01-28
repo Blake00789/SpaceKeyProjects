@@ -32,5 +32,6 @@ public class StatBar extends GameObject{
 		sprite.setScale(x,height);
 	}
 
+	@Override
 	public void update() {}
 }

@@ -151,7 +151,7 @@ public class OptionsWindow {
 		    	@Override
 		    	public void clicked(InputEvent event, float x, float y) {
 		    			MenuScreen.musicVolume = 0;
-		    			MenuScreen.music.setVolume((float)MenuScreen.musicVolume);
+		    			MenuScreen.music.setVolume(MenuScreen.musicVolume);
 
 		    	}
 		    });
@@ -160,7 +160,7 @@ public class OptionsWindow {
 		    	@Override
 		    	public void clicked(InputEvent event, float x, float y) {
 		    			MenuScreen.musicVolume = 1;
-		    			MenuScreen.music.setVolume((float)MenuScreen.musicVolume);
+		    			MenuScreen.music.setVolume(MenuScreen.musicVolume);
 		    	}
 		    });
 			//backFromMusic button

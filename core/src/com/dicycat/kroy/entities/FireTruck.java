@@ -5,13 +5,9 @@ import java.util.HashMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 import com.dicycat.kroy.GameObject;
 import com.dicycat.kroy.Kroy;
 import com.dicycat.kroy.misc.StatBar;
@@ -133,6 +129,7 @@ public class FireTruck extends Entity{
 	 *the firetruck is moving in as well as rendering its asset, moving 
 	 *its hitbox and checking whether any entity is inside its range
 	 */
+	@Override
 	public void update(){
 		if (Gdx.input.isKeyPressed(ARROWKEYS[0]) ||
 				Gdx.input.isKeyPressed(ARROWKEYS[1]) ||

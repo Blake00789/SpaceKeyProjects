@@ -8,7 +8,6 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -26,7 +25,6 @@ import com.dicycat.kroy.entities.FireStation;
 import com.dicycat.kroy.entities.FireTruck;
 import com.dicycat.kroy.entities.Fortress;
 import com.dicycat.kroy.gamemap.TiledGameMap;
-import com.dicycat.kroy.misc.WaterStream;
 import com.dicycat.kroy.scenes.HUD;
 import com.dicycat.kroy.scenes.OptionsWindow;
 import com.dicycat.kroy.scenes.PauseWindow;
@@ -131,6 +129,7 @@ public class GameScreen implements Screen{
 	/**
 	 * Called every frame
 	 */
+	@Override
 	public void render(float delta) {
 		Gdx.input.setInputProcessor(pauseWindow.stage);  //Set input processor
 		pauseWindow.stage.act();
