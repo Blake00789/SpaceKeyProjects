@@ -260,7 +260,9 @@ public class GameScreen implements Screen{
 	 * @param colour Colour of the line
 	 */
 	public void DrawLine(Vector2 start, Vector2 end, int lineWidth, Color colour) {
-		debugObjects.add(new DebugLine(start, end, lineWidth, colour));
+		if (showDebug) {
+			debugObjects.add(new DebugLine(start, end, lineWidth, colour));
+		}
 	}
 
 	/**
@@ -271,7 +273,9 @@ public class GameScreen implements Screen{
 	 * @param colour Colour of the line
 	 */
 	public void DrawCircle(Vector2 position, float radius, int lineWidth, Color colour) {
-		debugObjects.add(new DebugCircle(position, radius, lineWidth, colour));
+		if (showDebug) {
+			debugObjects.add(new DebugCircle(position, radius, lineWidth, colour));
+		}
 	}
 
 	/**
@@ -282,7 +286,9 @@ public class GameScreen implements Screen{
 	 * @param colour Colour of the line
 	 */
 	public void DrawRect(Vector2 bottomLeft, Vector2 dimensions, int lineWidth, Color colour) {
-		debugObjects.add(new DebugRect(bottomLeft, dimensions, lineWidth, colour));
+		if (showDebug) {
+			debugObjects.add(new DebugRect(bottomLeft, dimensions, lineWidth, colour));
+		}
 	}
 
 	/**
