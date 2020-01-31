@@ -145,6 +145,7 @@ public class GameScreen implements Screen{
 				updateLoop(); //Update all game objects positions but does not render them as to be able to render everything as quickly as possible
 
 				gameMap.renderRoads(gamecam); // Render the background roads, fields and rivers
+				gameMap.renderBuildings(gamecam); // Renders the buildings and the foreground items which are not entities
 
 				game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
 				game.batch.setProjectionMatrix(gamecam.combined);	//Mic:only renders the part of the map where the camera is
@@ -156,7 +157,6 @@ public class GameScreen implements Screen{
 
 				game.batch.end();
 
-				gameMap.renderBuildings(gamecam); // Renders the buildings and the foreground items which are not entities
 
 				hud.stage.draw();
 				pauseWindow.stage.draw();
