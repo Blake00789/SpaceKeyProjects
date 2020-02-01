@@ -1,8 +1,8 @@
 package com.dicycat.kroy;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -13,7 +13,7 @@ import com.badlogic.gdx.math.Vector2;
  */
 public abstract class GameObject {
 	protected Sprite sprite;						//Sprite of the object
-	protected Boolean remove, displayable;			//Should this GameObject be removed? Should this item be displayed?
+	protected boolean remove, displayable;			//Should this GameObject be removed? Should this item be displayed?
 	protected float rotation = 0;	//Current angle the truck is facing in degrees
 
 	public GameObject(Vector2 spawnPos, Texture image, Vector2 imSize) {	//Constructor; takes the screen to be put on, spawn position vector, image and a vector for its size
@@ -32,7 +32,7 @@ public abstract class GameObject {
 	 * Render the object.
 	 * @param batch Batch to render
 	 */
-	public void render(SpriteBatch batch) {
+	public void render(Batch batch) {
 		batch.draw(getTexture(), getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getXScale(), getYScale(), getRotation(), 0, 0, getTextureWidth(), getTextureHeight(), false, false);
 	}
 
@@ -48,12 +48,12 @@ public abstract class GameObject {
 	//Getters
 	public Texture getTexture() { return sprite.getTexture(); }
 	public float getHeight() { return sprite.getHeight(); }
-	public float getWidth() {return sprite.getWidth(); }
+	public float getWidth() { return sprite.getWidth(); }
 	public float getX() { return sprite.getX(); }
 	public float getY() { return sprite.getY(); }
-	public Boolean isRemove() { return remove; }
+	public boolean isRemove() { return remove; }
 	public float getOriginX () { return sprite.getOriginX(); } // returns centre of sprite (25, 50) Use GetCentre for position on screen
-	public float getOriginY() {return sprite.getOriginY(); }
+	public float getOriginY() { return sprite.getOriginY(); }
 	public  float getXScale() { return sprite.getScaleX(); }
 	public float getYScale() { return sprite.getScaleY(); }
 	public float getRotation() { return rotation; }

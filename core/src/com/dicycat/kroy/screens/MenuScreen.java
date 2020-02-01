@@ -27,8 +27,8 @@ import com.dicycat.kroy.scenes.OptionsWindow;
 public class MenuScreen implements Screen{
   
   private Kroy game; 
-  private OrthographicCamera gamecam;	//m
-  private Viewport gameport; 	//m
+  private OrthographicCamera gamecam;
+  private Viewport gameport;
   private Texture playButton, 
   	playButtonActive, 
   	optionsButton, 
@@ -91,7 +91,7 @@ public class MenuScreen implements Screen{
 	  minigameButtonActive = new Texture("minigameActive.png");
 	  background = new Texture ("fireforce.png");
 	  
-	  gamecam = new OrthographicCamera();    //m
+	  gamecam = new OrthographicCamera();
 	  gameport = new FitViewport(Kroy.width, Kroy.height, gamecam);
 	  stage = new Stage(gameport);
 	  
@@ -158,7 +158,7 @@ public class MenuScreen implements Screen{
 			  if(( (Gdx.input.getX() < (xAxisCentred + buttonWidth)) && (Gdx.input.getX() > xAxisCentred) ) && ( (Kroy.height - Gdx.input.getY() > minigameButtonY ) && (Kroy.height - Gdx.input.getY() < (minigameButtonY + buttonHeight)) ) ){
 				  game.batch.draw(minigameButtonActive, xAxisCentred, minigameButtonY, buttonWidth, buttonHeight);
 				  if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-					  //what shall we put?
+					  startMinigame();
 						  }
 					  } else {
 						  game.batch.draw(minigameButton, xAxisCentred, minigameButtonY, buttonWidth, buttonHeight);
@@ -168,7 +168,6 @@ public class MenuScreen implements Screen{
 			  if(( (Gdx.input.getX() < (xAxisCentred + buttonWidth)) && (Gdx.input.getX() > xAxisCentred) ) && ( (Kroy.height - Gdx.input.getY() > optionsButtonY ) && (Kroy.height - Gdx.input.getY() < (optionsButtonY + buttonHeight)) ) ){
 				  game.batch.draw(optionsButtonActive, xAxisCentred, optionsButtonY, buttonWidth, buttonHeight);
 				  if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-					  //game.batch.end();
 					  optionsWindow.visibility(true);
 					  setGameState(MenuScreenState.OPTIONS);
 				  }
@@ -242,9 +241,19 @@ public class MenuScreen implements Screen{
 	 * @param truckNum Type of truck selected
  	 */
 	public void startGame(int truckNum) {
-		 if (!currentlyRunningGame) {	// Checks if a new GameScren is currently running and either makes one or ignores the commands
+		 if (!currentlyRunningGame) {	// Checks if a new GameScreen is currently running and either makes one or ignores the commands
 			 currentlyRunningGame = true; // Makes sure that only one GameScreen is opened at once
 			 game.newGame(truckNum); // Calls the function in Kroy to start a new game
+		 }
+	} 
+	
+	/**
+	 * Run the minigame
+ 	 */
+	public void startMinigame() {
+		 if (!currentlyRunningGame) {	// Checks if a new GameScreen is currently running and either makes one or ignores the commands
+			 currentlyRunningGame = true; // Makes sure that only one GameScreen is opened at once
+			 game.newMinigame(); // Calls the function in Kroy to start a new minigame
 		 }
 	} 
   

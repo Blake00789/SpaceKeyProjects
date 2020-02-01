@@ -4,11 +4,13 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dicycat.kroy.screens.GameScreen;
 import com.dicycat.kroy.screens.MenuScreen;
+import com.dicycat.kroy.screens.MinigameScreen;
 
 /**
  * Main game class
  * 
  * @author Riju De
+ * @author Sam Hutchings
  *
  */
 
@@ -18,6 +20,7 @@ public class Kroy extends Game {
 	
 	public static GameScreen mainGameScreen;
 	public static MenuScreen mainMenuScreen;
+	public static MinigameScreen mainMinigameScreen;
 	public SpriteBatch batch;
 	
 	private Integer highScore;
@@ -46,13 +49,18 @@ public class Kroy extends Game {
 		mainGameScreen = new GameScreen(this,truckNum);// Initialise new game
 		setScreen(mainGameScreen);// Display new game
 	}
+	
+	public void newMinigame() {
+		mainMinigameScreen = new MinigameScreen(this);// Initialise new minigame
+		setScreen(mainMinigameScreen);// Display new minigame
+	}
 
 	/**
 	 * Return back to the menu screen
 	 */
 	public void backToMenu() {
 		mainMenuScreen.state = MenuScreen.MenuScreenState.MAINMENU; // sets menu screen back to the original state
-		mainMenuScreen.setCurrentlyRunningGame(false); //Tells the screen not to block any button pushes which would initialisze a new game again
+		mainMenuScreen.setCurrentlyRunningGame(false); //Tells the screen not to block any button pushes which would initialise a new game again
 		setScreen(mainMenuScreen); // displays the menu screen
 	}
 	
