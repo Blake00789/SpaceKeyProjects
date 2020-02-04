@@ -17,7 +17,7 @@ import com.dicycat.kroy.screens.MinigameScreen;
  *
  */
 public class Pipe extends GameObject {
-	private float speed = 3f;
+	private float speed = 4f;
 	private Rectangle[] hitboxes = new Rectangle[2];
 	private boolean gameEnd = false;
 	private Instant startTime;

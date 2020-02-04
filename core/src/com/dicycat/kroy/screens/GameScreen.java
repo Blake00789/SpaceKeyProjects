@@ -378,6 +378,7 @@ public class GameScreen implements Screen{
 		pauseWindow.menu.addListener(new ClickListener() {
 	    	@Override
 	    	public void clicked(InputEvent event, float x, float y) {
+	    		pauseWindow.visibility(false);
 	    		dispose();
 	    		game.backToMenu();
 	    		return;
