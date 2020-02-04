@@ -65,9 +65,9 @@ public class GameScreen implements Screen{
 
 	private Float[][] truckStats = {	//Each list is a configuration of a specific truck. {speed, flowRate, capacity, range}
 			{400f, 1f, 400f, 300f},		//Speed
-			{350f, 1.25f, 400f, 300f},	//Speed and Flow rate
+			{350f, 1.25f, 400f, 300f},	//Speed + Flow rate
 			{300f, 1.5f, 400f, 300f},	//Flow rate
-			{300f, 1f, 450f, 400f},  	//Capacity and Range
+			{300f, 1f, 450f, 400f},  	//Capacity + Range
 			{300f, 1f, 500f, 300f},		//Capacity
 			{300f, 1f, 400f, 450f},		//Range
 		};
