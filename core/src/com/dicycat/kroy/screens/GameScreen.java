@@ -24,6 +24,7 @@ import com.dicycat.kroy.debug.DebugRect;
 import com.dicycat.kroy.entities.FireStation;
 import com.dicycat.kroy.entities.FireTruck;
 import com.dicycat.kroy.entities.Fortress;
+import com.dicycat.kroy.entities.UFO;
 import com.dicycat.kroy.gamemap.TiledGameMap;
 import com.dicycat.kroy.scenes.HUD;
 import com.dicycat.kroy.scenes.OptionsWindow;
@@ -51,7 +52,7 @@ public class GameScreen implements Screen{
 	public static Boolean showDebug = false;
 	public float gameTimer; //Timer to destroy station
 	
-	
+
 	public GameScreenState state = GameScreenState.RUN;
 	
 	public static TiledGameMap gameMap;
@@ -120,12 +121,15 @@ public class GameScreen implements Screen{
 		gameObjects.add(player);	//Player
 		
 		gameObjects.add(new FireStation());
+
 		gameObjects.add(new Fortress(new Vector2(2903,3211),textures.getFortress(0), textures.getDeadFortress(0), new Vector2(256, 218)));
 		gameObjects.add(new Fortress(new Vector2(3200,5681), textures.getFortress(1), textures.getDeadFortress(1), new Vector2(256, 320)));
 		gameObjects.add(new Fortress(new Vector2(2050,1937), textures.getFortress(2), textures.getDeadFortress(2), new Vector2(400, 240)));
 		gameObjects.add(new Fortress(new Vector2(4350,900), textures.getFortress(3), textures.getDeadFortress(3), new Vector2(400, 240)));
 		gameObjects.add(new Fortress(new Vector2(5900,1100), textures.getFortress(4), textures.getDeadFortress(4), new Vector2(400, 240)));
 		gameObjects.add(new Fortress(new Vector2(520,3500), textures.getFortress(5), textures.getDeadFortress(5), new Vector2(400, 240)));
+
+		gameObjects.add(new UFO(new Vector2(player.getPosition())));
 
 	}
 
@@ -195,7 +199,7 @@ public class GameScreen implements Screen{
 			gObject.update();						//Update the game object
 			if (gObject.isRemove()) {				//Check if game object is to be removed
 				toRemove.add(gObject);					//Set it to be removed
-			}else {
+			} else {
 				objectsToRender.add(gObject);
 			}
 		}
