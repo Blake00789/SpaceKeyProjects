@@ -46,6 +46,10 @@ public class Goose extends Entity {
 		Kroy.mainMinigameScreen.DrawRect(new Vector2(hitbox.x, hitbox.y), new Vector2(hitbox.width, hitbox.height), 2, Color.GREEN);
 	}
 	
+	public float getScale() {
+		return scale;
+	}
+	
 	public Rectangle getHitbox(){
 		return this.hitbox;
 	}
