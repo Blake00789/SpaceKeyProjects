@@ -125,6 +125,9 @@ public class GameScreen implements Screen{
 		gameObjects.add(new Fortress(new Vector2(2903,3211),textures.getFortress(0), textures.getDeadFortress(0), new Vector2(256, 218)));
 		gameObjects.add(new Fortress(new Vector2(3200,5681), textures.getFortress(1), textures.getDeadFortress(1), new Vector2(256, 320)));
 		gameObjects.add(new Fortress(new Vector2(2050,1937), textures.getFortress(2), textures.getDeadFortress(2), new Vector2(400, 240)));
+		gameObjects.add(new Fortress(new Vector2(4350,900), textures.getFortress(3), textures.getDeadFortress(3), new Vector2(400, 240)));
+		gameObjects.add(new Fortress(new Vector2(5900,1100), textures.getFortress(4), textures.getDeadFortress(4), new Vector2(400, 240)));
+		gameObjects.add(new Fortress(new Vector2(520,3500), textures.getFortress(5), textures.getDeadFortress(5), new Vector2(400, 240)));
 
 	}
 
@@ -377,6 +380,7 @@ public class GameScreen implements Screen{
 		pauseWindow.menu.addListener(new ClickListener() {
 	    	@Override
 	    	public void clicked(InputEvent event, float x, float y) {
+	    		pauseWindow.visibility(false);
 	    		dispose();
 	    		game.backToMenu();
 	    		return;

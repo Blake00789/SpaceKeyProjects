@@ -52,7 +52,7 @@ public class MinigameScreen implements Screen{
 	private PauseWindow pauseWindow;
 	private OptionsWindow optionsWindow;
 
-	private int score = -2;
+	private int score = -2; //Starts negative to give time for the pipes to reach the player
 	private String scoreText = "";
 	BitmapFont font;
 
@@ -66,7 +66,7 @@ public class MinigameScreen implements Screen{
 	private List<Pipe> pipes;	//List of pipes
 	private List<DebugDraw>  debugObjects;
 
-	public MinigameScreen(Kroy _game) {//TODO Fix bug where crashing after incomplete restart (see commit notes)
+	public MinigameScreen(Kroy _game) {
 		game = _game;
 		gamecam = new OrthographicCamera();
 		gameport = new FitViewport(Kroy.width, Kroy.height, gamecam);
@@ -74,10 +74,12 @@ public class MinigameScreen implements Screen{
 		pauseWindow.visibility(false);
 		optionsWindow = new OptionsWindow(game);
 		optionsWindow.visibility(false);
-		map = new Texture("map.png");
+		//map = new Texture("minigameBackground2.png");
+		map = new Texture("minigameAltBackground.png");
 		
+		//Create a new font for displaying the score
 		font = new BitmapFont();
-		font.setColor(Color.BLACK);
+		font.setColor(Color.WHITE);
 		font.getData().setScale(4);
 	}
 
@@ -90,12 +92,14 @@ public class MinigameScreen implements Screen{
 		debugObjects = new ArrayList<DebugDraw>();
 		player = new Goose(); // Initialises the goose
 		gamecam.translate(0,0); // sets initial Camera position
+		
+		//Creates a task to generate pipes
 		Timer.schedule(new Task() {
 			@Override
 			public void run() {
 				createPipe();
 			}
-		}, 0, 2);
+		}, 0, 2);//0 seconds delay, 2 seconds between pipes
 	}
 	
 	
@@ -141,17 +145,28 @@ public class MinigameScreen implements Screen{
 					o.update();
 					o.render(batch);
 					if(o.gameEnd()) {
-						//System.out.println("end");
-						dispose();
-			    		game.backToMenu();
+						//If the player hits a pipe, then the game ends
+						gameOver();
 					};
 				});				
 				pipes.removeIf(o -> o.isRemove());
 				
-				scoreText = ""+score;
-				font.draw(batch, scoreText, -16, 300);
+				//Score starts at -1, so different text is displayed instead
+				if(score<0) {
+					scoreText = "Ready?";
+				} else {
+					scoreText = "Score: "+score;
+				}
+				
+				//Score is displayed in the top left
+				font.draw(batch, scoreText, (-Kroy.width/2)+10, (Kroy.height/2)-10);
 			
-				//debugObjects.forEach(o -> o.Draw(gamecam.combined));
+				//Uncomment to display goose hitbox
+				/*debugObjects.forEach(o -> o.Draw(gamecam.combined));
+				 *debugObjects.clear();*/
+				
+				//TODO Fix bug with text not drawing when debug objects are drawn
+			
 				batch.end();
 
 				pauseWindow.stage.draw();
@@ -170,16 +185,26 @@ public class MinigameScreen implements Screen{
 		}
 	}
 
+	
+	/**
+	 *  Create a new pipe at x = 800, and at a random height.
+	 *  Also adds a point to the score when a pipe is generated.
+	 */
 	private void createPipe() {
 		int height = (int) Math.round(-300 * Math.random())-900;
-		pipes.add(new Pipe(new Vector2(550,height)));
+		pipes.add(new Pipe(new Vector2(800,height)));
 		score++;
-		System.out.println(score);
+		//System.out.println(score);
+	}
+	
+	private void gameOver() {
+		dispose();
+		game.backToMenu();
 	}
 
 	/**
 	 * Allows external classes to access the player
-	 * @return player
+	 * @return player The goose in the minigame
 	 */
 	public static Goose getPlayer() {
 		return player;
@@ -206,11 +231,11 @@ public class MinigameScreen implements Screen{
 
 	@Override
 	public void dispose() {
-		Kroy.mainGameScreen = null;
+		Kroy.mainMinigameScreen = null;
 	}
 
 	/**
-	 * @param s
+	 * @param s The state to set to
 	 */
 	public void setGameState(GameScreenState s){
 	    state = s;
@@ -240,9 +265,8 @@ public class MinigameScreen implements Screen{
 		pauseWindow.menu.addListener(new ClickListener() {
 	    	@Override
 	    	public void clicked(InputEvent event, float x, float y) {
-	    		dispose();
-	    		game.backToMenu();
-	    		return;
+	    		pauseWindow.visibility(false);
+	    		gameOver();
 	    	}
 	    });
 	}

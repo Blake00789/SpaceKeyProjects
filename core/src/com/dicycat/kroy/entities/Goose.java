@@ -18,14 +18,15 @@ import com.dicycat.kroy.Kroy;
 public class Goose extends Entity {
 	private float deceleration = 0.5f;
 	private float velocity = 0;
-	private Rectangle hitbox = new Rectangle(4, 4, 56, 56);
+	private Rectangle hitbox = new Rectangle(0, 0, 48*scale, 56*scale);
+	private static float scale = 1.5f;
 
 	public Goose(Vector2 spawnPos, Texture img, Vector2 imSize, int health) {
 		super(spawnPos, img, imSize, health);
 	}
 
 	public Goose() {
-		this(new Vector2(-32, -32), new Texture("goose.png"), new Vector2(64, 64), 1);
+		this(new Vector2(-32*scale, -32*scale), new Texture("goose2.png"), new Vector2(64*scale, 64*scale), 1);
 		System.out.println("goose created");
 	}
 
