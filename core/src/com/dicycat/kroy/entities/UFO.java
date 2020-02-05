@@ -65,8 +65,9 @@ public class UFO extends Entity {
 		if (toShoot != null) {
 			//we don't want to shoot if the player isn't nearby, even though we are still moving around in a square.
 			if (playerInRadius()) {
+
 				for (Bullet bullet : toShoot) {
-					bullet.changeDirection(new Vector2(1, 0));
+					bullet.changeDirection(Kroy.mainGameScreen.getPlayer().getCentre().sub(this.getCentre()).nor());
 					bullet.fire(getCentre());
 					Kroy.mainGameScreen.addGameObject(bullet);
 				}
