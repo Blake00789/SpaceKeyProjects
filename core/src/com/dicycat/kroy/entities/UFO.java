@@ -21,20 +21,27 @@ public class UFO extends Entity {
 	BulletDispenser dispenser;
 
 	/**
-	 * @param spawnPos
+	 * @param spawnPos Where we spawn
+	 * @param speed	How fast our UFO moves
+	 * @param direction Where our UFO moves towards
+	 * @param movetimer How long since we last changed direction
+	 * @param bulletDir Where our bullet is shooting
 	 */
 	Vector2 spawnPos;
-	int xDirection = 1;
-	int yDirection = 1;
-	private float speed = 500f;
+	private float speed = 300f;
 	protected int direction = 0;
 	private float movetimer = 0;
+	private Vector2 bulletDir;
+
+	/**
+	 *
+	 * @param spawnPos Where we spawn
+	 */
 	public UFO(Vector2 spawnPos) {
 		super(spawnPos, Kroy.mainGameScreen.textures.getUFO(), new Vector2(80, 80), 100);
 		this.spawnPos = spawnPos;
 		dispenser = new BulletDispenser(this);
 		dispenser.addPattern(new Pattern(180, 300, 800, 0.1f, 20, 1, 0.5f));
-		movetimer = Gdx.graphics.getDeltaTime();
 
 	}
 
@@ -45,23 +52,31 @@ public class UFO extends Entity {
 	public void update() {
 		//movement
 		moveInDirection();
-		if (Gdx.graphics.getDeltaTime() >= movetimer + 2) {
-			movetimer = Gdx.graphics.getDeltaTime();
+		movetimer += Gdx.graphics.getDeltaTime();
+		if (movetimer >= 2) {
+			movetimer = 0;
 			direction += 90;
-			if (direction < 270) {
+			if (direction > 270) {
 				direction = 0;
 			}
 		}
 		//weapons
 		Bullet[] toShoot = dispenser.update(true);
 		if (toShoot != null) {
-			for (Bullet bullet : toShoot) {
-				bullet.fire(getCentre());
-				Kroy.mainGameScreen.addGameObject(bullet);
+			//we don't want to shoot if the player isn't nearby, even though we are still moving around in a square.
+			if (playerInRadius()) {
+				for (Bullet bullet : toShoot) {
+					bullet.changeDirection(new Vector2(1, 0));
+					bullet.fire(getCentre());
+					Kroy.mainGameScreen.addGameObject(bullet);
+				}
 			}
 		}
 	}
 
+	/**
+	 * TODO move this to entity
+	 */
 	public void moveInDirection() {
 
 		Vector2 movement = new Vector2(1,0); // movement represents where the truck is moving to. Initially set to (1,0) as this represents a unit vector
@@ -75,24 +90,10 @@ public class UFO extends Entity {
 		movement.mul(distance); // Multiplies the directional vector by the correct amount to make sure the truck moves the right amount
 
 		Vector2 newPos = new Vector2(getPosition());
-		if (!isOnCollidableTile(newPos.add(movement.x,0))) { // Checks whether changing updating x direction puts truck on a collidable tile
-			setPosition(newPos); // updates x direction
-		}
-		newPos = new Vector2(getPosition());
-		if (!isOnCollidableTile(newPos.add(0,movement.y))) { // Checks whether changing updating y direction puts truck on a collidable tile
-			setPosition(newPos); // updates y direction
-		}
-
+		newPos.add(movement.x,0); // Checks whether changing updating x direction puts truck on a collidable tile
+		newPos.add(0,movement.y); // Checks whether changing updating y direction puts truck on a collidable tile
+		setPosition(newPos); // updates y direction
 		setRotation(direction);// updates truck direction
 	}
 
-	public boolean isOnCollidableTile(Vector2 pos) {
-		if(GameScreen.gameMap.getTileTypeByLocation(0, pos.x, pos.y).isCollidable()
-				||GameScreen.gameMap.getTileTypeByLocation(0, pos.x + this.getWidth(), pos.y).isCollidable()
-				||GameScreen.gameMap.getTileTypeByLocation(0, pos.x, pos.y+this.getHeight()).isCollidable()
-				||GameScreen.gameMap.getTileTypeByLocation(0, pos.x+this.getWidth(), pos.y+this.getHeight()).isCollidable()) {
-			return true;
-		}
-		return false;
-	}
 }

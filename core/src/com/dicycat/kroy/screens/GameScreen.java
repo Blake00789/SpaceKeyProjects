@@ -1,13 +1,13 @@
 package com.dicycat.kroy.screens;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -84,6 +84,9 @@ public class GameScreen implements Screen{
 	private List<GameObject> objectsToAdd;
 	private List<DebugDraw> debugObjects; //List of debug items
 
+	private float lastPatrol; //time passsed since we last spawned patrols
+	private List<Vector2> fortressPositions; //where our fortresses spawn
+	private int patrolUpdateRate; //How many seconds should pass before we respawn patrols;
 
 
 	/**
@@ -104,6 +107,15 @@ public class GameScreen implements Screen{
 		spawnPosition = new Vector2(3750, 4000);
 		gameTimer = 60 * 15; //Set timer to 15 minutes
 		this.truckNum = truckNum;
+		lastPatrol = Gdx.graphics.getDeltaTime();
+		fortressPositions = new ArrayList<>();
+		fortressPositions.add(new Vector2(2903, 3211));
+		fortressPositions.add(new Vector2(3200, 5681));
+		fortressPositions.add(new Vector2(2050, 1937));
+		fortressPositions.add(new Vector2(4350, 900));
+		fortressPositions.add(new Vector2(5900, 1000));
+		fortressPositions.add(new Vector2(520, 3500));
+		patrolUpdateRate = 5;
 	}
 
 	/**
@@ -115,6 +127,7 @@ public class GameScreen implements Screen{
 		gameObjects = new ArrayList<GameObject>();
 		deadObjects = new ArrayList<GameObject>();
 		debugObjects = new ArrayList<DebugDraw>();
+
 		player = new FireTruck(spawnPosition.cpy(),truckStats[truckNum]); // Initialises the FireTruck
 
 		gamecam.translate(new Vector2(player.getX(),player.getY())); // sets initial Camera position
@@ -122,12 +135,12 @@ public class GameScreen implements Screen{
 		
 		gameObjects.add(new FireStation());
 
-		gameObjects.add(new Fortress(new Vector2(2903,3211),textures.getFortress(0), textures.getDeadFortress(0), new Vector2(256, 218)));
-		gameObjects.add(new Fortress(new Vector2(3200,5681), textures.getFortress(1), textures.getDeadFortress(1), new Vector2(256, 320)));
-		gameObjects.add(new Fortress(new Vector2(2050,1937), textures.getFortress(2), textures.getDeadFortress(2), new Vector2(400, 240)));
-		gameObjects.add(new Fortress(new Vector2(4350,900), textures.getFortress(3), textures.getDeadFortress(3), new Vector2(400, 240)));
-		gameObjects.add(new Fortress(new Vector2(5900,1100), textures.getFortress(4), textures.getDeadFortress(4), new Vector2(400, 240)));
-		gameObjects.add(new Fortress(new Vector2(520,3500), textures.getFortress(5), textures.getDeadFortress(5), new Vector2(400, 240)));
+		gameObjects.add(new Fortress(fortressPositions.get(0),textures.getFortress(0), textures.getDeadFortress(0), new Vector2(256, 218)));
+		gameObjects.add(new Fortress(fortressPositions.get(1), textures.getFortress(1), textures.getDeadFortress(1), new Vector2(256, 320)));
+		gameObjects.add(new Fortress(fortressPositions.get(2), textures.getFortress(2), textures.getDeadFortress(2), new Vector2(400, 240)));
+		gameObjects.add(new Fortress(fortressPositions.get(3), textures.getFortress(3), textures.getDeadFortress(3), new Vector2(400, 240)));
+		gameObjects.add(new Fortress(fortressPositions.get(4), textures.getFortress(4), textures.getDeadFortress(4), new Vector2(400, 240)));
+		gameObjects.add(new Fortress(fortressPositions.get(5), textures.getFortress(5), textures.getDeadFortress(5), new Vector2(400, 240)));
 
 		gameObjects.add(new UFO(new Vector2(player.getPosition())));
 
@@ -195,6 +208,7 @@ public class GameScreen implements Screen{
 	 */
 	private void updateLoop() {
 		List<GameObject> toRemove = new ArrayList<GameObject>();
+
 		for (GameObject gObject : gameObjects) {	//Go through every game object
 			gObject.update();						//Update the game object
 			if (gObject.isRemove()) {				//Check if game object is to be removed
@@ -202,6 +216,7 @@ public class GameScreen implements Screen{
 			} else {
 				objectsToRender.add(gObject);
 			}
+
 		}
 		for (GameObject rObject : toRemove) {	//Remove game objects set for removal
 			gameObjects.remove(rObject);
@@ -220,6 +235,26 @@ public class GameScreen implements Screen{
 		if (player.isRemove()) {	//If the player is set for removal, respawn
 			updateLives();
 		}
+
+		lastPatrol += Gdx.graphics.getDeltaTime();
+		if (lastPatrol >= patrolUpdateRate) {
+			lastPatrol = 0;
+
+			//we should spawn a patrol near every fortress if it given it's been 10 secs.
+			for (Vector2 position: fortressPositions) {
+
+				//have to adjust these by about 100 px each since the values given are the bottom left corner, NOT the center.
+				float oldX = position.x + 200;
+				float oldY = position.y + 200;
+				float randX = (float) (oldX - 400 + Math.random() * 400);
+				float randY = (float) (oldY - 400 + Math.random() * 400);
+
+				gameObjects.add(new UFO(new Vector2(randX, randY)));
+
+
+			}
+		}
+
 	}
 
 	/**
