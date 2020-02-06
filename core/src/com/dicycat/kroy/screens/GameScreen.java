@@ -8,6 +8,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -74,7 +75,8 @@ public class GameScreen implements Screen{
 	
 	
 	private int truckNum; // Identifies the truck thats selected in the menu screen
-	private FireTruck player; //Reference to the player
+	private FireTruck truck1,truck2,truck3,truck4; //Reference to the player
+	private FireTruck currentTruck;
 	private int lives = 4;
 	
 	private int fortressesCount;
@@ -84,8 +86,8 @@ public class GameScreen implements Screen{
 	private List<GameObject> objectsToRender = new ArrayList<GameObject>(); // List of game objects that have been updated but need rendering
 	private List<GameObject> objectsToAdd;
 	private List<DebugDraw> debugObjects; //List of debug items
-
-
+	private ArrayList<FireTruck> firetrucks=new ArrayList<FireTruck>();
+	private ArrayList<Texture> texture=new ArrayList<Texture>();
 
 	/**
 	 * @param _game
@@ -116,10 +118,21 @@ public class GameScreen implements Screen{
 		gameObjects = new ArrayList<GameObject>();
 		deadObjects = new ArrayList<GameObject>();
 		debugObjects = new ArrayList<DebugDraw>();
-		player = new FireTruck(spawnPosition.cpy(),truckStats[truckNum]); // Initialises the FireTruck
-
-		gamecam.translate(new Vector2(player.getX(),player.getY())); // sets initial Camera position
-		gameObjects.add(player);	//Player
+		
+		// Initialises the FireTrucks
+		truck1 = new FireTruck(spawnPosition,truckStats[1]); 
+		truck2 = new FireTruck(spawnPosition,truckStats[2]);
+		truck3 = new FireTruck(spawnPosition,truckStats[3]); 
+		truck4 = new FireTruck(spawnPosition,truckStats[4]);
+ 				
+		firetrucks.add(truck1);
+		firetrucks.add(truck2);
+		firetrucks.add(truck3);
+		firetrucks.add(truck4);
+		
+		switchTrucks(truckNum);
+		
+		gamecam.translate(new Vector2(currentTruck.getX(),currentTruck.getY())); // sets initial Camera position
 		
 		gameObjects.add(new FireStation());
 		gameObjects.add(new Fortress(new Vector2(2903,3211),textures.getFortress(0), textures.getDeadFortress(0), new Vector2(256, 218)));
@@ -201,6 +214,9 @@ public class GameScreen implements Screen{
 				objectsToRender.add(gObject);
 			}
 		}
+		
+		currentTruck.update();
+		
 		for (GameObject rObject : toRemove) {	//Remove game objects set for removal
 			gameObjects.remove(rObject);
 			if (rObject.isDisplayable()) {
@@ -215,9 +231,10 @@ public class GameScreen implements Screen{
 		for (GameObject dObject : deadObjects) { // loops through the destroyed but displayed items (such as destroyed bases)
 			objectsToRender.add(dObject);
 		}
-		if (player.isRemove()) {	//If the player is set for removal, respawn
+		if (currentTruck.isRemove()) {	//If the player is set for removal, respawn
 			updateLives();
 		}
+		switchTrucks(); 
 	}
 
 	/**
@@ -227,6 +244,10 @@ public class GameScreen implements Screen{
 		for (GameObject object : objectsToRender) {
 			object.render(game.batch);
 		}
+		for (FireTruck truck : firetrucks) {
+			truck.render(game.batch);
+		}
+		
 		objectsToRender.clear();
 	}
 
@@ -243,7 +264,7 @@ public class GameScreen implements Screen{
 	 * @return player
 	 */
 	public FireTruck getPlayer() {
-		return player;
+		return currentTruck;
 	}
 
 	/**
@@ -284,14 +305,14 @@ public class GameScreen implements Screen{
 
 	/**
 	 * Draw a debug rectangle (outline)
-	 * @param bottomLeft Bottom left point of the rectangle
+	 * @param bottomLefiretrucks Bottom lefiretrucks point of the rectangle
 	 * @param dimensions Dimensions of the rectangle (Width, Length)
 	 * @param lineWidth Width of the outline
 	 * @param colour Colour of the line
 	 */
-	public void DrawRect(Vector2 bottomLeft, Vector2 dimensions, int lineWidth, Color colour) {
+	public void DrawRect(Vector2 bottomLefiretrucks, Vector2 dimensions, int lineWidth, Color colour) {
 		if (showDebug) {
-			debugObjects.add(new DebugRect(bottomLeft, dimensions, lineWidth, colour));
+			debugObjects.add(new DebugRect(bottomLefiretrucks, dimensions, lineWidth, colour));
 		}
 	}
 
@@ -299,7 +320,7 @@ public class GameScreen implements Screen{
 	 * Updates the position of the camera to have the truck centre
 	 */
 	public void updateCamera() {
-		gamecam.position.lerp(new Vector3(player.getX(),player.getY(),gamecam.position.z),0.1f);// sets the new camera position based on the current position of the FireTruck
+		gamecam.position.lerp(new Vector3(currentTruck.getX(),currentTruck.getY(),gamecam.position.z),0.1f);// sets the new camera position based on the current position of the FireTruck
 		gamecam.update();
 	}
 
@@ -403,10 +424,10 @@ public class GameScreen implements Screen{
 	}
 
 	/**
-	 * How many fortresses are left?
+	 * How many fortresses are lefiretrucks?
 	 * @return Number of fortresses remaining
 	 */
-	public int fortressesLeft() {
+	public int fortressesLefiretrucks() {
 		return fortressesCount;
 	}
 
@@ -419,24 +440,58 @@ public class GameScreen implements Screen{
 	}
 
 	/**
-	 * 
+	 * switch to anothe truck if currenttruck dies
 	 */
 	public void updateLives() {
 		if (lives>1) {
 			lives -= 1;
-			respawn();
+			if(firetrucks.get(0).isAlive()) {
+				switchTrucks(0);
+			}else if(firetrucks.get(1).isAlive()) {
+				switchTrucks(1);
+			}else if(firetrucks.get(2).isAlive()) {
+				switchTrucks(2);
+			}else if(firetrucks.get(3).isAlive()) {
+				switchTrucks(3);
+			}
 		} else {
 			gameOver(false);
 		}
 	}
 	
-	/**
-	 * Respawns the player at the spawn position and updates the HUD
-	 */
-	public void respawn() { 
-		player = new FireTruck(spawnPosition.cpy(),truckStats[truckNum]);
-		gameObjects.add(player);
+	private void switchTrucks(int n) {
+		changeToTruck( firetrucks.get(n));
 	}
+	
+	/**
+	 * Check for inputs to switch between trucks.
+	 */
+	private void switchTrucks() {
+		if (Gdx.input.isKeyPressed(Keys.NUM_1)) {
+			changeToTruck(truck1);
+		}
+		if (Gdx.input.isKeyPressed(Keys.NUM_2)) {
+			changeToTruck(truck2);
+		}
+		if (Gdx.input.isKeyPressed(Keys.NUM_3)) {
+			changeToTruck(truck3);
+		}
+		if (Gdx.input.isKeyPressed(Keys.NUM_4)) {
+			changeToTruck(truck4);
+		}
+
+	}
+
+	/**
+	 * Switches the camera to the specified truck.
+	 *
+	 * @param t The truck to switch to
+	 */
+	private void changeToTruck(FireTruck t) {
+		currentTruck = t;
+		
+	}
+
 	
 	public HUD getHud(){
 		return hud;
@@ -445,4 +500,8 @@ public class GameScreen implements Screen{
 	public Vector2 getSpawnPosition() {
 		return spawnPosition;
 	}
+	
+	
+	
+
 }
