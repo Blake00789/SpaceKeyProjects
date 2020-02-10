@@ -17,6 +17,7 @@ import com.dicycat.kroy.screens.MinigameScreen;
 public class Kroy extends Game {
 	public static final int width = 1080;
 	public static final int height = 720;
+	public static boolean debug = false;
 	
 	public static GameScreen mainGameScreen;
 	public static MenuScreen mainMenuScreen;

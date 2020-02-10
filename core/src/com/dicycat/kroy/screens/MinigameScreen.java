@@ -141,17 +141,18 @@ public class MinigameScreen implements Screen{
 				player.render(batch);
 				
 				
+				
 				pipes.forEach(o -> {
 					o.update();
 					o.render(batch);
-					if(o.gameEnd()) {
+					if(o.gameEnd(player)) {
 						//If the player hits a pipe, then the game ends
 						gameOver();
 					};
 				});				
 				pipes.removeIf(o -> o.isRemove());
 				
-				//Score starts at -1, so different text is displayed instead
+				//Score starts at -2, so different text is displayed instead
 				if(score<0) {
 					scoreText = "Ready?";
 				} else {
@@ -161,12 +162,12 @@ public class MinigameScreen implements Screen{
 				//Score is displayed in the top left
 				font.draw(batch, scoreText, (-Kroy.width/2)+10, (Kroy.height/2)-10);
 			
-				//Uncomment to display goose hitbox
-				/*debugObjects.forEach(o -> o.Draw(gamecam.combined));
-				 *debugObjects.clear();*/
+							
+				if(Kroy.debug) {
+					debugObjects.forEach(o -> o.Draw(gamecam.combined));
+					debugObjects.clear();
+				}
 				
-				//TODO Fix bug with text not drawing when debug objects are drawn
-			
 				batch.end();
 
 				pauseWindow.stage.draw();
