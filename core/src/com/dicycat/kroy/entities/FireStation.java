@@ -1,8 +1,12 @@
 package com.dicycat.kroy.entities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.dicycat.kroy.Kroy;
+import com.dicycat.kroy.screens.MenuScreen;
+import com.dicycat.kroy.screens.MenuScreen.MenuScreenState;
 
 /**
  * Static friendly Entity.
@@ -41,6 +45,9 @@ public class FireStation extends Entity {
 		
 		if(playerInRadius()){
 			Kroy.mainGameScreen.getPlayer().replenish();
+		}
+		if(playerInRadius() && Gdx.input.isKeyPressed(Keys.SPACE)) {
+			
 		}
 		if (Kroy.mainGameScreen.gameTimer <= 0) {		//Once timer is over
 			applyDamage(100);	//Destroy fire station

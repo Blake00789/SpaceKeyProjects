@@ -269,7 +269,7 @@ public class GameScreen implements Screen{
 				float randX = (float) (oldX - 400 + Math.random() * 400);
 				float randY = (float) (oldY - 400 + Math.random() * 400);
 
-				gameObjects.add(new UFO(new Vector2(randX, randY)));
+//				gameObjects.add(new UFO(new Vector2(randX, randY)));
 
 
 			}
@@ -493,6 +493,10 @@ public class GameScreen implements Screen{
 				switchTrucks(2);
 			}else if(firetrucks.get(3).isAlive()) {
 				switchTrucks(3);
+			}else if(firetrucks.get(4).isAlive()) {
+				switchTrucks(3);
+			}else if(firetrucks.get(5).isAlive()) {
+				switchTrucks(3);
 			}
 		} else {
 			gameOver(false);
@@ -518,6 +522,12 @@ public class GameScreen implements Screen{
 		}
 		if (Gdx.input.isKeyPressed(Keys.NUM_4)) {
 			changeToTruck(truck4);
+		}
+		if (Gdx.input.isKeyPressed(Keys.NUM_5)) {
+			changeToTruck(truck5);
+		}
+		if (Gdx.input.isKeyPressed(Keys.NUM_6)) {
+			changeToTruck(truck6);
 		}
 
 	}
