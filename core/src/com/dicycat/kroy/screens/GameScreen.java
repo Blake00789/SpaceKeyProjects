@@ -105,7 +105,7 @@ public class GameScreen implements Screen{
 		optionsWindow.visibility(false);
 		textures = new GameTextures(truckNum);
 		spawnPosition = new Vector2(3750, 4000);
-		gameTimer = 60 * 15; //Set timer to 15 minutes
+		gameTimer = 60 * 5; //Set timer to 5 minutes
 		this.truckNum = truckNum;
 		lastPatrol = Gdx.graphics.getDeltaTime();
 		fortressPositions = new ArrayList<>();
