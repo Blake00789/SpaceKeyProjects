@@ -49,7 +49,6 @@ public class GameScreen implements Screen{
 	
 	public Kroy game;
 	public GameTextures textures;
-	public static Boolean showDebug = false;
 	public float gameTimer; //Timer to destroy station
 	
 	
@@ -183,7 +182,7 @@ public class GameScreen implements Screen{
 				hud.stage.draw();
 				pauseWindow.stage.draw();
 
-				if (showDebug) {
+				if (Kroy.debug) {
 					DrawDebug(); //Draw all debug items as they have to be drawn outside the batch
 				}
 
@@ -289,7 +288,7 @@ public class GameScreen implements Screen{
 	 * @param colour Colour of the line
 	 */
 	public void DrawLine(Vector2 start, Vector2 end, int lineWidth, Color colour) {
-		if (showDebug) {
+		if (Kroy.debug) {
 			debugObjects.add(new DebugLine(start, end, lineWidth, colour));
 		}
 	}
@@ -302,7 +301,7 @@ public class GameScreen implements Screen{
 	 * @param colour Colour of the line
 	 */
 	public void DrawCircle(Vector2 position, float radius, int lineWidth, Color colour) {
-		if (showDebug) {
+		if (Kroy.debug) {
 			debugObjects.add(new DebugCircle(position, radius, lineWidth, colour));
 		}
 	}
@@ -315,7 +314,7 @@ public class GameScreen implements Screen{
 	 * @param colour Colour of the line
 	 */
 	public void DrawRect(Vector2 bottomLefiretrucks, Vector2 dimensions, int lineWidth, Color colour) {
-		if (showDebug) {
+		if (Kroy.debug) {
 			debugObjects.add(new DebugRect(bottomLefiretrucks, dimensions, lineWidth, colour));
 		}
 	}
