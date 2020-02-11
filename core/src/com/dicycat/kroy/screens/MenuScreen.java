@@ -215,21 +215,37 @@ public class MenuScreen implements Screen{
 		fireTruckSelector.truckButton2.addListener(new ClickListener() {
 	    	@Override
 	    	public void clicked(InputEvent event, float x, float y) {
-	    		startGame(1);//Game begun with 1 (Damage) as the truck selected
+	    		startGame(1);//Game begun with 1 (Speed + Damage) as the truck selected
 	    	}
 	    });
 		//Truck 3 Selected
 		fireTruckSelector.truckButton3.addListener(new ClickListener() {
 	    	@Override
 	    	public void clicked(InputEvent event, float x, float y) {
-	    		startGame(2);//Game begun with 2 (Capacity) as the truck selected
+	    		startGame(2);//Game begun with 2 (Damage) as the truck selected
 	    	}
 	    });
 		//Truck 4 Selected
 		fireTruckSelector.truckButton4.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				startGame(3);//Game begun with 3 (Range) as the truck selected
+				startGame(3);//Game begun with 3 (Capacity + Range) as the truck selected
+				
+			}
+	    });
+		//Truck 5 Selected
+		fireTruckSelector.truckButton5.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				startGame(4);//Game begun with 4 (Capacity) as the truck selected
+				
+			}
+	    });
+		//Truck 6 Selected
+		fireTruckSelector.truckButton6.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				startGame(5);//Game begun with 5 (Range) as the truck selected
 				
 			}
 	    });

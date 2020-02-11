@@ -53,21 +53,21 @@ public class FireTruckSelectionScene {
 
 		table.setBackground(background);
 		
-		// Images added to the screen
+		// Images + Buttons added to the screen
 		table.add(new Image(new Texture("fireTruck1.png")));
 		table.add(new Image(new Texture("fireTruck2.png")));
 		table.add(new Image(new Texture("fireTruck3.png")));
-		table.add(new Image(new Texture("fireTruck4.png")));
-		//table.add(new Image(new Texture("fireTruck1.png")));
-		//table.add(new Image(new Texture("fireTruck1.png")));
-		
 		table.row();
-	    
-		
-		// Buttons added to the screen
 		table.add(truckButton1).width(centre/3.0f);
 	    table.add(truckButton2).width(centre/3.0f);
 	    table.add(truckButton3).width(centre/3.0f);
+		
+	    table.row();
+
+		table.add(new Image(new Texture("fireTruck4.png")));
+		table.add(new Image(new Texture("fireTruck1.png")));
+		table.add(new Image(new Texture("fireTruck1.png")));
+	    table.row();
 	    table.add(truckButton4).width(centre/3.0f);
 	    table.add(truckButton5).width(centre/3.0f);
 	    table.add(truckButton6).width(centre/3.0f);

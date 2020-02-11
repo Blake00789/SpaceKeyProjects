@@ -119,12 +119,12 @@ public class GameScreen implements Screen{
 		debugObjects = new ArrayList<DebugDraw>();
 		
 		// Initialises the FireTrucks
-		truck1 = new FireTruck(spawnPosition,truckStats[1]); 
-		truck2 = new FireTruck(spawnPosition,truckStats[2]);
-		truck3 = new FireTruck(spawnPosition,truckStats[3]); 
-		truck4 = new FireTruck(spawnPosition,truckStats[4]);
-		truck5 = new FireTruck(spawnPosition, truckStats[5]);
-		truck6 = new FireTruck(spawnPosition, truckStats[6]);
+		truck1 = new FireTruck(spawnPosition,truckStats[0]); 
+		truck2 = new FireTruck(spawnPosition,truckStats[1]);
+		truck3 = new FireTruck(spawnPosition,truckStats[2]); 
+		truck4 = new FireTruck(spawnPosition,truckStats[3]);
+		truck5 = new FireTruck(spawnPosition, truckStats[4]);
+		truck6 = new FireTruck(spawnPosition, truckStats[5]);
  				
 		firetrucks.add(truck1);
 		firetrucks.add(truck2);
