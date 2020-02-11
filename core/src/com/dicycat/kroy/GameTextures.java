@@ -1,5 +1,7 @@
 package com.dicycat.kroy;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 
 /**
@@ -16,7 +18,7 @@ public class GameTextures {
 	private Texture[] deadFortresses = {new Texture("cliffords tower dead.png"), new Texture("york minster dead.png"), new Texture("york museum dead.png"),new Texture("cliffords tower dead.png"), new Texture("york minster dead.png"), new Texture("york museum dead.png")};
 	private String[] truckAddress = {"fireTruck1.png", "fireTruck2.png", "fireTruck3.png", "fireTruck4.png"};
 	
-	
+	 
 	/**
 	 * @param truckNum Which truck texture to get
 	 */
@@ -27,6 +29,7 @@ public class GameTextures {
 		fireStation = new Texture("FireStationTemp.png");
 		fireStationDead = new Texture("FireStationTempDead.png");	
 	}
+	
 	
 	public Texture getTruck() {
 		return truck;

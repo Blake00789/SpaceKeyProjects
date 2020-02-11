@@ -178,14 +178,14 @@ public class OptionsWindow {
 			this.showDebug.addListener(new ClickListener() {
 		    	@Override
 		    	public void clicked(InputEvent event, float x, float y) {
-		    		GameScreen.showDebug = true;
+		    		Kroy.debug = true;
 		    		}
 		    });
 			//hideDebug button
 			this.hideDebug.addListener(new ClickListener() {
 		    	@Override
 		    	public void clicked(InputEvent event, float x, float y) {
-		    		GameScreen.showDebug = false;
+		    		Kroy.debug = false;
 		    		}
 		    });
 			//backFromDebug button

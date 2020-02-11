@@ -45,7 +45,7 @@ public class FireTruck extends Entity{
 	 */
 	public FireTruck(Vector2 spawnPos, Float[] truckStats) {
 		super(spawnPos, Kroy.mainGameScreen.textures.getTruck(), new Vector2(25,50), 100);
-
+ 
 		DIRECTIONS.put("n",0);			//North Facing Direction (up arrow)
 		DIRECTIONS.put("w",90);			//West Facing Direction (left arrow)
 		DIRECTIONS.put("s",180);		//South Facing Direction (down arrow)

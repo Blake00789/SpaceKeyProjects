@@ -35,6 +35,8 @@ public class FireTruckSelectionScene {
     public TextButton truckButton2 = new TextButton("Damage", skin);
     public TextButton truckButton3 = new TextButton("Capacity", skin);
     public TextButton truckButton4 = new TextButton("Range", skin);
+    public TextButton truckButton5 = new TextButton("Speed + Damage", skin);
+    public TextButton truckButton6 = new TextButton("Capacity + Range", skin);
     private float width = Gdx.graphics.getWidth();
     private float centre = width* 0.7f;
     
@@ -54,6 +56,8 @@ public class FireTruckSelectionScene {
 		table.add(new Image(new Texture("fireTruck2.png")));
 		table.add(new Image(new Texture("fireTruck3.png")));
 		table.add(new Image(new Texture("fireTruck4.png")));
+		//table.add(new Image(new Texture("")));
+		//table.add(new Image(new Texture("")));
 		
 		table.row();
 	    
@@ -63,6 +67,8 @@ public class FireTruckSelectionScene {
 	    table.add(truckButton2).width(centre/3.0f);
 	    table.add(truckButton3).width(centre/3.0f);
 	    table.add(truckButton4).width(centre/3.0f);
+	    //table.add(truckButton5).width(centre/3.0f);
+	    //table.add(truckButton6).width(centre/3.0f);
 	    
 		table.setFillParent(true);
 	    stage.addActor(table);

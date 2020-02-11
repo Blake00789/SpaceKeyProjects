@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.dicycat.kroy.GameObject;
-import com.dicycat.kroy.screens.MinigameScreen;
 
 /**
  * Pipe used in minigame
@@ -17,7 +16,7 @@ import com.dicycat.kroy.screens.MinigameScreen;
  *
  */
 public class Pipe extends GameObject {
-	private float speed = 3f;
+	private float speed = 4f;
 	private Rectangle[] hitboxes = new Rectangle[2];
 	private boolean gameEnd = false;
 	private Instant startTime;
@@ -41,19 +40,24 @@ public class Pipe extends GameObject {
 		hitboxes[1].x = getX();
 		hitboxes[1].y = getY() + 1148;
 
-		for (Rectangle hitbox : hitboxes) {
-			if (Intersector.overlaps(hitbox, MinigameScreen.getPlayer().getHitbox())) {
-				gameEnd = true;
-			}
-		}
+		
 	}
 
-	public Rectangle[] GetHitboxes() {
+	public Rectangle[] getHitboxes() {
 		return this.hitboxes;
 	}
 
-	public boolean gameEnd() {
+	public boolean gameEnd(Goose player) {
+		for (Rectangle hitbox : hitboxes) {
+			if (Intersector.overlaps(hitbox, player.getHitbox())) {
+				gameEnd = true;
+			}
+		}
 		return gameEnd;
+	}
+	
+	void setLifeTime(int x) {
+		lifeTime = x;
 	}
 
 	public boolean isRemove() {

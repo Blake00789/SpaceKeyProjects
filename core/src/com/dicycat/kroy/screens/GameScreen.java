@@ -1,13 +1,13 @@
 package com.dicycat.kroy.screens;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -24,7 +24,6 @@ import com.dicycat.kroy.debug.DebugRect;
 import com.dicycat.kroy.entities.FireStation;
 import com.dicycat.kroy.entities.FireTruck;
 import com.dicycat.kroy.entities.Fortress;
-import com.dicycat.kroy.entities.UFO;
 import com.dicycat.kroy.gamemap.TiledGameMap;
 import com.dicycat.kroy.scenes.HUD;
 import com.dicycat.kroy.scenes.OptionsWindow;
@@ -49,10 +48,9 @@ public class GameScreen implements Screen{
 	
 	public Kroy game;
 	public GameTextures textures;
-	public static Boolean showDebug = false;
 	public float gameTimer; //Timer to destroy station
 	
-
+	
 	public GameScreenState state = GameScreenState.RUN;
 	
 	public static TiledGameMap gameMap;
@@ -65,15 +63,18 @@ public class GameScreen implements Screen{
 	private OptionsWindow optionsWindow;
 
 	private Float[][] truckStats = {	//Each list is a configuration of a specific truck. {speed, flowRate, capacity, range}
-			{450f, 1f, 400f, 300f},		//Speed
+			{400f, 1f, 400f, 300f},		//Speed
+			{350f, 1.25f, 400f, 300f},	//Speed + Flow rate
 			{300f, 1.5f, 400f, 300f},	//Flow rate
+			{300f, 1f, 450f, 400f},  	//Capacity + Range
 			{300f, 1f, 500f, 300f},		//Capacity
-			{300f, 1f, 400f, 450f}		//Range
+			{300f, 1f, 400f, 450f},		//Range
 		};
 	
 	
 	private int truckNum; // Identifies the truck thats selected in the menu screen
-	private FireTruck player; //Reference to the player
+	private FireTruck truck1,truck2,truck3,truck4; //Reference to the player
+	private FireTruck currentTruck;
 	private int lives = 4;
 	
 	private int fortressesCount;
@@ -88,6 +89,8 @@ public class GameScreen implements Screen{
 	private List<Vector2> fortressPositions; //where our fortresses spawn
 	private int patrolUpdateRate; //How many seconds should pass before we respawn patrols;
 
+	private ArrayList<FireTruck> firetrucks=new ArrayList<FireTruck>();
+	private ArrayList<Texture> texture=new ArrayList<Texture>();
 
 	/**
 	 * @param _game
@@ -128,11 +131,21 @@ public class GameScreen implements Screen{
 		deadObjects = new ArrayList<GameObject>();
 		debugObjects = new ArrayList<DebugDraw>();
 
-		player = new FireTruck(spawnPosition.cpy(),truckStats[truckNum]); // Initialises the FireTruck
+		// Initialises the FireTrucks
+		truck1 = new FireTruck(spawnPosition,truckStats[1]);
+		truck2 = new FireTruck(spawnPosition,truckStats[2]);
+		truck3 = new FireTruck(spawnPosition,truckStats[3]);
+		truck4 = new FireTruck(spawnPosition,truckStats[4]);
 
-		gamecam.translate(new Vector2(player.getX(),player.getY())); // sets initial Camera position
-		gameObjects.add(player);	//Player
+		firetrucks.add(truck1);
+		firetrucks.add(truck2);
+		firetrucks.add(truck3);
+		firetrucks.add(truck4);
 		
+		switchTrucks(truckNum);
+
+		gamecam.translate(new Vector2(currentTruck.getX(),currentTruck.getY())); // sets initial Camera position
+
 		gameObjects.add(new FireStation());
 
 		gameObjects.add(new Fortress(fortressPositions.get(0),textures.getFortress(0), textures.getDeadFortress(0), new Vector2(256, 218)));
@@ -142,7 +155,7 @@ public class GameScreen implements Screen{
 		gameObjects.add(new Fortress(fortressPositions.get(4), textures.getFortress(4), textures.getDeadFortress(4), new Vector2(400, 240)));
 		gameObjects.add(new Fortress(fortressPositions.get(5), textures.getFortress(5), textures.getDeadFortress(5), new Vector2(400, 240)));
 
-		gameObjects.add(new UFO(new Vector2(player.getPosition())));
+
 
 	}
 
@@ -181,7 +194,7 @@ public class GameScreen implements Screen{
 				hud.stage.draw();
 				pauseWindow.stage.draw();
 
-				if (showDebug) {
+				if (Kroy.debug) {
 					DrawDebug(); //Draw all debug items as they have to be drawn outside the batch
 				}
 
@@ -208,16 +221,17 @@ public class GameScreen implements Screen{
 	 */
 	private void updateLoop() {
 		List<GameObject> toRemove = new ArrayList<GameObject>();
-
 		for (GameObject gObject : gameObjects) {	//Go through every game object
 			gObject.update();						//Update the game object
 			if (gObject.isRemove()) {				//Check if game object is to be removed
 				toRemove.add(gObject);					//Set it to be removed
-			} else {
+			}else {
 				objectsToRender.add(gObject);
 			}
-
 		}
+
+		currentTruck.update();
+
 		for (GameObject rObject : toRemove) {	//Remove game objects set for removal
 			gameObjects.remove(rObject);
 			if (rObject.isDisplayable()) {
@@ -232,9 +246,10 @@ public class GameScreen implements Screen{
 		for (GameObject dObject : deadObjects) { // loops through the destroyed but displayed items (such as destroyed bases)
 			objectsToRender.add(dObject);
 		}
-		if (player.isRemove()) {	//If the player is set for removal, respawn
+		if (currentTruck.isRemove()) {	//If the player is set for removal, respawn
 			updateLives();
 		}
+		switchTrucks();
 
 		lastPatrol += Gdx.graphics.getDeltaTime();
 		if (lastPatrol >= patrolUpdateRate) {
@@ -264,6 +279,10 @@ public class GameScreen implements Screen{
 		for (GameObject object : objectsToRender) {
 			object.render(game.batch);
 		}
+		for (FireTruck truck : firetrucks) {
+			truck.render(game.batch);
+		}
+
 		objectsToRender.clear();
 	}
 
@@ -280,7 +299,7 @@ public class GameScreen implements Screen{
 	 * @return player
 	 */
 	public FireTruck getPlayer() {
-		return player;
+		return currentTruck;
 	}
 
 	/**
@@ -301,7 +320,7 @@ public class GameScreen implements Screen{
 	 * @param colour Colour of the line
 	 */
 	public void DrawLine(Vector2 start, Vector2 end, int lineWidth, Color colour) {
-		if (showDebug) {
+		if (Kroy.debug) {
 			debugObjects.add(new DebugLine(start, end, lineWidth, colour));
 		}
 	}
@@ -314,21 +333,21 @@ public class GameScreen implements Screen{
 	 * @param colour Colour of the line
 	 */
 	public void DrawCircle(Vector2 position, float radius, int lineWidth, Color colour) {
-		if (showDebug) {
+		if (Kroy.debug) {
 			debugObjects.add(new DebugCircle(position, radius, lineWidth, colour));
 		}
 	}
 
 	/**
 	 * Draw a debug rectangle (outline)
-	 * @param bottomLeft Bottom left point of the rectangle
+	 * @param bottomLefiretrucks Bottom lefiretrucks point of the rectangle
 	 * @param dimensions Dimensions of the rectangle (Width, Length)
 	 * @param lineWidth Width of the outline
 	 * @param colour Colour of the line
 	 */
-	public void DrawRect(Vector2 bottomLeft, Vector2 dimensions, int lineWidth, Color colour) {
-		if (showDebug) {
-			debugObjects.add(new DebugRect(bottomLeft, dimensions, lineWidth, colour));
+	public void DrawRect(Vector2 bottomLefiretrucks, Vector2 dimensions, int lineWidth, Color colour) {
+		if (Kroy.debug) {
+			debugObjects.add(new DebugRect(bottomLefiretrucks, dimensions, lineWidth, colour));
 		}
 	}
 
@@ -336,7 +355,7 @@ public class GameScreen implements Screen{
 	 * Updates the position of the camera to have the truck centre
 	 */
 	public void updateCamera() {
-		gamecam.position.lerp(new Vector3(player.getX(),player.getY(),gamecam.position.z),0.1f);// sets the new camera position based on the current position of the FireTruck
+		gamecam.position.lerp(new Vector3(currentTruck.getX(),currentTruck.getY(),gamecam.position.z),0.1f);// sets the new camera position based on the current position of the FireTruck
 		gamecam.update();
 	}
 
@@ -417,6 +436,7 @@ public class GameScreen implements Screen{
 		pauseWindow.menu.addListener(new ClickListener() {
 	    	@Override
 	    	public void clicked(InputEvent event, float x, float y) {
+	    		pauseWindow.visibility(false);
 	    		dispose();
 	    		game.backToMenu();
 	    		return;
@@ -455,25 +475,59 @@ public class GameScreen implements Screen{
 	}
 
 	/**
-	 * 
+	 * switch to anothe truck if currenttruck dies
 	 */
 	public void updateLives() {
 		if (lives>1) {
 			lives -= 1;
-			respawn();
+			if(firetrucks.get(0).isAlive()) {
+				switchTrucks(0);
+			}else if(firetrucks.get(1).isAlive()) {
+				switchTrucks(1);
+			}else if(firetrucks.get(2).isAlive()) {
+				switchTrucks(2);
+			}else if(firetrucks.get(3).isAlive()) {
+				switchTrucks(3);
+			}
 		} else {
 			gameOver(false);
 		}
 	}
 	
-	/**
-	 * Respawns the player at the spawn position and updates the HUD
-	 */
-	public void respawn() { 
-		player = new FireTruck(spawnPosition.cpy(),truckStats[truckNum]);
-		gameObjects.add(player);
+	private void switchTrucks(int n) {
+		changeToTruck( firetrucks.get(n));
 	}
-	
+
+	/**
+	 * Check for inputs to switch between trucks.
+	 */
+	private void switchTrucks() {
+		if (Gdx.input.isKeyPressed(Keys.NUM_1)) {
+			changeToTruck(truck1);
+		}
+		if (Gdx.input.isKeyPressed(Keys.NUM_2)) {
+			changeToTruck(truck2);
+		}
+		if (Gdx.input.isKeyPressed(Keys.NUM_3)) {
+			changeToTruck(truck3);
+		}
+		if (Gdx.input.isKeyPressed(Keys.NUM_4)) {
+			changeToTruck(truck4);
+		}
+
+	}
+
+	/**
+	 * Switches the camera to the specified truck.
+	 *
+	 * @param t The truck to switch to
+	 */
+	private void changeToTruck(FireTruck t) {
+		currentTruck = t;
+
+	}
+
+
 	public HUD getHud(){
 		return hud;
 	}

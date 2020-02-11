@@ -3,8 +3,8 @@ package com.dicycat.kroy.scenes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -24,7 +24,7 @@ public class PauseWindow {
 	
 	public Stage stage;
 	public Table table = new Table();
-	private SpriteBatch sb;
+	private Batch sb;
 	private NinePatch patch = new NinePatch(new Texture("loool.jpg"), 3, 3, 3, 3);
 	private NinePatchDrawable background = new NinePatchDrawable(patch);
 	

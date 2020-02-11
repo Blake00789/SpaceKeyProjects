@@ -30,7 +30,7 @@ public abstract class Entity extends GameObject{
 		radius = 500;
 		changePosition(spawnPos);
 	}
-
+ 
 	/**
 	 * Method is called every frame (If added to the gameobjects list in GameScreen)
 	 */
