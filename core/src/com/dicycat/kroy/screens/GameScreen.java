@@ -75,7 +75,7 @@ public class GameScreen implements Screen{
 	
 	
 	private int truckNum; // Identifies the truck thats selected in the menu screen
-	private FireTruck truck1,truck2,truck3,truck4; //Reference to the player
+	private FireTruck truck1,truck2,truck3,truck4, truck5, truck6; //Reference to the player
 	private FireTruck currentTruck;
 	private int lives = 4;
 	
@@ -105,7 +105,7 @@ public class GameScreen implements Screen{
 		optionsWindow.visibility(false);
 		textures = new GameTextures(truckNum);
 		spawnPosition = new Vector2(3750, 4000);
-		gameTimer = 60 * 15; //Set timer to 15 minutes
+		gameTimer = 60 * 5; //Set timer to 5 minutes
 		this.truckNum = truckNum;
 	}
 
@@ -124,11 +124,15 @@ public class GameScreen implements Screen{
 		truck2 = new FireTruck(spawnPosition,truckStats[2]);
 		truck3 = new FireTruck(spawnPosition,truckStats[3]); 
 		truck4 = new FireTruck(spawnPosition,truckStats[4]);
+		truck5 = new FireTruck(spawnPosition, truckStats[5]);
+		truck6 = new FireTruck(spawnPosition, truckStats[6]);
  				
 		firetrucks.add(truck1);
 		firetrucks.add(truck2);
 		firetrucks.add(truck3);
 		firetrucks.add(truck4);
+		firetrucks.add(truck5);
+		firetrucks.add(truck6);
 		
 		switchTrucks(truckNum);
 		
