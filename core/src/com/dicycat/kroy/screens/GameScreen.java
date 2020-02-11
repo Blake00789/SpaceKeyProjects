@@ -423,13 +423,13 @@ public class GameScreen implements Screen{
 	}
 
 	/**
-	 * How many fortresses are lefiretrucks?
+	 * How many fortresses are left?
 	 * @return Number of fortresses remaining
 	 */
-	public int fortressesLefiretrucks() {
+	public int fortressesLeft() {
 		return fortressesCount;
 	}
-
+	
 	/**
 	 * Switch to the game over screen
 	 * @param won Did the player reach the win state?
