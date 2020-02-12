@@ -113,7 +113,7 @@ public class GameScreen implements Screen{
 		this.truckNum = truckNum;
 		lastPatrol = Gdx.graphics.getDeltaTime();
 		fortressPositions = new ArrayList<>();
-		fortressPositions.add(new Vector2(2903, 3211));
+		fortressPositions.add(new Vector2(2903, 3211));   
 		fortressPositions.add(new Vector2(3200, 5681));
 		fortressPositions.add(new Vector2(2050, 1937));
 		fortressPositions.add(new Vector2(4350, 900));
@@ -121,7 +121,14 @@ public class GameScreen implements Screen{
 		fortressPositions.add(new Vector2(520, 3500));
 		patrolUpdateRate = 5;
 	}
-
+	
+//	(3031.0,3320.0)
+//	(3328.0,5841.0)
+//	(2250.0,2057.0)
+//	(4550.0,1020.0)
+//	(6100.0,1120.0)
+//	(720.0,3620.0)
+	
 	/**
 	 * Screen first shown
 	 */

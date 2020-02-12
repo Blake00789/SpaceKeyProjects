@@ -41,6 +41,8 @@ public class Fortress extends Entity {
 		Kroy.mainGameScreen.addFortress();
 		healthBar = new StatBar(new Vector2(getCentre().x, getCentre().y + 100), "Red.png", 10);
 		Kroy.mainGameScreen.addGameObject(healthBar);
+		
+		
 	}
 
 	/**
