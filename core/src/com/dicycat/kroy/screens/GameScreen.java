@@ -8,7 +8,6 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -25,6 +24,7 @@ import com.dicycat.kroy.debug.DebugRect;
 import com.dicycat.kroy.entities.FireStation;
 import com.dicycat.kroy.entities.FireTruck;
 import com.dicycat.kroy.entities.Fortress;
+import com.dicycat.kroy.entities.UFO;
 import com.dicycat.kroy.gamemap.TiledGameMap;
 import com.dicycat.kroy.scenes.HUD;
 import com.dicycat.kroy.scenes.OptionsWindow;
@@ -74,7 +74,6 @@ public class GameScreen implements Screen{
 	
 	
 	private int truckNum; // Identifies the truck thats selected in the menu screen
-	private FireTruck truck1,truck2,truck3,truck4, truck5, truck6; //Reference to the player
 	private FireTruck currentTruck;
 	private int lives = 4;
 	
@@ -91,7 +90,6 @@ public class GameScreen implements Screen{
 	private int patrolUpdateRate; //How many seconds should pass before we respawn patrols;
 
 	private ArrayList<FireTruck> firetrucks=new ArrayList<FireTruck>();
-	private ArrayList<Texture> texture=new ArrayList<Texture>();
 
 	/**
 	 * @param _game
@@ -113,7 +111,7 @@ public class GameScreen implements Screen{
 		this.truckNum = truckNum;
 		lastPatrol = Gdx.graphics.getDeltaTime();
 		fortressPositions = new ArrayList<>();
-		fortressPositions.add(new Vector2(2903, 3211));   
+		fortressPositions.add(new Vector2(2903, 3211));
 		fortressPositions.add(new Vector2(3200, 5681));
 		fortressPositions.add(new Vector2(2050, 1937));
 		fortressPositions.add(new Vector2(4350, 900));
@@ -122,13 +120,13 @@ public class GameScreen implements Screen{
 		patrolUpdateRate = 5;
 	}
 	
-//	(3031.0,3320.0)
-//	(3328.0,5841.0)
-//	(2250.0,2057.0)
-//	(4550.0,1020.0)
-//	(6100.0,1120.0)
-//	(720.0,3620.0)
-	
+	//	(3031.0,3320.0)
+	//	(3328.0,5841.0)
+	//	(2250.0,2057.0)
+	//	(4550.0,1020.0)
+	//	(6100.0,1120.0)
+	//	(720.0,3620.0)
+
 	/**
 	 * Screen first shown
 	 */
@@ -140,19 +138,9 @@ public class GameScreen implements Screen{
 		debugObjects = new ArrayList<DebugDraw>();
 
 		// Initialises the FireTrucks
-		truck1 = new FireTruck(spawnPosition,truckStats[0]); 
-		truck2 = new FireTruck(spawnPosition,truckStats[1]);
-		truck3 = new FireTruck(spawnPosition,truckStats[2]); 
-		truck4 = new FireTruck(spawnPosition,truckStats[3]);
-		truck5 = new FireTruck(spawnPosition, truckStats[4]);
-		truck6 = new FireTruck(spawnPosition, truckStats[5]);
- 				
-		firetrucks.add(truck1);
-		firetrucks.add(truck2);
-		firetrucks.add(truck3);
-		firetrucks.add(truck4);
-		firetrucks.add(truck5);
-		firetrucks.add(truck6);
+		for(int i = 0; i < 6; i++) {
+			firetruckInit(spawnPosition.x + -50 + (((i+1)%3)*50), spawnPosition.y - ((i%2)*50), i);
+		}
 		
 		switchTrucks(truckNum);
 
@@ -169,6 +157,10 @@ public class GameScreen implements Screen{
 
 
 
+	}
+	
+	private void firetruckInit(float x, float y, int i) {
+		firetrucks.add(new FireTruck(new Vector2(x,y), truckStats[i], i));
 	}
 
 	/**
@@ -243,6 +235,9 @@ public class GameScreen implements Screen{
 		}
 
 		currentTruck.update();
+		if (Gdx.input.isKeyPressed(Keys.PLUS)) {
+		}
+		
 
 		for (GameObject rObject : toRemove) {	//Remove game objects set for removal
 			gameObjects.remove(rObject);
@@ -276,7 +271,7 @@ public class GameScreen implements Screen{
 				float randX = (float) (oldX - 400 + Math.random() * 400);
 				float randY = (float) (oldY - 400 + Math.random() * 400);
 
-//				gameObjects.add(new UFO(new Vector2(randX, randY)));
+				gameObjects.add(new UFO(new Vector2(randX, randY)));
 
 
 			}
@@ -487,7 +482,7 @@ public class GameScreen implements Screen{
 	}
 
 	/**
-	 * switch to anothe truck if currenttruck dies
+	 * switch to another truck if currentTruck dies
 	 */
 	public void updateLives() {
 		if (lives>1) {
@@ -501,9 +496,9 @@ public class GameScreen implements Screen{
 			}else if(firetrucks.get(3).isAlive()) {
 				switchTrucks(3);
 			}else if(firetrucks.get(4).isAlive()) {
-				switchTrucks(3);
+				switchTrucks(4);
 			}else if(firetrucks.get(5).isAlive()) {
-				switchTrucks(3);
+				switchTrucks(5);
 			}
 		} else {
 			gameOver(false);
@@ -511,7 +506,7 @@ public class GameScreen implements Screen{
 	}
 	
 	private void switchTrucks(int n) {
-		changeToTruck( firetrucks.get(n));
+		changeToTruck(firetrucks.get(n));
 	}
 
 	/**
@@ -519,22 +514,22 @@ public class GameScreen implements Screen{
 	 */
 	private void switchTrucks() {
 		if (Gdx.input.isKeyPressed(Keys.NUM_1)) {
-			changeToTruck(truck1);
+			changeToTruck(firetrucks.get(0));
 		}
-		if (Gdx.input.isKeyPressed(Keys.NUM_2)) {
-			changeToTruck(truck2);
+		else if (Gdx.input.isKeyPressed(Keys.NUM_2)) {
+			changeToTruck(firetrucks.get(1));
 		}
-		if (Gdx.input.isKeyPressed(Keys.NUM_3)) {
-			changeToTruck(truck3);
+		else if (Gdx.input.isKeyPressed(Keys.NUM_3)) {
+			changeToTruck(firetrucks.get(2));
 		}
-		if (Gdx.input.isKeyPressed(Keys.NUM_4)) {
-			changeToTruck(truck4);
+		else if (Gdx.input.isKeyPressed(Keys.NUM_4)) {
+			changeToTruck(firetrucks.get(3));
 		}
-		if (Gdx.input.isKeyPressed(Keys.NUM_5)) {
-			changeToTruck(truck5);
+		else if (Gdx.input.isKeyPressed(Keys.NUM_5)) {
+			changeToTruck(firetrucks.get(4));
 		}
-		if (Gdx.input.isKeyPressed(Keys.NUM_6)) {
-			changeToTruck(truck6);
+		else if (Gdx.input.isKeyPressed(Keys.NUM_6)) {
+			changeToTruck(firetrucks.get(5));
 		}
 
 	}

@@ -65,8 +65,8 @@ public class FireTruckSelectionScene {
 	    table.row();
 
 		table.add(new Image(new Texture("fireTruck4.png")));
-		table.add(new Image(new Texture("fireTruck1.png")));
-		table.add(new Image(new Texture("fireTruck1.png")));
+		table.add(new Image(new Texture("fireTruck5.png")));
+		table.add(new Image(new Texture("fireTruck6.png")));
 	    table.row();
 	    table.add(truckButton4).width(centre/3.0f);
 	    table.add(truckButton5).width(centre/3.0f);

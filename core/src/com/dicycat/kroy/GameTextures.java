@@ -35,6 +35,10 @@ public class GameTextures {
 		return truck;
 	}
 	
+	public Texture getTruck(int truckNum) {
+		return new Texture(truckAddress[truckNum]);
+	}
+	
 	public Texture getUFO() {
 		return ufo;
 	}

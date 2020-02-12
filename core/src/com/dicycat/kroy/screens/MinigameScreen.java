@@ -26,45 +26,37 @@ import com.dicycat.kroy.entities.Pipe;
 import com.dicycat.kroy.scenes.OptionsWindow;
 import com.dicycat.kroy.scenes.PauseWindow;
 
-
 /**
  * Contains the minigame logic
  * 
- * @author Sam Hutchings
- * Based on code from GameScreen class
+ * @author Sam Hutchings Based on code from GameScreen class
  *
  */
-public class MinigameScreen implements Screen{
+public class MinigameScreen implements Screen {
 
-	public static enum GameScreenState{
-		PAUSE,
-		RUN,
-		RESUME,
-		OPTIONS
+	public static enum GameScreenState {
+		PAUSE, RUN, RESUME, OPTIONS
 	}
-	
+
 	public Kroy game;
 	public GameScreenState state = GameScreenState.RUN;
-	
-	private OrthographicCamera gamecam;	//follows along what the port displays
+
+	private OrthographicCamera gamecam; // follows along what the port displays
 	private Viewport gameport;
-	
+
 	private PauseWindow pauseWindow;
 	private OptionsWindow optionsWindow;
 
-	private int score = -2; //Starts negative to give time for the pipes to reach the player
+	private int score = -2; // Starts negative to give time for the pipes to reach the player
 	private String scoreText = "";
 	BitmapFont font;
 
-	
-	private static Goose player; //Reference to the player
-	
-	
+	private static Goose player; // Reference to the player
+
 	Texture map;
-	
-	
-	private List<Pipe> pipes;	//List of pipes
-	private List<DebugDraw>  debugObjects;
+
+	private List<Pipe> pipes; // List of pipes
+	private List<DebugDraw> debugObjects;
 
 	public MinigameScreen(Kroy _game) {
 		game = _game;
@@ -74,10 +66,10 @@ public class MinigameScreen implements Screen{
 		pauseWindow.visibility(false);
 		optionsWindow = new OptionsWindow(game);
 		optionsWindow.visibility(false);
-		//map = new Texture("minigameBackground2.png");
+		// map = new Texture("minigameBackground2.png");
 		map = new Texture("minigameAltBackground.png");
-		
-		//Create a new font for displaying the score
+
+		// Create a new font for displaying the score
 		font = new BitmapFont();
 		font.setColor(Color.WHITE);
 		font.getData().setScale(4);
@@ -91,113 +83,110 @@ public class MinigameScreen implements Screen{
 		pipes = new ArrayList<Pipe>();
 		debugObjects = new ArrayList<DebugDraw>();
 		player = new Goose(); // Initialises the goose
-		gamecam.translate(0,0); // sets initial Camera position
-		
-		//Creates a task to generate pipes
+		gamecam.translate(0, 0); // sets initial Camera position
+
+		// Creates a task to generate pipes
 		Timer.schedule(new Task() {
 			@Override
 			public void run() {
 				createPipe();
 			}
-		}, 0, 2);//0 seconds delay, 2 seconds between pipes
+		}, 0, 2);// 0 seconds delay, 2 seconds between pipes
 	}
-	
-	
+
 	/**
 	 * Draw a debug rectangle (outline)
+	 * 
 	 * @param bottomLeft Bottom left point of the rectangle
 	 * @param dimensions Dimensions of the rectangle (Width, Length)
-	 * @param lineWidth Width of the outline
-	 * @param colour Colour of the line
+	 * @param lineWidth  Width of the outline
+	 * @param colour     Colour of the line
 	 */
 	public void DrawRect(Vector2 bottomLeft, Vector2 dimensions, int lineWidth, Color colour) {
-			debugObjects.add(new DebugRect(bottomLeft, dimensions, lineWidth, colour));
+		debugObjects.add(new DebugRect(bottomLeft, dimensions, lineWidth, colour));
 	}
-	
-	
 
 	/**
 	 * Called every frame
 	 */
 	@Override
 	public void render(float delta) {
-		Gdx.input.setInputProcessor(pauseWindow.stage);  //Set input processor
+		Gdx.input.setInputProcessor(pauseWindow.stage); // Set input processor
 		pauseWindow.stage.act();
 		switch (state) {
-			case RUN:
-				if (Gdx.input.isKeyPressed(Keys.P) || Gdx.input.isKeyPressed(Keys.O) || Gdx.input.isKeyPressed(Keys.M)|| Gdx.input.isKeyPressed(Keys.ESCAPE)){
-					pauseWindow.visibility(true);
-					pause();
+		case RUN:
+			if (Gdx.input.isKeyPressed(Keys.P) || Gdx.input.isKeyPressed(Keys.O) || Gdx.input.isKeyPressed(Keys.M)
+					|| Gdx.input.isKeyPressed(Keys.ESCAPE)) {
+				pauseWindow.visibility(true);
+				pause();
+			}
+
+			Batch batch = game.batch;
+
+			batch.setProjectionMatrix(gamecam.combined);
+			batch.begin(); // Game loop Start
+			batch.draw(map, -Kroy.width / 2, -Kroy.height / 2, Kroy.width, Kroy.height);
+
+			player.update();
+			player.render(batch);
+
+			pipes.forEach(o -> {
+				o.update();
+				o.render(batch);
+				if (o.gameEnd(player)) {
+					// If the player hits a pipe, then the game ends
+					gameOver();
 				}
+				;
+			});
+			pipes.removeIf(o -> o.isRemove());
 
-				Batch batch = game.batch;
-				
-				batch.setProjectionMatrix(gamecam.combined);
-				batch.begin(); // Game loop Start
-				batch.draw(map, -Kroy.width/2, -Kroy.height/2, Kroy.width, Kroy.height);
+			// Score starts at -2, so different text is displayed instead
+			if (score < 0) {
+				scoreText = "Ready? ";
+			} else {
+				scoreText = "Score: " + score;
+			}
 
-				
-				player.update();
-				player.render(batch);
-				
-				
-				
-				pipes.forEach(o -> {
-					o.update();
-					o.render(batch);
-					if(o.gameEnd(player)) {
-						//If the player hits a pipe, then the game ends
-						gameOver();
-					};
-				});				
-				pipes.removeIf(o -> o.isRemove());
-				
-				//Score starts at -2, so different text is displayed instead
-				if(score<0) {
-					scoreText = "Ready?";
-				} else {
-					scoreText = "Score: "+score;
-				}
-				
-				//Score is displayed in the top left
-				font.draw(batch, scoreText, (-Kroy.width/2)+10, (Kroy.height/2)-10);
-			
-							
-				if(Kroy.debug) {
-					debugObjects.forEach(o -> o.Draw(gamecam.combined));
-					debugObjects.clear();
-				}
-				
-				batch.end();
+			// Score is displayed in the top left with a light blue background
+			batch.draw(new Texture("lightBlue.png"), (-Kroy.width / 2), (Kroy.height / 2) - 75, scoreText.length() * 30,
+					75);
+			font.draw(batch, scoreText, (-Kroy.width / 2) + 10, (Kroy.height / 2) - 10);
 
-				pauseWindow.stage.draw();
+			if (Kroy.debug) {
+				debugObjects.forEach(o -> o.Draw(gamecam.combined));
+				debugObjects.clear();
+			}
 
-				break;
-			case PAUSE:
-				pauseWindow.stage.draw();
-				clickCheck();
-				break;
-			case RESUME:
-				pauseWindow.visibility(false);
-				setGameState(GameScreenState.RUN);
-				break;
-			default:
-				break;
+			batch.end();
+
+			pauseWindow.stage.draw();
+
+			break;
+		case PAUSE:
+			pauseWindow.stage.draw();
+			clickCheck();
+			break;
+		case RESUME:
+			pauseWindow.visibility(false);
+			setGameState(GameScreenState.RUN);
+			break;
+		default:
+			break;
 		}
 	}
 
-	
 	/**
-	 *  Create a new pipe at x = 800, and at a random height.
-	 *  Also adds a point to the score when a pipe is generated.
+	 * Create a new pipe at x = 800, and at a random height. Also adds a point to
+	 * the score when a pipe is generated.
 	 */
 	private void createPipe() {
-		int height = (int) Math.round(-300 * Math.random())-900;
-		pipes.add(new Pipe(new Vector2(800,height)));
+		int height = (int) Math.round(-300 * Math.random()) - 900;
+		pipes.add(new Pipe(new Vector2(800, height)));
 		score++;
-		//System.out.println(score);
+		// System.out.println(score);
 	}
-	
+
 	private void gameOver() {
 		dispose();
 		game.backToMenu();
@@ -205,6 +194,7 @@ public class MinigameScreen implements Screen{
 
 	/**
 	 * Allows external classes to access the player
+	 * 
 	 * @return player The goose in the minigame
 	 */
 	public static Goose getPlayer() {
@@ -224,11 +214,12 @@ public class MinigameScreen implements Screen{
 	@Override
 	public void resume() {
 		setGameState(GameScreenState.RESUME);
-		
+
 	}
 
 	@Override
-	public void hide() {}
+	public void hide() {
+	}
 
 	@Override
 	public void dispose() {
@@ -238,38 +229,38 @@ public class MinigameScreen implements Screen{
 	/**
 	 * @param s The state to set to
 	 */
-	public void setGameState(GameScreenState s){
-	    state = s;
+	public void setGameState(GameScreenState s) {
+		state = s;
 	}
 
 	/**
 	 * Checks the pause buttons
 	 */
 	private void clickCheck() {
-		//resume button
+		// resume button
 		pauseWindow.resume.addListener(new ClickListener() {
-	    	@Override
-	    	public void clicked(InputEvent event, float x, float y) {
-	    		pauseWindow.visibility(false);
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				pauseWindow.visibility(false);
 				resume();
-	    	}
-	    });
+			}
+		});
 
-		//exit button
+		// exit button
 		pauseWindow.exit.addListener(new ClickListener() {
-	    	@Override
-	    	public void clicked(InputEvent event, float x, float y) {
-	    		Gdx.app.exit();
-	    	}
-	    });
-		//menu button
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				Gdx.app.exit();
+			}
+		});
+		// menu button
 		pauseWindow.menu.addListener(new ClickListener() {
-	    	@Override
-	    	public void clicked(InputEvent event, float x, float y) {
-	    		pauseWindow.visibility(false);
-	    		gameOver();
-	    	}
-	    });
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				pauseWindow.visibility(false);
+				gameOver();
+			}
+		});
 	}
-	
+
 }
