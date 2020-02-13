@@ -1,37 +1,91 @@
 package com.dicycat.kroy.entities;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import com.dicycat.kroy.GdxTestRunner;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.dicycat.kroy.GameObject;
+import com.dicycat.kroy.GdxTestRunner;
+import com.dicycat.kroy.Kroy;
+import com.dicycat.kroy.bullets.BulletDispenser;
+import com.dicycat.kroy.misc.StatBar;
+import com.dicycat.kroy.screens.GameScreen;
 
-
+@PrepareForTest( Fortress.class )
 @RunWith(GdxTestRunner.class)
-public class FortressTest {
+public class FortressTest {	
 	
+	@Mock BulletDispenser dispenser;
+	@Mock StatBar healthBar;
+	
+	@Mock Vector2 spawnPos = new Vector2(new Vector2(2903, 3211));
+	@Mock Texture fortressTexture = new Texture("cliffords tower.png");
+	@Mock Texture deadTexture = new Texture("cliffords tower dead.png");
+	@Mock Vector2 size = new Vector2(new Vector2(256, 218));
+	
+	@Mock
 	private Fortress fortress;
-	
+	private GameObject gameObject;
 	@Before
-	public void init() {
-		fortress=new Fortress(new Vector2(2903,3211),new Texture("cliffords tower.png"),new Texture("cliffords tower dead.png"), new Vector2(256, 218));
+	    public void setupMock() {	
+		 	Mockito.mock(Entity.class);		 			 	
+		 	Mockito.mock(FireStation.class);
+		 	Mockito.mock(Kroy.class);
+		 	Mockito.mock(BulletDispenser.class);
+		 	Mockito.mock(GameScreen.class);
+		 	
+		 	spawnPos = Mockito.mock(Vector2.class);
+		 	fortressTexture = Mockito.mock(Texture.class);
+		 	deadTexture = Mockito.mock(Texture.class);
+		 	size = Mockito.mock(Vector2.class);
+		 	gameObject = PowerMockito.mock(GameObject.class);
+		 	fortress = Mockito.mock(Fortress.class);
+		 			 			
+		 	PowerMockito.mockStatic(Entity.class);
+		 	PowerMockito.mockStatic(GameObject.class);
+		 	PowerMockito.mockStatic(Kroy.class);
+		 	PowerMockito.mockStatic(GameScreen.class);
+		 	PowerMockito.mockStatic(BulletDispenser.class);
+		 	PowerMockito.mock(Entity.class);
+		 	PowerMockito.mock(BulletDispenser.class);
+		 
+	 }
+	 
+	  @Before
+	  public void beforeEachTest() {
+		  fortress=new Fortress();
+	  }
+	  
+	@Test 
+	public void location() {
+		PowerMockito.when(gameObject.getCentre()).thenReturn(new Vector2(3031,3320));
+		assertTrue(fortress.getCentre().x==3031);
+		assertTrue(fortress.getCentre().y==3320);
+		
 	}
 
 	@Test
-	public void location() {
-
-	    assertTrue( fortress.getCentre().x == 3031.0 );
-	    assertTrue( fortress.getCentre().y == 3320.0);
-	}
+    public void takeDamage() {		
+		System.out.println(fortress.getHealthPoints());
+        fortress.Damage( 5);
+        System.out.println(fortress.getHealthPoints());
+        assertTrue(fortress.getHealthPoints() == 495 );
+    }
 	
 	@Test
-	public void isDead() {
-		if(fortress.isDisplayable()) {
-			assertTrue(fortress.getTexture()== new Texture ("cliffords tower dead.png"));
-		}
+	public void deathCheck() {
+		fortress.death();
+		assertTrue(fortress.isDisplayable()==true);
 	}
+
 }
+
+

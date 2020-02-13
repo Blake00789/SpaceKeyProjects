@@ -23,7 +23,7 @@ public abstract class GameObject {
 	}
 
 	/**
-	 * Called every frame.
+	 * Called every frame.  
 	 * Update the game object.
 	 */
 	public abstract void update();
@@ -31,7 +31,7 @@ public abstract class GameObject {
 	/**
 	 * Render the object.
 	 * @param batch Batch to render
-	 */
+	 */ 
 	public void render(Batch batch) {
 		batch.draw(getTexture(), getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getXScale(), getYScale(), getRotation(), 0, 0, getTextureWidth(), getTextureHeight(), false, false);
 	}
@@ -61,7 +61,7 @@ public abstract class GameObject {
 	public int getTextureHeight() {	return sprite.getTexture().getHeight(); }
 	public Sprite getSprite() { return sprite; }
 	public Vector2 getPosition() { return new Vector2(getX(), getY());  }
-	public boolean isDisplayable() { return displayable; }
+	public boolean isDisplayable() { return displayable; } 
 
 	/**
 	 * Return centre of GameObject

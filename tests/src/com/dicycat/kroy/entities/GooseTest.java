@@ -38,7 +38,7 @@ public class GooseTest {
 
 	@Test
 	public void movementTest() {
-		// Gravity
+		// Gravity 
 		float y1 = goose.getY();
 		goose.update();
 		float y2 = goose.getY();
