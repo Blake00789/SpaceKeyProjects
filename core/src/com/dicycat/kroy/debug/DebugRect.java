@@ -41,6 +41,7 @@ public class DebugRect extends DebugDraw {
         debugRenderer.setColor(color);
         debugRenderer.rect(bottomLeft.x, bottomLeft.y, dimensions.x, dimensions.y);
         debugRenderer.end();
+        debugRenderer.dispose();
         Gdx.gl.glLineWidth(1);
     }
 }

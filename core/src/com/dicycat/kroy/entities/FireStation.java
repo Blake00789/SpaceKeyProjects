@@ -17,22 +17,23 @@ import com.dicycat.kroy.screens.MenuScreen.MenuScreenState;
  */
 public class FireStation extends Entity {
 	
-	private static Texture textureLiving = Kroy.mainGameScreen.textures.getFireStation();
-	private static Texture texturedead = Kroy.mainGameScreen.textures.getFireStationDead();
+	private static Texture textureLiving = new Texture("FireStationTemp.png");    //Kroy.mainGameScreen.textures.getFireStation();
+	private static Texture texturedead =new Texture("FireStationTempDead.png");   // Kroy.mainGameScreen.textures.getFireStationDead();
 	
-	/**
+	/** 
 	 * 
 	 */
 	public FireStation() {
-		super(new Vector2(Kroy.mainGameScreen.getSpawnPosition().add(-(textureLiving.getWidth()/2), 100)), textureLiving, new Vector2(textureLiving.getWidth(),textureLiving.getHeight()), 100);
+		//super(new Vector2(Kroy.mainGameScreen.getSpawnPosition().add(-(textureLiving.getWidth()/2), 100)), textureLiving, new Vector2(textureLiving.getWidth(),textureLiving.getHeight()), 100);
+		super(new Vector2(3600,4100), textureLiving, new Vector2(298,175), 100);
 	}
 
 	/**
 	 * Removes from active pool and displays destroyed state
-	 */
+	 */ 
 	@Override
 	public void die() { 
-		super.die();
+		super.die(); 
 		sprite.setTexture(texturedead);
 		displayable = true;
 	}

@@ -43,11 +43,16 @@ public class Fortress extends Entity {
 		Kroy.mainGameScreen.addGameObject(healthBar);
 		
 		
+	} 
+	
+	public Fortress() {
+		super(new Vector2(2903, 3211),  new Texture("cliffords tower.png"),  new Vector2(256, 218), 500);
+		this.deadTexture = new Texture("cliffords tower dead.png");		
 	}
-
+ 
 	/**
 	 * Removes from active pool and displays destroyed state
-	 */
+	 */ 
 	@Override
 	public void die() {
 		super.die();
@@ -60,6 +65,15 @@ public class Fortress extends Entity {
 			Kroy.mainGameScreen.gameOver(true); 					//End game WIN
 		}
 	}
+	
+	/**
+	 * Removes from active pool and displays destroyed state
+	 */ 
+	public void death() {
+		super.die();
+		sprite.setTexture(deadTexture);
+		displayable = true;
+	}
 
 	/**
 	 * Apply x amount of damage to the entity
@@ -70,8 +84,16 @@ public class Fortress extends Entity {
 	public void applyDamage(float damage) {
 		super.applyDamage(damage);
 		healthBar.setPosition(getCentre().add(0, (getHeight() / 2) + 25));
-		healthBar.setBarDisplay((healthPoints*500)/maxHealthPoints);
+		healthBar.setBarDisplay((getHealthPoints()*500)/maxHealthPoints);
 	}
+	
+	/**
+	 *Apply x amount of damage to the entity
+	 */
+	public void Damage(float damage) {
+		super.applyDamage(damage);
+	}
+	
 
 	/**
 	 *
