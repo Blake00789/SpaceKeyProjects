@@ -144,7 +144,7 @@ public class FireTruck extends Entity{
 			if (directionKey.contains("ew")) {// makes sure direction doesn't change if both left and right are pressed
 				directionKey = directionKey.substring(0, directionKey.length()-2);
 			}
-
+				
 			return DIRECTIONS.get(directionKey);
 	}
 
@@ -160,7 +160,7 @@ public class FireTruck extends Entity{
 				Gdx.input.isKeyPressed(ARROWKEYS[2]) ||
 				Gdx.input.isKeyPressed(ARROWKEYS[3])) { // Runs movement code if any arrow key pressed
 
-			direction = updateDirection(); // updates direction based on current keyboard input
+			setDirection(updateDirection()); // updates direction based on current keyboard input
 			moveInDirection(); // moves in the direction previously specified
 		}
 
@@ -198,6 +198,10 @@ public class FireTruck extends Entity{
 		}
 	}
 	
+
+	public void setDirection(Integer direction) {
+		this.direction = direction;
+	}
 
 	/**
 	 * @param targets

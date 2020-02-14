@@ -24,7 +24,6 @@ public class FireStation extends Entity {
 	 * 
 	 */
 	public FireStation() {
-		//super(new Vector2(Kroy.mainGameScreen.getSpawnPosition().add(-(textureLiving.getWidth()/2), 100)), textureLiving, new Vector2(textureLiving.getWidth(),textureLiving.getHeight()), 100);
 		super(new Vector2(3600,4100), textureLiving, new Vector2(298,175), 100);
 	}
 
@@ -34,7 +33,7 @@ public class FireStation extends Entity {
 	@Override
 	public void die() { 
 		super.die(); 
-		sprite.setTexture(texturedead);
+		sprite.setTexture(getTexturedead());
 		displayable = true;
 	}
 
@@ -53,5 +52,13 @@ public class FireStation extends Entity {
 		if (Kroy.mainGameScreen.gameTimer <= 0) {		//Once timer is over
 			applyDamage(100);	//Destroy fire station
 		}
+	}
+
+	public static Texture getTexturedead() {
+		return texturedead;
+	}
+
+	public static void setTexturedead(Texture texturedead) {
+		FireStation.texturedead = texturedead;
 	}
 }

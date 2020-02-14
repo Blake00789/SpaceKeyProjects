@@ -12,31 +12,36 @@ import com.dicycat.kroy.GameObject;
 import com.dicycat.kroy.GdxTestRunner;
 import com.dicycat.kroy.Kroy;
 import com.dicycat.kroy.screens.GameScreen;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Rectangle;
 import static org.junit.Assert.assertTrue;
+
+import org.junit.After;
 
 @RunWith(GdxTestRunner.class)
 public class FireTruckTest {
 
 	 private FireTruck truck;
+	 private GameObject gameObject;
 	 Float[] truckStats={300f, 1.5f, 400f, 300f};
 	 
 	 @Before
-	    public void setupMock() {
-	        Mockito.mock(FireStation.class);
-	        Mockito.mock(Kroy.class);
-	        Mockito.mock(GameObject.class);
-	        PowerMockito.spy(new Kroy());			
-			Mockito.mock(Entity.class);
-			Mockito.mock(GameScreen.class);
-			
-			PowerMockito.mockStatic(Kroy.class);
-		 	PowerMockito.constructor(Kroy.class);
-		 	PowerMockito.mockStatic(GameScreen.class);
-		 	PowerMockito.mockStatic(GameObject.class);
-		 	PowerMockito.mockStatic(Entity.class);
+     public void setupMock() {
+		Mockito.mock(FireStation.class);
+		Mockito.mock(Kroy.class);
+		Mockito.mock(GameObject.class);
+		PowerMockito.spy(new Kroy());			
+		Mockito.mock(Entity.class);
+		Mockito.mock(GameScreen.class);
+		
+		PowerMockito.mockStatic(Kroy.class);
+		PowerMockito.constructor(Kroy.class);
+		PowerMockito.mockStatic(GameScreen.class);
+		PowerMockito.mockStatic(GameObject.class);
+		PowerMockito.mockStatic(Entity.class);
 		 	         
-	    }	
+	 }	
 
 	@Before
 	public void init() {
@@ -48,9 +53,9 @@ public class FireTruckTest {
 		org.junit.Assert.assertTrue(truck.getHealthPoints() == 100);
 	}
 	
+	
 	@Test
-	public void Hitbox() {
-		
+	public void Hitbox() {		
 		Rectangle hitbox = new Rectangle(20, 45, 20, 20);
 
 		assertTrue((int) truck.getHitbox().x == hitbox.x);
@@ -58,14 +63,39 @@ public class FireTruckTest {
 		assertTrue((int) truck.getHitbox().width == hitbox.width);
 		assertTrue((int) truck.getHitbox().height == hitbox.height);
 	}
+	
 
 	@Test
-	public void testRefill() {
-		
+	public void testRefill() {		
 		truck.setHealthPoints(2);		
 		truck.replenish();
 		assertTrue(truck.getHealthPoints() ==  102);
 		assertTrue(truck.getCurrentWater() ==  302);
+	}
+	
+
+	@Test
+	public void movementTest() {
+		
+		truck.setDirection(truck.DIRECTIONS.get("nw"));
+		assertTrue(truck.getDirection() == 45);
+		
+		truck.setDirection(truck.DIRECTIONS.get("se"));
+		assertTrue(truck.getDirection() == 225);
+
+		truck.setDirection(truck.DIRECTIONS.get("s"));
+		assertTrue(truck.getDirection() == 180);
+			
+		truck.setDirection(truck.DIRECTIONS.get("ns"));
+		assertTrue(truck.getDirection() == null);           //it should not move when we press both up and down keys
+		
+		truck.setDirection(truck.DIRECTIONS.get("sn"));
+		assertTrue(truck.getDirection() == null);  
+		
+		truck.setDirection(truck.DIRECTIONS.get("we"));
+		assertTrue(truck.getDirection() == null);           //it should not move when we press both left and right keys
+		
+
 	}
 
 }          
