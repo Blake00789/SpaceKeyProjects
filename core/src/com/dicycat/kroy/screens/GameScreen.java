@@ -552,4 +552,5 @@ public class GameScreen implements Screen{
 	public Vector2 getSpawnPosition() {
 		return spawnPosition;
 	}
+	
 }

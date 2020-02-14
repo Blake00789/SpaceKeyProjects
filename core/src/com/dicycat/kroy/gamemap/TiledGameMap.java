@@ -130,4 +130,5 @@ public class TiledGameMap{
 	public int getPixelHeight() {
 		return this.getHeight() * TileType.TILE_SIZE;
 	}
+	
 }

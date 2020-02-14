@@ -47,7 +47,7 @@ public class FireStation extends Entity {
 			Kroy.mainGameScreen.getPlayer().replenish();
 		}
 		if(playerInRadius() && Gdx.input.isKeyPressed(Keys.SPACE)) {
-			
+//			  
 		}
 		if (Kroy.mainGameScreen.gameTimer <= 0) {		//Once timer is over
 			applyDamage(100);	//Destroy fire station
