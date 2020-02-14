@@ -38,7 +38,7 @@ public enum TileType {
 	
 	/**
 	 * HashMap stores all the ID's of the TileType is the key and the value is the TileType itself.
-	 * This allows for the TileType to be retreived by the ID in getTileTypeByID
+	 * This allows for the TileType to be retrieved by the ID in getTileTypeByID
 	 */
 	private static HashMap<Integer, TileType> tileMap;
 	

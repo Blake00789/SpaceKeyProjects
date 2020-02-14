@@ -35,7 +35,7 @@ import com.dicycat.kroy.scenes.PauseWindow;
 public class MinigameScreen implements Screen {
 
 	public static enum GameScreenState {
-		PAUSE, RUN, RESUME, OPTIONS
+		PAUSE, RUN, RESUME, OPTIONS, END
 	}
 
 	public Kroy game;
@@ -48,7 +48,7 @@ public class MinigameScreen implements Screen {
 	private OptionsWindow optionsWindow;
 
 	private int score = -2; // Starts negative to give time for the pipes to reach the player
-	private String scoreText = "";
+	private String scoreText = ""; // Instantiates the scoretext variable
 	BitmapFont font;
 
 	private static Goose player; // Reference to the player
@@ -112,6 +112,7 @@ public class MinigameScreen implements Screen {
 	public void render(float delta) {
 		Gdx.input.setInputProcessor(pauseWindow.stage); // Set input processor
 		pauseWindow.stage.act();
+		Batch batch = game.batch;
 		switch (state) {
 		case RUN:
 			if (Gdx.input.isKeyPressed(Keys.P) || Gdx.input.isKeyPressed(Keys.O) || Gdx.input.isKeyPressed(Keys.M)
@@ -120,7 +121,7 @@ public class MinigameScreen implements Screen {
 				pause();
 			}
 
-			Batch batch = game.batch;
+			
 
 			batch.setProjectionMatrix(gamecam.combined);
 			batch.begin(); // Game loop Start
@@ -170,6 +171,15 @@ public class MinigameScreen implements Screen {
 			pauseWindow.visibility(false);
 			setGameState(GameScreenState.RUN);
 			break;
+		case END:
+			batch.begin();
+			batch.draw(new Texture("minigameEnd.png"), 0, 0, Kroy.width, Kroy.height);
+			font.draw(batch, scoreText, (Kroy.width / 2) + 20, (Kroy.height / 2) - 300);
+			batch.end();
+			if(Gdx.input.isKeyJustPressed(Keys.SPACE) || Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+				dispose();
+				game.backToMenu();
+			}
 		default:
 			break;
 		}
@@ -187,8 +197,7 @@ public class MinigameScreen implements Screen {
 	}
 
 	private void gameOver() {
-		dispose();
-		game.backToMenu();
+		setGameState(GameScreenState.END);
 	}
 
 	/**
