@@ -5,6 +5,7 @@ import java.util.HashMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -26,8 +27,8 @@ public class FireTruck extends Entity{
 	private float flowRate;	//How fast the truck can dispense water
 	private float maxWater; //How much water the truck can hold
 	private float currentWater; //Current amount of water
-
-	private Rectangle hitbox = new Rectangle(20, 45, 20, 20);
+ 
+	private Rectangle hitbox = new Rectangle(20, 45, 20, 20);  
 
 	protected final HashMap<String,Integer> DIRECTIONS = new HashMap<String,Integer>(); // Dictionary to store the possible directions the truck can face based on a key code created later
 	protected final int[] ARROWKEYS = {Keys.UP, Keys.DOWN, Keys.RIGHT, Keys.LEFT}; // List of the arrow keys to be able to iterate through them later on
@@ -71,6 +72,29 @@ public class FireTruck extends Entity{
 
 		healthBar= new StatBar(Vector2.Zero, "Green.png", 3);
 		Kroy.mainGameScreen.addGameObject(healthBar);
+	}
+	
+	public FireTruck() {
+		super(new Vector2(3750, 4000), new Texture("fireTruck3.png"), new Vector2(25,50), 100);
+ 
+		DIRECTIONS.put("n",0);			//North Facing Direction (up arrow)
+		DIRECTIONS.put("w",90);			//West Facing Direction (left arrow)
+		DIRECTIONS.put("s",180);		//South Facing Direction (down arrow)
+		DIRECTIONS.put("e",270);		//East Facing Direction (right arrow)
+
+		DIRECTIONS.put("nw",45);		//up and left arrows
+		DIRECTIONS.put("sw",135);		//down and left arrows
+		DIRECTIONS.put("se",225);		//down and right arrows
+		DIRECTIONS.put("ne",315);		//up and right arrows
+		DIRECTIONS.put("",0); 			// included so that if multiple keys in the opposite direction are pressed, the truck faces north
+		
+		speed=300;	//How fast the truck can move
+		flowRate=(float) 1.5;	//How fast the truck can dispense water
+		maxWater=400; //How much water the truck can hold
+		currentWater=300;
+				
+		firing = false;
+		water = new WaterStream(Vector2.Zero);
 	}
 
 	/**
@@ -155,7 +179,7 @@ public class FireTruck extends Entity{
 		tank.setBarDisplay((currentWater/maxWater)*50);
 
 		healthBar.setPosition(getCentre().add(0,25));
-		healthBar.setBarDisplay((healthPoints*50)/maxHealthPoints);
+		healthBar.setBarDisplay((getHealthPoints()*50)/maxHealthPoints);
 
 		//player firing
 		ArrayList<GameObject> inRange = entitiesInRange();		//find list of enemies in range
@@ -250,11 +274,11 @@ public class FireTruck extends Entity{
 	 * Replenishes health and water
 	 */
 	public void replenish(){
-		if(!(currentWater >= maxWater)){
+		if(!(getCurrentWater() >= maxWater)){
 			currentWater += 2;
 		}
-		if(!(healthPoints >= maxHealthPoints)){
-			healthPoints += 2;
+		if(!(getHealthPoints() >= maxHealthPoints)){
+			setHealthPoints(2) ;
 		}
 	}
 
@@ -271,4 +295,14 @@ public class FireTruck extends Entity{
 		}
 		return false;
 	}
+	
+	public float getCurrentWater() {
+		return currentWater;
+	}
+	
+	public void setCurrentWater(int x) {
+		 currentWater += x;
+	}
+	
+
 }

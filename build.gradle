@@ -81,5 +81,11 @@ project(":tests") {
         testCompile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
         testCompile "com.badlogicgames.gdx:gdx:$gdxVersion"
         testCompile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        
+   	    testCompile 'junit:junit:4.12'
+		testCompile 'org.powermock:powermock-api-mockito:1.6.2'
+		testCompile 'org.powermock:powermock-module-junit4-rule-agent:1.6.2'
+		testCompile 'org.powermock:powermock-module-junit4-rule:1.6.2'
+		testCompile 'org.powermock:powermock-module-junit4:1.6.2'
     }
 }

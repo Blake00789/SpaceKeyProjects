@@ -38,7 +38,7 @@ import com.dicycat.kroy.scenes.PauseWindow;
  * @author lnt20
  *
  */
-public class GameScreen implements Screen{
+public class GameScreen implements Screen{  
 
 	public static enum GameScreenState{
 		PAUSE,
@@ -59,7 +59,7 @@ public class GameScreen implements Screen{
 	private OrthographicCamera gamecam;	//follows along what the port displays
 	private Viewport gameport;
 	
-	private HUD hud;
+	private HUD hud; 
 	private PauseWindow pauseWindow;
 	private OptionsWindow optionsWindow;
 
@@ -128,12 +128,6 @@ public class GameScreen implements Screen{
 		patrolUpdateRate = 30;
 	}
 	
-	//	(3031.0,3320.0)
-	//	(3328.0,5841.0)
-	//	(2250.0,2057.0)
-	//	(4550.0,1020.0)
-	//	(6100.0,1120.0)
-	//	(720.0,3620.0)
 
 	/**
 	 * Screen first shown
@@ -373,7 +367,7 @@ public class GameScreen implements Screen{
 
 	/**
 	 * Updates the position of the camera to have the truck centre
-	 */
+	 */ 
 	public void updateCamera() {
 		gamecam.position.lerp(new Vector3(currentTruck.getX(),currentTruck.getY(),gamecam.position.z),0.1f);// sets the new camera position based on the current position of the FireTruck
 		gamecam.update();
