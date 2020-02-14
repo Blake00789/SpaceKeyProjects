@@ -34,7 +34,7 @@ public class FireTruck extends Entity{
 	protected final int[] ARROWKEYS = {Keys.UP, Keys.DOWN, Keys.RIGHT, Keys.LEFT}; // List of the arrow keys to be able to iterate through them later on
 	protected Integer direction = 0; // Direction the truck is facing
 
-	private WaterStream water;
+	private WaterStream water; 
 	private StatBar tank;
 	private StatBar healthBar;
 	private boolean firing;
