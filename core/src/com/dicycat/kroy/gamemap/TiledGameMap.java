@@ -24,7 +24,7 @@ public class TiledGameMap{
 	 * 
 	 */
 	public TiledGameMap() {
-		tiledMap = new TmxMapLoader().load("YorkMap.tmx");
+		tiledMap = new TmxMapLoader().load("YorkMapRevised.tmx");
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 	}
 
