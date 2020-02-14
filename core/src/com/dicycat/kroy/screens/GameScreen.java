@@ -86,7 +86,7 @@ public class GameScreen implements Screen{
 	private List<DebugDraw> debugObjects; //List of debug items
 
 	private float lastPatrol; //time passsed since we last spawned patrols
-	private List<Vector2> fortressPositions; //where our fortresses spawn
+	private List<Vector2> fortressPositions, fortressSizes; //where our fortresses spawn
 	private int patrolUpdateRate; //How many seconds should pass before we respawn patrols;
 
 	private ArrayList<FireTruck> firetrucks=new ArrayList<FireTruck>();
@@ -117,7 +117,15 @@ public class GameScreen implements Screen{
 		fortressPositions.add(new Vector2(4350, 900));
 		fortressPositions.add(new Vector2(5900, 1000));
 		fortressPositions.add(new Vector2(520, 3500));
-		patrolUpdateRate = 5;
+		fortressSizes = new ArrayList<>();
+		fortressSizes.add(new Vector2(256, 218));
+		fortressSizes.add(new Vector2(256, 320));
+		fortressSizes.add(new Vector2(400, 240));
+		fortressSizes.add(new Vector2(400, 240));
+		fortressSizes.add(new Vector2(400, 240));
+		fortressSizes.add(new Vector2(400, 240));
+		
+		patrolUpdateRate = 30;
 	}
 	
 	//	(3031.0,3320.0)
@@ -138,29 +146,34 @@ public class GameScreen implements Screen{
 		debugObjects = new ArrayList<DebugDraw>();
 
 		// Initialises the FireTrucks
-		for(int i = 0; i < 6; i++) {
-			firetruckInit(spawnPosition.x + -50 + (((i+1)%3)*50), spawnPosition.y - ((i%2)*50), i);
+		for (int i = 0; i < 6; i++) {
+			firetruckInit(spawnPosition.x + -50 + (((i + 1) % 3) * 50), spawnPosition.y - ((i % 2) * 50), i);
+			fortressInit(i);
 		}
-		
+		gameObjects.add(new FireStation());
 		switchTrucks(truckNum);
 
-		gamecam.translate(new Vector2(currentTruck.getX(),currentTruck.getY())); // sets initial Camera position
-
-		gameObjects.add(new FireStation());
-
-		gameObjects.add(new Fortress(fortressPositions.get(0),textures.getFortress(0), textures.getDeadFortress(0), new Vector2(256, 218)));
-		gameObjects.add(new Fortress(fortressPositions.get(1), textures.getFortress(1), textures.getDeadFortress(1), new Vector2(256, 320)));
-		gameObjects.add(new Fortress(fortressPositions.get(2), textures.getFortress(2), textures.getDeadFortress(2), new Vector2(400, 240)));
-		gameObjects.add(new Fortress(fortressPositions.get(3), textures.getFortress(3), textures.getDeadFortress(3), new Vector2(400, 240)));
-		gameObjects.add(new Fortress(fortressPositions.get(4), textures.getFortress(4), textures.getDeadFortress(4), new Vector2(400, 240)));
-		gameObjects.add(new Fortress(fortressPositions.get(5), textures.getFortress(5), textures.getDeadFortress(5), new Vector2(400, 240)));
-
-
+		gamecam.translate(new Vector2(currentTruck.getX(), currentTruck.getY())); // sets initial Camera position
 
 	}
-	
-	private void firetruckInit(float x, float y, int i) {
-		firetrucks.add(new FireTruck(new Vector2(x,y), truckStats[i], i));
+
+	/**
+	 * Initialises each fortress
+	 * 
+	 * @param num the fortress number
+	 */
+	private void fortressInit(int num) {
+		gameObjects.add(new Fortress(fortressPositions.get(num), textures.getFortress(num), textures.getDeadFortress(num),
+				fortressSizes.get(num)));
+	}
+
+	/**
+	 * Initialises each truck
+	 * 
+	 * @param num the truck number
+	 */
+	private void firetruckInit(float x, float y, int num) {
+		firetrucks.add(new FireTruck(new Vector2(x, y), truckStats[num], num));
 	}
 
 	/**

@@ -66,8 +66,7 @@ public class MinigameScreen implements Screen {
 		pauseWindow.visibility(false);
 		optionsWindow = new OptionsWindow(game);
 		optionsWindow.visibility(false);
-		// map = new Texture("minigameBackground2.png");
-		map = new Texture("minigameAltBackground.png");
+		map = new Texture("minigameBackground.png");
 
 		// Create a new font for displaying the score
 		font = new BitmapFont();
