@@ -29,7 +29,7 @@ public class TiledGameMap{
 	}
 
 
-	/**
+	/** 
 	 * Renders the road layer of the map
 	 * @param camera Active camera
 	 */

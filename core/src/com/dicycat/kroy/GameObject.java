@@ -84,6 +84,7 @@ public abstract class GameObject {
 	public void setRotation(float degrees) {
 		rotation = degrees;
 	}
+	
 
 	public void setRemove(Boolean x){
 		remove = x;
