@@ -40,6 +40,7 @@ public class FireStationTest {
 	    PowerMockito.spy(new Kroy());			
 	    entity = Mockito.mock(Entity.class);
 		gameScreen = Mockito.mock(GameScreen.class);
+		gameObject = PowerMockito.mock(GameObject.class);
 			
 		PowerMockito.mockStatic(Kroy.class);
 		PowerMockito.constructor(Kroy.class);
@@ -47,18 +48,28 @@ public class FireStationTest {
 		PowerMockito.mockStatic(GameObject.class);
 		PowerMockito.mockStatic(Entity.class);
 		 	
+	 }
+	
+	@Before
+	public void init() {
 		firestation = new FireStation();
-	         
-	  }
+	}
+	
 	 
 		 
 	@Test
-	public void location() {
-		gameObject = PowerMockito.mock(GameObject.class);
+	public void location() {		
 		PowerMockito.when(gameObject.getCentre()).thenReturn(new Vector2(3600,4100));
 		assertTrue(firestation.getCentre().x == 3749.0 );
 		assertTrue(firestation.getCentre().y == 4187.5 );
 	}
+	
+	@Test
+	public void die() {
+		assertTrue( firestation.getTexture() != firestation.getTexturedead());
+		firestation.die();
+		assertTrue(firestation.getTexture() == firestation.getTexturedead());
+	} 
 	 
 	
 	@Test

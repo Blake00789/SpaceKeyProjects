@@ -34,35 +34,36 @@ public class FortressTest {
 	@Mock
 	private Fortress fortress;
 	private GameObject gameObject;
+	
 	@Before
-	    public void setupMock() {	
-		 	Mockito.mock(Entity.class);		 			 	
-		 	Mockito.mock(FireStation.class);
-		 	Mockito.mock(Kroy.class);
-		 	Mockito.mock(BulletDispenser.class);
-		 	Mockito.mock(GameScreen.class);
-		 	
-		 	spawnPos = Mockito.mock(Vector2.class);
-		 	fortressTexture = Mockito.mock(Texture.class);
-		 	deadTexture = Mockito.mock(Texture.class);
-		 	size = Mockito.mock(Vector2.class);
-		 	gameObject = PowerMockito.mock(GameObject.class);
-		 	fortress = Mockito.mock(Fortress.class);
-		 			 			
-		 	PowerMockito.mockStatic(Entity.class);
-		 	PowerMockito.mockStatic(GameObject.class);
-		 	PowerMockito.mockStatic(Kroy.class);
-		 	PowerMockito.mockStatic(GameScreen.class);
-		 	PowerMockito.mockStatic(BulletDispenser.class);
-		 	PowerMockito.mock(Entity.class);
-		 	PowerMockito.mock(BulletDispenser.class);
+	public void setupMock() {	
+	 	Mockito.mock(Entity.class);		 			 	
+	 	Mockito.mock(FireStation.class);
+	 	Mockito.mock(Kroy.class);
+	 	Mockito.mock(BulletDispenser.class);
+	 	Mockito.mock(GameScreen.class);
+	 	
+	 	spawnPos = Mockito.mock(Vector2.class);
+	 	fortressTexture = Mockito.mock(Texture.class);
+	 	deadTexture = Mockito.mock(Texture.class);
+	 	size = Mockito.mock(Vector2.class);
+	 	gameObject = PowerMockito.mock(GameObject.class);
+	 	fortress = Mockito.mock(Fortress.class);
+	 			 			
+	 	PowerMockito.mockStatic(Entity.class);
+	 	PowerMockito.mockStatic(GameObject.class);
+	 	PowerMockito.mockStatic(Kroy.class);
+	 	PowerMockito.mockStatic(GameScreen.class);
+	 	PowerMockito.mockStatic(BulletDispenser.class);
+	 	PowerMockito.mock(Entity.class);
+	 	PowerMockito.mock(BulletDispenser.class);
 		 
 	 }
 	 
-	  @Before
-	  public void beforeEachTest() {
-		  fortress=new Fortress();
-	  }
+	@Before
+	public void init() {
+		fortress=new Fortress();
+	}
 	  
 	@Test 
 	public void location() {
@@ -74,9 +75,9 @@ public class FortressTest {
 
 	@Test
     public void takeDamage() {		
-		System.out.println(fortress.getHealthPoints());
+		
+		assertTrue(fortress.getHealthPoints() == 500 );
         fortress.Damage( 5);
-        System.out.println(fortress.getHealthPoints());
         assertTrue(fortress.getHealthPoints() == 495 );
     }
 	

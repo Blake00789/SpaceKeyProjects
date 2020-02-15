@@ -24,12 +24,13 @@ public class TiledGameMap{
 	 * 
 	 */
 	public TiledGameMap() {
-		tiledMap = new TmxMapLoader().load("YorkMapRevised.tmx");
+		
+		tiledMap = new TmxMapLoader().load("YorkMap.tmx");
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 	}
 
 
-	/**
+	/** 
 	 * Renders the road layer of the map
 	 * @param camera Active camera
 	 */

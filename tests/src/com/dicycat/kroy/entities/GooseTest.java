@@ -39,7 +39,7 @@ public class GooseTest {
 	@Test
 	public void movementTest() {
 		// Gravity 
-		float y1 = goose.getY();
+		float y1 = goose.getY(); 
 		goose.update();
 		float y2 = goose.getY();
 		assertTrue(y1 > y2);

@@ -521,22 +521,43 @@ public class GameScreen implements Screen{
 	 */
 	private void switchTrucks() {
 		if (Gdx.input.isKeyPressed(Keys.NUM_1)) {
-			changeToTruck(firetrucks.get(0));
-		}
+			if(firetrucks.get(0).isAlive())
+				changeToTruck(firetrucks.get(0));
+			else {
+				System.out.println("This truck id dead");
+			}
+		} 
 		else if (Gdx.input.isKeyPressed(Keys.NUM_2)) {
-			changeToTruck(firetrucks.get(1));
+			if(firetrucks.get(1).isAlive())
+				changeToTruck(firetrucks.get(1));
+			else {
+				System.out.println("This truck id dead");
+			}
 		}
 		else if (Gdx.input.isKeyPressed(Keys.NUM_3)) {
-			changeToTruck(firetrucks.get(2));
+			if(firetrucks.get(2).isAlive())
+				changeToTruck(firetrucks.get(2));
 		}
 		else if (Gdx.input.isKeyPressed(Keys.NUM_4)) {
-			changeToTruck(firetrucks.get(3));
+			if(firetrucks.get(3).isAlive())
+				changeToTruck(firetrucks.get(3));
+			else {
+				System.out.println("This truck id dead");
+			}
 		}
 		else if (Gdx.input.isKeyPressed(Keys.NUM_5)) {
-			changeToTruck(firetrucks.get(4));
+			if(firetrucks.get(4).isAlive())
+				changeToTruck(firetrucks.get(4));
+			else {
+				System.out.println("This truck id dead");
+			}
 		}
 		else if (Gdx.input.isKeyPressed(Keys.NUM_6)) {
-			changeToTruck(firetrucks.get(5));
+			if(firetrucks.get(5).isAlive())
+				changeToTruck(firetrucks.get(5));
+			else {
+				System.out.println("This truck id dead");
+			}
 		}
 
 	}
@@ -549,7 +570,7 @@ public class GameScreen implements Screen{
 	private void changeToTruck(FireTruck t) {
 		currentTruck = t;
 
-	}
+	}  
 
 
 	public HUD getHud(){
