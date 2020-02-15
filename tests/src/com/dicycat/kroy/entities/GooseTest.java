@@ -32,7 +32,7 @@ public class GooseTest {
 	@Test
 	public void hitboxTest() {
 		float scale = goose.getScale();
-		Rectangle hitbox = new Rectangle(0, 0, 48 * scale, 56 * scale);
+		Rectangle hitbox = new Rectangle(0, 0, 46 * scale, 54 * scale);
 		assertEquals(hitbox, goose.getHitbox());
 	}
 
