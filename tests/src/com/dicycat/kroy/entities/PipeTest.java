@@ -54,7 +54,7 @@ public class PipeTest {
 	 */
 	@Test
 	public void testGetHitboxes() {
-		Rectangle rect = new Rectangle(0, 0, 128, 900);
+		Rectangle rect = new Rectangle(0, 0, 128, 880);
 		Rectangle hitbox = pipe.getHitboxes()[0];
 		assertEquals(rect, hitbox);
 	}
