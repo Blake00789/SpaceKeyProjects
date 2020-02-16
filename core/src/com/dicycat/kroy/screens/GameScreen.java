@@ -278,7 +278,6 @@ public class GameScreen implements Screen{
 			objectsToRender.add(dObject);
 		}
 		if (currentTruck.isRemove()) {	//If the player is set for removal, respawn
-			firetrucks.remove(currentTruck);
 			updateLives();
 			
 		}
@@ -337,7 +336,9 @@ public class GameScreen implements Screen{
 			object.render(game.batch);
 		}
 		for (FireTruck truck : firetrucks) {
+			if(truck.isAlive()) {
 			truck.render(game.batch);
+			}
 		}
 
 		objectsToRender.clear();
