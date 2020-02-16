@@ -45,7 +45,7 @@ public class MenuScreen implements Screen{
   private OptionsWindow optionsWindow;
   
   public static Music music = Gdx.audio.newMusic(Gdx.files.internal("gamemusic.mp3"));
-  public static float musicVolume = 0f;
+  public static float musicVolume = 0.4f;
 
   //coordinates for Play and Exit buttons 
   private int buttonWidth = 250;
