@@ -367,9 +367,12 @@ public class GameScreen implements Screen{
 
 	/**
 	 * Updates the position of the camera to have the truck centre
+	 * Ensures it never goes out of bounds (512, 400) to (6628, 6043)
 	 */ 
 	public void updateCamera() {
-		gamecam.position.lerp(new Vector3(currentTruck.getX(),currentTruck.getY(),gamecam.position.z),0.1f);// sets the new camera position based on the current position of the FireTruck
+		float cameraX = Math.max(256+256, Math.min(currentTruck.getX(), 6884-256));
+		float cameraY = Math.max(400, Math.min(currentTruck.getY(), 6043));
+		gamecam.position.lerp(new Vector3(cameraX, cameraY,gamecam.position.z),0.1f);// sets the new camera position based on the current position of the FireTruck
 		gamecam.update();
 	}
 
