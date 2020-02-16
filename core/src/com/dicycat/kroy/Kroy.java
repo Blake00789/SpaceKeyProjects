@@ -73,7 +73,7 @@ public class Kroy extends Game {
 		return width / 3;
 	}
 	
-	/**
+	/** 
 	 * Set the high score
 	 * @param highScore The new high score
 	 */

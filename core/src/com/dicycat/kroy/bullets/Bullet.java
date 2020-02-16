@@ -20,7 +20,7 @@ public class Bullet extends GameObject {
 	private float maxDist;		//Max distance to travel
 	private float travelDist; 	//Distance left to travel
 	private Circle hitbox;		//Bullet hit box
-
+ 
 
 	/**
 	 * @param spawnPos Position to spawn the bullet

@@ -37,7 +37,7 @@ public class FireTruckTest {
 		
 		PowerMockito.mockStatic(Kroy.class);
 		PowerMockito.constructor(Kroy.class);
-		PowerMockito.mockStatic(GameScreen.class);
+		PowerMockito.mockStatic(GameScreen.class); 
 		PowerMockito.mockStatic(GameObject.class);
 		PowerMockito.mockStatic(Entity.class);
 		 	         
@@ -48,12 +48,17 @@ public class FireTruckTest {
 		truck = new FireTruck();
 	}
 
+	/**
+	 * Correct amounts should be assigned to truck
+	 */	 
 	@Test
 	public void testInitialisation() {
 		org.junit.Assert.assertTrue(truck.getHealthPoints() == 100);
 	}
 	
-	
+	/**
+	 * Check the Hitbox
+	 */
 	@Test
 	public void Hitbox() {		
 		Rectangle hitbox = new Rectangle(20, 45, 20, 20);
@@ -65,15 +70,38 @@ public class FireTruckTest {
 	}
 	
 
+	/**
+	 * Check the replenish method to see if HealthPoints and CurrentWater increase correctly
+	 */
 	@Test
 	public void testRefill() {		
 		truck.setHealthPoints(2);		
 		truck.replenish();
-		assertTrue(truck.getHealthPoints() ==  102);
+		assertTrue(truck.getHealthPoints() !=  102);  //HealthPoits didn't increase because it will get more than max HealthPoits
 		assertTrue(truck.getCurrentWater() ==  302);
+		
+		truck.applyDamage(10);
+		
+		assertTrue(truck.getHealthPoints() ==  90); 
+		
+		truck.replenish();
+		assertTrue(truck.getHealthPoints() ==  92);   //increased this time as HealthPoits is lower than max HealthPoits
+		assertTrue(truck.getCurrentWater() ==  304);
+		
+		truck.setCurrentWater(96);
+		
+		assertTrue(truck.getCurrentWater() ==  400);
+		
+		truck.replenish();
+		
+		assertTrue(truck.getHealthPoints() ==  94);   //CurretWater didn't increase because it will get more than max water
+		assertTrue(truck.getCurrentWater() ==  400);
+
 	}
 	
-
+	/**
+	 * Check the movements correctness when user press the movement keys
+	 */
 	@Test
 	public void movementTest() {
 		

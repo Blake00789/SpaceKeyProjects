@@ -30,34 +30,61 @@ public class GameTextures {
 		fireStationDead = new Texture("FireStationTempDead.png");	
 	}
 	
-	
+	/**
+	 * @return FireTruck
+	 */
 	public Texture getTruck() {
 		return truck;
 	}
 	
+	/**
+	 * Change trucks base on the input number
+	 * @return FireTruck's texture
+	 */
 	public Texture getTruck(int truckNum) {
 		return new Texture(truckAddress[truckNum]);
 	}
 	
+	/**
+	 * @return UFO
+	 */
 	public Texture getUFO() {
 		return ufo;
 	}
 	
+	/**
+	 * @return Bullet's texture
+	 */
 	public Texture getBullet() {
 		return bullet;
 	}
 	
+	/**
+	 * @param fortress
+	 * @return the list of living Fortresses texture
+	 */
 	public Texture getFortress(int fortress) {
 		return livingFortresses[fortress];
 	}
 	
+	/**
+	 * @param fortress
+	 * @return the list of dead Fortresses texture
+	 */
 	public Texture getDeadFortress(int fortress) {
 		return deadFortresses[fortress];
 	}
 	
+	/**
+	 * @return the FireStation's texture
+	 */
 	public Texture getFireStation() {
 		return fireStation;
 	}
+	
+	/**
+	 * @return the texture of the dead FireStation
+	 */
 	public Texture getFireStationDead() {
 		return fireStationDead;
 	}

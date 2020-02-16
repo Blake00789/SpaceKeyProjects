@@ -69,11 +69,19 @@ public abstract class Entity extends GameObject{
 		}
 	}
 	
+	/**
+	 * @return healthPoints
+	 */
 	public Integer getHealthPoints(){
 		return healthPoints; 
 	}
 	
+	/**
+	 * increase the HealthPoints by x
+	 */
 	public void setHealthPoints(int x){
-		healthPoints+=x;
+		if(!(getHealthPoints() >= maxHealthPoints)){
+			healthPoints+=x;
+		}
 	}
 }

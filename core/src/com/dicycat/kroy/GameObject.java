@@ -71,7 +71,9 @@ public abstract class GameObject {
 		return new Vector2(getOriginX()+getX(), getOriginY()+getY());
 	}
 
-	//Setters
+	/**
+	 * set the position to the input parameter position 
+	 */
 	public void setPosition(Vector2 pos) {
 		sprite.setX(pos.x);
 		sprite.setY(pos.y);
@@ -85,13 +87,15 @@ public abstract class GameObject {
 		rotation = degrees;
 	}
 	
-
+	/**
+	 * set remove value to the input parameter
+	 */
 	public void setRemove(Boolean x){
 		remove = x;
 	}
 	
 	/**
-	 * 
+	 * set the remove value to true
 	 */
 	public void die() {
 		remove = true;

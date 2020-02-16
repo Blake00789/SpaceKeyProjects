@@ -44,7 +44,7 @@ public class FireStationTest {
 			
 		PowerMockito.mockStatic(Kroy.class);
 		PowerMockito.constructor(Kroy.class);
-		PowerMockito.mockStatic(GameScreen.class);
+	 	PowerMockito.mockStatic(GameScreen.class);
 		PowerMockito.mockStatic(GameObject.class);
 		PowerMockito.mockStatic(Entity.class);
 		 	
@@ -56,7 +56,9 @@ public class FireStationTest {
 	}
 	
 	 
-		 
+	/**
+	 * Check the FireStation was built at the right place
+	 */	 
 	@Test
 	public void location() {		
 		PowerMockito.when(gameObject.getCentre()).thenReturn(new Vector2(3600,4100));
@@ -64,6 +66,9 @@ public class FireStationTest {
 		assertTrue(firestation.getCentre().y == 4187.5 );
 	}
 	
+	/**
+	 * If the FireStation dies, its texture should change
+	 */
 	@Test
 	public void die() {
 		assertTrue( firestation.getTexture() != firestation.getTexturedead());
@@ -71,7 +76,10 @@ public class FireStationTest {
 		assertTrue(firestation.getTexture() == firestation.getTexturedead());
 	} 
 	 
-	
+	/*
+	 * If a truck is near FireStation, it should be replenish
+	 * After a certain time FireStation should be destroyed
+	 */
 	@Test
 	public void update() {
 

@@ -416,12 +416,15 @@ public class GameScreen implements Screen{
 	}
 
 	/**
-	 * @return
+	 * @return  the list of active game objects
 	 */
 	public List<GameObject> getGameObjects(){
 		return gameObjects;
 	}
 	
+	/**
+	 * @return the number of alive trucks
+	 */
 	public int getLives() {
 		return lives;
 	}
@@ -489,7 +492,7 @@ public class GameScreen implements Screen{
 	}
 
 	/**
-	 * switch to another truck if currentTruck dies
+	 * switch to next truck if currentTruck dies
 	 */
 	public void updateLives() {
 		if (lives>1) {
@@ -512,12 +515,17 @@ public class GameScreen implements Screen{
 		}
 	}
 	
+	/**
+	 * switch to FireTruck number n by calling changeToTruck function
+	 * @param n
+	 */
 	private void switchTrucks(int n) {
 		changeToTruck(firetrucks.get(n));
 	}
 
 	/**
 	 * Check for inputs to switch between trucks.
+	 * It only works if the truck that has chosen is alive
 	 */
 	private void switchTrucks() {
 		if (Gdx.input.isKeyPressed(Keys.NUM_1)) {
@@ -572,11 +580,16 @@ public class GameScreen implements Screen{
 
 	}  
 
-
+	/**
+	 * @return hud
+	 */
 	public HUD getHud(){
 		return hud;
 	}
 
+	/**
+	 * @return spawnPosition
+	 */
 	public Vector2 getSpawnPosition() {
 		return spawnPosition;
 	}

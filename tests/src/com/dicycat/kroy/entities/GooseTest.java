@@ -47,7 +47,7 @@ public class GooseTest {
 		// Jumping
 		goose.setVelocity(10);
 		goose.update();
-		float y3 = goose.getY();
+		float y3 = goose.getY(); 
 		assertTrue(y3 > y2);
 	}
 

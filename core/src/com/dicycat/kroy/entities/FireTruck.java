@@ -74,6 +74,9 @@ public class FireTruck extends Entity{
 		Kroy.mainGameScreen.addGameObject(healthBar);
 	}
 	
+	/** 
+	 * 
+	 */
 	public FireTruck() {
 		super(new Vector2(3750, 4000), new Texture("fireTruck3.png"), new Vector2(25,50), 100);
  
@@ -198,7 +201,10 @@ public class FireTruck extends Entity{
 		}
 	}
 	
-
+	/** 
+	 *  @param direction
+	 *  change direction to the new direction 
+	 */
 	public void setDirection(Integer direction) {
 		this.direction = direction;
 	}
@@ -266,10 +272,16 @@ public class FireTruck extends Entity{
 		healthBar.setRemove(true);
 	}
 
+	/**
+	 * @return hitbox
+	 */
 	public Rectangle getHitbox(){
 		return this.hitbox;
 	}
-
+	
+	/**
+	 * @return direction
+	 */
 	public Integer getDirection() {
 		return direction;
 	}
@@ -300,10 +312,16 @@ public class FireTruck extends Entity{
 		return false;
 	}
 	
+	/**
+	 * @return currentWater
+	 */
 	public float getCurrentWater() {
 		return currentWater;
 	}
 	
+	/**
+	 * Increase the currentWater by the input parameter
+	 */
 	public void setCurrentWater(int x) {
 		 currentWater += x;
 	}

@@ -64,7 +64,10 @@ public class FortressTest {
 	public void init() {
 		fortress=new Fortress();
 	}
-	  
+	 
+	/**
+	 * Check the Fortress was built at the right place
+	 */	 
 	@Test 
 	public void location() {
 		PowerMockito.when(gameObject.getCentre()).thenReturn(new Vector2(3031,3320));
@@ -72,7 +75,10 @@ public class FortressTest {
 		assertTrue(fortress.getCentre().y==3320);
 		
 	}
-
+	
+	/**
+	 * HealthPoints should decrease when user call the Damage function
+	 */	
 	@Test
     public void takeDamage() {		
 		
@@ -81,6 +87,9 @@ public class FortressTest {
         assertTrue(fortress.getHealthPoints() == 495 );
     }
 	
+	/**
+	 * Fortress should become disable when it dies 
+	 */
 	@Test
 	public void deathCheck() {
 		fortress.death();

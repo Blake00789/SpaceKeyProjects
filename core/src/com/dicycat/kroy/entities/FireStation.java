@@ -38,7 +38,7 @@ public class FireStation extends Entity {
 	}
 
 	/**
-	 *
+	 * 
 	 */
 	@Override
 	public void update(){
@@ -54,10 +54,16 @@ public class FireStation extends Entity {
 		}
 	}
 
+	/**
+	 * @return texturedead
+	 */
 	public static Texture getTexturedead() {
 		return texturedead;
 	}
 
+	/**
+	 * change the FireStaion's texture to texturedead when it dies
+	 */
 	public static void setTexturedead(Texture texturedead) {
 		FireStation.texturedead = texturedead;
 	}

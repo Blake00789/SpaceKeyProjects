@@ -45,6 +45,9 @@ public class Fortress extends Entity {
 		
 	} 
 	
+	/** 
+	 * 
+	 */
 	public Fortress() {
 		super(new Vector2(2903, 3211),  new Texture("cliffords tower.png"),  new Vector2(256, 218), 500);
 		this.deadTexture = new Texture("cliffords tower dead.png");		

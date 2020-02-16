@@ -47,7 +47,7 @@ public class MinigameScreen implements Screen {
 	private PauseWindow pauseWindow;
 	private OptionsWindow optionsWindow;
 
-	private int score = -2; // Starts negative to give time for the pipes to reach the player
+	private int score = -2; // Starts negative to give time for the pipes to reach the player 
 	private String scoreText = ""; // Instantiates the scoretext variable
 	BitmapFont font;
 
