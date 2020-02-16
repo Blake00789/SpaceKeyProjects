@@ -280,8 +280,8 @@ public class GameScreen implements Screen{
 			for (Vector2 position: patrolPositions) {
 
 				//Randomize the positions a little bit
-				float oldX = position.x + 200;
-				float oldY = position.y + 200;
+				float oldX = position.x;
+				float oldY = position.y;
 				float randX = (float) (oldX - 400 + Math.random() * 400);
 				float randY = (float) (oldY - 400 + Math.random() * 400);
 
