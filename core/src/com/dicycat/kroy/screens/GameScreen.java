@@ -144,7 +144,7 @@ public class GameScreen implements Screen{
 
 		// Initialises the FireTrucks
 		for (int i = 0; i < 6; i++) {
-			firetruckInit(spawnPosition.x + -50 + (((i + 1) % 3) * 50), spawnPosition.y - ((i % 2) * 50), i);
+			firetruckInit(spawnPosition.x - 135 + (i * 50), spawnPosition.y, i);
 			fortressInit(i);
 		}
 		gameObjects.add(new FireStation());
