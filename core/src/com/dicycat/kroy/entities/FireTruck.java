@@ -226,7 +226,7 @@ public class FireTruck extends Entity{
 		water.setRange(direction.len());
 		water.setPosition(getCentre().add(direction.scl(0.5f)));
 
-		((Entity) nearestEnemy).applyDamage(flowRate);			//Applies damage to the nearest enemy
+		((Entity) nearestEnemy).applyDamage((float) (flowRate * Math.max(0.5, GameScreen.gameTimer * (1/600))));			//Applies damage to the nearest enemy
 		currentWater=currentWater-flowRate;						//reduces the tank by amount of water used
 	}
 
@@ -238,7 +238,7 @@ public class FireTruck extends Entity{
 		ArrayList<GameObject> outputArray = new ArrayList<GameObject>();	//create array list to output enemies in range
 
 		for (GameObject currentObject : Kroy.mainGameScreen.getGameObjects()) {		//iterates through all game objects
-			if ((currentObject instanceof Fortress) && (objectInRange(currentObject))){  	//checks if entity is in range and is an enemy
+			if (((currentObject instanceof Fortress) || (currentObject instanceof UFO)) && (objectInRange(currentObject))){  	//checks if entity is in range and is an enemy
 				outputArray.add(currentObject);												//adds the current entity to the output array list
 			}
 		}

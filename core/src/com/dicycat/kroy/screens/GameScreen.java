@@ -49,7 +49,7 @@ public class GameScreen implements Screen{
 	
 	public Kroy game;
 	public GameTextures textures;
-	public float gameTimer; //Timer to destroy station
+	public static float gameTimer; //Timer to destroy station
 	
 	
 	public GameScreenState state = GameScreenState.RUN;
