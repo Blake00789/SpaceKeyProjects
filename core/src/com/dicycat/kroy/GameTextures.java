@@ -61,7 +61,7 @@ public class GameTextures {
 	
 	/**
 	 * @param fortress
-	 * @return the list of living Fortresses texture
+	 * @return the list of living Fortress's texture
 	 */
 	public Texture getFortress(int fortress) {
 		return livingFortresses[fortress];
@@ -69,7 +69,7 @@ public class GameTextures {
 	
 	/**
 	 * @param fortress
-	 * @return the list of dead Fortresses texture
+	 * @return the list of dead Fortress's texture
 	 */
 	public Texture getDeadFortress(int fortress) {
 		return deadFortresses[fortress];
