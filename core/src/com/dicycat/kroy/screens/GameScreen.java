@@ -63,7 +63,8 @@ public class GameScreen implements Screen{
 	private PauseWindow pauseWindow;
 	private OptionsWindow optionsWindow;
 
-	private Float[][] truckStats = {	//Each list is a configuration of a specific truck. {speed, flowRate, capacity, range}
+	private Float[][] truckStats = {	//extended
+										//Each list is a configuration of a specific truck. {speed, speed + damage , damage , capacity+range, capacity, range}
 			{400f, 1f, 400f, 300f},		//Speed
 			{350f, 1.25f, 400f, 300f},	//Speed + Flow rate
 			{300f, 1.5f, 400f, 300f},	//Flow rate
@@ -93,6 +94,7 @@ public class GameScreen implements Screen{
 	private ArrayList<FireTruck> firetrucks=new ArrayList<FireTruck>();
 
 	/**
+	 * extended
 	 * @param _game
 	 * @param truckNum
 	 */
@@ -108,7 +110,7 @@ public class GameScreen implements Screen{
 		optionsWindow.visibility(false);
 		textures = new GameTextures(truckNum);
 		spawnPosition = new Vector2(3750, 4000);
-		gameTimer = 60 * 5; //Set timer to 5 minutes  
+		gameTimer = 60 * 5; //new    //Set timer to 5 minutes  
 		this.truckNum = truckNum;
 		lastPatrol = Gdx.graphics.getDeltaTime();
 		fortressPositions = new ArrayList<>();
