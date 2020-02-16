@@ -567,14 +567,14 @@ public class GameScreen implements Screen{
 			if(firetrucks.get(0).isAlive())
 				changeToTruck(firetrucks.get(0));
 			else {
-				System.out.println("This truck id dead");
+				System.out.println("This truck is dead");
 			}
 		} 
 		else if (Gdx.input.isKeyPressed(Keys.NUM_2)) {
 			if(firetrucks.get(1).isAlive())
 				changeToTruck(firetrucks.get(1));
 			else {
-				System.out.println("This truck id dead");
+				System.out.println("This truck is dead");
 			}
 		}
 		else if (Gdx.input.isKeyPressed(Keys.NUM_3)) {
@@ -585,21 +585,21 @@ public class GameScreen implements Screen{
 			if(firetrucks.get(3).isAlive())
 				changeToTruck(firetrucks.get(3));
 			else {
-				System.out.println("This truck id dead");
+				System.out.println("This truck is dead");
 			}
 		}
 		else if (Gdx.input.isKeyPressed(Keys.NUM_5)) {
 			if(firetrucks.get(4).isAlive())
 				changeToTruck(firetrucks.get(4));
 			else {
-				System.out.println("This truck id dead");
+				System.out.println("This truck is dead");
 			}
 		}
 		else if (Gdx.input.isKeyPressed(Keys.NUM_6)) {
 			if(firetrucks.get(5).isAlive())
 				changeToTruck(firetrucks.get(5));
 			else {
-				System.out.println("This truck id dead");
+				System.out.println("This truck is dead");
 			}
 		}
 
