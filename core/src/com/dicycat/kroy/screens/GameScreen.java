@@ -50,7 +50,7 @@ public class GameScreen implements Screen{
 	public Kroy game;
 	public GameTextures textures;
 	public static float gameTimer; //Timer to destroy station
-	
+
 	
 	public GameScreenState state = GameScreenState.RUN;
 	
@@ -232,12 +232,19 @@ public class GameScreen implements Screen{
 	 */
 	private void updateLoop() {
 		List<GameObject> toRemove = new ArrayList<GameObject>();
+		List<Vector2> patrolPositions = new ArrayList<>();
+
 		for (GameObject gObject : gameObjects) {	//Go through every game object
 			gObject.update();						//Update the game object
 			if (gObject.isRemove()) {				//Check if game object is to be removed
 				toRemove.add(gObject);					//Set it to be removed
 			}else {
 				objectsToRender.add(gObject);
+				//it doesn't need to be removed; check if it is a fortress
+				if (gObject instanceof  Fortress) {
+					//it is. mark down its position so we can spawn an entity there later
+					patrolPositions.add(gObject.getCentre());
+				}
 			}
 		}
 
@@ -270,9 +277,9 @@ public class GameScreen implements Screen{
 			lastPatrol = 0;
 
 			//we should spawn a patrol near every fortress if it given it's been 10 secs.
-			for (Vector2 position: fortressPositions) {
+			for (Vector2 position: patrolPositions) {
 
-				//have to adjust these by about 100 px each since the values given are the bottom left corner, NOT the center.
+				//Randomize the positions a little bit
 				float oldX = position.x + 200;
 				float oldY = position.y + 200;
 				float randX = (float) (oldX - 400 + Math.random() * 400);
