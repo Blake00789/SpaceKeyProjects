@@ -76,6 +76,7 @@ public class GameScreen implements Screen{
 	private int truckNum; // Identifies the truck thats selected in the menu screen
 	private FireTruck currentTruck;
 	private int lives = 4;
+	private float zoom = 1;
 	
 	private int fortressesCount;
 	private Vector2 spawnPosition;	//Coordinates the player spawns at
@@ -148,7 +149,6 @@ public class GameScreen implements Screen{
 		switchTrucks(truckNum);
 
 		gamecam.translate(new Vector2(currentTruck.getX(), currentTruck.getY())); // sets initial Camera position
-
 	}
 
 	/**
@@ -175,6 +175,7 @@ public class GameScreen implements Screen{
 	 */
 	@Override
 	public void render(float delta) {
+		
 		Gdx.input.setInputProcessor(pauseWindow.stage);  //Set input processor
 		pauseWindow.stage.act();
 
@@ -231,6 +232,8 @@ public class GameScreen implements Screen{
 	 * Respawns the player if necessary.
 	 */
 	private void updateLoop() {
+		checkZoom();
+		
 		List<GameObject> toRemove = new ArrayList<GameObject>();
 		List<Vector2> patrolPositions = new ArrayList<>();
 
@@ -291,6 +294,26 @@ public class GameScreen implements Screen{
 			}
 		}
 
+	}
+	
+	
+	private void checkZoom() {
+		if (Gdx.input.isKeyJustPressed(Keys.EQUALS)) {
+			if (zoom > 0.5f) {
+				zoom = zoom - 0.5f;
+			}
+			gamecam.setToOrtho(false, Kroy.width * zoom, Kroy.height * zoom);
+			gamecam.translate(new Vector2(currentTruck.getX() - ((Kroy.width * zoom) / 2),
+					currentTruck.getY() - ((Kroy.height * zoom) / 2)));
+		}
+		if (Gdx.input.isKeyJustPressed(Keys.MINUS)) {
+			if (zoom < 4f) {
+				zoom = zoom + 0.5f;
+			}
+			gamecam.setToOrtho(false, Kroy.width * zoom, Kroy.height * zoom);
+			gamecam.translate(new Vector2(currentTruck.getX() - ((Kroy.width * zoom) / 2),
+					currentTruck.getY() - ((Kroy.height * zoom) / 2)));
+		}
 	}
 
 	/**
@@ -374,11 +397,12 @@ public class GameScreen implements Screen{
 
 	/**
 	 * Updates the position of the camera to have the truck centre
-	 * Ensures it never goes out of bounds (512, 400) to (6628, 6043)
+	 * Ensures it never goes out of bounds, including when zoomed
+	 * It does this by limiting the bounds of the camera
 	 */ 
 	public void updateCamera() {
-		float cameraX = Math.max(256+256, Math.min(currentTruck.getX(), 6884-256));
-		float cameraY = Math.max(400, Math.min(currentTruck.getY(), 6043));
+		float cameraX = Math.max(Kroy.width*zoom, Math.min(currentTruck.getX(), 6884-(Kroy.width*zoom)));
+		float cameraY = Math.max(Kroy.height*zoom, Math.min(currentTruck.getY(), 6043-(Kroy.height*zoom)));
 		gamecam.position.lerp(new Vector3(cameraX, cameraY,gamecam.position.z),0.1f);// sets the new camera position based on the current position of the FireTruck
 		gamecam.update();
 	}
