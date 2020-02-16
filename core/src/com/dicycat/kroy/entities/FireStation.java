@@ -15,13 +15,13 @@ import com.dicycat.kroy.screens.MenuScreen.MenuScreenState;
  * @author 
  *
  */
-public class FireStation extends Entity {
-	
+public class FireStation extends Entity { 
+	 
 	private static Texture textureLiving = new Texture("FireStationTemp.png");    //Kroy.mainGameScreen.textures.getFireStation();
 	private static Texture texturedead =new Texture("FireStationTempDead.png");   // Kroy.mainGameScreen.textures.getFireStationDead();
 	
 	/** 
-	 * 
+	 * extended
 	 */
 	public FireStation() {
 		super(new Vector2(3600,4100), textureLiving, new Vector2(298,175), 100);
@@ -55,6 +55,7 @@ public class FireStation extends Entity {
 	}
 
 	/**
+	 * new
 	 * @return texturedead
 	 */
 	public static Texture getTexturedead() {
@@ -62,6 +63,7 @@ public class FireStation extends Entity {
 	}
 
 	/**
+	 * new
 	 * change the FireStaion's texture to texturedead when it dies
 	 */
 	public static void setTexturedead(Texture texturedead) {

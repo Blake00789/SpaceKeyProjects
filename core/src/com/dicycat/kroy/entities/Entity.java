@@ -51,7 +51,7 @@ public abstract class Entity extends GameObject{
 	 */
 	public void applyDamage(float damage) {	
 		healthPoints -= damage;
-		if (healthPoints <= 0) {
+		if (healthPoints <= 0) { 
 			die();
 		}
 	}
@@ -70,6 +70,7 @@ public abstract class Entity extends GameObject{
 	}
 	
 	/**
+	 * new
 	 * @return healthPoints
 	 */
 	public Integer getHealthPoints(){
@@ -77,6 +78,7 @@ public abstract class Entity extends GameObject{
 	}
 	
 	/**
+	 * new
 	 * increase the HealthPoints by x
 	 */
 	public void setHealthPoints(int x){

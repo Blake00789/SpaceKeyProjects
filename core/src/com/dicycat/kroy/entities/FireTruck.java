@@ -75,7 +75,7 @@ public class FireTruck extends Entity{
 	}
 	
 	/** 
-	 * 
+	 * new
 	 */
 	public FireTruck() {
 		super(new Vector2(3750, 4000), new Texture("fireTruck3.png"), new Vector2(25,50), 100);
@@ -163,7 +163,8 @@ public class FireTruck extends Entity{
 				Gdx.input.isKeyPressed(ARROWKEYS[2]) ||
 				Gdx.input.isKeyPressed(ARROWKEYS[3])) { // Runs movement code if any arrow key pressed
 
-			setDirection(updateDirection()); // updates direction based on current keyboard input
+			setDirection(updateDirection());   //extended 
+											   //updates direction based on current keyboard input
 			moveInDirection(); // moves in the direction previously specified
 		}
 
@@ -202,8 +203,9 @@ public class FireTruck extends Entity{
 	}
 	
 	/** 
-	 *  @param direction
-	 *  change direction to the new direction 
+	 * new
+	 * @param direction
+	 * change direction to the new direction 
 	 */
 	public void setDirection(Integer direction) {
 		this.direction = direction;
@@ -270,7 +272,7 @@ public class FireTruck extends Entity{
 		water.setRemove(true);
 		tank.setRemove(true);
 		healthBar.setRemove(true);
-	}
+	} 
 
 	/**
 	 * @return hitbox
@@ -287,6 +289,7 @@ public class FireTruck extends Entity{
 	}
 
 	/**
+	 * extended
 	 * Replenishes health and water
 	 */
 	public void replenish(){
@@ -313,6 +316,7 @@ public class FireTruck extends Entity{
 	}
 	
 	/**
+	 * new
 	 * @return currentWater
 	 */
 	public float getCurrentWater() {
@@ -320,6 +324,7 @@ public class FireTruck extends Entity{
 	}
 	
 	/**
+	 * new
 	 * Increase the currentWater by the input parameter
 	 */
 	public void setCurrentWater(int x) {

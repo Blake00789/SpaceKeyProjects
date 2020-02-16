@@ -43,10 +43,10 @@ public class Fortress extends Entity {
 		Kroy.mainGameScreen.addGameObject(healthBar);
 		
 		
-	} 
+	}
 	
 	/** 
-	 * 
+	 * new
 	 */
 	public Fortress() {
 		super(new Vector2(2903, 3211),  new Texture("cliffords tower.png"),  new Vector2(256, 218), 500);
@@ -69,6 +69,7 @@ public class Fortress extends Entity {
 	}
 	
 	/**
+	 * new
 	 * Removes from active pool and displays destroyed state
 	 */ 
 	public void death() {
@@ -90,7 +91,8 @@ public class Fortress extends Entity {
 	}
 	
 	/**
-	 *Apply x amount of damage to the entity
+	 * new
+	 * Apply x amount of damage to the entity
 	 */
 	public void Damage(float damage) {
 		super.applyDamage(damage);

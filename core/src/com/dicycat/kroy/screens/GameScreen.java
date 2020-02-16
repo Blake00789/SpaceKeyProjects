@@ -152,6 +152,8 @@ public class GameScreen implements Screen{
 	}
 
 	/**
+	 * new
+	 * 
 	 * Initialises each fortress
 	 * 
 	 * @param num the fortress number
@@ -162,6 +164,8 @@ public class GameScreen implements Screen{
 	}
 
 	/**
+	 * new
+	 * 
 	 * Initialises each truck
 	 * 
 	 * @param num the truck number
@@ -299,7 +303,11 @@ public class GameScreen implements Screen{
 
 	}
 	
-	
+	/**
+	 * new
+	 * Can zoom in the game by pressing EQUALS key
+	 * Can zoom out by pressing MINUS key
+	 */
 	private void checkZoom() {
 		if (Gdx.input.isKeyJustPressed(Keys.EQUALS)) {
 			if (zoom > 0.5f) {
@@ -530,6 +538,7 @@ public class GameScreen implements Screen{
 	}
 
 	/**
+	 * extended
 	 * switch to next truck if currentTruck dies
 	 */
 	public void updateLives() {
@@ -554,6 +563,7 @@ public class GameScreen implements Screen{
 	}
 	
 	/**
+	 * new
 	 * switch to FireTruck number n by calling changeToTruck function
 	 * @param n
 	 */
@@ -562,6 +572,7 @@ public class GameScreen implements Screen{
 	}
 
 	/**
+	 * new
 	 * Check for inputs to switch between trucks.
 	 * It only works if the truck that has chosen is alive
 	 */
@@ -609,6 +620,7 @@ public class GameScreen implements Screen{
 	}
 
 	/**
+	 * new
 	 * Switches the camera to the specified truck.
 	 *
 	 * @param t The truck to switch to
@@ -625,7 +637,7 @@ public class GameScreen implements Screen{
 		return hud;
 	}
 
-	/**
+	/** 
 	 * @return spawnPosition
 	 */
 	public Vector2 getSpawnPosition() {

@@ -19,7 +19,7 @@ public abstract class GameObject {
 	public GameObject(Vector2 spawnPos, Texture image, Vector2 imSize) {	//Constructor; takes the screen to be put on, spawn position vector, image and a vector for its size
 		sprite = new Sprite(image,(int) spawnPos.x ,(int) spawnPos.y ,(int) imSize.x,(int) imSize.y); // sprite class stores the texture position and size of the object
 		remove = false;
-		displayable = false;
+		displayable = false; 
 	}
 
 	/**

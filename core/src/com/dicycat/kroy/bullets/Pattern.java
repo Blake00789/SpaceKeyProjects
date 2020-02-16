@@ -31,7 +31,7 @@ public class Pattern {
 		aim = false;
 		waitTime = timeBetweenShots;
 		bullets = new Bullet[patternLength][multi];
-		this.cooldown = cooldown;
+		this.cooldown = cooldown; 
 		offset = (multi - (multi % 2)) / 2;
 		xtra = (1-(multi % 2)) * 5;
 		degree = 90 - degree;	//Convert normal bearings (0 is up, clockwise) to LIBGDX Vector2 degrees (0 is right, anti-clockwise)
