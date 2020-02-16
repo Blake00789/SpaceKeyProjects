@@ -112,19 +112,19 @@ public class GameScreen implements Screen{
 		this.truckNum = truckNum;
 		lastPatrol = Gdx.graphics.getDeltaTime();
 		fortressPositions = new ArrayList<>();
-		fortressPositions.add(new Vector2(2903, 3211));
-		fortressPositions.add(new Vector2(3200, 5681));
-		fortressPositions.add(new Vector2(2050, 1937));
-		fortressPositions.add(new Vector2(4350, 900));
-		fortressPositions.add(new Vector2(5900, 1000));
+		fortressPositions.add(new Vector2(2860, 3211));
+		fortressPositions.add(new Vector2(3130, 5530));
+		fortressPositions.add(new Vector2(2010, 1900));
+		fortressPositions.add(new Vector2(4270, 870));
+		fortressPositions.add(new Vector2(5940, 1150));
 		fortressPositions.add(new Vector2(520, 3500));
 		fortressSizes = new ArrayList<>();
 		fortressSizes.add(new Vector2(256, 218));
 		fortressSizes.add(new Vector2(256, 320));
-		fortressSizes.add(new Vector2(400, 240));
-		fortressSizes.add(new Vector2(400, 240));
-		fortressSizes.add(new Vector2(400, 240));
-		fortressSizes.add(new Vector2(400, 240));
+		fortressSizes.add(new Vector2(400, 256));
+		fortressSizes.add(new Vector2(450, 256));
+		fortressSizes.add(new Vector2(400, 256));
+		fortressSizes.add(new Vector2(450, 256));
 		
 		patrolUpdateRate = 30;
 	}
@@ -146,7 +146,7 @@ public class GameScreen implements Screen{
 			fortressInit(i);
 		}
 		gameObjects.add(new FireStation());
-		switchTrucks(truckNum);
+		switchTrucks(truckNum);  
 
 		gamecam.translate(new Vector2(currentTruck.getX(), currentTruck.getY())); // sets initial Camera position
 	}
