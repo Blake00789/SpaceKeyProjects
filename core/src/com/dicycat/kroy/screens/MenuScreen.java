@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dicycat.kroy.Kroy;
 import com.dicycat.kroy.scenes.FireTruckSelectionScene;
+import com.dicycat.kroy.scenes.HUD;
 import com.dicycat.kroy.scenes.OptionsWindow;
   
 /**
@@ -209,6 +210,7 @@ public class MenuScreen implements Screen{
 			@Override
 	    	public void clicked(InputEvent event, float x, float y) {
 				startGame(0);//Game begun with 0 (Speed) as the truck selected
+				HUD.setScore(100000);
 	    	}
 	    });
 		//Truck 2 Selected
@@ -216,6 +218,7 @@ public class MenuScreen implements Screen{
 	    	@Override
 	    	public void clicked(InputEvent event, float x, float y) {
 	    		startGame(1);//Game begun with 1 (Speed + Damage) as the truck selected
+	    		HUD.setScore(100000);
 	    	}
 	    });
 		//Truck 3 Selected
@@ -223,6 +226,7 @@ public class MenuScreen implements Screen{
 	    	@Override
 	    	public void clicked(InputEvent event, float x, float y) {
 	    		startGame(2);//Game begun with 2 (Damage) as the truck selected
+	    		HUD.setScore(100000);
 	    	}
 	    });
 		//Truck 4 Selected
@@ -230,6 +234,7 @@ public class MenuScreen implements Screen{
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				startGame(3);//Game begun with 3 (Capacity + Range) as the truck selected
+				HUD.setScore(100000);
 				
 			}
 	    });
@@ -238,6 +243,7 @@ public class MenuScreen implements Screen{
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				startGame(4);//Game begun with 4 (Capacity) as the truck selected
+				HUD.setScore(100000);
 				
 			}
 	    });
@@ -246,6 +252,7 @@ public class MenuScreen implements Screen{
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				startGame(5);//Game begun with 5 (Range) as the truck selected
+				HUD.setScore(100000);
 				
 			}
 	    });

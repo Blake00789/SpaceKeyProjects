@@ -28,7 +28,7 @@ public class Kroy extends Game {
 	
 	@Override
 	public void create () {
-		highScore = 5000;		//TODO: Load high score from external 
+		highScore = 0;		 
 		batch = new SpriteBatch();
 		mainMenuScreen = new MenuScreen(this);
 		this.setScreen(mainMenuScreen);
@@ -79,7 +79,6 @@ public class Kroy extends Game {
 	 */
 	public void setHighScore(Integer highScore) {
 		this.highScore = highScore;
-		//TODO: Write new high score to external
 	}
 	
 	/**

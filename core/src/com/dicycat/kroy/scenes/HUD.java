@@ -21,9 +21,9 @@ public class HUD {
 	public Stage stage;
 	private Viewport viewport;	//creating new port so that the HUD stays locked while map can move around independently
 	
-	private Integer trucks = 4;
-	private Integer worldTimer = 0;	//change to float maybe
-	private Integer score = 0;
+	private Integer trucks = 6;
+	private Integer worldTimer = 300;	//change to float maybe
+	private static Integer score = 100000;
 	private float timeCount = 0;
 	
 	private Label scoreLabel;
@@ -46,13 +46,12 @@ public class HUD {
 		tableHUD.top();	// puts widgets from the top instead of from the centre
 		tableHUD.setFillParent(true);	//makes the table the same size of the stage
 		
-		worldTimerLabel = new Label(String.format("%05d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+		worldTimerLabel = new Label(String.format("%03d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 		timeLabel = new Label("TIME:", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-		scoreCountLabel = new Label(String.format("%06d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+		scoreCountLabel = new Label(String.format("%05d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 		scoreLabel = new Label("SCORE:", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 		trucksLabel = new Label("TRUCKS:", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 		trucksCountLabel = new Label(String.format("%01d", trucks), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-		
 
 		tableHUD.add(timeLabel).expandX().padTop(10);
 		tableHUD.add(worldTimerLabel).expandX().padTop(10);
@@ -74,10 +73,13 @@ public class HUD {
 	public void update(float dt) {
 		timeCount += dt;
 		if (timeCount >= 1) {
-			worldTimer++;
-			worldTimerLabel.setText(String.format("%05d", worldTimer));
+			if (worldTimer>0) {
+				worldTimer--;
+			}
+			score = score - 220;
+			worldTimerLabel.setText(String.format("%03d", worldTimer));
 			timeCount =0;
-			scoreCountLabel.setText(String.format("%06d", score));
+			scoreCountLabel.setText(String.format("%05d", score));
 			trucksCountLabel.setText(String.format("%01d", Kroy.mainGameScreen.getLives()));
 		}
 	}
@@ -87,7 +89,7 @@ public class HUD {
 		return score;
 	}
 
-	public void setScore(Integer x){
+	public static void setScore(Integer x){
 		score = x;
 	}
 
@@ -101,5 +103,6 @@ public class HUD {
 	public void updateScore(Integer x){
 		score += x;
 	}
+	
 }
 
