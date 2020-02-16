@@ -401,8 +401,9 @@ public class GameScreen implements Screen{
 	 * It does this by limiting the bounds of the camera
 	 */ 
 	public void updateCamera() {
-		float cameraX = Math.max(Kroy.width*zoom, Math.min(currentTruck.getX(), 6884-(Kroy.width*zoom)));
-		float cameraY = Math.max(Kroy.height*zoom, Math.min(currentTruck.getY(), 6043-(Kroy.height*zoom)));
+		//currentTruck;
+		float cameraX = Math.max(0.5f*Kroy.width*zoom, Math.min(currentTruck.getX(), 6884-(0.5f*Kroy.width*zoom)));
+		float cameraY = Math.max(0.5f*Kroy.height*zoom, Math.min(currentTruck.getY(), 6043-(0.5f*Kroy.height*zoom)));
 		gamecam.position.lerp(new Vector3(cameraX, cameraY,gamecam.position.z),0.1f);// sets the new camera position based on the current position of the FireTruck
 		gamecam.update();
 	}
