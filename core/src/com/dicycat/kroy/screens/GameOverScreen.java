@@ -1,5 +1,12 @@
 package com.dicycat.kroy.screens;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -14,6 +21,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dicycat.kroy.Kroy;
+import com.dicycat.kroy.scenes.HUD;
+
 
 /**
 * 
@@ -71,6 +80,7 @@ public class GameOverScreen implements Screen{
 	  private int yHotSpot = 0;
 	  
 	  
+	  
 	  /**
 	 * @param game
 	 * @param truckNum
@@ -88,13 +98,18 @@ public class GameOverScreen implements Screen{
 		  table.setFillParent(true);
 		  table.top();
 		  
-		  score = Kroy.mainGameScreen.getHud().getFinalScore();
-		  highScore = game.getHighScore();
-		  if (score > highScore) {
-			  highScore = score;
-			  game.setHighScore(highScore);
+		  if (result != false) {
+			  score = Kroy.mainGameScreen.getHud().getFinalScore();
+			  highScore = game.getHighScore();
+			  if (score > highScore) {
+				  highScore = score;
+				  game.setHighScore(highScore);
+				  HUD.setScore(100000);
+			  } 
+		  } else {
+			  HUD.setScore(100000);
 		  }
-		  
+	
 		  scoreLabel = new Label("YOUR SCORE:", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 		  scoreNumberLabel = new Label(String.format("%05d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 		  highScoreLabel = new Label("HIGH SCORE:", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
@@ -172,6 +187,29 @@ public class GameOverScreen implements Screen{
 
 		  
 	  	}
+	  
+	  public void updateHighScore(int x) throws IOException {
+		File highScoreFile = new File("/score.png");
+		BufferedReader reader = new BufferedReader(new FileReader(highScoreFile));
+		FileWriter writer = new FileWriter(highScoreFile);
+		
+		String oldHighScoreString = "";
+		int oldHighScore;
+		
+		String line = reader.readLine();
+		if (line != null) {
+			oldHighScoreString = line;
+			oldHighScore = Integer.parseInt(oldHighScoreString);
+			
+			if (x > oldHighScore) {
+				String newHighScore = Integer.toString(x);
+				writer.write(newHighScore);
+			}
+		} else {
+			writer.write(Integer.toString(x));
+		}
+		
+	  }
 	  
 	  /**
 	   *

@@ -57,7 +57,6 @@ public class Fortress extends Entity {
 	public void die() {
 		super.die();
 		sprite.setTexture(deadTexture);
-		Kroy.mainGameScreen.getHud().updateScore(1000);
 		healthBar.setRemove(true);
 		displayable = true;
 		Kroy.mainGameScreen.removeFortress();

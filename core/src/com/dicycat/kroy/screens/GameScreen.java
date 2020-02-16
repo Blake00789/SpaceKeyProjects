@@ -75,7 +75,7 @@ public class GameScreen implements Screen{
 	
 	private int truckNum; // Identifies the truck thats selected in the menu screen
 	private FireTruck currentTruck;
-	private int lives = 4;
+	private int lives = 6;
 	private float zoom = 1;
 	
 	private int fortressesCount;
@@ -185,6 +185,7 @@ public class GameScreen implements Screen{
 					pauseWindow.visibility(true);
 					pause();
 				}
+				
 				gameTimer -= delta;		//Decrement timer
 
 				updateLoop(); //Update all game objects positions but does not render them as to be able to render everything as quickly as possible
