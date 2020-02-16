@@ -7,7 +7,6 @@ import com.dicycat.kroy.Kroy;
 import com.dicycat.kroy.bullets.Bullet;
 import com.dicycat.kroy.bullets.BulletDispenser;
 import com.dicycat.kroy.bullets.Pattern;
-import com.dicycat.kroy.screens.GameScreen;
 
 /**
  * Mobile hostile entity.
