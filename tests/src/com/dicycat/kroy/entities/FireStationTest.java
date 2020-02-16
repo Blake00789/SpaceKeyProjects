@@ -1,5 +1,6 @@
 package com.dicycat.kroy.entities;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
@@ -71,7 +72,7 @@ public class FireStationTest {
 	 */
 	@Test
 	public void die() {
-		assertTrue( firestation.getTexture() != firestation.getTexturedead());
+		assertFalse(firestation.getTexture() == firestation.getTexturedead());
 		firestation.die();
 		assertTrue(firestation.getTexture() == firestation.getTexturedead());
 	} 

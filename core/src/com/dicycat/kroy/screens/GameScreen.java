@@ -49,8 +49,8 @@ public class GameScreen implements Screen{
 	
 	public Kroy game;
 	public GameTextures textures;
-	public float gameTimer; //Timer to destroy station
-	
+	public static float gameTimer; //Timer to destroy station
+
 	
 	public GameScreenState state = GameScreenState.RUN;
 	
@@ -76,6 +76,7 @@ public class GameScreen implements Screen{
 	private int truckNum; // Identifies the truck thats selected in the menu screen
 	private FireTruck currentTruck;
 	private int lives = 4;
+	private float zoom = 1;
 	
 	private int fortressesCount;
 	private Vector2 spawnPosition;	//Coordinates the player spawns at
@@ -148,7 +149,6 @@ public class GameScreen implements Screen{
 		switchTrucks(truckNum);
 
 		gamecam.translate(new Vector2(currentTruck.getX(), currentTruck.getY())); // sets initial Camera position
-
 	}
 
 	/**
@@ -175,6 +175,7 @@ public class GameScreen implements Screen{
 	 */
 	@Override
 	public void render(float delta) {
+		
 		Gdx.input.setInputProcessor(pauseWindow.stage);  //Set input processor
 		pauseWindow.stage.act();
 
@@ -231,13 +232,22 @@ public class GameScreen implements Screen{
 	 * Respawns the player if necessary.
 	 */
 	private void updateLoop() {
+		checkZoom();
+		
 		List<GameObject> toRemove = new ArrayList<GameObject>();
+		List<Vector2> patrolPositions = new ArrayList<>();
+
 		for (GameObject gObject : gameObjects) {	//Go through every game object
 			gObject.update();						//Update the game object
 			if (gObject.isRemove()) {				//Check if game object is to be removed
 				toRemove.add(gObject);					//Set it to be removed
 			}else {
 				objectsToRender.add(gObject);
+				//it doesn't need to be removed; check if it is a fortress
+				if (gObject instanceof  Fortress) {
+					//it is. mark down its position so we can spawn an entity there later
+					patrolPositions.add(gObject.getCentre());
+				}
 			}
 		}
 
@@ -270,11 +280,11 @@ public class GameScreen implements Screen{
 			lastPatrol = 0;
 
 			//we should spawn a patrol near every fortress if it given it's been 10 secs.
-			for (Vector2 position: fortressPositions) {
+			for (Vector2 position: patrolPositions) {
 
-				//have to adjust these by about 100 px each since the values given are the bottom left corner, NOT the center.
-				float oldX = position.x + 200;
-				float oldY = position.y + 200;
+				//Randomize the positions a little bit
+				float oldX = position.x;
+				float oldY = position.y;
 				float randX = (float) (oldX - 400 + Math.random() * 400);
 				float randY = (float) (oldY - 400 + Math.random() * 400);
 
@@ -284,6 +294,26 @@ public class GameScreen implements Screen{
 			}
 		}
 
+	}
+	
+	
+	private void checkZoom() {
+		if (Gdx.input.isKeyJustPressed(Keys.EQUALS)) {
+			if (zoom > 0.5f) {
+				zoom = zoom - 0.5f;
+			}
+			gamecam.setToOrtho(false, Kroy.width * zoom, Kroy.height * zoom);
+			gamecam.translate(new Vector2(currentTruck.getX() - ((Kroy.width * zoom) / 2),
+					currentTruck.getY() - ((Kroy.height * zoom) / 2)));
+		}
+		if (Gdx.input.isKeyJustPressed(Keys.MINUS)) {
+			if (zoom < 4f) {
+				zoom = zoom + 0.5f;
+			}
+			gamecam.setToOrtho(false, Kroy.width * zoom, Kroy.height * zoom);
+			gamecam.translate(new Vector2(currentTruck.getX() - ((Kroy.width * zoom) / 2),
+					currentTruck.getY() - ((Kroy.height * zoom) / 2)));
+		}
 	}
 
 	/**
@@ -367,9 +397,14 @@ public class GameScreen implements Screen{
 
 	/**
 	 * Updates the position of the camera to have the truck centre
+	 * Ensures it never goes out of bounds, including when zoomed
+	 * It does this by limiting the bounds of the camera
 	 */ 
 	public void updateCamera() {
-		gamecam.position.lerp(new Vector3(currentTruck.getX(),currentTruck.getY(),gamecam.position.z),0.1f);// sets the new camera position based on the current position of the FireTruck
+		//currentTruck;
+		float cameraX = Math.max(0.5f*Kroy.width*zoom, Math.min(currentTruck.getX(), 6884-(0.5f*Kroy.width*zoom)));
+		float cameraY = Math.max(0.5f*Kroy.height*zoom, Math.min(currentTruck.getY(), 6043-(0.5f*Kroy.height*zoom)));
+		gamecam.position.lerp(new Vector3(cameraX, cameraY,gamecam.position.z),0.1f);// sets the new camera position based on the current position of the FireTruck
 		gamecam.update();
 	}
 

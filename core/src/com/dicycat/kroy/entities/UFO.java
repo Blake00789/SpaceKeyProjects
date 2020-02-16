@@ -31,7 +31,6 @@ public class UFO extends Entity {
 	private float speed = 300f;
 	protected int direction = 0;
 	private float movetimer = 0;
-	private Vector2 bulletDir;
 
 	/**
 	 *
