@@ -96,7 +96,7 @@ public class Pipe extends GameObject {
 	 * 
 	 * @param x The lifetime of the pipe
 	 */
-	void setLifeTime(int x) {
+	public void setLifeTime(int x) {
 		lifeTime = x;
 	}
 

@@ -3,18 +3,28 @@
 apply plugin: "java"
 
 sourceCompatibility = 1.8
+sourceSets.test.java.srcDirs = [ "src/" ]
+sourceSets.test.resources.srcDirs = ["../core/assets"]
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
+project.ext.mainClassName = "com.dicycat.kroy.GdxTestRunner"
+project.ext.assetsDir = new File("../core/assets");
 
-
-sourceSets {
-	test {
-        java {
-            srcDir 'src'
-        }
+task makejar(dependsOn: classes, type: Jar) {
+    manifest {
+        attributes 'Main-Class': project.mainClassName
     }
+    from files(sourceSets.test.output)
+    from files(project.assetsDir);
     
-    
+    with jar
 }
 
-
+task s(dependsOn: classes) {
+	sourceSets.each {
+    	println(it)
+	    it.allSource.each {
+    	    println(it)
+	    }
+	}
+}

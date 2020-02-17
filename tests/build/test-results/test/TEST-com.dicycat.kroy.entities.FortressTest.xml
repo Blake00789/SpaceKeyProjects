@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.dicycat.kroy.entities.FortressTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2020-02-16T18:06:24" hostname="Sams-MacBook-Pro" time="0.069">
-  <properties/>
-  <testcase name="takeDamage" classname="com.dicycat.kroy.entities.FortressTest" time="0.028"/>
-  <testcase name="deathCheck" classname="com.dicycat.kroy.entities.FortressTest" time="0.005"/>
-  <testcase name="location" classname="com.dicycat.kroy.entities.FortressTest" time="0.005"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

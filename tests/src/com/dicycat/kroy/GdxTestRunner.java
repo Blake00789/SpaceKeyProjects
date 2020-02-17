@@ -20,6 +20,7 @@ import java.util.HashMap;
 
 import java.util.Map;
 
+import org.junit.runner.JUnitCore;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
@@ -46,6 +47,10 @@ public class GdxTestRunner extends BlockJUnit4ClassRunner implements Application
         new HeadlessApplication(this, conf);
         Gdx.gl = mock(GL20.class);
     }
+    
+    public static void main (String[] args) {
+		JUnitCore.main("com.dicycat.kroy.AllTests");
+	}
 
     @Override
     public void create() {
