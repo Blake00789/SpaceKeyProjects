@@ -16,33 +16,30 @@ public class GameTextures {
 	private Texture truck, ufo, bullet, fireStation, fireStationDead;
 	private Texture[] livingFortresses = {new Texture("cliffords tower.png"), new Texture("york minster.png"), new Texture("Memorial.png") , new Texture("york museum.png") , new Texture("University.png"), new Texture("Station.png")};
 	private Texture[] deadFortresses = {new Texture("cliffords tower dead.png"), new Texture("york minster dead.png"), new Texture("york museum dead.png"), new Texture("york museum dead.png"), new Texture("york minster dead.png"), new Texture("york museum dead.png")};
-	private String[] truckAddress = {"fireTruck1.png", "fireTruck2.png", "fireTruck3.png", "fireTruck4.png", "fireTruck5.png", "fireTruck6.png"};
-	  
+	private Texture[] truckAddress = {new Texture ("fireTruck1.png"), new Texture("fireTruck2.png"),
+			new Texture("fireTruck3.png"), new Texture("fireTruck4.png"),
+			new Texture("fireTruck5.png"), new Texture("fireTruck6.png")};
+	// Lucy - change from string array to texture array
 	 
 	/**
 	 * @param truckNum Which truck texture to get
 	 */
 	public GameTextures(int truckNum) {
-		truck = new Texture(truckAddress[truckNum]);
+		truck = truckAddress[truckNum]; // lucy - used new array
 		ufo = new Texture("ufo.png");
 		bullet = new Texture("bullet.png");
 		fireStation = new Texture("FireStationTemp.png");
 		fireStationDead = new Texture("FireStationTempDead.png");	
 	}
 	
-	/**
-	 * @return FireTruck
-	 */
-	public Texture getTruck() {
-		return truck;
-	}
+	// deleted duplicated unused getter
 	
 	/**
 	 * Change trucks base on the input number
-	 * @return FireTruck's texture
+	 * @return FireTruck's texture Lucy - edited to use new array
 	 */
 	public Texture getTruck(int truckNum) {
-		return new Texture(truckAddress[truckNum]);
+		return truckAddress[truckNum];
 	}
 	
 	/**

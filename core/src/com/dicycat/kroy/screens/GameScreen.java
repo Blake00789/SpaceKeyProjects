@@ -26,6 +26,7 @@ import com.dicycat.kroy.entities.FireTruck;
 import com.dicycat.kroy.entities.Fortress;
 import com.dicycat.kroy.entities.UFO;
 import com.dicycat.kroy.gamemap.TiledGameMap;
+import com.dicycat.kroy.misc.StatBar;
 import com.dicycat.kroy.scenes.HUD;
 import com.dicycat.kroy.scenes.OptionsWindow;
 import com.dicycat.kroy.scenes.PauseWindow;
@@ -91,7 +92,9 @@ public class GameScreen implements Screen{
 	private List<Vector2> fortressPositions, fortressSizes; //where our fortresses spawn
 	private int patrolUpdateRate; //How many seconds should pass before we respawn patrols;
 
-	private ArrayList<FireTruck> firetrucks=new ArrayList<FireTruck>();
+	private ArrayList<FireTruck> firetrucks = new ArrayList<FireTruck>();
+	private ArrayList<StatBar> healthbars = new ArrayList<StatBar>();
+	private ArrayList<StatBar> tankbars = new ArrayList<StatBar>();
 
 	/**
 	 * extended
@@ -174,6 +177,8 @@ public class GameScreen implements Screen{
 	 */
 	private void firetruckInit(float x, float y, int num) {
 		firetrucks.add(new FireTruck(new Vector2(x, y), truckStats[num], num));
+		healthbars.add(new StatBar(new Vector2(x, y + 25), "Green.png", 3));
+		tankbars.add(new StatBar(new Vector2(x, y + 20), "Blue.png", 3));
 	}
 
 	/**
@@ -338,9 +343,17 @@ public class GameScreen implements Screen{
 		for (FireTruck truck : firetrucks) {
 			if(truck.isAlive()) {
 			truck.render(game.batch);
+
+			tankbars.get(firetrucks.indexOf(truck)).setPosition(truck.getCentre().add(0,20));
+			tankbars.get(firetrucks.indexOf(truck)).setBarDisplay((truck.getCurrentWater()/ truck.getMaxWater())*50);
+
+			healthbars.get(firetrucks.indexOf(truck)).setPosition(truck.getCentre().add(0,25));
+			healthbars.get(firetrucks.indexOf(truck)).setBarDisplay((truck.getHealthPoints()*50)/truck.getMaxHealthPoints());
+
+			healthbars.get(firetrucks.indexOf(truck)).render(game.batch);
+			tankbars.get(firetrucks.indexOf(truck)).render(game.batch);
 			}
 		}
-
 		objectsToRender.clear();
 	}
 

@@ -34,9 +34,7 @@ public class FireTruck extends Entity{
 	protected final int[] ARROWKEYS = {Keys.UP, Keys.DOWN, Keys.RIGHT, Keys.LEFT}; // List of the arrow keys to be able to iterate through them later on
 	protected Integer direction = 0; // Direction the truck is facing
 
-	private WaterStream water; 
-	private StatBar tank;
-	private StatBar healthBar;
+	private WaterStream water;
 	private boolean firing;
 	private float range;
 
@@ -66,12 +64,6 @@ public class FireTruck extends Entity{
 
 		firing = false;
 		water = new WaterStream(Vector2.Zero);
-
-		tank = new StatBar(Vector2.Zero, "Blue.png", 3);
-		Kroy.mainGameScreen.addGameObject(tank);
-
-		healthBar= new StatBar(Vector2.Zero, "Green.png", 3);
-		Kroy.mainGameScreen.addGameObject(healthBar);
 	}
 	
 	/** 
@@ -176,14 +168,6 @@ public class FireTruck extends Entity{
         //Draw debugs
     	Kroy.mainGameScreen.DrawRect(new Vector2(hitbox.x, hitbox.y), new Vector2(hitbox.width, hitbox.height), 2, Color.GREEN);
     	Kroy.mainGameScreen.DrawCircle(getCentre(), range, 1, Color.BLUE);
-		
-
-		//water bar update
-		tank.setPosition(getCentre().add(0,20));
-		tank.setBarDisplay((currentWater/maxWater)*50);
-
-		healthBar.setPosition(getCentre().add(0,25));
-		healthBar.setBarDisplay((getHealthPoints()*50)/maxHealthPoints);
 
 		//player firing
 		ArrayList<GameObject> inRange = entitiesInRange();		//find list of enemies in range
@@ -270,8 +254,6 @@ public class FireTruck extends Entity{
 	public void die() {
 		super.die();
 		water.setRemove(true);
-		tank.setRemove(true);
-		healthBar.setRemove(true);
 	} 
 
 	/**
@@ -286,6 +268,10 @@ public class FireTruck extends Entity{
 	 */
 	public Integer getDirection() {
 		return direction;
+	}
+
+	public float getMaxWater() {
+		return maxWater;
 	}
 
 	/**
@@ -330,6 +316,7 @@ public class FireTruck extends Entity{
 	public void setCurrentWater(int x) {
 		 currentWater += x;
 	}
-	
+
+
 
 }

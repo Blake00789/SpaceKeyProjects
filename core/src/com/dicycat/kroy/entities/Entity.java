@@ -86,4 +86,8 @@ public abstract class Entity extends GameObject{
 			healthPoints+=x;
 		}
 	}
+
+	public int getMaxHealthPoints() {
+		return maxHealthPoints;
+	}
 }
