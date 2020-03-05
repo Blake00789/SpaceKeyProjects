@@ -338,6 +338,8 @@ public class GameScreen implements Screen{
 		for (FireTruck truck : firetrucks) {
 			if(truck.isAlive()) {
 			truck.render(game.batch);
+
+
 			}
 		}
 
