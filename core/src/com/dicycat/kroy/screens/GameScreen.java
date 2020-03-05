@@ -176,7 +176,7 @@ public class GameScreen implements Screen{
 	 * @param num the truck number
 	 */
 	private void firetruckInit(float x, float y, int num) {
-		firetrucks.add(new FireTruck(new Vector2(x, y), truckStats[num], num));
+		firetrucks.add(new FireTruck(new Vector2(x, y), truckStats[num], textures.getTruck(num)));
 		healthbars.add(new StatBar(new Vector2(x, y + 25), "Green.png", 3));
 		tankbars.add(new StatBar(new Vector2(x, y + 20), "Blue.png", 3));
 	}
