@@ -36,7 +36,7 @@ public class Pattern {
 		xtra = (1-(multi % 2)) * 5;
 		degree = 90 - degree;	//Convert normal bearings (0 is up, clockwise) to LIBGDX Vector2 degrees (0 is right, anti-clockwise)
 
-		Vector2 direction = Vector2.Zero;
+		Vector2 direction;
 		for (int i = 0; i < patternLength; i++) {
 			for (int j = 0; j < multi; j++) {
 				direction = new Vector2(1, 1);

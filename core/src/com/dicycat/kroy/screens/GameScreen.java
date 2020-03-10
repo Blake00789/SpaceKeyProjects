@@ -114,7 +114,7 @@ public class GameScreen implements Screen{
 		pauseWindow.visibility(false);
 		optionsWindow = new OptionsWindow(game);
 		optionsWindow.visibility(false);
-		textures = new GameTextures(truckNum);
+		textures = new GameTextures();
 		spawnPosition = new Vector2(3750, 4000);
 		gameTimer = 60 * 5; //new    //Set timer to 5 minutes  
 		this.truckNum = truckNum;
@@ -153,7 +153,7 @@ public class GameScreen implements Screen{
 			firetruckInit(spawnPosition.x - 135 + (i * 50), spawnPosition.y, i);
 			fortressInit(i);
 		}
-		gameObjects.add(new FireStation());
+		gameObjects.add(new FireStation(textures.getFireStation(), textures.getFireStationDead()));
 		switchTrucks(truckNum);  
 
 		gamecam.translate(new Vector2(currentTruck.getX(), currentTruck.getY())); // sets initial Camera position
@@ -307,7 +307,7 @@ public class GameScreen implements Screen{
 				float randX = (float) (oldX - 400 + Math.random() * 400);
 				float randY = (float) (oldY - 400 + Math.random() * 400);
 
-				gameObjects.add(new UFO(new Vector2(randX, randY)));
+				gameObjects.add(new UFO(new Vector2(randX, randY), textures.getUFO()));
 
 
 			}

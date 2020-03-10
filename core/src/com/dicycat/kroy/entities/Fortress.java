@@ -44,14 +44,10 @@ public class Fortress extends Entity {
 		
 		
 	}
-	
-	/** 
-	 * new
-	 */
-	public Fortress() {
-		super(new Vector2(2903, 3211),  new Texture("cliffords tower.png"),  new Vector2(256, 218), 500);
-		this.deadTexture = new Texture("cliffords tower dead.png");		
-	}
+
+	// TESTING_REFACTOR_2 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+	// Removed constructor created by previous group that was just for testing purposes
+	// TESTING_REFACTOR_2 - END OF MODIFICATION  - NP STUDIOS
  
 	/**
 	 * Removes from active pool and displays destroyed state

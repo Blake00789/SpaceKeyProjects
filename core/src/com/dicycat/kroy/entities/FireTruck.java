@@ -71,32 +71,10 @@ public class FireTruck extends Entity{
 		// GameScreen class itself.
 		// STATBAR_REFACTOR_2 - END OF MODIFICATION  - NP STUDIOS
 	}
-	
-	/** 
-	 * new
-	 */
-	public FireTruck() {
-		super(new Vector2(3750, 4000), new Texture("fireTruck3.png"), new Vector2(25,50), 100);
- 
-		DIRECTIONS.put("n",0);			//North Facing Direction (up arrow)
-		DIRECTIONS.put("w",90);			//West Facing Direction (left arrow)
-		DIRECTIONS.put("s",180);		//South Facing Direction (down arrow)
-		DIRECTIONS.put("e",270);		//East Facing Direction (right arrow)
 
-		DIRECTIONS.put("nw",45);		//up and left arrows
-		DIRECTIONS.put("sw",135);		//down and left arrows
-		DIRECTIONS.put("se",225);		//down and right arrows
-		DIRECTIONS.put("ne",315);		//up and right arrows
-		DIRECTIONS.put("",0); 			// included so that if multiple keys in the opposite direction are pressed, the truck faces north
-		
-		speed=300;	//How fast the truck can move
-		flowRate=(float) 1.5;	//How fast the truck can dispense water
-		maxWater=400; //How much water the truck can hold
-		currentWater=300;
-				
-		firing = false;
-		water = new WaterStream(Vector2.Zero);
-	}
+	// TESTING_REFACTOR_1 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+	// Removed constructor created by previous group that was just for testing purposes
+	// TESTING_REFACTOR_1 - END OF MODIFICATION  - NP STUDIOS
 
 	/**
 	 * When called, this method moves the truck by 1 unit of movement in the direction calculated in "updateDirection()"
