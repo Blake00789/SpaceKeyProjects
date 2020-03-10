@@ -1,6 +1,7 @@
 package com.dicycat.kroy.bullets;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
@@ -29,7 +30,7 @@ public class Bullet extends GameObject {
 	 * @param range distance the bullet should travel before it is removed
 	 */
 	public Bullet(Vector2 spawnPos, Vector2 direction, int speed, float range) {	//Constructor
-		super(spawnPos, Kroy.mainGameScreen.textures.getBullet(), new Vector2(20,20));
+		super(spawnPos, new Texture("bullet.png"), new Vector2(20,20));
 		this.speed = speed;
 		changeDirection(direction);
 		maxDist = range;
@@ -64,6 +65,7 @@ public class Bullet extends GameObject {
 		travelDist -= posChange.len();
 		if (travelDist <= 0) {	//Remove if travelled required distance
 			remove = true;
+			getSprite().getTexture().dispose();
 		}
 		Vector2 currentPos = new Vector2(getX(),getY());
 		setPosition(currentPos.add(posChange));
@@ -78,6 +80,7 @@ public class Bullet extends GameObject {
 			if(Intersector.overlaps(hitbox, truck.getHitbox())){
 				truck.applyDamage(10);
 				remove = true;
+				getSprite().getTexture().dispose();
 			}
 		}
 
