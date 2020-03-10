@@ -87,7 +87,10 @@ public abstract class Entity extends GameObject{
 		}
 	}
 
+	// STATBAR_REFACTOR_1 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+	// Added new getter required for the statbar refactor.
 	public int getMaxHealthPoints() {
 		return maxHealthPoints;
 	}
+	// STATBAR_REFACTOR_1 - END OF MODIFICATION  - NP STUDIOS
 }

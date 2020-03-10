@@ -64,6 +64,12 @@ public class FireTruck extends Entity{
 
 		firing = false;
 		water = new WaterStream(Vector2.Zero);
+
+		// STATBAR_REFACTOR_2 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+		// Removed the creation of statbars from the firetruck class as adding the objects to the array
+		// in GameScreen would cause problems with testing so we moved this functionality to the
+		// GameScreen class itself.
+		// STATBAR_REFACTOR_2 - END OF MODIFICATION  - NP STUDIOS
 	}
 	
 	/** 
@@ -169,6 +175,10 @@ public class FireTruck extends Entity{
     	Kroy.mainGameScreen.DrawRect(new Vector2(hitbox.x, hitbox.y), new Vector2(hitbox.width, hitbox.height), 2, Color.GREEN);
     	Kroy.mainGameScreen.DrawCircle(getCentre(), range, 1, Color.BLUE);
 
+		// STATBAR_REFACTOR_3 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+		// Removed the statbars  update code from the firetruck class.
+		// STATBAR_REFACTOR_3- END OF MODIFICATION  - NP STUDIOS
+
 		//player firing
 		ArrayList<GameObject> inRange = entitiesInRange();		//find list of enemies in range
 
@@ -254,6 +264,9 @@ public class FireTruck extends Entity{
 	public void die() {
 		super.die();
 		water.setRemove(true);
+		// STATBAR_REFACTOR_4 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+		// Removed statbar remove code.
+		// STATBAR_REFACTOR_4 - END OF MODIFICATION  - NP STUDIOS
 	} 
 
 	/**
@@ -270,6 +283,9 @@ public class FireTruck extends Entity{
 		return direction;
 	}
 
+	// STATBAR_REFACTOR_5 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+	// Added getter for MaxWater needed for the statbars in the GameScreen class.
+	// STATBAR_REFACTOR_5 - END OF MODIFICATION  - NP STUDIOS
 	public float getMaxWater() {
 		return maxWater;
 	}

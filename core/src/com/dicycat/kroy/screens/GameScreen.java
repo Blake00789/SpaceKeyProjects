@@ -93,8 +93,11 @@ public class GameScreen implements Screen{
 	private int patrolUpdateRate; //How many seconds should pass before we respawn patrols;
 
 	private ArrayList<FireTruck> firetrucks = new ArrayList<FireTruck>();
+	// STATBAR_REFACTOR_6 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+	// Created new arrays for the firetruck statbars.
 	private ArrayList<StatBar> healthbars = new ArrayList<StatBar>();
 	private ArrayList<StatBar> tankbars = new ArrayList<StatBar>();
+	// STATBAR_REFACTOR_6 - END OF MODIFICATION  - NP STUDIOS
 
 	/**
 	 * extended
@@ -176,9 +179,12 @@ public class GameScreen implements Screen{
 	 * @param num the truck number
 	 */
 	private void firetruckInit(float x, float y, int num) {
+		// STATBAR_REFACTOR_7 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+		// Created statbars alongside the firetrucks and updated the firetruck creation to use the new constructor.
 		firetrucks.add(new FireTruck(new Vector2(x, y), truckStats[num], textures.getTruck(num)));
 		healthbars.add(new StatBar(new Vector2(x, y + 25), "Green.png", 3));
 		tankbars.add(new StatBar(new Vector2(x, y + 20), "Blue.png", 3));
+		// STATBAR_REFACTOR_7 - END OF MODIFICATION  - NP STUDIOS
 	}
 
 	/**
@@ -344,6 +350,8 @@ public class GameScreen implements Screen{
 			if(truck.isAlive()) {
 			truck.render(game.batch);
 
+			// STATBAR_REFACTOR_8 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+			// Updates the statbars for each firetruck
 			tankbars.get(firetrucks.indexOf(truck)).setPosition(truck.getCentre().add(0,20));
 			tankbars.get(firetrucks.indexOf(truck)).setBarDisplay((truck.getCurrentWater()/ truck.getMaxWater())*50);
 
@@ -352,6 +360,7 @@ public class GameScreen implements Screen{
 
 			healthbars.get(firetrucks.indexOf(truck)).render(game.batch);
 			tankbars.get(firetrucks.indexOf(truck)).render(game.batch);
+			// STATBAR_REFACTOR_8 - END OF MODIFICATION  - NP STUDIOS
 			}
 		}
 		objectsToRender.clear();

@@ -29,8 +29,12 @@ public class Bullet extends GameObject {
 	 * @param speed speed the bullet should travel at
 	 * @param range distance the bullet should travel before it is removed
 	 */
-	public Bullet(Vector2 spawnPos, Vector2 direction, int speed, float range) {	//Constructor
+	public Bullet(Vector2 spawnPos, Vector2 direction, int speed, float range) {
+		// REFACTOR_6 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+		// Directly passed the bullet texture into the class as accessing the public static class GameTextures
+		// would cause issues during testing.
 		super(spawnPos, new Texture("bullet.png"), new Vector2(20,20));
+		// REFACTOR_6 - END OF MODIFICATION  - NP STUDIOS
 		this.speed = speed;
 		changeDirection(direction);
 		maxDist = range;
@@ -65,7 +69,11 @@ public class Bullet extends GameObject {
 		travelDist -= posChange.len();
 		if (travelDist <= 0) {	//Remove if travelled required distance
 			remove = true;
+			// REFACTOR_7 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+			// Added texture disposal to prevent memory leaks as a new texture is made for each bullet now due to
+			// refactoring changes.
 			getSprite().getTexture().dispose();
+			// REFACTOR_7 - END OF MODIFICATION  - NP STUDIOS
 		}
 		Vector2 currentPos = new Vector2(getX(),getY());
 		setPosition(currentPos.add(posChange));
@@ -80,7 +88,11 @@ public class Bullet extends GameObject {
 			if(Intersector.overlaps(hitbox, truck.getHitbox())){
 				truck.applyDamage(10);
 				remove = true;
+				// REFACTOR_8 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+				// Added texture disposal to prevent memory leaks as a new texture is made for each bullet now due to
+				// refactoring changes.
 				getSprite().getTexture().dispose();
+				// REFACTOR_8 - END OF MODIFICATION  - NP STUDIOS
 			}
 		}
 
