@@ -171,7 +171,7 @@ public class GameScreen implements Screen{
 	 */
 	private void fortressInit(int num) {
 		Fortress tempFortress = new Fortress(fortressPositions.get(num), textures.getFortress(num), textures.getDeadFortress(num),
-				fortressSizes.get(num));
+				fortressSizes.get(num), textures.getBullet());
 
 		gameObjects.add(tempFortress);
 		fortresses.add(tempFortress);
@@ -314,7 +314,7 @@ public class GameScreen implements Screen{
 				float randX = (float) (oldX - 400 + Math.random() * 400);
 				float randY = (float) (oldY - 400 + Math.random() * 400);
 
-				gameObjects.add(new UFO(new Vector2(randX, randY), textures.getUFO()));
+				gameObjects.add(new UFO(new Vector2(randX, randY), textures.getUFO(), textures.getBullet()));
 
 
 			}

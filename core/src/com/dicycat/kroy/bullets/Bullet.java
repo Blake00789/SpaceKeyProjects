@@ -29,11 +29,11 @@ public class Bullet extends GameObject {
 	 * @param speed speed the bullet should travel at
 	 * @param range distance the bullet should travel before it is removed
 	 */
-	public Bullet(Vector2 spawnPos, Vector2 direction, int speed, float range) {
+	public Bullet(Vector2 spawnPos, Vector2 direction, int speed, float range, Texture bulletTexture) {
 		// REFACTOR_6 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 		// Directly passed the bullet texture into the class as accessing the public static class GameTextures
 		// would cause issues during testing.
-		super(spawnPos, new Texture("bullet.png"), new Vector2(20,20));
+		super(spawnPos, bulletTexture, new Vector2(20,20));
 		// REFACTOR_6 - END OF MODIFICATION  - NP STUDIOS
 		this.speed = speed;
 		changeDirection(direction);

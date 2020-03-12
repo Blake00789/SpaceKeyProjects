@@ -13,7 +13,7 @@ import com.badlogic.gdx.graphics.Texture;
  *
  */
 public class GameTextures {
-	private Texture ufo, fireStation, fireStationDead;
+	private Texture ufo, fireStation, fireStationDead, bullet;
 	private Texture[] livingFortresses = {new Texture("cliffords tower.png"),
 			new Texture("york minster.png"), new Texture("Memorial.png") ,
 			new Texture("york museum.png") , new Texture("University.png"),
@@ -40,7 +40,8 @@ public class GameTextures {
 	// REFACTOR_2 - END OF MODIFICATION - NP STUDIOS
 		ufo = new Texture("ufo.png");
 		fireStation = new Texture("FireStationTemp.png");
-		fireStationDead = new Texture("FireStationTempDead.png");	
+		fireStationDead = new Texture("FireStationTempDead.png");
+		bullet = new Texture(("bullet.png"));
 	}
 
 	// REFACTOR_3 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
@@ -97,5 +98,9 @@ public class GameTextures {
 	 */
 	public Texture getFireStationDead() {
 		return fireStationDead;
+	}
+
+	public Texture getBullet() {
+		return bullet;
 	}
 }
