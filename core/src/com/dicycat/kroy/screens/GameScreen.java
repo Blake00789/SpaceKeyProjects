@@ -135,6 +135,7 @@ public class GameScreen implements Screen{
 		fortressSizes.add(new Vector2(450, 256));
 		fortressSizes.add(new Vector2(400, 256));
 		fortressSizes.add(new Vector2(450, 256));
+		fortressesCount = 6;
 		
 		patrolUpdateRate = 30;
 	}
@@ -174,7 +175,7 @@ public class GameScreen implements Screen{
 
 		gameObjects.add(tempFortress);
 		fortresses.add(tempFortress);
-		fortressHealthBars.add(new StatBar(new Vector2(0, 0), "Green.png", 3));
+		fortressHealthBars.add(new StatBar(new Vector2(fortressPositions.get(num).x, fortressPositions.get(num).y + 100), "Red.png", 3));
 	}
 
 	/**

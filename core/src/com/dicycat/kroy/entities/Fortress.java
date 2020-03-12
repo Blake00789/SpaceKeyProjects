@@ -19,7 +19,6 @@ public class Fortress extends Entity {
 
 	private BulletDispenser dispenser;
 	private Texture deadTexture;
-	private StatBar healthBar;
 
 	/**
 	 * @param spawnPos
@@ -38,13 +37,6 @@ public class Fortress extends Entity {
 		dispenser.addPattern(new Pattern(true, 0, 1, 100, 900, 0.02f, 1, 1.2f));
 
 		this.deadTexture = deadTexture;
-
-		//THIS IS ONLY PROBLEM LEFT IN REFACTOR
-		Kroy.mainGameScreen.addFortress();
-		healthBar = new StatBar(new Vector2(getCentre().x, getCentre().y + 100), "Red.png", 10);
-		Kroy.mainGameScreen.addGameObject(healthBar);
-
-		
 	}
 
 	// TESTING_REFACTOR_2 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
@@ -58,7 +50,6 @@ public class Fortress extends Entity {
 	public void die() {
 		super.die();
 		sprite.setTexture(deadTexture);
-		healthBar.setRemove(true);
 		displayable = true;
 		Kroy.mainGameScreen.removeFortress();
 
@@ -86,8 +77,6 @@ public class Fortress extends Entity {
 	@Override
 	public void applyDamage(float damage) {
 		super.applyDamage(damage);
-		healthBar.setPosition(getCentre().add(0, (getHeight() / 2) + 25));
-		healthBar.setBarDisplay((getHealthPoints()*500)/maxHealthPoints);
 	}
 	
 	/**
