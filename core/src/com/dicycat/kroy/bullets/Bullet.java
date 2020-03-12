@@ -72,7 +72,6 @@ public class Bullet extends GameObject {
 			// REFACTOR_7 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 			// Added texture disposal to prevent memory leaks as a new texture is made for each bullet now due to
 			// refactoring changes.
-			getSprite().getTexture().dispose();
 			// REFACTOR_7 - END OF MODIFICATION  - NP STUDIOS
 		}
 		Vector2 currentPos = new Vector2(getX(),getY());
@@ -91,7 +90,6 @@ public class Bullet extends GameObject {
 				// REFACTOR_8 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 				// Added texture disposal to prevent memory leaks as a new texture is made for each bullet now due to
 				// refactoring changes.
-				getSprite().getTexture().dispose();
 				// REFACTOR_8 - END OF MODIFICATION  - NP STUDIOS
 			}
 		}

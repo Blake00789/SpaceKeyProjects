@@ -175,7 +175,7 @@ public class GameScreen implements Screen{
 
 		gameObjects.add(tempFortress);
 		fortresses.add(tempFortress);
-		fortressHealthBars.add(new StatBar(new Vector2(fortressPositions.get(num).x, fortressPositions.get(num).y + 100), "Red.png", 3));
+		fortressHealthBars.add(new StatBar(new Vector2(fortressPositions.get(num).x, fortressPositions.get(num).y + 100), "Red.png", 10));
 	}
 
 	/**
@@ -375,8 +375,9 @@ public class GameScreen implements Screen{
 			if(fortress.isAlive()) {
 				fortress.render(game.batch);
 
-				fortressHealthBars.get(fortresses.indexOf(fortress)).setPosition(fortress.getCentre().add(0, 20));
-				fortressHealthBars.get(fortresses.indexOf(fortress)).setBarDisplay(fortress.getMaxHealthPoints()*50/fortress.getMaxHealthPoints());
+				fortressHealthBars.get(fortresses.indexOf(fortress)).setPosition(fortress.getCentre().add(0, 100));
+				fortressHealthBars.get(fortresses.indexOf(fortress)).setBarDisplay(fortress.getHealthPoints()*500/fortress.getMaxHealthPoints());
+				fortressHealthBars.get(fortresses.indexOf(fortress)).render(game.batch);
 			}
 		}
 
