@@ -26,6 +26,7 @@ import com.dicycat.kroy.entities.FireTruck;
 import com.dicycat.kroy.entities.Fortress;
 import com.dicycat.kroy.entities.UFO;
 import com.dicycat.kroy.gamemap.TiledGameMap;
+import com.dicycat.kroy.misc.StatBar;
 import com.dicycat.kroy.scenes.HUD;
 import com.dicycat.kroy.scenes.OptionsWindow;
 import com.dicycat.kroy.scenes.PauseWindow;
@@ -91,7 +92,14 @@ public class GameScreen implements Screen{
 	private List<Vector2> fortressPositions, fortressSizes; //where our fortresses spawn
 	private int patrolUpdateRate; //How many seconds should pass before we respawn patrols;
 
-	private ArrayList<FireTruck> firetrucks=new ArrayList<FireTruck>();
+	private ArrayList<FireTruck> firetrucks = new ArrayList<FireTruck>();
+	private ArrayList<Fortress> fortresses = new ArrayList<Fortress>();
+	// STATBAR_REFACTOR_6 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+	// Created new arrays for the firetruck statbars.
+	private ArrayList<StatBar> healthbars = new ArrayList<StatBar>();
+	private ArrayList<StatBar> tankbars = new ArrayList<StatBar>();
+	private ArrayList<StatBar> fortressHealthBars = new ArrayList<>();
+	// STATBAR_REFACTOR_6 - END OF MODIFICATION  - NP STUDIOS
 
 	/**
 	 * extended
@@ -108,7 +116,7 @@ public class GameScreen implements Screen{
 		pauseWindow.visibility(false);
 		optionsWindow = new OptionsWindow(game);
 		optionsWindow.visibility(false);
-		textures = new GameTextures(truckNum);
+		textures = new GameTextures();
 		spawnPosition = new Vector2(3750, 4000);
 		gameTimer = 60 * 5; //new    //Set timer to 5 minutes  
 		this.truckNum = truckNum;
@@ -127,6 +135,7 @@ public class GameScreen implements Screen{
 		fortressSizes.add(new Vector2(450, 256));
 		fortressSizes.add(new Vector2(400, 256));
 		fortressSizes.add(new Vector2(450, 256));
+		fortressesCount = 6;
 		
 		patrolUpdateRate = 30;
 	}
@@ -147,7 +156,7 @@ public class GameScreen implements Screen{
 			firetruckInit(spawnPosition.x - 135 + (i * 50), spawnPosition.y, i);
 			fortressInit(i);
 		}
-		gameObjects.add(new FireStation());
+		gameObjects.add(new FireStation(textures.getFireStation(), textures.getFireStationDead()));
 		switchTrucks(truckNum);  
 
 		gamecam.translate(new Vector2(currentTruck.getX(), currentTruck.getY())); // sets initial Camera position
@@ -161,8 +170,12 @@ public class GameScreen implements Screen{
 	 * @param num the fortress number
 	 */
 	private void fortressInit(int num) {
-		gameObjects.add(new Fortress(fortressPositions.get(num), textures.getFortress(num), textures.getDeadFortress(num),
-				fortressSizes.get(num)));
+		Fortress tempFortress = new Fortress(fortressPositions.get(num), textures.getFortress(num), textures.getDeadFortress(num),
+				fortressSizes.get(num), textures.getBullet());
+
+		gameObjects.add(tempFortress);
+		fortresses.add(tempFortress);
+		fortressHealthBars.add(new StatBar(new Vector2(fortressPositions.get(num).x, fortressPositions.get(num).y + 100), "Red.png", 10));
 	}
 
 	/**
@@ -173,7 +186,12 @@ public class GameScreen implements Screen{
 	 * @param num the truck number
 	 */
 	private void firetruckInit(float x, float y, int num) {
-		firetrucks.add(new FireTruck(new Vector2(x, y), truckStats[num], num));
+		// STATBAR_REFACTOR_7 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+		// Created statbars alongside the firetrucks and updated the firetruck creation to use the new constructor.
+		firetrucks.add(new FireTruck(new Vector2(x, y), truckStats[num], textures.getTruck(num)));
+		healthbars.add(new StatBar(new Vector2(x, y + 25), "Green.png", 3));
+		tankbars.add(new StatBar(new Vector2(x, y + 20), "Blue.png", 3));
+		// STATBAR_REFACTOR_7 - END OF MODIFICATION  - NP STUDIOS
 	}
 
 	/**
@@ -296,7 +314,7 @@ public class GameScreen implements Screen{
 				float randX = (float) (oldX - 400 + Math.random() * 400);
 				float randY = (float) (oldY - 400 + Math.random() * 400);
 
-				gameObjects.add(new UFO(new Vector2(randX, randY)));
+				gameObjects.add(new UFO(new Vector2(randX, randY), textures.getUFO(), textures.getBullet()));
 
 
 			}
@@ -339,7 +357,27 @@ public class GameScreen implements Screen{
 			if(truck.isAlive()) {
 			truck.render(game.batch);
 
+			// STATBAR_REFACTOR_8 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+			// Updates the statbars for each firetruck
+			tankbars.get(firetrucks.indexOf(truck)).setPosition(truck.getCentre().add(0,20));
+			tankbars.get(firetrucks.indexOf(truck)).setBarDisplay((truck.getCurrentWater()/ truck.getMaxWater())*50);
 
+			healthbars.get(firetrucks.indexOf(truck)).setPosition(truck.getCentre().add(0,25));
+			healthbars.get(firetrucks.indexOf(truck)).setBarDisplay((truck.getHealthPoints()*50)/truck.getMaxHealthPoints());
+
+			healthbars.get(firetrucks.indexOf(truck)).render(game.batch);
+			tankbars.get(firetrucks.indexOf(truck)).render(game.batch);
+			// STATBAR_REFACTOR_8 - END OF MODIFICATION  - NP STUDIOS
+			}
+		}
+
+		for (Fortress fortress : fortresses) {
+			if(fortress.isAlive()) {
+				fortress.render(game.batch);
+
+				fortressHealthBars.get(fortresses.indexOf(fortress)).setPosition(fortress.getCentre().add(0, 100));
+				fortressHealthBars.get(fortresses.indexOf(fortress)).setBarDisplay(fortress.getHealthPoints()*500/fortress.getMaxHealthPoints());
+				fortressHealthBars.get(fortresses.indexOf(fortress)).render(game.batch);
 			}
 		}
 

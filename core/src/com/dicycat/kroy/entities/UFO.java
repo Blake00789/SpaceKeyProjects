@@ -1,6 +1,7 @@
 package com.dicycat.kroy.entities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector2;
 import com.dicycat.kroy.Kroy;
@@ -35,12 +36,12 @@ public class UFO extends Entity {
 	 *
 	 * @param spawnPos Where we spawn
 	 */
-	public UFO(Vector2 spawnPos) {
-		super(spawnPos, Kroy.mainGameScreen.textures.getUFO(), new Vector2(80, 80), 100);
+	public UFO(Vector2 spawnPos, Texture texture, Texture bulletTexture) {
+		super(spawnPos, texture, new Vector2(80, 80), 100);
 		this.spawnPos = spawnPos;
 		dispenser = new BulletDispenser(this);
-		dispenser.addPattern(new Pattern(180, 300, 800, 0.1f, 20, 1, 0.5f));
-
+		dispenser.addPattern(new Pattern(180, 300, 800, 0.1f,
+				20, 1, 0.5f, bulletTexture));
 	}
 
 	/**

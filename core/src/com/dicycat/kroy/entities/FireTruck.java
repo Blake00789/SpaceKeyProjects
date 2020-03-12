@@ -34,9 +34,7 @@ public class FireTruck extends Entity{
 	protected final int[] ARROWKEYS = {Keys.UP, Keys.DOWN, Keys.RIGHT, Keys.LEFT}; // List of the arrow keys to be able to iterate through them later on
 	protected Integer direction = 0; // Direction the truck is facing
 
-	private WaterStream water; 
-	private StatBar tank;
-	private StatBar healthBar;
+	private WaterStream water;
 	private boolean firing;
 	private float range;
 
@@ -44,8 +42,8 @@ public class FireTruck extends Entity{
 	 * @param spawnPos
 	 * @param truckStats
 	 */
-	public FireTruck(Vector2 spawnPos, Float[] truckStats, int truckNum) {
-		super(spawnPos, Kroy.mainGameScreen.textures.getTruck(truckNum), new Vector2(25,50), 100);
+	public FireTruck(Vector2 spawnPos, Float[] truckStats, Texture texture) {
+		super(spawnPos, texture, new Vector2(25,50), 100);
  
 		DIRECTIONS.put("n",0);			//North Facing Direction (up arrow)
 		DIRECTIONS.put("w",90);			//West Facing Direction (left arrow)
@@ -67,38 +65,16 @@ public class FireTruck extends Entity{
 		firing = false;
 		water = new WaterStream(Vector2.Zero);
 
-		tank = new StatBar(Vector2.Zero, "Blue.png", 3);
-		Kroy.mainGameScreen.addGameObject(tank);
-
-		healthBar= new StatBar(Vector2.Zero, "Green.png", 3);
-		Kroy.mainGameScreen.addGameObject(healthBar);
+		// STATBAR_REFACTOR_2 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+		// Removed the creation of statbars from the firetruck class as adding the objects to the array
+		// in GameScreen would cause problems with testing so we moved this functionality to the
+		// GameScreen class itself.
+		// STATBAR_REFACTOR_2 - END OF MODIFICATION  - NP STUDIOS
 	}
-	
-	/** 
-	 * new
-	 */
-	public FireTruck() {
-		super(new Vector2(3750, 4000), new Texture("fireTruck3.png"), new Vector2(25,50), 100);
- 
-		DIRECTIONS.put("n",0);			//North Facing Direction (up arrow)
-		DIRECTIONS.put("w",90);			//West Facing Direction (left arrow)
-		DIRECTIONS.put("s",180);		//South Facing Direction (down arrow)
-		DIRECTIONS.put("e",270);		//East Facing Direction (right arrow)
 
-		DIRECTIONS.put("nw",45);		//up and left arrows
-		DIRECTIONS.put("sw",135);		//down and left arrows
-		DIRECTIONS.put("se",225);		//down and right arrows
-		DIRECTIONS.put("ne",315);		//up and right arrows
-		DIRECTIONS.put("",0); 			// included so that if multiple keys in the opposite direction are pressed, the truck faces north
-		
-		speed=300;	//How fast the truck can move
-		flowRate=(float) 1.5;	//How fast the truck can dispense water
-		maxWater=400; //How much water the truck can hold
-		currentWater=300;
-				
-		firing = false;
-		water = new WaterStream(Vector2.Zero);
-	}
+	// TESTING_REFACTOR_1 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+	// Removed constructor created by previous group that was just for testing purposes
+	// TESTING_REFACTOR_1 - END OF MODIFICATION  - NP STUDIOS
 
 	/**
 	 * When called, this method moves the truck by 1 unit of movement in the direction calculated in "updateDirection()"
@@ -176,14 +152,10 @@ public class FireTruck extends Entity{
         //Draw debugs
     	Kroy.mainGameScreen.DrawRect(new Vector2(hitbox.x, hitbox.y), new Vector2(hitbox.width, hitbox.height), 2, Color.GREEN);
     	Kroy.mainGameScreen.DrawCircle(getCentre(), range, 1, Color.BLUE);
-		
 
-		//water bar update
-		tank.setPosition(getCentre().add(0,20));
-		tank.setBarDisplay((currentWater/maxWater)*50);
-
-		healthBar.setPosition(getCentre().add(0,25));
-		healthBar.setBarDisplay((getHealthPoints()*50)/maxHealthPoints);
+		// STATBAR_REFACTOR_3 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+		// Removed the statbars  update code from the firetruck class.
+		// STATBAR_REFACTOR_3- END OF MODIFICATION  - NP STUDIOS
 
 		//player firing
 		ArrayList<GameObject> inRange = entitiesInRange();		//find list of enemies in range
@@ -270,8 +242,9 @@ public class FireTruck extends Entity{
 	public void die() {
 		super.die();
 		water.setRemove(true);
-		tank.setRemove(true);
-		healthBar.setRemove(true);
+		// STATBAR_REFACTOR_4 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+		// Removed statbar remove code.
+		// STATBAR_REFACTOR_4 - END OF MODIFICATION  - NP STUDIOS
 	} 
 
 	/**
@@ -286,6 +259,13 @@ public class FireTruck extends Entity{
 	 */
 	public Integer getDirection() {
 		return direction;
+	}
+
+	// STATBAR_REFACTOR_5 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+	// Added getter for MaxWater needed for the statbars in the GameScreen class.
+	// STATBAR_REFACTOR_5 - END OF MODIFICATION  - NP STUDIOS
+	public float getMaxWater() {
+		return maxWater;
 	}
 
 	/**
@@ -330,6 +310,7 @@ public class FireTruck extends Entity{
 	public void setCurrentWater(int x) {
 		 currentWater += x;
 	}
-	
+
+
 
 }
