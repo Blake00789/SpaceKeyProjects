@@ -38,10 +38,12 @@ public class Fortress extends Entity {
 		dispenser.addPattern(new Pattern(true, 0, 1, 100, 900, 0.02f, 1, 1.2f));
 
 		this.deadTexture = deadTexture;
+
+		//THIS IS ONLY PROBLEM LEFT IN REFACTOR
 		Kroy.mainGameScreen.addFortress();
 		healthBar = new StatBar(new Vector2(getCentre().x, getCentre().y + 100), "Red.png", 10);
 		Kroy.mainGameScreen.addGameObject(healthBar);
-		
+
 		
 	}
 
@@ -59,6 +61,8 @@ public class Fortress extends Entity {
 		healthBar.setRemove(true);
 		displayable = true;
 		Kroy.mainGameScreen.removeFortress();
+
+		//This is just bad practice... should not be in the fortress class but higher up
 		if (Kroy.mainGameScreen.fortressesLeft() == 0) {	//If last fortress
 			Kroy.mainGameScreen.gameOver(true); 					//End game WIN
 		}

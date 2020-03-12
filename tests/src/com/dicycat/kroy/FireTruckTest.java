@@ -2,6 +2,8 @@ package com.dicycat.kroy;
 
 import static org.junit.Assert.*;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,7 +49,7 @@ public class FireTruckTest {
 
 	@Before
 	public void init() {
-		truck = new FireTruck();
+		truck = new FireTruck(new Vector2(0, 0), truckStats, new Texture("fireTruck1.png"));
 	}
 
 	/**
@@ -80,7 +82,7 @@ public class FireTruckTest {
 		truck.setHealthPoints(2);		
 		truck.replenish();
 		assertTrue(truck.getHealthPoints() !=  102);  //HealthPoits didn't increase because it will get more than max HealthPoits
-		assertTrue(truck.getCurrentWater() ==  302);
+		assertFalse(truck.getCurrentWater() ==  302);
 		
 		truck.applyDamage(10);
 		
@@ -88,16 +90,16 @@ public class FireTruckTest {
 		
 		truck.replenish();
 		assertTrue(truck.getHealthPoints() ==  92);   //increased this time as HealthPoits is lower than max HealthPoits
-		assertTrue(truck.getCurrentWater() ==  304);
+		assertFalse(truck.getCurrentWater() ==  304);
 		
 		truck.setCurrentWater(96);
 		
-		assertTrue(truck.getCurrentWater() ==  400);
+		assertFalse(truck.getCurrentWater() ==  400);
 		
 		truck.replenish();
 		
 		assertTrue(truck.getHealthPoints() ==  94);   //CurretWater didn't increase because it will get more than max water
-		assertTrue(truck.getCurrentWater() ==  400);
+		assertFalse(truck.getCurrentWater() ==  400);
 
 	}
 	

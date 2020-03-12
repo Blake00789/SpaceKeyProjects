@@ -93,10 +93,12 @@ public class GameScreen implements Screen{
 	private int patrolUpdateRate; //How many seconds should pass before we respawn patrols;
 
 	private ArrayList<FireTruck> firetrucks = new ArrayList<FireTruck>();
+	private ArrayList<Fortress> fortresses = new ArrayList<Fortress>();
 	// STATBAR_REFACTOR_6 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 	// Created new arrays for the firetruck statbars.
 	private ArrayList<StatBar> healthbars = new ArrayList<StatBar>();
 	private ArrayList<StatBar> tankbars = new ArrayList<StatBar>();
+	private ArrayList<StatBar> fortressHealthBars = new ArrayList<>();
 	// STATBAR_REFACTOR_6 - END OF MODIFICATION  - NP STUDIOS
 
 	/**
@@ -167,8 +169,12 @@ public class GameScreen implements Screen{
 	 * @param num the fortress number
 	 */
 	private void fortressInit(int num) {
-		gameObjects.add(new Fortress(fortressPositions.get(num), textures.getFortress(num), textures.getDeadFortress(num),
-				fortressSizes.get(num)));
+		Fortress tempFortress = new Fortress(fortressPositions.get(num), textures.getFortress(num), textures.getDeadFortress(num),
+				fortressSizes.get(num));
+
+		gameObjects.add(tempFortress);
+		fortresses.add(tempFortress);
+		fortressHealthBars.add(new StatBar(new Vector2(0, 0), "Green.png", 3));
 	}
 
 	/**
@@ -363,6 +369,16 @@ public class GameScreen implements Screen{
 			// STATBAR_REFACTOR_8 - END OF MODIFICATION  - NP STUDIOS
 			}
 		}
+
+		for (Fortress fortress : fortresses) {
+			if(fortress.isAlive()) {
+				fortress.render(game.batch);
+
+				fortressHealthBars.get(fortresses.indexOf(fortress)).setPosition(fortress.getCentre().add(0, 20));
+				fortressHealthBars.get(fortresses.indexOf(fortress)).setBarDisplay(fortress.getMaxHealthPoints()*50/fortress.getMaxHealthPoints());
+			}
+		}
+
 		objectsToRender.clear();
 	}
 

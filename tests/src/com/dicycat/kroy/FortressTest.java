@@ -64,7 +64,7 @@ public class FortressTest {
 	 
 	@Before
 	public void init() {
-		fortress=new Fortress();
+		fortress=new Fortress(new Vector2(0, 0 ), new Texture("fireTruck1.png"), new Texture("fireTruck2.png"), new Vector2(100, 100));
 	}
 	 
 	/**

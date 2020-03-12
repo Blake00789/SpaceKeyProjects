@@ -54,7 +54,7 @@ public class FireStationTest {
 	
 	@Before
 	public void init() {
-		firestation = new FireStation();
+		firestation = new FireStation(new Texture("fireTruck1.png"), new Texture("fireTruck2.png"));
 	}
 	
 	 
