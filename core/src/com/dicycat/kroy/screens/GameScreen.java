@@ -73,6 +73,17 @@ public class GameScreen implements Screen{
 			{300f, 1f, 500f, 300f},		//Capacity
 			{300f, 1f, 400f, 450f},		//Range
 		};
+
+	// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - START OF MODIFICATION  - [NPSTUDIOS] - [CASSIE_LILLYSTONE] ----
+	private Float[][] fortressStats = { //Each list contains unique values for health and damage. One list for each fortress
+
+            {300f, 5f},
+            {400f, 10f},
+            {500f, 15f},
+            {600f, 20f},
+            {700f, 25f},
+            {800f, 30f},
+    }; //[UNIQUE_FORTRESS_HEALTH_DAMAGE] - END OF MODIFICATION  - [NPSTUDIOS]
 	
 	
 	private int truckNum; // Identifies the truck thats selected in the menu screen
@@ -170,9 +181,12 @@ public class GameScreen implements Screen{
 	 * @param num the fortress number
 	 */
 	private void fortressInit(int num) {
+		// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - START OF MODIFICATION  - [NPSTUDIOS] - [CASSIE_LILLYSTONE] ----
 		Fortress tempFortress = new Fortress(fortressPositions.get(num), textures.getFortress(num), textures.getDeadFortress(num),
-				fortressSizes.get(num), textures.getBullet());
-
+				fortressSizes.get(num), textures.getBullet(), fortressStats[num]); //Added the list of stats corresponding
+		  																	       // to the fortress being made as a parameter
+																					//to pass to instantiate a fortress
+        // [UNIQUE_FORTRESS_HEALTH_DAMAGE] - END OF MODIFICATION  - [NPSTUDIOS] ----
 		gameObjects.add(tempFortress);
 		fortresses.add(tempFortress);
 		fortressHealthBars.add(new StatBar(new Vector2(fortressPositions.get(num).x, fortressPositions.get(num).y + 100), "Red.png", 10));
