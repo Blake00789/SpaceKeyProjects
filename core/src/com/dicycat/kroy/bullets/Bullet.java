@@ -93,9 +93,14 @@ public class Bullet extends GameObject {
 		FireTruck truck = Kroy.mainGameScreen.getPlayer();
 		if (truck.isAlive()) {
 			if(Intersector.overlaps(hitbox, truck.getHitbox())){
-				// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - START OF MODIFICATION  - [NPSTUDIOS] - [CASSIE_LILLYSTONE] ---
-				truck.applyDamage(fortressDamage); //Replace hardcoded value with the parameter for fortressDamage
-				// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - END OF MODIFICATION  - [NPSTUDIOS]---
+                // [FORTRESS_IMPROVEMENT] - START OF MODIFICATION  - [NPSTUDIOS] - [CASSIE_LILLYSTONE] ---
+			    if (Kroy.mainGameScreen.gameTimer == 150){ //If the game is half way through then double the amount of damage applied
+                    // [UNIQUE_FORTRESS_HEALTH_DAMAGE] - START OF MODIFICATION  - [NPSTUDIOS] - [CASSIE_LILLYSTONE] ---
+			        truck.applyDamage((2*fortressDamage)); //Replace hardcoded value with the parameter for fortressDamage
+                } else {
+			        truck.applyDamage(fortressDamage); //Replace hardcoded value with the parameter for fortressDamage
+                } // [UNIQUE_FORTRESS_HEALTH_DAMAGE] - END OF MODIFICATION  - [NPSTUDIOS]---
+                // [FORTRESS_IMPROVEMENT] - END OF MODIFICATION  - [NPSTUDIOS]---
 				remove = true;
 				// REFACTOR_8 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 				// Added texture disposal to prevent memory leaks as a new texture is made for each bullet now due to

@@ -700,5 +700,10 @@ public class GameScreen implements Screen{
 	public Vector2 getSpawnPosition() {
 		return spawnPosition;
 	}
-	
+
+    // [FORTRESS_IMPROVEMENT] - START OF MODIFICATION  - [NP_STUDIOS] - [CASSIE_LILLYSTONE] ----
+	public ArrayList getFortresses(){
+	    return fortresses;
+    } //Added a getter which returns a list of fortresses, required for making fortress health improve over time
+    // [FORTRESS_IMPROVEMENT] - END OF MODIFICATION  - [NP_STUDIOS]----
 }
