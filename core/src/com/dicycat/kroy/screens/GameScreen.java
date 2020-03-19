@@ -275,7 +275,7 @@ public class GameScreen implements Screen{
 		
 		List<GameObject> toRemove = new ArrayList<GameObject>();
 		List<Vector2> patrolPositions = new ArrayList<>();
-
+		System.out.println(fortressesCount);
 		for (GameObject gObject : gameObjects) {	//Go through every game object
 			gObject.update();						//Update the game object
 			if (gObject.isRemove()) {				//Check if game object is to be removed
@@ -384,9 +384,10 @@ public class GameScreen implements Screen{
 			// STATBAR_REFACTOR_8 - END OF MODIFICATION  - NP STUDIOS
 			}
 		}
-
+		int alive = 0;
 		for (Fortress fortress : fortresses) {
 			if(fortress.isAlive()) {
+				alive++;
 				fortress.render(game.batch);
 
 				fortressHealthBars.get(fortresses.indexOf(fortress)).setPosition(fortress.getCentre().add(0, 100));
@@ -394,6 +395,8 @@ public class GameScreen implements Screen{
 				fortressHealthBars.get(fortresses.indexOf(fortress)).render(game.batch);
 			}
 		}
+		fortressesCount = alive;
+
 
 		objectsToRender.clear();
 	}
@@ -562,20 +565,6 @@ public class GameScreen implements Screen{
 	    		return;
 	    	}
 	    });
-	}
-
-	/**
-	 * Add one fortress to the count
-	 */
-	public void addFortress() {
-		fortressesCount++;
-	}
-
-	/**
-	 * Remove one fortress to the count
-	 */
-	public void removeFortress() {
-		fortressesCount--;
 	}
 
 	/**
