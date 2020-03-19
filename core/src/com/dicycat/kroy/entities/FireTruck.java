@@ -160,10 +160,11 @@ public class FireTruck extends Entity{
 		//player firing
 		ArrayList<GameObject> inRange = entitiesInRange();		//find list of enemies in range
 
-		if(inRange.isEmpty() || (currentWater<=0)){				//Removes the water stream if nothing is in range
+		if(inRange.isEmpty() || (currentWater<=0 || !Gdx.input.isKeyPressed(Keys.SPACE))){				//Removes the water stream if nothing is in range
 			firing=false;
 			water.setRemove(true);
-		}else if(!firing){					//Adds the water stream if something comes into range
+		}
+		else if(!firing){					//Adds the water stream if something comes into range
 			water= new WaterStream(Vector2.Zero);
 			firing=true;
 			Kroy.mainGameScreen.addGameObject(water);		//initialises water as a WaterStream
