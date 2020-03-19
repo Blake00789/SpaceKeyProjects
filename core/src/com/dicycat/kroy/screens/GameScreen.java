@@ -275,7 +275,6 @@ public class GameScreen implements Screen{
 		
 		List<GameObject> toRemove = new ArrayList<GameObject>();
 		List<Vector2> patrolPositions = new ArrayList<>();
-		System.out.println(fortressesCount);
 		for (GameObject gObject : gameObjects) {	//Go through every game object
 			gObject.update();						//Update the game object
 			if (gObject.isRemove()) {				//Check if game object is to be removed
