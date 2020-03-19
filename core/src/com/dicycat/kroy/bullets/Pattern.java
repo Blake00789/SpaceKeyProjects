@@ -33,7 +33,7 @@ public class Pattern {
 	//For all Pattern constructors, added fortressDamage as a parameter and as a parameter for the instantiation of the bullets
 	public Pattern(int degree, int speed, int range, float timeBetweenShots, int patternLength, int multi, float cooldown,
 				   Texture bulletTexture, float fortressDamage) {
-		aim = false;
+		aim = true;
 		waitTime = timeBetweenShots;
 		bullets = new Bullet[patternLength][multi];
 		this.cooldown = cooldown; 
