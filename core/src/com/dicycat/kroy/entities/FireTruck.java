@@ -159,8 +159,10 @@ public class FireTruck extends Entity{
 
 		//player firing
 		ArrayList<GameObject> inRange = entitiesInRange();		//find list of enemies in range
-
-		if(inRange.isEmpty() || (currentWater<=0 || !Gdx.input.isKeyPressed(Keys.SPACE))){				//Removes the water stream if nothing is in range
+		// ATTACK_WITH_SPACE - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+		// Made it so the user has to hold space to attack the closest entity to them
+		if(inRange.isEmpty() || (currentWater<=0 || !Gdx.input.isKeyPressed(Keys.SPACE))){//Removes the water stream if nothing is in range
+		// ATTACK_WITH_SPACE - END OF MODIFICATION  - NP STUDIOS
 			firing=false;
 			water.setRemove(true);
 		}
