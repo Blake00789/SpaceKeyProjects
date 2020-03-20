@@ -35,9 +35,9 @@ public class MenuScreen implements Screen{
   	optionsButton, 
   	optionsButtonActive, 
   	exitButton, 
-  	exitButtonActive, 
-  	minigameButton, 
-  	minigameButtonActive, 
+  	exitButtonActive,
+		  loadGameButton,
+		  loadGameButtonActive,
   	background;
   
   private Stage stage;
@@ -52,8 +52,8 @@ public class MenuScreen implements Screen{
   private int buttonHeight = 50;
   private int xAxisCentred = (Kroy.width/2) - (buttonWidth/2);
   private int playButtonY = (Kroy.height/2)+75;
-  private int optionsButtonY = (Kroy.height/2);
-  private int minigameButtonY = (Kroy.height/2)-75;
+  private int optionsButtonY = (Kroy.height/2)-75;
+  private int loadgameButtonY = (Kroy.height/2);
   private int exitButtonY = (Kroy.height/2)-150;
   
   private Pixmap pm = new Pixmap(Gdx.files.internal("handHD2.png")); //cursor
@@ -76,21 +76,18 @@ public class MenuScreen implements Screen{
   }
   
   public MenuScreenState state = MenuScreenState.MAINMENU;
-  
-  /**
-   * @param game
-   */
+
   public MenuScreen(Kroy game) { 
 	  this.game = game; 
-	  exitButton = new Texture("EXIT.png"); 	//in later stages we could also have buttonActive and buttonInactive
-	  exitButtonActive = new Texture("exitActive.png");
+	  exitButton = new Texture("quit.png"); 	//in later stages we could also have buttonActive and buttonInactive
+	  exitButtonActive = new Texture("quitActive.png");
 	  optionsButton = new Texture("options.png");
 	  optionsButtonActive = new Texture("optionsActive.png");
 	  playButton = new Texture("newgame.png");
-	  playButtonActive = new Texture("newActive.png");
-	  minigameButton = new Texture("minigame.png");
-	  minigameButtonActive = new Texture("minigameActive.png");
-	  background = new Texture ("fireforce.png");
+	  playButtonActive = new Texture("newgameActive.png");
+	  loadGameButton = new Texture("loadgame.png");
+	  loadGameButtonActive = new Texture("loadgameActive.png");
+	  background = new Texture ("fireforce.jpg");
 	  
 	  gamecam = new OrthographicCamera();
 	  gameport = new FitViewport(Kroy.width, Kroy.height, gamecam);
@@ -128,7 +125,7 @@ public class MenuScreen implements Screen{
 			  Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, xHotSpot, yHotSpot));
 			  game.batch.draw(background, 0, 0);
 			 
-			  game.batch.draw(minigameButton, xAxisCentred, minigameButtonY, buttonWidth, buttonHeight);
+			  game.batch.draw(loadGameButton, xAxisCentred, loadgameButtonY, buttonWidth, buttonHeight);
 			
 			
 			  //for play button: checks if the position of the cursor is inside the coordinates of the button
@@ -156,13 +153,13 @@ public class MenuScreen implements Screen{
 			  }
 				
 			  //for minigame button
-			  if(( (Gdx.input.getX() < (xAxisCentred + buttonWidth)) && (Gdx.input.getX() > xAxisCentred) ) && ( (Kroy.height - Gdx.input.getY() > minigameButtonY ) && (Kroy.height - Gdx.input.getY() < (minigameButtonY + buttonHeight)) ) ){
-				  game.batch.draw(minigameButtonActive, xAxisCentred, minigameButtonY, buttonWidth, buttonHeight);
+			  if(( (Gdx.input.getX() < (xAxisCentred + buttonWidth)) && (Gdx.input.getX() > xAxisCentred) ) && ( (Kroy.height - Gdx.input.getY() > loadgameButtonY) && (Kroy.height - Gdx.input.getY() < (loadgameButtonY + buttonHeight)) ) ){
+				  game.batch.draw(loadGameButtonActive, xAxisCentred, loadgameButtonY, buttonWidth, buttonHeight);
 				  if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
 					  startMinigame();
 						  }
 					  } else {
-						  game.batch.draw(minigameButton, xAxisCentred, minigameButtonY, buttonWidth, buttonHeight);
+						  game.batch.draw(loadGameButton, xAxisCentred, loadgameButtonY, buttonWidth, buttonHeight);
 					  }
 	
 						  //for options button
