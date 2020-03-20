@@ -244,6 +244,7 @@ public class FireTruck extends Entity{
 	public void die() {
 		super.die();
 		water.setRemove(true);
+
 		// STATBAR_REFACTOR_4 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 		// Removed statbar remove code.
 		// STATBAR_REFACTOR_4 - END OF MODIFICATION  - NP STUDIOS
@@ -253,7 +254,7 @@ public class FireTruck extends Entity{
 
         for (Object fortress : fortressList){
             setHealthPoints(10); //Add 10 to the health of each fortress each time a truck is killed - so that fortresses improve their health over time
-            // [FORTRESS_IMPROVEMENT] - END OF MODIFICATION  - [NP_STUDIOS] ----
+		// [FORTRESS_IMPROVEMENT] - END OF MODIFICATION  - [NP_STUDIOS] ----
         }
 
 	} 

@@ -383,6 +383,10 @@ public class GameScreen implements Screen{
 			// STATBAR_REFACTOR_8 - END OF MODIFICATION  - NP STUDIOS
 			}
 		}
+
+		// FORTRESS_COUNT_FIX_1 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+		// Previously the game was ending when only 3 fortresses were destroyed so we added this code to
+		// fix the fortress count, ensuring the game completed at the correct point.
 		int alive = 0;
 		for (Fortress fortress : fortresses) {
 			if(fortress.isAlive()) {
@@ -395,6 +399,7 @@ public class GameScreen implements Screen{
 			}
 		}
 		fortressesCount = alive;
+		// FORTRESS_COUNT_FIX_1 - END OF MODIFICATION  - NP STUDIOS
 
 
 		objectsToRender.clear();
@@ -682,6 +687,10 @@ public class GameScreen implements Screen{
 		return hud;
 	}
 
+	// FORTRESS_COUNT_FIX_2 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+	// Deleted unused setters for fortressCount
+	// FORTRESS_COUNT_FIX_2 - END OF MODIFICATION  - NP STUDIOS
+	
 	/** 
 	 * @return spawnPosition
 	 */

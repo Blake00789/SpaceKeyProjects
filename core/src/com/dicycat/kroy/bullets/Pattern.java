@@ -31,8 +31,9 @@ public class Pattern {
 
 	// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - START OF MODIFICATION  - [NPSTUDIOS] - [CASSIE_LILLYSTONE] ---
 	//For all Pattern constructors, added fortressDamage as a parameter and as a parameter for the instantiation of the bullets
+	// Also set aim to true for the first pattern as this would just fire straight down and not target the user
 	public Pattern(int degree, int speed, int range, float timeBetweenShots, int patternLength, int multi, float cooldown,
-				   Texture bulletTexture, float fortressDamage) {
+				   Texture bulletTexture, float damage) {
 		aim = true;
 		waitTime = timeBetweenShots;
 		bullets = new Bullet[patternLength][multi];
@@ -46,7 +47,7 @@ public class Pattern {
 			for (int j = 0; j < multi; j++) {
 				direction = new Vector2(1, 1);
 				direction.setAngle(degree + ((j - offset) * 10) + xtra);
-				bullets[i][j] = new Bullet(Vector2.Zero, direction, speed, range, bulletTexture, fortressDamage); //Create bullet
+				bullets[i][j] = new Bullet(Vector2.Zero, direction, speed, range, bulletTexture, damage); //Create bullet
 			}
 		}
 	}

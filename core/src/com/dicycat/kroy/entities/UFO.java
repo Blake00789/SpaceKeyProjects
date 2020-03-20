@@ -45,7 +45,7 @@ public class UFO extends Entity {
 				20, 1, 0.5f, bulletTexture, 10)); //Needed to add a parameter
 																								// here for creating patterns for the
 																								//bullets of patrols. Just gave them a constant damage of 10
-		// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - END OF MODIFICATION  - [NPSTUDIOS] ---
+				// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - END OF MODIFICATION  - [NPSTUDIOS] ---
 	}
 
 	/**
