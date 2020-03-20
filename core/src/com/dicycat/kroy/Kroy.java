@@ -38,8 +38,14 @@ public class Kroy extends Game {
 
 	@Override
 	public void render () {
+		// WARPING_FIX - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+		// The previous group limited the camera from reaching the edge of the map instead of fixing the warping issue.
+		// Because of this, if you use the zoom out function when near the edge of the map the warping was still visible.
+		// We added the two lines of code needed to clear the frame before the next frame is written which is what
+		// was causing the issue.
 		Gdx.gl.glClearColor( 0, 0, 0, 1 );
 		Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
+		// WARPING_FIX - END OF MODIFICATION  - NP STUDIOS
 		super.render();
 	}
 	
