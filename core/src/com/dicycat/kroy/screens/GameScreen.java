@@ -677,7 +677,6 @@ public class GameScreen implements Screen{
 	 */
 	private void changeToTruck(FireTruck t) {
 		currentTruck = t;
-
 	}  
 
 	/**
@@ -690,7 +689,7 @@ public class GameScreen implements Screen{
 	// FORTRESS_COUNT_FIX_2 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 	// Deleted unused setters for fortressCount
 	// FORTRESS_COUNT_FIX_2 - END OF MODIFICATION  - NP STUDIOS
-	
+
 	/** 
 	 * @return spawnPosition
 	 */
