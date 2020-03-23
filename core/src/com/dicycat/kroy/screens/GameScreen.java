@@ -73,6 +73,17 @@ public class GameScreen implements Screen{
 			{300f, 1f, 500f, 300f},		//Capacity
 			{300f, 1f, 400f, 450f},		//Range
 		};
+
+	// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - START OF MODIFICATION  - [NPSTUDIOS] - [CASSIE_LILLYSTONE] ----
+	private Float[][] fortressStats = { //Each list contains unique values for health and damage. One list for each fortress
+
+            {300f, 5f},
+            {400f, 10f},
+            {500f, 15f},
+            {600f, 20f},
+            {700f, 25f},
+            {800f, 30f},
+    }; //[UNIQUE_FORTRESS_HEALTH_DAMAGE] - END OF MODIFICATION  - [NPSTUDIOS]
 	
 	
 	private int truckNum; // Identifies the truck thats selected in the menu screen
@@ -170,9 +181,12 @@ public class GameScreen implements Screen{
 	 * @param num the fortress number
 	 */
 	private void fortressInit(int num) {
+		// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - START OF MODIFICATION  - [NPSTUDIOS] - [CASSIE_LILLYSTONE] ----
 		Fortress tempFortress = new Fortress(fortressPositions.get(num), textures.getFortress(num), textures.getDeadFortress(num),
-				fortressSizes.get(num), textures.getBullet());
-
+				fortressSizes.get(num), textures.getBullet(), fortressStats[num]); //Added the list of stats corresponding
+		  																	       // to the fortress being made as a parameter
+																					//to pass to instantiate a fortress
+        // [UNIQUE_FORTRESS_HEALTH_DAMAGE] - END OF MODIFICATION  - [NPSTUDIOS] ----
 		gameObjects.add(tempFortress);
 		fortresses.add(tempFortress);
 		fortressHealthBars.add(new StatBar(new Vector2(fortressPositions.get(num).x, fortressPositions.get(num).y + 100), "Red.png", 10));
@@ -261,7 +275,6 @@ public class GameScreen implements Screen{
 		
 		List<GameObject> toRemove = new ArrayList<GameObject>();
 		List<Vector2> patrolPositions = new ArrayList<>();
-
 		for (GameObject gObject : gameObjects) {	//Go through every game object
 			gObject.update();						//Update the game object
 			if (gObject.isRemove()) {				//Check if game object is to be removed
@@ -371,8 +384,13 @@ public class GameScreen implements Screen{
 			}
 		}
 
+		// FORTRESS_COUNT_FIX_1 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+		// Previously the game was ending when only 3 fortresses were destroyed so we added this code to
+		// fix the fortress count, ensuring the game completed at the correct point.
+		int alive = 0;
 		for (Fortress fortress : fortresses) {
 			if(fortress.isAlive()) {
+				alive++;
 				fortress.render(game.batch);
 
 				fortressHealthBars.get(fortresses.indexOf(fortress)).setPosition(fortress.getCentre().add(0, 100));
@@ -380,6 +398,9 @@ public class GameScreen implements Screen{
 				fortressHealthBars.get(fortresses.indexOf(fortress)).render(game.batch);
 			}
 		}
+		fortressesCount = alive;
+		// FORTRESS_COUNT_FIX_1 - END OF MODIFICATION  - NP STUDIOS
+
 
 		objectsToRender.clear();
 	}
@@ -551,20 +572,6 @@ public class GameScreen implements Screen{
 	}
 
 	/**
-	 * Add one fortress to the count
-	 */
-	public void addFortress() {
-		fortressesCount++;
-	}
-
-	/**
-	 * Remove one fortress to the count
-	 */
-	public void removeFortress() {
-		fortressesCount--;
-	}
-
-	/**
 	 * How many fortresses are left?
 	 * @return Number of fortresses remaining
 	 */
@@ -670,7 +677,6 @@ public class GameScreen implements Screen{
 	 */
 	private void changeToTruck(FireTruck t) {
 		currentTruck = t;
-
 	}  
 
 	/**
@@ -680,11 +686,20 @@ public class GameScreen implements Screen{
 		return hud;
 	}
 
+	// FORTRESS_COUNT_FIX_2 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+	// Deleted unused setters for fortressCount
+	// FORTRESS_COUNT_FIX_2 - END OF MODIFICATION  - NP STUDIOS
+
 	/** 
 	 * @return spawnPosition
 	 */
 	public Vector2 getSpawnPosition() {
 		return spawnPosition;
 	}
-	
+
+    // [FORTRESS_IMPROVEMENT] - START OF MODIFICATION  - [NP_STUDIOS] - [CASSIE_LILLYSTONE] ----
+	public ArrayList getFortresses(){
+	    return fortresses;
+    } //Added a getter which returns a list of fortresses, required for making fortress health improve over time
+    // [FORTRESS_IMPROVEMENT] - END OF MODIFICATION  - [NP_STUDIOS]----
 }
