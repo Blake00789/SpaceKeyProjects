@@ -21,7 +21,10 @@ public class Bullet extends GameObject {
 	private float maxDist;		//Max distance to travel
 	private float travelDist; 	//Distance left to travel
 	private Circle hitbox;		//Bullet hit box
- 
+	// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - START OF MODIFICATION  - [NPSTUDIOS] - [CASSIE_LILLYSTONE] ---
+	//Create new attribute for fortressDamage
+	private float damage;
+	// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - END OF MODIFICATION  - [NPSTUDIOS]---
 
 	/**
 	 * @param spawnPos Position to spawn the bullet
@@ -29,7 +32,10 @@ public class Bullet extends GameObject {
 	 * @param speed speed the bullet should travel at
 	 * @param range distance the bullet should travel before it is removed
 	 */
-	public Bullet(Vector2 spawnPos, Vector2 direction, int speed, float range, Texture bulletTexture) {
+
+	// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - START OF MODIFICATION  - [NPSTUDIOS] - [CASSIE_LILLYSTONE] ---
+	//Added fortressDamage as a parameter and set it equal to the new attribute
+	public Bullet(Vector2 spawnPos, Vector2 direction, int speed, float range, Texture bulletTexture, float damage) {
 		// REFACTOR_6 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 		// Directly passed the bullet texture into the class as accessing the public static class GameTextures
 		// would cause issues during testing.
@@ -39,6 +45,8 @@ public class Bullet extends GameObject {
 		changeDirection(direction);
 		maxDist = range;
 		hitbox = new Circle(spawnPos.x, spawnPos.y, 10);
+		this.damage = damage;
+		// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - END OF MODIFICATION  - [NPSTUDIOS]---
 	}
 
 	/**
@@ -85,7 +93,14 @@ public class Bullet extends GameObject {
 		FireTruck truck = Kroy.mainGameScreen.getPlayer();
 		if (truck.isAlive()) {
 			if(Intersector.overlaps(hitbox, truck.getHitbox())){
-				truck.applyDamage(10);
+                // [FORTRESS_IMPROVEMENT] - START OF MODIFICATION  - [NPSTUDIOS] - [CASSIE_LILLYSTONE] ---
+			    if (Kroy.mainGameScreen.gameTimer == 150){ //If the game is half way through then double the amount of damage applied
+                    // [UNIQUE_FORTRESS_HEALTH_DAMAGE] - START OF MODIFICATION  - [NPSTUDIOS] - [CASSIE_LILLYSTONE] ---
+			        truck.applyDamage((2* damage)); //Replace hardcoded value with the parameter for fortressDamage
+                } else {
+			        truck.applyDamage(damage); //Replace hardcoded value with the parameter for fortressDamage
+                } // [UNIQUE_FORTRESS_HEALTH_DAMAGE] - END OF MODIFICATION  - [NPSTUDIOS]---
+                // [FORTRESS_IMPROVEMENT] - END OF MODIFICATION  - [NPSTUDIOS]---
 				remove = true;
 				// REFACTOR_8 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 				// Added texture disposal to prevent memory leaks as a new texture is made for each bullet now due to

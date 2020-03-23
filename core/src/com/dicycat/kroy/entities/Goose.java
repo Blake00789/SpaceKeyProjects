@@ -24,7 +24,7 @@ public class Goose extends Entity {
 	 * Instantiate the default goose
 	 */
 	public Goose() {
-		super(new Vector2(-32 * scale, -32 * scale), new Texture("goose2.png"), new Vector2(64 * scale, 64 * scale), 1);
+		super(new Vector2(-32 * scale, -32 * scale), new Texture("goose2.png"), new Vector2(64 * scale, 64 * scale), 1, 500);
 	}
 
 	/**

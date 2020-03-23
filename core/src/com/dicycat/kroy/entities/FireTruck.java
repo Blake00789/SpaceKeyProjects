@@ -37,13 +37,15 @@ public class FireTruck extends Entity{
 	private WaterStream water;
 	private boolean firing;
 	private float range;
-
+    // [FORTRESS_IMPROVEMENT] - START OF MODIFICATION  - [NP_STUDIOS] - [CASSIE_LILLYSTONE] ----
+	private ArrayList fortressList; //New attribute
+    // [FORTRESS_IMPROVEMENT] - END OF MODIFICATION  - [NP_STUDIOS] -----
 	/**
 	 * @param spawnPos
 	 * @param truckStats
 	 */
 	public FireTruck(Vector2 spawnPos, Float[] truckStats, Texture texture) {
-		super(spawnPos, texture, new Vector2(25,50), 100);
+		super(spawnPos, texture, new Vector2(25,50), 100, 500);
  
 		DIRECTIONS.put("n",0);			//North Facing Direction (up arrow)
 		DIRECTIONS.put("w",90);			//West Facing Direction (left arrow)
@@ -242,9 +244,19 @@ public class FireTruck extends Entity{
 	public void die() {
 		super.die();
 		water.setRemove(true);
+
 		// STATBAR_REFACTOR_4 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 		// Removed statbar remove code.
 		// STATBAR_REFACTOR_4 - END OF MODIFICATION  - NP STUDIOS
+
+        // [FORTRESS_IMPROVEMENT] - START OF MODIFICATION  - [NP_STUDIOS] - [CASSIE_LILLYSTONE] ----
+        fortressList = Kroy.mainGameScreen.getFortresses(); //Create a new list which contains the fortresses
+
+        for (Object fortress : fortressList){
+            setHealthPoints(10); //Add 10 to the health of each fortress each time a truck is killed - so that fortresses improve their health over time
+		// [FORTRESS_IMPROVEMENT] - END OF MODIFICATION  - [NP_STUDIOS] ----
+        }
+
 	} 
 
 	/**

@@ -28,9 +28,13 @@ public class Pattern {
 	 * @param multi How many bullets per shot (spread)
 	 * @param cooldown Time after pattern to wait before firing the next pattern
 	 */
+
+	// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - START OF MODIFICATION  - [NPSTUDIOS] - [CASSIE_LILLYSTONE] ---
+	//For all Pattern constructors, added fortressDamage as a parameter and as a parameter for the instantiation of the bullets
+	// Also set aim to true for the first pattern as this would just fire straight down and not target the user
 	public Pattern(int degree, int speed, int range, float timeBetweenShots, int patternLength, int multi, float cooldown,
-				   Texture bulletTexture) {
-		aim = false;
+				   Texture bulletTexture, float damage) {
+		aim = true;
 		waitTime = timeBetweenShots;
 		bullets = new Bullet[patternLength][multi];
 		this.cooldown = cooldown; 
@@ -43,7 +47,7 @@ public class Pattern {
 			for (int j = 0; j < multi; j++) {
 				direction = new Vector2(1, 1);
 				direction.setAngle(degree + ((j - offset) * 10) + xtra);
-				bullets[i][j] = new Bullet(Vector2.Zero, direction, speed, range, bulletTexture); //Create bullet
+				bullets[i][j] = new Bullet(Vector2.Zero, direction, speed, range, bulletTexture, damage); //Create bullet
 			}
 		}
 	}
@@ -58,7 +62,7 @@ public class Pattern {
 	 * @param cooldown Time after pattern to wait before firing the next pattern
 	 */
 	public Pattern(int speed, int range, float timeBetweenShots, int patternLength, int multi, float cooldown,
-				   Texture bulletTexture) {
+				   Texture bulletTexture, float fortressDamage) {
 		this.aim = true;
 		waitTime = timeBetweenShots;
 		bullets = new Bullet[patternLength][multi];
@@ -69,7 +73,7 @@ public class Pattern {
 		Vector2 direction = Vector2.Zero;
 		for (int i = 0; i < patternLength; i++) {
 			for (int j = 0; j < multi; j++) {
-				bullets[i][j] = new Bullet(Vector2.Zero, direction, speed, range, bulletTexture); //Create bullet
+				bullets[i][j] = new Bullet(Vector2.Zero, direction, speed, range, bulletTexture, fortressDamage); //Create bullet
 			}
 		}
 	}
@@ -86,7 +90,7 @@ public class Pattern {
 	 * @param cooldown Time after pattern to wait before firing the next pattern
 	 */
 	public Pattern(Boolean clockwise, int startAngle, int rotations, int speed, int range, float timeBetweenShots,
-				   int multi, float cooldown, Texture bulletTexture) {
+				   int multi, float cooldown, Texture bulletTexture, float fortressDamage) {
 		aim = false;
 		waitTime = timeBetweenShots;
 		int patternLength = rotations * 36;
@@ -104,10 +108,12 @@ public class Pattern {
 			for (int j = 0; j < multi; j++) {
 				direction = new Vector2(1, 1);
 				direction.setAngle(degree + ((j - offset) * 10) + xtra);
-				bullets[i][j] = new Bullet(Vector2.Zero, direction, speed, range, bulletTexture); //Create bullet
+				bullets[i][j] = new Bullet(Vector2.Zero, direction, speed, range, bulletTexture, fortressDamage); //Create bullet
 			}
 		}
 	}
+
+	// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - END OF MODIFICATION  - [NPSTUDIOS] ---
 
 	/**
 	 * @param set The set of bullets to fire

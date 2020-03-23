@@ -12,22 +12,25 @@ import com.dicycat.kroy.Kroy;
  *
  */
 public abstract class Entity extends GameObject{
-
-	protected int healthPoints;
+	// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - START OF MODIFICATION  - [NPSTUDIOS] - [CASSIE_LILLYSTONE] ----
+	// Changed the type of healthPoints and maxHealthPoints from int to float
+	protected float healthPoints;
 	protected int radius;
-	protected int maxHealthPoints;
-
+	protected float maxHealthPoints;
+	// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - END OF MODIFICATION  - [NPSTUDIOS]----
 	/**
 	 * @param spawnPos The position the entity will spawn at.
 	 * @param img The texture of the entity.
 	 * @param imSize Size of the entity. Can be used to resize large/small textures
 	 * @param health Hit points of the entity
 	 */
-	public Entity(Vector2 spawnPos, Texture img, Vector2 imSize,int health) {
+	// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - START OF MODIFICATION  - [NPSTUDIOS] - [CASSIE_LILLYSTONE] ----
+	public Entity(Vector2 spawnPos, Texture img, Vector2 imSize, float health, int radius) { //Changed the type of health from int to float
+		// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - END OF MODIFICATION  - [NPSTUDIOS]----
 		super(spawnPos, img, imSize);
 		healthPoints = health;
 		maxHealthPoints = health;
-		radius = 500;
+		this.radius = radius;
 		changePosition(spawnPos);
 	}
  
@@ -73,7 +76,9 @@ public abstract class Entity extends GameObject{
 	 * new
 	 * @return healthPoints
 	 */
-	public Integer getHealthPoints(){
+	// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - START OF MODIFICATION  - [NPSTUDIOS] - [CASSIE_LILLYSTONE] ----
+	// Changed return type for getters or healthPoints and maxHealthPoints from int to float
+	public float getHealthPoints(){
 		return healthPoints; 
 	}
 	
@@ -89,8 +94,10 @@ public abstract class Entity extends GameObject{
 
 	// STATBAR_REFACTOR_1 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 	// Added new getter required for the statbar refactor.
-	public int getMaxHealthPoints() {
+	public float getMaxHealthPoints() {
 		return maxHealthPoints;
 	}
 	// STATBAR_REFACTOR_1 - END OF MODIFICATION  - NP STUDIOS
+
+	// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - END OF MODIFICATION  - [NPSTUDIOS] ----
 }
