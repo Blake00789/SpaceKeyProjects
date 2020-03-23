@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -51,8 +52,10 @@ public class GameScreen implements Screen{
 	public Kroy game;
 	public GameTextures textures;
 	public static float gameTimer; //Timer to destroy station
+	private int saveSlot;
 
-	
+	private Preferences saveData = Gdx.app.getPreferences("Kroy");
+
 	public GameScreenState state = GameScreenState.RUN;
 	
 	public static TiledGameMap gameMap;
@@ -105,9 +108,11 @@ public class GameScreen implements Screen{
 	 * extended
 	 * @param _game
 	 * @param truckNum
+	 * @param saveSlot 0 if no save slot, otherwise between 1 and 3
 	 */
-	public GameScreen(Kroy _game, int truckNum) {
+	public GameScreen(Kroy _game, int truckNum, int saveSlot) {
 		game = _game;
+		this.saveSlot = saveSlot;
 		gamecam = new OrthographicCamera();
 		gameport = new FitViewport(Kroy.width, Kroy.height, gamecam);	//Mic:could also use StretchViewPort to make the screen stretch instead of adapt
 		hud = new HUD(game.batch, this.game);
@@ -139,7 +144,6 @@ public class GameScreen implements Screen{
 		
 		patrolUpdateRate = 30;
 	}
-	
 
 	/**
 	 * Screen first shown
@@ -170,8 +174,14 @@ public class GameScreen implements Screen{
 	 * @param num the fortress number
 	 */
 	private void fortressInit(int num) {
-		Fortress tempFortress = new Fortress(fortressPositions.get(num), textures.getFortress(num), textures.getDeadFortress(num),
-				fortressSizes.get(num), textures.getBullet());
+		Fortress tempFortress;
+		if (saveSlot == 0) {
+		tempFortress = new Fortress(fortressPositions.get(num), textures.getFortress(num), textures.getDeadFortress(num),
+				fortressSizes.get(num), textures.getBullet()); }
+		else {
+			tempFortress = new Fortress(new Vector2(), textures.getFortress(num), textures.getDeadFortress(num),
+					fortressSizes.get(num), textures.getBullet());
+		}
 
 		gameObjects.add(tempFortress);
 		fortresses.add(tempFortress);
@@ -321,7 +331,7 @@ public class GameScreen implements Screen{
 		}
 
 	}
-	
+
 	/**
 	 * new
 	 * Can zoom in the game by pressing EQUALS key
@@ -411,19 +421,6 @@ public class GameScreen implements Screen{
 	}
 
 	/**
-	 * Draw a debug line
-	 * @param start Start of the line
-	 * @param end End of the line
-	 * @param lineWidth Width of the line
-	 * @param colour Colour of the line
-	 */
-	public void DrawLine(Vector2 start, Vector2 end, int lineWidth, Color colour) {
-		if (Kroy.debug) {
-			debugObjects.add(new DebugLine(start, end, lineWidth, colour));
-		}
-	}
-
-	/**
 	 * Draw a debug circle (outline)
 	 * @param position Centre of the circle
 	 * @param radius Radius of the circle
@@ -485,23 +482,8 @@ public class GameScreen implements Screen{
 		Kroy.mainGameScreen = null;
 	}
 
-	/**
-	 * @param s
-	 */
 	public void setGameState(GameScreenState s){
 	    state = s;
-	}
-
-	/**
-	 * @param index
-	 * @return
-	 */
-	public GameObject getGameObject(int index) {
-		if (index <= (gameObjects.size()-1)) {
-			return gameObjects.get(index);
-		}else {
-			return null;
-		}
 	}
 
 	/**
@@ -538,6 +520,31 @@ public class GameScreen implements Screen{
 	    		Gdx.app.exit();
 	    	}
 	    });
+
+		//save1 button
+		pauseWindow.save1.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				saveGame(1);
+			}
+		});
+
+		//save2 button
+		pauseWindow.save2.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				saveGame(2);
+			}
+		});
+
+		//save3 button
+		pauseWindow.save3.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				saveGame(3);
+			}
+		});
+
 		//menu button
 		pauseWindow.menu.addListener(new ClickListener() {
 	    	@Override
@@ -680,11 +687,16 @@ public class GameScreen implements Screen{
 		return hud;
 	}
 
-	/** 
-	 * @return spawnPosition
-	 */
-	public Vector2 getSpawnPosition() {
-		return spawnPosition;
+	public void saveGame(int saveSlot) {
+		String prefix = "SLOT_" + saveSlot + "_";
+		for(int i = 0; i < 6; i++){
+			saveData.putInteger((prefix + "FORTRESS_HEALTH_" + i), fortresses.get(i).getHealthPoints());
+			saveData.putInteger((prefix + "TRUCK_HEALTH_" + i), firetrucks.get(i).getHealthPoints());
+			saveData.putFloat((prefix + "TRUCK_WATER_" + i), firetrucks.get(i).getCurrentWater());
+			saveData.putFloat((prefix + "TRUCK_X_POS_" + i), firetrucks.get(i).getPosition().x);
+			saveData.putFloat((prefix + "TRUCK_Y_POS_" + i), firetrucks.get(i).getPosition().y);
+			// TODO: Add any powerup saving stuff
+			saveData.flush();
+		}
 	}
-	
 }

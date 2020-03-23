@@ -32,6 +32,9 @@ public class PauseWindow {
     public TextButton resume = new TextButton("RESUME", skin);
     public TextButton exit = new TextButton("EXIT", skin);
     public TextButton menu = new TextButton("MENU", skin);
+    public TextButton save1 = new TextButton("SAVE: SLOT 1", skin);
+	public TextButton save2 = new TextButton("SAVE: SLOT 2", skin);
+	public TextButton save3 = new TextButton("SAVE: SLOT 3", skin);
     
     
 	/**
@@ -48,7 +51,13 @@ public class PauseWindow {
 		table.row();
 	    table.add(menu).width(Kroy.CentreWidth());
 	    table.row();
-	    table.add(exit).width(Kroy.CentreWidth());
+	    table.add(save1).width(Kroy.CentreWidth());
+		table.row();
+		table.add(save2).width(Kroy.CentreWidth());
+		table.row();
+		table.add(save3).width(Kroy.CentreWidth());
+		table.row();
+		table.add(exit).width(Kroy.CentreWidth());
 	    
 		table.setFillParent(true);
 	    stage.addActor(table);

@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dicycat.kroy.Kroy;
 import com.dicycat.kroy.scenes.FireTruckSelectionScene;
 import com.dicycat.kroy.scenes.HUD;
+import com.dicycat.kroy.scenes.LoadWindow;
 import com.dicycat.kroy.scenes.OptionsWindow;
   
 /**
@@ -43,6 +44,7 @@ public class MenuScreen implements Screen{
   private Stage stage;
   
   private OptionsWindow optionsWindow;
+  private LoadWindow loadWindow;
   
   public static Music music = Gdx.audio.newMusic(Gdx.files.internal("gamemusic.mp3"));
   public static float musicVolume = 0.4f;
@@ -72,7 +74,8 @@ public class MenuScreen implements Screen{
   public static enum MenuScreenState {
 	  MAINMENU,
 	  TRUCKSELECT,
-	  OPTIONS
+	  OPTIONS,
+	  LOAD
   }
   
   public MenuScreenState state = MenuScreenState.MAINMENU;
@@ -101,6 +104,8 @@ public class MenuScreen implements Screen{
 	  music.setVolume(musicVolume);  
 	  
 	  optionsWindow = new OptionsWindow(game);
+	  loadWindow = new LoadWindow(game);
+
 	  optionsWindow.visibility(false);
 	  
   }
@@ -156,7 +161,7 @@ public class MenuScreen implements Screen{
 			  if(( (Gdx.input.getX() < (xAxisCentred + buttonWidth)) && (Gdx.input.getX() > xAxisCentred) ) && ( (Kroy.height - Gdx.input.getY() > loadgameButtonY) && (Kroy.height - Gdx.input.getY() < (loadgameButtonY + buttonHeight)) ) ){
 				  game.batch.draw(loadGameButtonActive, xAxisCentred, loadgameButtonY, buttonWidth, buttonHeight);
 				  if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-					  startMinigame();
+					  setGameState(MenuScreenState.LOAD);
 						  }
 					  } else {
 						  game.batch.draw(loadGameButton, xAxisCentred, loadgameButtonY, buttonWidth, buttonHeight);
@@ -187,6 +192,11 @@ public class MenuScreen implements Screen{
 			  optionsWindow.stage.draw();
 			  optionsWindow.clickCheck(true);
 			  break;
+		  case LOAD:
+		  	Gdx.input.setInputProcessor(loadWindow.stage);
+		  	loadWindow.stage.act();
+		  	loadWindow.stage.draw();
+		  	loadWindow.clickCheck();
 		  }
   	}
   
