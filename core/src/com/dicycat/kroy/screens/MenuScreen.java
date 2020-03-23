@@ -45,6 +45,7 @@ public class MenuScreen implements Screen{
   
   private OptionsWindow optionsWindow;
   private LoadWindow loadWindow;
+  private FireTruckSelectionScene fireTruckSelector;
   
   public static Music music = Gdx.audio.newMusic(Gdx.files.internal("gamemusic.mp3"));
   public static float musicVolume = 0.4f;
@@ -61,8 +62,7 @@ public class MenuScreen implements Screen{
   private Pixmap pm = new Pixmap(Gdx.files.internal("handHD2.png")); //cursor
   private int xHotSpot = pm.getWidth() / 3;	//where the cursor's aim is 
   private int yHotSpot = 0;
-  
-  private FireTruckSelectionScene fireTruckSelector;
+
   private boolean currentlyRunningGame = false;
 
   /**
@@ -196,7 +196,7 @@ public class MenuScreen implements Screen{
 		  	Gdx.input.setInputProcessor(loadWindow.stage);
 		  	loadWindow.stage.act();
 		  	loadWindow.stage.draw();
-		  	loadWindow.clickCheck();
+		  	clickCheck();
 		  }
   	}
   
@@ -242,27 +242,54 @@ public class MenuScreen implements Screen{
 			public void changed(ChangeEvent event, Actor actor) {
 				startGame(3);//Game begun with 3 (Capacity + Range) as the truck selected
 				HUD.setScore(100000);
-				
 			}
-	    });
+		});
 		//Truck 5 Selected
 		fireTruckSelector.truckButton5.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				startGame(4);//Game begun with 4 (Capacity) as the truck selected
 				HUD.setScore(100000);
-				
 			}
-	    });
+			    });
 		//Truck 6 Selected
 		fireTruckSelector.truckButton6.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				startGame(5);//Game begun with 5 (Range) as the truck selected
 				HUD.setScore(100000);
-				
 			}
 	    });
+
+		LoadWindow.back.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				Kroy.mainMenuScreen.state = MenuScreen.MenuScreenState.MAINMENU;
+			}
+		});
+
+		//music page
+		//playStopMusic button
+		LoadWindow.load1.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				resumeGame(1);
+			}
+		});
+		//playStopMusic button
+		LoadWindow.load2.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				resumeGame(2);
+			}
+		});
+		//volumeDown button
+		LoadWindow.load3.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				resumeGame(3);
+			}
+		});
 	}
 
 
@@ -273,10 +300,17 @@ public class MenuScreen implements Screen{
 	public void startGame(int truckNum) {
 		 if (!currentlyRunningGame) {	// Checks if a new GameScreen is currently running and either makes one or ignores the commands
 			 currentlyRunningGame = true; // Makes sure that only one GameScreen is opened at once
-			 game.newGame(truckNum); // Calls the function in Kroy to start a new game
+			 game.newGame(); // Calls the function in Kroy to start a new game
 		 }
-	} 
-	
+	}
+
+	public void resumeGame(int saveSlot) {
+		if (!currentlyRunningGame) {	// Checks if a new GameScreen is currently running and either makes one or ignores the commands
+			currentlyRunningGame = true; // Makes sure that only one GameScreen is opened at once
+			game.loadGame(saveSlot); // Calls the function in Kroy to start a new game
+		}
+	}
+
 	/**
 	 * Run the minigame
  	 */

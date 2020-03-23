@@ -17,6 +17,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dicycat.kroy.Kroy;
 import com.dicycat.kroy.screens.GameScreen;
 import com.dicycat.kroy.screens.MenuScreen;
+import com.sun.javafx.binding.IntegerConstant;
+
+import javax.swing.*;
 
 /**
  * Pause window
@@ -33,11 +36,11 @@ public class LoadWindow {
 	private NinePatch patch = new NinePatch(new Texture("loool.jpg"), 3, 3, 3, 3);
 	private NinePatchDrawable background = new NinePatchDrawable(patch);
 
-    private Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
-    public TextButton load1 = new TextButton("Load Slot 1", skin);
-    public TextButton load2 = new TextButton("Load Slot 2", skin);
-    public TextButton load3 = new TextButton("Load Slot 3", skin);
-    public TextButton back = new TextButton("Back", skin);
+    private static Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+    public static TextButton load1 = new TextButton("Load Slot 1", skin);
+    public static TextButton load2 = new TextButton("Load Slot 2", skin);
+    public static TextButton load3 = new TextButton("Load Slot 3", skin);
+    public static TextButton back = new TextButton("Back", skin);
 
 	/**
 	 * @param game
@@ -65,47 +68,7 @@ public class LoadWindow {
 	 * @param state	Allows the window to be visible or hidden
 	 */
 	public void visibility(boolean state){
-		this.table.setVisible(state);
+		table.setVisible(state);
 	}
 
-	public void clickCheck() {
-		//back button
-		this.back.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				visibility(false);
-				Kroy.mainMenuScreen.state = MenuScreen.MenuScreenState.MAINMENU;
-				}
-		});
-
-		//music page
-		//playStopMusic button
-		this.load1.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				 game.loadGame(1);
-			}
-		});
-		//playStopMusic button
-		this.load2.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				game.loadGame(2);
-			}
-		});
-		//volumeDown button
-		this.load3.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				game.loadGame(3);
-			}
-		});
-		//volumeUp button
-		this.back.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-			}
-		});
-
 	}
-}
