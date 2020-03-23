@@ -125,7 +125,6 @@ public class GameScreen implements Screen{
 		this.saveSlot = saveSlot;
 		gamecam = new OrthographicCamera();
 		gameport = new FitViewport(Kroy.width, Kroy.height, gamecam);	//Mic:could also use StretchViewPort to make the screen stretch instead of adapt
-		hud = new HUD(game.batch, this.game);
 		gameMap = new TiledGameMap();										//or FitPort to make it fit into a specific width/height ratio
 		pauseWindow = new PauseWindow(game);
 		pauseWindow.visibility(false);
@@ -133,7 +132,8 @@ public class GameScreen implements Screen{
 		optionsWindow.visibility(false);
 		textures = new GameTextures();
 		spawnPosition = new Vector2(234 * 16, 3900);
-		gameTimer = 60 * 5; //new    //Set timer to 5 minutes  
+		gameTimer = 60 * 5; //new    //Set timer to 5 minutes
+		hud = new HUD(game.batch, gameTimer);
 		this.truckNum = truckNum;
 		lastPatrol = Gdx.graphics.getDeltaTime();
 		fortressPositions = new ArrayList<>();
@@ -704,6 +704,7 @@ public class GameScreen implements Screen{
 			saveData.putFloat((prefix + "TRUCK_WATER_" + i), firetrucks.get(i).getCurrentWater());
 			saveData.putFloat((prefix + "TRUCK_X_POS_" + i), firetrucks.get(i).getPosition().x);
 			saveData.putFloat((prefix + "TRUCK_Y_POS_" + i), firetrucks.get(i).getPosition().y);
+			saveData.putFloat((prefix + "GAME_TIME"), gameTimer);
 			// TODO: Add any powerup saving stuff
 			saveData.flush();
 		}
@@ -722,6 +723,8 @@ public class GameScreen implements Screen{
 						saveData.getFloat(prefix + "TRUCK_Y_POS_" + i,spawnPosition.y)));
 				// TODO: Add any powerup saving stuff
 			}
+			gameTimer = saveData.getFloat(prefix + "GAME_TIME", 300);
+			hud.setTimer(saveData.getFloat(prefix + "GAME_TIME", 300));
 		}
 	}
 
@@ -735,4 +738,7 @@ public class GameScreen implements Screen{
     } //Added a getter which returns a list of fortresses, required for making fortress health improve over time
     // [FORTRESS_IMPROVEMENT] - END OF MODIFICATION  - [NP_STUDIOS]----
 
+	public int getFortressesCount() {
+		return fortressesCount;
+	}
 }
