@@ -10,18 +10,12 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
-import com.dicycat.kroy.GameObject;
-import com.dicycat.kroy.Kroy;
 import com.dicycat.kroy.entities.Entity;
 import com.dicycat.kroy.entities.FireStation;
 import com.dicycat.kroy.entities.FireTruck;
 import com.dicycat.kroy.screens.GameScreen;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Rectangle;
 import static org.junit.Assert.assertTrue;
-
-import org.junit.After;
 
 @RunWith(GdxTestRunner.class)
 public class FireTruckTest {
@@ -79,7 +73,7 @@ public class FireTruckTest {
 	 */
 	@Test
 	public void testRefill() {		
-		truck.setHealthPoints(2);		
+		truck.addHealth(2);
 		truck.replenish();
 		assertTrue(truck.getHealthPoints() !=  102);  //HealthPoits didn't increase because it will get more than max HealthPoits
 		assertFalse(truck.getCurrentWater() ==  302);
@@ -92,7 +86,7 @@ public class FireTruckTest {
 		assertTrue(truck.getHealthPoints() ==  92);   //increased this time as HealthPoits is lower than max HealthPoits
 		assertFalse(truck.getCurrentWater() ==  304);
 		
-		truck.setCurrentWater(96);
+		truck.addWater(96);
 		
 		assertFalse(truck.getCurrentWater() ==  400);
 		

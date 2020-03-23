@@ -97,7 +97,6 @@ public class LoadWindow {
 		this.load3.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				game.batch.end();
 				game.loadGame(3);
 			}
 		});

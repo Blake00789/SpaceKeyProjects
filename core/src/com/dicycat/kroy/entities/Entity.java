@@ -86,10 +86,14 @@ public abstract class Entity extends GameObject{
 	 * new
 	 * increase the HealthPoints by x
 	 */
-	public void setHealthPoints(int x){
+	public void addHealth(float x){
 		if(!(getHealthPoints() >= maxHealthPoints)){
 			healthPoints+=x;
 		}
+	}
+
+	public void setHealthPoints(float healthPoints) {
+		this.healthPoints = healthPoints;
 	}
 
 	// STATBAR_REFACTOR_1 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT

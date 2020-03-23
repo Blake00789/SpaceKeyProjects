@@ -1,7 +1,6 @@
 package com.dicycat.kroy.screens;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
@@ -21,7 +20,6 @@ import com.dicycat.kroy.GameTextures;
 import com.dicycat.kroy.Kroy;
 import com.dicycat.kroy.debug.DebugCircle;
 import com.dicycat.kroy.debug.DebugDraw;
-import com.dicycat.kroy.debug.DebugLine;
 import com.dicycat.kroy.debug.DebugRect;
 import com.dicycat.kroy.entities.FireStation;
 import com.dicycat.kroy.entities.FireTruck;
@@ -171,7 +169,13 @@ public class GameScreen implements Screen{
 		for (int i = 0; i < 6; i++) {
 			firetruckInit(spawnPosition.x - 135 + (i * 50), spawnPosition.y, i);
 			fortressInit(i);
+			tankbars.get(i).setPosition(firetrucks.get(i).getCentre().add(0,20));
+			tankbars.get(i).setBarDisplay((firetrucks.get(i).getCurrentWater()/ firetrucks.get(i).getMaxWater())*50);
+
+			healthbars.get(i).setPosition(firetrucks.get(i).getCentre().add(0,25));
+			healthbars.get(i).setBarDisplay((firetrucks.get(i).getHealthPoints()*50)/firetrucks.get(i).getMaxHealthPoints());
 		}
+		loadGame();
 		gameObjects.add(new FireStation(textures.getFireStation(), textures.getFireStationDead()));
 		switchTrucks(truckNum);  
 
@@ -186,19 +190,12 @@ public class GameScreen implements Screen{
 	 * @param num the fortress number
 	 */
 	private void fortressInit(int num) {
-		Fortress tempFortress;
-		if (saveSlot == 0) {
-			// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - START OF MODIFICATION  - [NPSTUDIOS] - [CASSIE_LILLYSTONE] ----
-			tempFortress = new Fortress(fortressPositions.get(num), textures.getFortress(num), textures.getDeadFortress(num),
-					fortressSizes.get(num), textures.getBullet(), fortressStats[num]); //Added the list of stats corresponding
-			// to the fortress being made as a parameter to pass to instantiate a fortress
-			// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - END OF MODIFICATION  - [NPSTUDIOS] ----
-		}
-		else {
-			String prefix = "SLOT_" + saveSlot + "_";
-			tempFortress = new Fortress(fortressPositions.get(num), textures.getFortress(num), textures.getDeadFortress(num),
-					fortressSizes.get(num), textures.getBullet(), new float[]{saveData.getFloat(prefix + "FORTRESS_HEALTH_" + num), fortressStats[num][1]});
-		}
+		// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - START OF MODIFICATION  - [NPSTUDIOS] - [CASSIE_LILLYSTONE] ----
+		Fortress tempFortress = new Fortress(fortressPositions.get(num), textures.getFortress(num), textures.getDeadFortress(num),
+				fortressSizes.get(num), textures.getBullet(), fortressStats[num]); //Added the list of stats corresponding
+		// to the fortress being made as a parameter to pass to instantiate a fortress
+		// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - END OF MODIFICATION  - [NPSTUDIOS] ----
+
 		gameObjects.add(tempFortress);
 		fortresses.add(tempFortress);
 		fortressHealthBars.add(new StatBar(new Vector2(fortressPositions.get(num).x, fortressPositions.get(num).y + 100), "Red.png", 10));
@@ -709,6 +706,22 @@ public class GameScreen implements Screen{
 			saveData.putFloat((prefix + "TRUCK_Y_POS_" + i), firetrucks.get(i).getPosition().y);
 			// TODO: Add any powerup saving stuff
 			saveData.flush();
+		}
+	}
+
+	public void loadGame() {
+		if(saveSlot != 0) {
+			String prefix = "SLOT_" + saveSlot + "_";
+			for(int i = 0; i < 6; i++){
+				fortresses.get(i).setHealthPoints(saveData.getFloat(prefix + "FORTRESS_HEALTH_" + i, fortressStats[i][0]));
+				if(fortresses.get(i).getHealthPoints() <= 0) fortresses.get(i).die();
+				firetrucks.get(i).setHealthPoints(saveData.getFloat(prefix + "TRUCK_HEALTH_" + i, 100));
+				firetrucks.get(i).setCurrentWater(saveData.getFloat(prefix + "TRUCK_WATER_" + i, truckStats[i][2]));
+				firetrucks.get(i).setPosition(new Vector2(saveData.getFloat(prefix + "TRUCK_X_POS_" + i,
+						spawnPosition.x - 135 + (i * 50)),
+						saveData.getFloat(prefix + "TRUCK_Y_POS_" + i,spawnPosition.y)));
+				// TODO: Add any powerup saving stuff
+			}
 		}
 	}
 
