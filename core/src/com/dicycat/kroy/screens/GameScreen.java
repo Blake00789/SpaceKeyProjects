@@ -706,6 +706,7 @@ public class GameScreen implements Screen{
 			saveData.putFloat((prefix + "TRUCK_Y_POS_" + i), firetrucks.get(i).getPosition().y);
 			saveData.putFloat((prefix + "GAME_TIME"), gameTimer);
 			// TODO: Add any powerup saving stuff
+			// TODO: Add minigame checks - save 
 			saveData.flush();
 		}
 	}
