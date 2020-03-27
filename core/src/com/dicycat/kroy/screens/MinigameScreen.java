@@ -9,8 +9,10 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -50,6 +52,7 @@ public class MinigameScreen implements Screen {
 	private int score = -2; // Starts negative to give time for the pipes to reach the player 
 	private String scoreText = ""; // Instantiates the scoretext variable
 	BitmapFont font;
+	private float time;
 
 	private static Goose player; // Reference to the player
 
@@ -126,9 +129,11 @@ public class MinigameScreen implements Screen {
 			batch.setProjectionMatrix(gamecam.combined);
 			batch.begin(); // Game loop Start
 			batch.draw(map, -Kroy.width / 2, -Kroy.height / 2, Kroy.width, Kroy.height);
-
+			Animation <TextureRegion> tempBoi  = player.getAnimationInFlight();
+			batch.draw(tempBoi.getKeyFrame(time += delta), player.getPosition().x, player.getPosition().y, player.getTextureScale() + 50, player.getTextureScale());
+			tempBoi.setPlayMode(Animation.PlayMode.LOOP);
 			player.update();
-			player.render(batch);
+			//player.render(batch);
 
 			pipes.forEach(o -> {
 				o.update();
