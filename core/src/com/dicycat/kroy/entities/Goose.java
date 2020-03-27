@@ -25,8 +25,8 @@ public class Goose extends Entity {
 	private Rectangle hitbox = new Rectangle(10, 10, 50, 70); // Hitbox of the goose
 	private static float scale = 3; // Allows the goose to be scaled up in size
 	private static float textureScale = 200;
-	private float xOffset = 60;
-	private float yOffset = 50;
+	private float xOffset = 100;
+	private float yOffset = 70;
 	private Animation<TextureRegion>  inFlight;
 	private List<TextureRegion> animationFrames;
 
@@ -45,7 +45,7 @@ public class Goose extends Entity {
 	 */
 	public Goose() {
 		// was * scale
-		this(new Vector2(-30 , 0 ), new Texture("goose2.png"), new Vector2(scale, scale), 1);
+		this(new Vector2(-200, 0 ), new Texture("goose2.png"), new Vector2(scale, scale), 1);
 		//UpdateAnimation(1,2);
 
 		inFlight = new Animation<TextureRegion>(1/3f, new TextureRegion(new Texture("0064.png")), new TextureRegion(new Texture("0051.png")));

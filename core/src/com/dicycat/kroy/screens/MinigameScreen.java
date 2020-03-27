@@ -130,7 +130,7 @@ public class MinigameScreen implements Screen {
 			batch.begin(); // Game loop Start
 			batch.draw(map, -Kroy.width / 2, -Kroy.height / 2, Kroy.width, Kroy.height);
 			Animation <TextureRegion> tempBoi  = player.getAnimationInFlight();
-			batch.draw(tempBoi.getKeyFrame(time += delta), player.getPosition().x, player.getPosition().y, player.getTextureScale() + 50, player.getTextureScale());
+			batch.draw(tempBoi.getKeyFrame(time += delta), player.getPosition().x, player.getPosition().y, player.getTextureScale() + 70, player.getTextureScale());
 			tempBoi.setPlayMode(Animation.PlayMode.LOOP);
 			player.update();
 			//player.render(batch);
