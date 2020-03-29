@@ -88,8 +88,11 @@ public class MenuScreen implements Screen{
 	  optionsButtonActive = new Texture("optionsActive.png");
 	  playButton = new Texture("newgame.png");
 	  playButtonActive = new Texture("newgameActive.png");
+	  // MENU_REFACTOR_1 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+	  // Added buttons to go to the LoadWindow and removed minigame button
 	  loadGameButton = new Texture("loadgame.png");
 	  loadGameButtonActive = new Texture("loadgameActive.png");
+	  // MENU_REFACTOR_1 - END OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 	  background = new Texture ("fireforce.jpg");
 	  
 	  gamecam = new OrthographicCamera();
@@ -104,7 +107,10 @@ public class MenuScreen implements Screen{
 	  music.setVolume(musicVolume);  
 	  
 	  optionsWindow = new OptionsWindow(game);
+	  // MENU_REFACTOR_2 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+	  // initializes a LoadWindow instance.
 	  loadWindow = new LoadWindow(game);
+	  // MENU_REFACTOR_2 - END OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 
 	  optionsWindow.visibility(false);
 	  
@@ -161,7 +167,10 @@ public class MenuScreen implements Screen{
 			  if(( (Gdx.input.getX() < (xAxisCentred + buttonWidth)) && (Gdx.input.getX() > xAxisCentred) ) && ( (Kroy.height - Gdx.input.getY() > loadgameButtonY) && (Kroy.height - Gdx.input.getY() < (loadgameButtonY + buttonHeight)) ) ){
 				  game.batch.draw(loadGameButtonActive, xAxisCentred, loadgameButtonY, buttonWidth, buttonHeight);
 				  if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+					  // MENU_REFACTOR_3 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+					  // Sets menuscreens state to the load window, removed old minigame initialization code.
 					  setGameState(MenuScreenState.LOAD);
+					  // MENU_REFACTOR_3 - END OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 						  }
 					  } else {
 						  game.batch.draw(loadGameButton, xAxisCentred, loadgameButtonY, buttonWidth, buttonHeight);
@@ -192,11 +201,14 @@ public class MenuScreen implements Screen{
 			  optionsWindow.stage.draw();
 			  optionsWindow.clickCheck(true);
 			  break;
+		  // MENU_REFACTOR_4 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+		  // Created a load case which sets the correct input processor and draws and renders the correct screen.
 		  case LOAD:
 		  	Gdx.input.setInputProcessor(loadWindow.stage);
 		  	loadWindow.stage.act();
 		  	loadWindow.stage.draw();
 		  	clickCheck();
+		  // MENU_REFACTOR_4 - END OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 		  }
   	}
   
@@ -216,7 +228,7 @@ public class MenuScreen implements Screen{
 		fireTruckSelector.truckButton1.addListener(new ClickListener() {
 			@Override
 	    	public void clicked(InputEvent event, float x, float y) {
-				startGame(0);//Game begun with 0 (Speed) as the truck selected
+				startGame();//Game begun with 0 (Speed) as the truck selected
 				HUD.setScore(100000);
 	    	}
 	    });
@@ -224,7 +236,7 @@ public class MenuScreen implements Screen{
 		fireTruckSelector.truckButton2.addListener(new ClickListener() {
 	    	@Override
 	    	public void clicked(InputEvent event, float x, float y) {
-	    		startGame(1);//Game begun with 1 (Speed + Damage) as the truck selected
+	    		startGame();//Game begun with 1 (Speed + Damage) as the truck selected
 	    		HUD.setScore(100000);
 	    	}
 	    });
@@ -232,7 +244,7 @@ public class MenuScreen implements Screen{
 		fireTruckSelector.truckButton3.addListener(new ClickListener() {
 	    	@Override
 	    	public void clicked(InputEvent event, float x, float y) {
-	    		startGame(2);//Game begun with 2 (Damage) as the truck selected
+	    		startGame();//Game begun with 2 (Damage) as the truck selected
 	    		HUD.setScore(100000);
 	    	}
 	    });
@@ -240,7 +252,7 @@ public class MenuScreen implements Screen{
 		fireTruckSelector.truckButton4.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				startGame(3);//Game begun with 3 (Capacity + Range) as the truck selected
+				startGame();//Game begun with 3 (Capacity + Range) as the truck selected
 				HUD.setScore(100000);
 			}
 		});
@@ -248,7 +260,7 @@ public class MenuScreen implements Screen{
 		fireTruckSelector.truckButton5.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				startGame(4);//Game begun with 4 (Capacity) as the truck selected
+				startGame();//Game begun with 4 (Capacity) as the truck selected
 				HUD.setScore(100000);
 			}
 			    });
@@ -256,11 +268,13 @@ public class MenuScreen implements Screen{
 		fireTruckSelector.truckButton6.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				startGame(5);//Game begun with 5 (Range) as the truck selected
+				startGame();//Game begun with 5 (Range) as the truck selected
 				HUD.setScore(100000);
 			}
-	    });
+		});
 
+		// MENU_REFACTOR_5 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+		// Added input handling code for the load buttons and the back button on the load window.
 		LoadWindow.back.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -290,20 +304,25 @@ public class MenuScreen implements Screen{
 				resumeGame(3);
 			}
 		});
+
+		// MENU_REFACTOR_5 - END OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 	}
 
 
 	/**
-	 * 
-	 * @param truckNum Type of truck selected
+	 * Calls function in Kroy to start a new game and ensures only 1 GameScreen is currenly running - Updated by NP STUDIOS
  	 */
-	public void startGame(int truckNum) {
+	public void startGame() {
 		 if (!currentlyRunningGame) {	// Checks if a new GameScreen is currently running and either makes one or ignores the commands
 			 currentlyRunningGame = true; // Makes sure that only one GameScreen is opened at once
 			 game.newGame(); // Calls the function in Kroy to start a new game
 		 }
 	}
 
+	/**
+	 * Calls function in Kroy to start a game associated with a saveslot and makes sure only 1 is running at once - NP STUDIOS
+	 * @param saveSlot
+	 */
 	public void resumeGame(int saveSlot) {
 		if (!currentlyRunningGame) {	// Checks if a new GameScreen is currently running and either makes one or ignores the commands
 			currentlyRunningGame = true; // Makes sure that only one GameScreen is opened at once

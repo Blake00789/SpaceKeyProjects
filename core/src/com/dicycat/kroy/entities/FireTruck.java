@@ -305,7 +305,7 @@ public class FireTruck extends Entity{
 		}
 		return false;
 	}
-	
+
 	/**
 	 * new
 	 * @return currentWater
@@ -313,7 +313,10 @@ public class FireTruck extends Entity{
 	public float getCurrentWater() {
 		return currentWater;
 	}
-	
+	// FIRETRUCK_SETTERS - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+	// Changed the name from setCurrentWater to addWater as this was slightly ambigious, it doesnt set the value
+	// but increases it by the amount input. Then created a true setter for currentWater which is used when loading
+	// saved games.
 	/**
 	 * new
 	 * Increase the currentWater by the input parameter
@@ -325,4 +328,5 @@ public class FireTruck extends Entity{
 	public void setCurrentWater(float currentWater) {
 		this.currentWater = currentWater;
 	}
+	// FIRETRUCK_SETTERS - END OF MODIFICATION  - NP STUDIOS
 }

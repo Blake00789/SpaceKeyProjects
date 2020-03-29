@@ -51,9 +51,12 @@ public class GameScreen implements Screen{
 	public Kroy game;
 	public GameTextures textures;
 	public static float gameTimer; //Timer to destroy station
-	private int saveSlot;
 
+	// SAVING_4 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+	// Defines the saveslot variable and initializes the preferences file which is used to hold the save data.
+	private int saveSlot;
 	private Preferences saveData = Gdx.app.getPreferences("Kroy");
+	// SAVING_4 - END OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 
 	public GameScreenState state = GameScreenState.RUN;
 	
@@ -169,13 +172,16 @@ public class GameScreen implements Screen{
 		for (int i = 0; i < 6; i++) {
 			firetruckInit(spawnPosition.x - 135 + (i * 50), spawnPosition.y, i);
 			fortressInit(i);
+		// SAVING_5 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+			// moved firetruck statbar code to be initialized after the firetrucks are created.
 			tankbars.get(i).setPosition(firetrucks.get(i).getCentre().add(0,20));
 			tankbars.get(i).setBarDisplay((firetrucks.get(i).getCurrentWater()/ firetrucks.get(i).getMaxWater())*50);
 
 			healthbars.get(i).setPosition(firetrucks.get(i).getCentre().add(0,25));
 			healthbars.get(i).setBarDisplay((firetrucks.get(i).getHealthPoints()*50)/firetrucks.get(i).getMaxHealthPoints());
 		}
-		loadGame();
+		loadGame(); // calls the load game function which updates all health values, positions and stats as required.
+		// SAVING_5 - END OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 		gameObjects.add(new FireStation(textures.getFireStation(), textures.getFireStationDead()));
 		switchTrucks(truckNum);  
 
@@ -541,6 +547,8 @@ public class GameScreen implements Screen{
 	    	}
 	    });
 
+		// SAVING_6 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+		// Added input handling for the save buttons in the pause menu.
 		//save1 button
 		pauseWindow.save1.addListener(new ClickListener() {
 			@Override
@@ -564,6 +572,7 @@ public class GameScreen implements Screen{
 				saveGame(3);
 			}
 		});
+		// SAVING_6 - END OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 
 		//menu button
 		pauseWindow.menu.addListener(new ClickListener() {
@@ -696,6 +705,10 @@ public class GameScreen implements Screen{
 		return spawnPosition;
 	}
 
+	/**
+	 * Saves all of the game data needed to the preferences file 'Kroy' and flushes to ensure this persists. - NP STUDIOS
+	 * @param saveSlot 1, 2 or 3
+	 */
 	public void saveGame(int saveSlot) {
 		String prefix = "SLOT_" + saveSlot + "_";
 		for(int i = 0; i < 6; i++){
@@ -711,6 +724,10 @@ public class GameScreen implements Screen{
 		}
 	}
 
+	/**
+	 * Accesses the prefences file 'Kroy' and gets the values saved in the saveSlot (either 1, 2 or 3) and applies them
+	 * as needed. - NP STUDIOS
+	 */
 	public void loadGame() {
 		if(saveSlot != 0) {
 			String prefix = "SLOT_" + saveSlot + "_";
@@ -723,6 +740,7 @@ public class GameScreen implements Screen{
 						spawnPosition.x - 135 + (i * 50)),
 						saveData.getFloat(prefix + "TRUCK_Y_POS_" + i,spawnPosition.y)));
 				// TODO: Add any powerup saving stuff
+				// TODO: Add minigame checks - save
 			}
 			gameTimer = saveData.getFloat(prefix + "GAME_TIME", 300);
 			hud.setTimer(saveData.getFloat(prefix + "GAME_TIME", 300));

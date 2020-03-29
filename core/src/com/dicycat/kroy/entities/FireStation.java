@@ -20,7 +20,10 @@ public class FireStation extends Entity {
 	 * extended
 	 */
 	public FireStation(Texture alive, Texture dead) {
+		// FIRESTATION_RADIUS - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+		// Created position based on the spawnposition instead of a hardcoded value, added a more accurate radius.
 		super(new Vector2(Kroy.mainGameScreen.getSpawnPosition().add(-(298/2), 100)), alive, new Vector2(298, 175), 100, 300);
+		// FIRESTATION_RADIUS - END OF MODIFICATION  - NP STUDIOS
 		this.textureDead = dead;
 	}
 

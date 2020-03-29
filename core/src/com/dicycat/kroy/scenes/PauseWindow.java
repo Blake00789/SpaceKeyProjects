@@ -32,9 +32,12 @@ public class PauseWindow {
     public TextButton resume = new TextButton("RESUME", skin);
     public TextButton exit = new TextButton("EXIT", skin);
     public TextButton menu = new TextButton("MENU", skin);
+	// SAVING_2 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+	// Added three buttons to the pause menu which the user can click to save the game.
     public TextButton save1 = new TextButton("SAVE: SLOT 1", skin);
 	public TextButton save2 = new TextButton("SAVE: SLOT 2", skin);
 	public TextButton save3 = new TextButton("SAVE: SLOT 3", skin);
+	// SAVING_2 - END OF MODIFICATION  - NP STUDIOS - LUCY IVATT
     
     
 	/**
@@ -51,11 +54,14 @@ public class PauseWindow {
 		table.row();
 	    table.add(menu).width(Kroy.CentreWidth());
 	    table.row();
+		// SAVING_3 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+		// Added the 3 new save buttons to the table.
 	    table.add(save1).width(Kroy.CentreWidth());
 		table.row();
 		table.add(save2).width(Kroy.CentreWidth());
 		table.row();
 		table.add(save3).width(Kroy.CentreWidth());
+		// SAVING_3 - END OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 		table.row();
 		table.add(exit).width(Kroy.CentreWidth());
 	    

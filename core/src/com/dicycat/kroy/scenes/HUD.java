@@ -22,11 +22,14 @@ import static java.lang.Math.abs;
 public class HUD {
 	public Stage stage;
 	private Viewport viewport;	//creating new port so that the HUD stays locked while map can move around independently
-	
+
+	// HUD_UPDATES_1 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+	// Changed HUD to track fortresses, condensed timer into only 1 variable, changed Objects to primitive types.
 	private int fortresses = 6;
 	private float countdown;	//change to float maybe
 	private static int score = 100000;
-	
+	// HUD_UPDATES_1 - END OF MODIFICATION  - NP STUDIOS
+
 	private Label scoreLabel;
 	private Label timeLabel;
 	private Label fortressLabel;
@@ -36,12 +39,17 @@ public class HUD {
 	
 	
 	/**
-	 * @param sb	SpriteBatch
+	 * @param sb	SpriteBatch for the game
+	 * @param timeLimit the amount of time before the firestation should be destroyed
 	 */
+	// HUD_UPDATES_2 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+	// Added timeLimit to the constructor paramters so it can be passed from the main game screen and set countdown
+	// equal to this value.
 	public HUD(SpriteBatch sb, float timeLimit) {
 		viewport = new ScreenViewport(new OrthographicCamera());
 		stage = new Stage(viewport, sb);	//Where we are going to put the HUD elements
 		countdown = timeLimit;
+	// HUD_UPDATES_2 - END OF MODIFICATION  - NP STUDIOS
 		
 		Table tableHUD = new Table();	//this allows to put widgets in the scene in a clean and ordered way
 		tableHUD.top();	// puts widgets from the top instead of from the centre
@@ -72,17 +80,20 @@ public class HUD {
 	 * @param dt	Delta Time 
 	 */
 	public void update(float dt) {
+	// HUD_UPDATES_3 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+	// Removed the need for a second variable and condensed code.
 		if (countdown > 0) { countdown -= dt; }
 		countdownLabel.setText(String.format("%.0f", abs(countdown)));
 		scoreCountLabel.setText(String.format("%06d", score));
-		fortressCountLabel.setText(String.format("%01d", Kroy.mainGameScreen.getFortressesCount()));
-		}
+		fortressCountLabel.setText(String.format("%01d", Kroy.mainGameScreen.getFortressesCount())); }
 
+	// Added a setter for the timer to be used when loading a saved game.
 	public void setTimer(float time) {
 		this.countdown = time;
 	}
+	// HUD_UPDATES_3 - END OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 
-	public Integer getFinalScore() {
+	public int getFinalScore() {
 		return score;
 	}
 
@@ -90,7 +101,7 @@ public class HUD {
 		score = x;
 	}
 
-	public Integer getScore(){
+	public int getScore(){
 		return score;
 	}
 

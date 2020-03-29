@@ -30,7 +30,11 @@ public abstract class Entity extends GameObject{
 		super(spawnPos, img, imSize);
 		healthPoints = health;
 		maxHealthPoints = health;
+		// RADIUS_PARAM - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+		// Added radius as an input from the constructor compared to a previous default of 500 so we could easily balance
+		// the game.
 		this.radius = radius;
+		// RADIUS_PARAM - END OF MODIFICATION  - NP STUDIOS
 		changePosition(spawnPos);
 	}
  
@@ -81,10 +85,15 @@ public abstract class Entity extends GameObject{
 	public float getHealthPoints(){
 		return healthPoints; 
 	}
+
+	// ENTITY_SETTERS - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+	// Changed the name from setHealthPoints to addHealth as this was slightly ambigious as it doesnt set the value
+	// but increases it by the amount input. Then created a true setter for healthPoints which is used when loading
+	// saved games.
 	
 	/**
-	 * new
-	 * increase the HealthPoints by x
+	 * Adds a value to healthPoints
+	 * @param x value to increase health by
 	 */
 	public void addHealth(float x){
 		if(!(getHealthPoints() >= maxHealthPoints)){
@@ -95,6 +104,7 @@ public abstract class Entity extends GameObject{
 	public void setHealthPoints(float healthPoints) {
 		this.healthPoints = healthPoints;
 	}
+	// ENTITY_SETTERS - END OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 
 	// STATBAR_REFACTOR_1 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 	// Added new getter required for the statbar refactor.

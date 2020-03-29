@@ -22,53 +22,45 @@ import com.sun.javafx.binding.IntegerConstant;
 import javax.swing.*;
 
 /**
- * Pause window
+ * Window which is opened when the user clicks the 'load game' button the main menu. Shows the 3 slots available to load
+ * from as well as a back button.
  * 
- * @author Michele Imbriani
- *
+ * @author Lucy Ivatt - NP STUDIOS
  */
 public class LoadWindow {
 
-	private Kroy game;
 	public Stage stage;
 	public Table table = new Table();
 	private Batch sb;
 	private NinePatch patch = new NinePatch(new Texture("loool.jpg"), 3, 3, 3, 3);
 	private NinePatchDrawable background = new NinePatchDrawable(patch);
 
-    private static Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
-    public static TextButton load1 = new TextButton("Load Slot 1", skin);
-    public static TextButton load2 = new TextButton("Load Slot 2", skin);
-    public static TextButton load3 = new TextButton("Load Slot 3", skin);
-    public static TextButton back = new TextButton("Back", skin);
+	// Initializes the 4 buttons needed
+	private static Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
+	public static TextButton load1 = new TextButton("Load Slot 1", skin);
+	public static TextButton load2 = new TextButton("Load Slot 2", skin);
+	public static TextButton load3 = new TextButton("Load Slot 3", skin);
+	public static TextButton back = new TextButton("Back", skin);
 
 	/**
 	 * @param game
 	 */
 	public LoadWindow(Kroy game) {
-		this.game = game;
 		sb = game.batch;
 		Viewport viewport = new ScreenViewport(new OrthographicCamera());
 		stage = new Stage(viewport, sb);
 
+		// Draws the table with the 4 buttons
 		table.setBackground(background);
 		table.row();
-	    table.add(load1).width(Kroy.CentreWidth());
+		table.add(load1).width(Kroy.CentreWidth());
 		table.row();
-	    table.add(load2).width(Kroy.CentreWidth());
-	    table.row();
-	    table.add(load3).width(Kroy.CentreWidth());
+		table.add(load2).width(Kroy.CentreWidth());
+		table.row();
+		table.add(load3).width(Kroy.CentreWidth());
 		table.row();
 		table.add(back).width(Kroy.CentreWidth());
 		table.setFillParent(true);
-	    stage.addActor(table);
+		stage.addActor(table);
 	}
-	
-	/**
-	 * @param state	Allows the window to be visible or hidden
-	 */
-	public void visibility(boolean state){
-		table.setVisible(state);
-	}
-
-	}
+}
