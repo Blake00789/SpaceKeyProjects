@@ -52,7 +52,7 @@ public class MinigameScreen implements Screen {
 	private int score = -2; // Starts negative to give time for the pipes to reach the player 
 	private String scoreText = ""; // Instantiates the scoretext variable
 	BitmapFont font;
-	private float time;
+	private float time; // Integer used to play goose animation on set intervals
 
 	private static Goose player; // Reference to the player
 
@@ -93,7 +93,7 @@ public class MinigameScreen implements Screen {
 			public void run() {
 				createPipe();
 			}
-		}, 0, 3);// 0 seconds delay, 2 seconds between pipes
+		}, 0, 2);// 0 seconds delay, 2 seconds between pipes
 	}
 
 	/**
@@ -181,12 +181,13 @@ public class MinigameScreen implements Screen {
 			batch.draw(new Texture("minigameEnd.png"), 0, 0, Kroy.width, Kroy.height);
 			font.draw(batch, scoreText, (Kroy.width / 2) + 20, (Kroy.height / 2) - 300);
 			batch.end();
-			if(Gdx.input.isKeyJustPressed(Keys.SPACE) || Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+			if (Gdx.input.isKeyJustPressed(Keys.SPACE) || Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+				pipes.clear();
 				dispose();
 				game.backToMenu();
 			}
-		default:
-			break;
+			default:
+				break;
 		}
 	}
 

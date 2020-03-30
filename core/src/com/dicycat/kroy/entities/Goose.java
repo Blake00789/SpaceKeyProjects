@@ -46,9 +46,14 @@ public class Goose extends Entity {
 	public Goose() {
 		// was * scale
 		this(new Vector2(-200, 0 ), new Texture("goose2.png"), new Vector2(scale, scale), 1);
-		TextureRegion[] tempList =  UpdateAnimation(73, 97);
-		inFlight = new Animation<TextureRegion>(1/50f, tempList);
+		SetAnimation(73,97);
 	}
+
+	public void SetAnimation(int StartFrame, int EndFrame){
+		TextureRegion[] tempList =  UpdateAnimation(StartFrame, EndFrame);
+		inFlight = new Animation<TextureRegion>(1/25f, tempList);
+	}
+
 
 	private TextureRegion[] UpdateAnimation (int startFrame, int EndFrame){
 		List<TextureRegion> tempList = new ArrayList<TextureRegion>();
