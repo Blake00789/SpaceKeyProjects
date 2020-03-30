@@ -28,7 +28,7 @@ public class Goose extends Entity {
 	private float xOffset = 100;
 	private float yOffset = 70;
 	private Animation<TextureRegion>  inFlight;
-	private List<TextureRegion> animationFrames;
+	private TextureRegion[] animationFrames;
 
 	/**
 	 * @param spawnPos Where the goose spawns
@@ -46,18 +46,24 @@ public class Goose extends Entity {
 	public Goose() {
 		// was * scale
 		this(new Vector2(-200, 0 ), new Texture("goose2.png"), new Vector2(scale, scale), 1);
-		//UpdateAnimation(1,2);
-
-		inFlight = new Animation<TextureRegion>(1/3f, new TextureRegion(new Texture("0064.png")), new TextureRegion(new Texture("0051.png")));
+		TextureRegion[] tempList =  UpdateAnimation(73, 97);
+		inFlight = new Animation<TextureRegion>(1/50f, tempList);
 	}
 
-	private void UpdateAnimation (int startFrame, int EndFrame){
-		for (int n = startFrame; n < EndFrame; n++) {
+	private TextureRegion[] UpdateAnimation (int startFrame, int EndFrame){
+		List<TextureRegion> tempList = new ArrayList<TextureRegion>();
+
+		for (int n = startFrame; n <= EndFrame; n++) {
 			String frameNameAsInt = String.valueOf(n);
 			String frameName = ("0000" + frameNameAsInt).substring(frameNameAsInt.length());
-			frameName += ".png";
-			animationFrames.add(new TextureRegion(new Texture(frameName)));
+			Gdx.app.log("MyTag", frameName);
+			Texture tempTexture = new Texture(frameName + ".png");
+			tempList.add(new TextureRegion(tempTexture));
 		}
+
+		TextureRegion[] animationFrames = new TextureRegion[tempList.size()];
+		animationFrames = tempList.toArray(animationFrames);
+		return animationFrames;
 	}
 
 	/**

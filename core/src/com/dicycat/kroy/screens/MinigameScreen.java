@@ -93,7 +93,7 @@ public class MinigameScreen implements Screen {
 			public void run() {
 				createPipe();
 			}
-		}, 0, 2);// 0 seconds delay, 2 seconds between pipes
+		}, 0, 3);// 0 seconds delay, 2 seconds between pipes
 	}
 
 	/**
