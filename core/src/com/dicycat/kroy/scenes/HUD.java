@@ -84,6 +84,10 @@ public class HUD {
 		}
 	}
 
+	// HIGHSCORE_3 - START OF MODIFICATION - NP STUDIOS - LUCY IVATT
+	// Deleted getFinalScore() as it was identical to getScore.
+	// HIGHSCORE_3 - END OF MODIFICATION - NP STUDIOS - LUCY IVATT
+
 	public static void setScore(Integer x){
 		score = x;
 	}

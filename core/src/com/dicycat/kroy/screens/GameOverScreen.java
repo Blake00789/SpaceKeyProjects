@@ -188,6 +188,12 @@ public class GameOverScreen implements Screen {
 
 	}
 
+	// HIGHSCORE_4 - START OF MODIFICATION - NP STUDIOS - LUCY IVATT
+	// Deleted updateHighScore() as it was unnecessarily complicated as libgdx has inbuilt saving features. It also
+	// didn't persist between game instances and therefore not being a 'true' highscore. Fixed and moved this functionality
+	// into the Kroy class by making use of the setHighScore and getHighScore methods.
+	// HIGHSCORE_4 - END OF MODIFICATION - NP STUDIOS - LUCY IVATT
+
 	@Override
 	public void resize(int width, int height) {
 		gameport.update(width, height);

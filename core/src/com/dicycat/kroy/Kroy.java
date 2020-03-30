@@ -30,7 +30,10 @@ public class Kroy extends Game {
 	
 	@Override
 	public void create () {
+		// HIGHSCORE_1 - START OF MODIFICATION - NP STUDIOS - LUCY IVATT
+		// Initializes the save file which the highscore will be accessed from.
 		saveData = Gdx.app.getPreferences("Kroy");
+		// HIGHSCORE_1 - END OF MODIFICATION - NP STUDIOS - LUCY IVATT
 		batch = new SpriteBatch();
 		mainMenuScreen = new MenuScreen(this);
 		this.setScreen(mainMenuScreen);
@@ -75,17 +78,18 @@ public class Kroy extends Game {
 		return width / 3;
 	}
 
+	// HIGHSCORE_2 - START OF MODIFICATION - NP STUDIOS - LUCY IVATT
+	// Updated the setHighscore method to save the value to a 'Preferences' file which will persist between games, i.e
+	// will save the highscore even when the game has been closed. Also updated the getHighScore method to access this
+	// file.
 	/**
-	 * Set the high score
+	 * Saves the highscore to the games saved data file - updated by NP STUDIOS
 	 * @param highScore The new high score
 	 */
 	public void setHighScore(Integer highScore) {
-		// HIGHSCORE_1 - START OF MODIFICATION - NP STUDIOS - LUCY IVATT -----------------------------------------
 		if (highScore > saveData.getInteger("highscore", 0)) { // If the new score is bigger than the saved highscore
 			saveData.putInteger("highscore", highScore); // replace the saved highscore with the newly achieves score
-			saveData.flush(); // updates the file
-		}
-		// HIGHSCORE_1 - END OF MODIFICATION - NP STUDIOS - LUCY IVATT -----------------------------------------
+			saveData.flush(); } // updates the file
 	}
 
 	/**
@@ -93,8 +97,7 @@ public class Kroy extends Game {
 	 * @return highScore
 	 */
 	public Integer getHighScore() {
-		// HIGHSCORE_2 - START OF MODIFICATION - NP STUDIOS - LUCY IVATT -----------------------------------------
 		return saveData.getInteger("highscore", 0); // accesses high-score file and returns integer value
-		// HIGHSCORE_2 - END OF MODIFICATION - NP STUDIOS - LUCY IVATT -----------------------------------------
 	}
+	// HIGHSCORE_2 - END OF MODIFICATION - NP STUDIOS - LUCY IVATT
 }
