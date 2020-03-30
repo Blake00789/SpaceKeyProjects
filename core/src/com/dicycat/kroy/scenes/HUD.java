@@ -76,7 +76,7 @@ public class HUD {
 			if (worldTimer>0) {
 				worldTimer--;
 			}
-			score = score - 220;
+			updateScore(-220);
 			worldTimerLabel.setText(String.format("%03d", worldTimer));
 			timeCount =0;
 			scoreCountLabel.setText(String.format("%05d", score));
@@ -84,16 +84,11 @@ public class HUD {
 		}
 	}
 
-
-	public Integer getFinalScore() {
-		return score;
-	}
-
 	public static void setScore(Integer x){
 		score = x;
 	}
 
-	public Integer getScore(){
+	public int getScore(){
 		return score;
 	}
 

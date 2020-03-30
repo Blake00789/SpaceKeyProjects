@@ -23,8 +23,6 @@ import com.dicycat.kroy.Kroy;
 import com.dicycat.kroy.scenes.HUD;
 
 /**
- * 
- * @author
  *
  */
 public class GameOverScreen implements Screen {
@@ -95,23 +93,17 @@ public class GameOverScreen implements Screen {
 		table.top();
 
 		if (result) {
-			score = Kroy.mainGameScreen.getHud().getFinalScore();
+			score = Kroy.mainGameScreen.getHud().getScore();
 			highScore = game.getHighScore();
 			if (score > highScore) {
 				highScore = score;
 				game.setHighScore(highScore);
-				HUD.setScore(100000);
 			}
-		} else {
+		}
+		else {
 			score = 0;
-			HUD.setScore(100000);
 		}
-		try {
-			updateHighScore();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
+
 		scoreLabel = new Label("YOUR SCORE:", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 		scoreNumberLabel = new Label(String.format("%05d", score), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 		highScoreLabel = new Label("HIGH SCORE:", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
@@ -196,48 +188,6 @@ public class GameOverScreen implements Screen {
 
 	}
 
-	/**
-	 * Saves the high score each time the game is run
-	 * //TODO Needs refactoring so that it saves the score between runs
-	 * 
-	 * @throws IOException
-	 */
-	public void updateHighScore() throws IOException {
-		File highScoreFile = new File("highScore.txt");
-		if(!highScoreFile.exists()) highScoreFile.createNewFile();
-		
-		try {
-			Scanner fReader = new Scanner(highScoreFile);
-			while (fReader.hasNextLine()) {
-		        String data = fReader.nextLine();
-		        highScore = Integer.parseInt(data);
-		      }
-			if(highScore == null) {
-				highScore = 1;
-			}
-			fReader.close();
-		} catch (FileNotFoundException e) {
-			System.out.println("An error occurred.");
-			e.printStackTrace();
-		}
-		FileWriter fWriter = new FileWriter("highScore.txt");
-		if (score > highScore) {
-			try {
-				highScoreFile.createNewFile();
-				fWriter.write(score);
-				fWriter.close();
-				System.out.println("Successfully updated the score.");
-			} catch (IOException e) {
-				System.out.println("An error occurred.");
-				e.printStackTrace();
-			}
-		}
-
-	}
-
-	/**
-	 *
-	 */
 	@Override
 	public void resize(int width, int height) {
 		gameport.update(width, height);

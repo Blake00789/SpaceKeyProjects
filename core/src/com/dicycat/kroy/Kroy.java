@@ -1,6 +1,8 @@
 package com.dicycat.kroy;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dicycat.kroy.screens.GameScreen;
 import com.dicycat.kroy.screens.MenuScreen;
@@ -17,18 +19,18 @@ import com.dicycat.kroy.screens.MinigameScreen;
 public class Kroy extends Game {
 	public static final int width = 1080;
 	public static final int height = 720;
+
 	public static boolean debug = false;
 	
 	public static GameScreen mainGameScreen;
 	public static MenuScreen mainMenuScreen;
 	public static MinigameScreen mainMinigameScreen;
+	public static Preferences saveData;
 	public SpriteBatch batch;
-	
-	private Integer highScore;
 	
 	@Override
 	public void create () {
-		highScore = 0;		 
+		saveData = Gdx.app.getPreferences("Kroy");
 		batch = new SpriteBatch();
 		mainMenuScreen = new MenuScreen(this);
 		this.setScreen(mainMenuScreen);
@@ -72,20 +74,27 @@ public class Kroy extends Game {
 	public static int CentreWidth() {
 		return width / 3;
 	}
-	
-	/** 
+
+	/**
 	 * Set the high score
 	 * @param highScore The new high score
 	 */
 	public void setHighScore(Integer highScore) {
-		this.highScore = highScore;
+		// HIGHSCORE_1 - START OF MODIFICATION - NP STUDIOS - LUCY IVATT -----------------------------------------
+		if (highScore > saveData.getInteger("highscore", 0)) { // If the new score is bigger than the saved highscore
+			saveData.putInteger("highscore", highScore); // replace the saved highscore with the newly achieves score
+			saveData.flush(); // updates the file
+		}
+		// HIGHSCORE_1 - END OF MODIFICATION - NP STUDIOS - LUCY IVATT -----------------------------------------
 	}
-	
+
 	/**
 	 * Get the current high score
 	 * @return highScore
 	 */
 	public Integer getHighScore() {
-		return highScore;
+		// HIGHSCORE_2 - START OF MODIFICATION - NP STUDIOS - LUCY IVATT -----------------------------------------
+		return saveData.getInteger("highscore", 0); // accesses high-score file and returns integer value
+		// HIGHSCORE_2 - END OF MODIFICATION - NP STUDIOS - LUCY IVATT -----------------------------------------
 	}
 }
