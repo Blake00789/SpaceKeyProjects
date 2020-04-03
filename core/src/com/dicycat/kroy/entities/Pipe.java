@@ -54,15 +54,11 @@ public class Pipe extends GameObject {
 	 */
 	@Override
 	public void update() {
-		debugDraw();
 		setPosition(new Vector2(getX() - speed, getY()));
 		hitboxes[0].x = getX() + xOffset;
 		hitboxes[0].y = getY() + yOffset;
 		hitboxes[1].x = getX() + xOffset;
 		hitboxes[1].y = getY() + yOffset2;
-		if (Kroy.debug) {
-			debugDraw();
-		}
 
 	}
 
