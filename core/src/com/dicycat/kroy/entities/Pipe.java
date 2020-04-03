@@ -37,8 +37,8 @@ public class Pipe extends GameObject {
 	 * 
 	 * @param spawnPos The spawn position
 	 */
-	public Pipe(Vector2 spawnPos) {
-		super(spawnPos, new Texture("Rocks.png"), new Vector2(2000, 1200));
+	public Pipe(Vector2 spawnPos, Texture pipeTexture) {
+		super(spawnPos, pipeTexture, new Vector2(2000, 1200));
 		Vector2 tempVector =  spawnPos;
 		tempVector.x += -1400;
 		tempVector.y += 500;

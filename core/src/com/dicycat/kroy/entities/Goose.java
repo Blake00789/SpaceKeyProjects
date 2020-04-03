@@ -61,7 +61,6 @@ public class Goose extends Entity {
 		for (int n = startFrame; n <= EndFrame; n++) {
 			String frameNameAsInt = String.valueOf(n);
 			String frameName = ("0000" + frameNameAsInt).substring(frameNameAsInt.length());
-			Gdx.app.log("MyTag", frameName);
 			Texture tempTexture = new Texture(frameName + ".png");
 			tempList.add(new TextureRegion(tempTexture));
 		}

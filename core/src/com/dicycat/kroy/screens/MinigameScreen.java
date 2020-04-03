@@ -55,13 +55,17 @@ public class MinigameScreen implements Screen {
 	private float time; // Integer used to play goose animation on set intervals
 
 	private static Goose player; // Reference to the player
-
+	private Texture bg;
 	Texture map;
 
 	private List<Pipe> pipes; // List of pipes
 	private List<DebugDraw> debugObjects;
 
+	private Texture pipeTexture;
+
 	public MinigameScreen(Kroy _game) {
+		pipeTexture = new Texture("Rocks.png");
+		bg = new Texture("lightBlue.png");
 		game = _game;
 		gamecam = new OrthographicCamera();
 		gameport = new FitViewport(Kroy.width, Kroy.height, gamecam);
@@ -135,16 +139,20 @@ public class MinigameScreen implements Screen {
 			player.update();
 			//player.render(batch);
 
-			pipes.forEach(o -> {
-				o.update();
-				o.render(batch);
-				if (o.gameEnd(player)) {
+			for (Pipe pipe : pipes) {
+				pipe.update();
+				pipe.render(batch);
+				if (pipe.gameEnd(player)) {
 					// If the player hits a pipe, then the game ends
 					gameOver();
 				}
-				;
-			});
-			pipes.removeIf(o -> o.isRemove());
+			}
+			for (int x = 0; x < pipes.size(); x++){
+				if (pipes.get(x).isRemove()) {
+					pipes.remove(x);
+
+				}
+			}
 
 			// Score starts at -2, so different text is displayed instead
 			if (score < 0) {
@@ -154,7 +162,7 @@ public class MinigameScreen implements Screen {
 			}
 
 			// Score is displayed in the top left with a light blue background
-			batch.draw(new Texture("lightBlue.png"), (-Kroy.width / 2), (Kroy.height / 2) - 75, scoreText.length() * 30,
+			batch.draw(bg, (-Kroy.width / 2), (Kroy.height / 2) - 75, scoreText.length() * 30,
 					75);
 			font.draw(batch, scoreText, (-Kroy.width / 2) + 10, (Kroy.height / 2) - 10);
 
@@ -197,7 +205,7 @@ public class MinigameScreen implements Screen {
 	 */
 	private void createPipe() {
 		int height = (int) Math.round(-300 * Math.random()) - 900;
-		pipes.add(new Pipe(new Vector2(800, height)));
+		pipes.add(new Pipe(new Vector2(800, height), pipeTexture));
 		score++;
 		// System.out.println(score);
 	}
