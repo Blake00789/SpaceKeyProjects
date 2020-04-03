@@ -26,6 +26,7 @@ import com.dicycat.kroy.entities.FireTruck;
 import com.dicycat.kroy.entities.Fortress;
 import com.dicycat.kroy.entities.UFO;
 import com.dicycat.kroy.gamemap.TiledGameMap;
+import com.dicycat.kroy.powerups.Box;
 import com.dicycat.kroy.scenes.HUD;
 import com.dicycat.kroy.scenes.OptionsWindow;
 import com.dicycat.kroy.scenes.PauseWindow;
@@ -44,6 +45,7 @@ public class GameScreen implements Screen{
 		PAUSE,
 		RUN,
 		RESUME,
+		MINIGAME,
 		OPTIONS
 	}
 	
@@ -142,6 +144,9 @@ public class GameScreen implements Screen{
 		deadObjects = new ArrayList<GameObject>();
 		debugObjects = new ArrayList<DebugDraw>();
 
+		Box box = new Box(new Vector2(spawnPosition.x - 135, spawnPosition.y -20));
+		gameObjects.add(box);
+
 		// Initialises the FireTrucks
 		for (int i = 0; i < 6; i++) {
 			firetruckInit(spawnPosition.x - 135 + (i * 50), spawnPosition.y, i);
@@ -225,6 +230,9 @@ public class GameScreen implements Screen{
 			case RESUME:
 				pauseWindow.visibility(false);
 				setGameState(GameScreenState.RUN);
+				break;
+			case MINIGAME:
+
 				break;
 			default:
 				break;
