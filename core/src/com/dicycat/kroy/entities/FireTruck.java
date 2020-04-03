@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.dicycat.kroy.GameObject;
 import com.dicycat.kroy.Kroy;
 import com.dicycat.kroy.misc.StatBar;
+import com.dicycat.kroy.misc.StatusIcon;
 import com.dicycat.kroy.misc.WaterStream;
 import com.dicycat.kroy.screens.GameScreen;
 
@@ -27,6 +28,7 @@ public class FireTruck extends Entity{
 	private float flowRate;	//How fast the truck can dispense water
 	private float maxWater; //How much water the truck can hold
 	private float currentWater; //Current amount of water
+
  
 	private Rectangle hitbox = new Rectangle(20, 45, 20, 20);  
 
@@ -37,8 +39,14 @@ public class FireTruck extends Entity{
 	private WaterStream water; 
 	private StatBar tank;
 	private StatBar healthBar;
+	private StatusIcon strengthUpIcon;
+	private StatusIcon healthUpIcon;
 	private boolean firing;
+	private boolean healthUp;
+	private boolean strengthUp;
 	private float range;
+
+	private Vector2 statusIconPos = Vector2.Zero;
 
 	/**
 	 * @param spawnPos
@@ -65,6 +73,8 @@ public class FireTruck extends Entity{
 		range = truckStats[3];			// Range of the truck
 
 		firing = false;
+		strengthUp = true;
+		healthUp = true;
 		water = new WaterStream(Vector2.Zero);
 
 		tank = new StatBar(Vector2.Zero, "Blue.png", 3);
@@ -72,6 +82,13 @@ public class FireTruck extends Entity{
 
 		healthBar= new StatBar(Vector2.Zero, "Green.png", 3);
 		Kroy.mainGameScreen.addGameObject(healthBar);
+
+		healthUpIcon = new StatusIcon(statusIconPos,"healthUp.png");
+		Kroy.mainGameScreen.addGameObject(healthUpIcon);
+
+		strengthUpIcon = new StatusIcon(statusIconPos,"strengthUp.png");
+		Kroy.mainGameScreen.addGameObject(strengthUpIcon);
+
 	}
 	
 	/** 
@@ -97,7 +114,10 @@ public class FireTruck extends Entity{
 		currentWater=300;
 				
 		firing = false;
+		strengthUp = true;
+		healthUp = true;
 		water = new WaterStream(Vector2.Zero);
+
 	}
 
 	/**
@@ -182,8 +202,17 @@ public class FireTruck extends Entity{
 		tank.setPosition(getCentre().add(0,20));
 		tank.setBarDisplay((currentWater/maxWater)*50);
 
+		UpdateStatusIcons();
 		healthBar.setPosition(getCentre().add(0,25));
 		healthBar.setBarDisplay((getHealthPoints()*50)/maxHealthPoints);
+		if (strengthUpIcon.isEnabled() && healthUpIcon.isEnabled()) {
+			strengthUpIcon.setPosition(getCentre().add(-40,20));
+			healthUpIcon.setPosition(getCentre().add(-10,20));
+		} else if (strengthUpIcon.isEnabled()){
+			strengthUpIcon.setPosition(getCentre().add(-30,20));
+		} else if (healthUpIcon.isEnabled()){
+			healthUpIcon.setPosition(getCentre().add(-30,20));
+		}
 
 		//player firing
 		ArrayList<GameObject> inRange = entitiesInRange();		//find list of enemies in range
@@ -199,6 +228,26 @@ public class FireTruck extends Entity{
 
 		if (firing) {					//if the player is firing runs the PlayerFire method
 			playerFire(inRange);
+		}
+	}
+
+	// Updates Icons based on if the FireTruck is currently effected by status elements
+	// else clears icon textures if currently visible
+
+	private void UpdateStatusIcons(){
+		if (healthUp){
+			if (!(healthUpIcon.isEnabled())) {
+				healthUpIcon.addIcon();
+			}
+		} else if (healthUpIcon.isEnabled()){
+			healthUpIcon.removeIcon();
+		}
+		if (strengthUp){
+			if (!(strengthUpIcon.isEnabled())) {
+				strengthUpIcon.addIcon();
+			}
+		} else if (strengthUpIcon.isEnabled()){
+			strengthUpIcon.removeIcon();
 		}
 	}
 	
