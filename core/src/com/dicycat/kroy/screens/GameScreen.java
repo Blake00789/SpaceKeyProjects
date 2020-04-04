@@ -145,7 +145,7 @@ public class GameScreen implements Screen{
 		debugObjects = new ArrayList<DebugDraw>();
 
 		Box box = new Box(new Vector2(spawnPosition.x - 135, spawnPosition.y -20));
-		gameObjects.add(box);
+		addGameObject(box);
 
 		// Initialises the FireTrucks
 		for (int i = 0; i < 6; i++) {

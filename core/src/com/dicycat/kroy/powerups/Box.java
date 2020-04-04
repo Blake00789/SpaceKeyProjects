@@ -5,16 +5,17 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.dicycat.kroy.GameObject;
 import com.dicycat.kroy.Kroy;
+import com.dicycat.kroy.entities.Entity;
 import com.dicycat.kroy.entities.FireTruck;
 import com.dicycat.kroy.screens.GameScreen;
 import com.dicycat.kroy.screens.MinigameScreen;
 
-public class Box extends GameObject {
+public class Box extends Entity {
     private Circle hitbox;
 
     public Box(Vector2 spawnPos){
-        super(spawnPos, Kroy.mainGameScreen.textures.getBullet(), new Vector2(20,20));
-        hitbox = new Circle(spawnPos.x, spawnPos.y, 10);
+        super(spawnPos, Kroy.mainGameScreen.textures.getPowerupBox(), new Vector2(50,50),10);
+        hitbox = new Circle(spawnPos.x, spawnPos.y, 15);
     }
     @Override
 

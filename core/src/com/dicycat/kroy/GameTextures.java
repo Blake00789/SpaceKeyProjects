@@ -13,7 +13,7 @@ import com.badlogic.gdx.graphics.Texture;
  *
  */
 public class GameTextures {
-	private Texture truck, ufo, bullet, fireStation, fireStationDead;
+	private Texture truck, ufo, bullet, fireStation, fireStationDead, powerupBox;
 	private Texture[] livingFortresses = {new Texture("cliffords tower.png"), new Texture("york minster.png"), new Texture("Memorial.png") , new Texture("york museum.png") , new Texture("University.png"), new Texture("Station.png")};
 	private Texture[] deadFortresses = {new Texture("cliffords tower dead.png"), new Texture("york minster dead.png"), new Texture("york museum dead.png"), new Texture("york museum dead.png"), new Texture("york minster dead.png"), new Texture("york museum dead.png")};
 	private String[] truckAddress = {"fireTruck1.png", "fireTruck2.png", "fireTruck3.png", "fireTruck4.png", "fireTruck5.png", "fireTruck6.png"};
@@ -27,7 +27,8 @@ public class GameTextures {
 		ufo = new Texture("ufo.png");
 		bullet = new Texture("bullet.png");
 		fireStation = new Texture("FireStationTemp.png");
-		fireStationDead = new Texture("FireStationTempDead.png");	
+		fireStationDead = new Texture("FireStationTempDead.png");
+		powerupBox = new Texture("ItemBox.png");
 	}
 	
 	/**
@@ -87,5 +88,9 @@ public class GameTextures {
 	 */
 	public Texture getFireStationDead() {
 		return fireStationDead;
+	}
+
+	public Texture getPowerupBox() {
+		return powerupBox;
 	}
 }
