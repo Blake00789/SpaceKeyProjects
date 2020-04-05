@@ -27,21 +27,27 @@ public class Pipe extends GameObject {
 	private Rectangle[] hitboxes = new Rectangle[2]; // Hitboxes for the pipe
 	private boolean gameEnd = false; // Returns true if the pipe collides with the goose
 	private Instant startTime; // When the pipe is created
-
 	private int lifeTime = 6; // How long the pipe is on screen for
+	private int xOffset = 1050;
+	private int yOffset = 0;
+	private int yOffset2 = 720;
 
 	/**
 	 * Generates a pipe with the texture "pipe.png" and at the coordinates specified
 	 * 
 	 * @param spawnPos The spawn position
 	 */
-	public Pipe(Vector2 spawnPos) {
-		super(spawnPos, new Texture("pipe.png"), new Vector2(128, 2048));
-		hitboxes[0] = new Rectangle(0, 0, 128, 880);
-		hitboxes[1] = new Rectangle(1158, 0, 128, 900);
+	public Pipe(Vector2 spawnPos, Texture pipeTexture) {
+		super(spawnPos, pipeTexture, new Vector2(2000, 1200));
+		Vector2 tempVector =  spawnPos;
+		tempVector.x += -1400;
+		tempVector.y += 500;
+		hitboxes[0] = new Rectangle(tempVector.x + 1000, 0, 30, 500);
+		hitboxes[1] = new Rectangle(tempVector.x + 1000, 0, 30, 500); // 1158
 		startTime = Instant.now();
-		setPosition(spawnPos);
+		setPosition(tempVector);
 	}
+
 
 	/**
 	 * Moves the pipe and it's hitboxes along the screen
@@ -49,13 +55,10 @@ public class Pipe extends GameObject {
 	@Override
 	public void update() {
 		setPosition(new Vector2(getX() - speed, getY()));
-		hitboxes[0].x = getX();
-		hitboxes[0].y = getY();
-		hitboxes[1].x = getX();
-		hitboxes[1].y = getY() + 1158;
-		// if (Kroy.debug) {
-		// debugDraw();
-		// }
+		hitboxes[0].x = getX() + xOffset;
+		hitboxes[0].y = getY() + yOffset;
+		hitboxes[1].x = getX() + xOffset;
+		hitboxes[1].y = getY() + yOffset2;
 
 	}
 
@@ -70,10 +73,10 @@ public class Pipe extends GameObject {
 	 * Draws debug rectangles (But slows down the game considerably)
 	 */
 	public void debugDraw() {
-		Kroy.mainMinigameScreen.DrawRect(new Vector2(hitboxes[0].x, hitboxes[0].y),
-				new Vector2(hitboxes[0].width, hitboxes[0].height), 2, Color.RED);
-		Kroy.mainMinigameScreen.DrawRect(new Vector2(hitboxes[1].x, hitboxes[1].y),
-				new Vector2(hitboxes[1].width, hitboxes[1].height), 2, Color.RED);
+		Kroy.mainMinigameScreen.DrawRect(new Vector2(hitboxes[0].x + xOffset, hitboxes[0].y + yOffset),
+				new Vector2(hitboxes[0].width, hitboxes[0].height), 5, Color.GREEN);
+		Kroy.mainMinigameScreen.DrawRect(new Vector2(hitboxes[1].x + xOffset, hitboxes[1].y + yOffset2),
+				new Vector2(hitboxes[1].width, hitboxes[1].height), 5, Color.GREEN);
 	}
 
 	/**
