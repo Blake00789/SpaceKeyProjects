@@ -39,13 +39,9 @@ public class FireTruck extends Entity{
 	private WaterStream water; 
 	private StatBar tank;
 	private StatBar healthBar;
-	private StatusIcon strengthUpIcon;
-	private StatusIcon healthUpIcon;
 	private StatusIcon defenceUpIcon;
 	private StatusIcon unlimitedWaterIcon;
 	private boolean firing;
-	private boolean healthUp;
-	private boolean strengthUp;
 	private boolean unlimitedWater;
 	private boolean defenceUp;
 
@@ -80,10 +76,10 @@ public class FireTruck extends Entity{
 		range = truckStats[3];			// Range of the truck
 
 		firing = false;
-		strengthUp = false;
-		healthUp = false;
+		//Power ups
 		defenceUp = true;
-		unlimitedWater = true;
+		unlimitedWater = false;
+
 		water = new WaterStream(Vector2.Zero);
 
 		tank = new StatBar(Vector2.Zero, "Blue.png", 3);
@@ -91,12 +87,6 @@ public class FireTruck extends Entity{
 
 		healthBar= new StatBar(Vector2.Zero, "Green.png", 3);
 		Kroy.mainGameScreen.addGameObject(healthBar);
-
-		healthUpIcon = new StatusIcon(statusIconPos,"healthUp.png");
-		Kroy.mainGameScreen.addGameObject(healthUpIcon);
-
-		strengthUpIcon = new StatusIcon(statusIconPos,"strengthUp.png");
-		Kroy.mainGameScreen.addGameObject(strengthUpIcon);
 
 		defenceUpIcon = new StatusIcon(statusIconPos,"DefenceUp.png");
 		Kroy.mainGameScreen.addGameObject(defenceUpIcon);
@@ -111,8 +101,8 @@ public class FireTruck extends Entity{
 	 */
 	public FireTruck() {
 		super(new Vector2(3750, 4000), new Texture("fireTruck3.png"), new Vector2(25,50), 100);
-		strengthUp = false;
-		healthUp = false;
+
+		//Power ups
 		defenceUp = true;
 		unlimitedWater = true;
 
@@ -245,10 +235,6 @@ public class FireTruck extends Entity{
 
 	private void moveIconByFixedPoint(){
 		int offPoint = 0;
-		if (strengthUpIcon.isEnabled()){
-			offPoint += 15;
-			strengthUpIcon.setPosition(getCentre().add(20 - offPoint,20));
-		}
 		if (defenceUpIcon.isEnabled()){
 			offPoint += 15;
 			defenceUpIcon.setPosition(getCentre().add(20 - offPoint,20));
@@ -256,10 +242,6 @@ public class FireTruck extends Entity{
 		if (unlimitedWaterIcon.isEnabled()){
 			offPoint += 15;
 			unlimitedWaterIcon.setPosition(getCentre().add(20 - offPoint,20));
-		}
-		if (healthUpIcon.isEnabled()){
-			offPoint += 15;
-			healthUpIcon.setPosition(getCentre().add(20 - offPoint,20));
 		}
 	}
 
@@ -274,43 +256,27 @@ public class FireTruck extends Entity{
 	}
 
 	private void AssignStatusEffectArray(){
-		statusEffects[0] = healthUp;
-		statusEffects[1] = defenceUp;
-		statusEffects[2] = unlimitedWater;
-		statusEffects[3] = strengthUp;
+		this.statusEffects[0] = this.defenceUp;
+		this.statusEffects[1] = this.unlimitedWater;
 	}
 
 	// Updates Icons based on if the FireTruck is currently effected by status elements
 	// else clears icon textures if currently visible
 
 	private void UpdateStatusIcons(){
-		if (healthUp){
-			if (!(healthUpIcon.isEnabled())) {
-				healthUpIcon.addIcon();
+		if (this.defenceUp){
+			if (!(this.defenceUpIcon.isEnabled())) {
+				this.defenceUpIcon.addIcon();
 			}
-		} else if (healthUpIcon.isEnabled()){
-			healthUpIcon.removeIcon();
+		} else if (this.defenceUpIcon.isEnabled()){
+			this.defenceUpIcon.removeIcon();
 		}
-		if (strengthUp){
-			if (!(strengthUpIcon.isEnabled())) {
-				strengthUpIcon.addIcon();
+		if (this.unlimitedWater){
+			if (!(this.unlimitedWaterIcon.isEnabled())) {
+				this.unlimitedWaterIcon.addIcon();
 			}
-		} else if (strengthUpIcon.isEnabled()){
-			strengthUpIcon.removeIcon();
-		}
-		if (defenceUp){
-			if (!(defenceUpIcon.isEnabled())) {
-				defenceUpIcon.addIcon();
-			}
-		} else if (defenceUpIcon.isEnabled()){
-			defenceUpIcon.removeIcon();
-		}
-		if (unlimitedWater){
-			if (!(unlimitedWaterIcon.isEnabled())) {
-				unlimitedWaterIcon.addIcon();
-			}
-		} else if (unlimitedWaterIcon.isEnabled()){
-			unlimitedWaterIcon.removeIcon();
+		} else if (this.unlimitedWaterIcon.isEnabled()){
+			this.unlimitedWaterIcon.removeIcon();
 		}
 	}
 	
@@ -346,8 +312,12 @@ public class FireTruck extends Entity{
 		water.setRange(direction.len());
 		water.setPosition(getCentre().add(direction.scl(0.5f)));
 
-		((Entity) nearestEnemy).applyDamage((float) (flowRate * Math.max(0.5, GameScreen.gameTimer * (1/600))));			//Applies damage to the nearest enemy
-		currentWater=currentWater-flowRate;						//reduces the tank by amount of water used
+		((Entity) nearestEnemy).applyDamage((float) (flowRate * Math.max(0.5, GameScreen.gameTimer * (1/600))));//Applies damage to the nearest enemy
+		//POWERUPS - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+		if (!this.unlimitedWater) { //water only depletes while the power up is inactive.
+			currentWater = currentWater - flowRate;//reduces the tank by amount of water used
+		}
+		//POWERUPS - END OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 	}
 
 	/**
@@ -439,9 +409,39 @@ public class FireTruck extends Entity{
 	 * new
 	 * Increase the currentWater by the input parameter
 	 */
-	public void setCurrentWater(int x) {
+	public void setCurrentWater(float x) {
 		 currentWater += x;
 	}
+
+	//POWERUPS - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+
+	public float getMaxWater(){
+		return maxWater;
+	}
+	/**
+	 *
+	 * @param flag
+	 */
+	public void setUnlimitedWater(Boolean flag){
+		this.unlimitedWater = flag;
+		UpdateStatusIcons();
+		AssignStatusEffectArray();
+	}
+
+	/**
+	 *
+	 * @param flag
+	 */
+	public void setDefenceUp(Boolean flag){
+		this.defenceUp = flag;
+		UpdateStatusIcons();
+		AssignStatusEffectArray();
+	}
+
+	public Boolean getDefenceUp(){
+		return this.defenceUp;
+	}
+	//POWERUPS - END OF MODIFICATION - NPSTUDIOS
 	
 
 }

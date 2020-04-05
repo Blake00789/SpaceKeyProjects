@@ -74,7 +74,9 @@ public class Bullet extends GameObject {
 
 		//Check to see if bullet collides with the players truck.
 		FireTruck truck = Kroy.mainGameScreen.getPlayer();
-		if (truck.isAlive()) {
+		//POWERUPS - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+		if (truck.isAlive() && !truck.getDefenceUp()) { //the truck doesn't take damage if it has a shield powerup.
+		//POWERUPS - END OF MODIFICATION - NPSTUDIOS
 			if(Intersector.overlaps(hitbox, truck.getHitbox())){
 				truck.applyDamage(10);
 				remove = true;

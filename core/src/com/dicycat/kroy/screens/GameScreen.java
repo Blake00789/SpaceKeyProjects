@@ -96,7 +96,7 @@ public class GameScreen implements Screen{
 
 	private ArrayList<FireTruck> firetrucks=new ArrayList<FireTruck>();
 	private boolean start;
-	
+
 	/**
 	 * extended
 	 * @param _game
@@ -370,6 +370,35 @@ public class GameScreen implements Screen{
 	 */
 	public FireTruck getPlayer() {
 		return currentTruck;
+	}
+
+	public void ressurectTruck(){
+		for (FireTruck truck : firetrucks){
+			if (!truck.isAlive()){
+				truck.setRemove(false);
+				truck.setHealthPoints(1000);
+				truck.setCurrentWater(truck.getMaxWater());
+				break;
+			}
+		}
+	}
+	public void freezePatrols(){
+		for (GameObject obj : gameObjects){
+			if (obj instanceof UFO) {
+				((UFO) obj).setFrozen(true);
+			}
+		}
+	}
+	public void rainDance(){
+		for (GameObject obj : gameObjects){
+			if (obj instanceof UFO) {
+				((UFO) obj).die();
+			}
+		}
+	}
+
+	public void addTime(float time){
+		gameTimer = gameTimer + time;
 	}
 
 	/**
