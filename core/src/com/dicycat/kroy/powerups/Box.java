@@ -1,5 +1,7 @@
 package com.dicycat.kroy.powerups;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
@@ -10,6 +12,11 @@ import com.dicycat.kroy.entities.FireTruck;
 import com.dicycat.kroy.screens.GameScreen;
 import com.dicycat.kroy.screens.MinigameScreen;
 
+/**
+ *
+ * @author Bethany Gilmore
+ *
+ */
 public class Box extends Entity {
     private Circle hitbox;
 
@@ -24,8 +31,8 @@ public class Box extends Entity {
         if (truck.isAlive()) {
             if(Intersector.overlaps(hitbox, truck.getHitbox())){
                 Kroy.mainGameScreen.setGameState(GameScreen.GameScreenState.MINIGAME);
-                die();
-                Kroy.mainGameScreen.game.setScreen(new MinigameScreen(Kroy.mainGameScreen.game));
+                this.die();
+                Kroy.mainGameScreen.game.setScreen(new MinigameScreen(Kroy.mainGameScreen.game, false));
             }
         }
     }

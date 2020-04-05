@@ -62,9 +62,13 @@ public class MinigameScreen implements Screen {
 	private List<DebugDraw> debugObjects;
 
 	private Texture pipeTexture;
+	//MINIGAME_INTEGRATION_4 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+	private boolean fromMenu;
 
-	public MinigameScreen(Kroy _game) {
+	public MinigameScreen(Kroy _game, boolean flag) {
 		pipeTexture = new Texture("Rocks.png");
+		fromMenu = flag;
+	//MINIGAME_INTEGRATION_4 - END OF MODIFICATION - NPSTUDIOS
 		bg = new Texture("lightBlue.png");
 		game = _game;
 		gamecam = new OrthographicCamera();
@@ -192,7 +196,13 @@ public class MinigameScreen implements Screen {
 			if (Gdx.input.isKeyJustPressed(Keys.SPACE) || Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
 				pipes.clear();
 				dispose();
-				game.backToMenu();
+				//MINIGAME_INTEGRATION_3 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+				if (fromMenu) {
+					game.backToMenu();
+				}else{
+					game.backToGame();
+				}
+				//MINIGAME_INTEGRATION_3 - END OF MODIFICATION - NPSTUDIOS
 			}
 			default:
 				break;

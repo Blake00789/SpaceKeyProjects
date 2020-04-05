@@ -94,6 +94,7 @@ public class GameScreen implements Screen{
 	private int patrolUpdateRate; //How many seconds should pass before we respawn patrols;
 
 	private ArrayList<FireTruck> firetrucks=new ArrayList<FireTruck>();
+	private boolean start;
 
 	/**
 	 * extended
@@ -101,6 +102,7 @@ public class GameScreen implements Screen{
 	 * @param truckNum
 	 */
 	public GameScreen(Kroy _game, int truckNum) {
+		start = true;
 		game = _game;
 		gamecam = new OrthographicCamera();
 		gameport = new FitViewport(Kroy.width, Kroy.height, gamecam);	//Mic:could also use StretchViewPort to make the screen stretch instead of adapt
@@ -139,23 +141,26 @@ public class GameScreen implements Screen{
 	 */
 	@Override
 	public void show() {
-		objectsToAdd = new ArrayList<GameObject>();
-		gameObjects = new ArrayList<GameObject>();
-		deadObjects = new ArrayList<GameObject>();
-		debugObjects = new ArrayList<DebugDraw>();
+		if (start) {
+			objectsToAdd = new ArrayList<GameObject>();
+			gameObjects = new ArrayList<GameObject>();
+			deadObjects = new ArrayList<GameObject>();
+			debugObjects = new ArrayList<DebugDraw>();
 
-		Box box = new Box(new Vector2(spawnPosition.x - 135, spawnPosition.y -20));
-		addGameObject(box);
+			Box box = new Box(new Vector2(spawnPosition.x - 135, spawnPosition.y - 20));
+			addGameObject(box);
 
-		// Initialises the FireTrucks
-		for (int i = 0; i < 6; i++) {
-			firetruckInit(spawnPosition.x - 135 + (i * 50), spawnPosition.y, i);
-			fortressInit(i);
+			// Initialises the FireTrucks
+			for (int i = 0; i < 6; i++) {
+				firetruckInit(spawnPosition.x - 135 + (i * 50), spawnPosition.y, i);
+				fortressInit(i);
+			}
+			gameObjects.add(new FireStation());
+			switchTrucks(truckNum);
 		}
-		gameObjects.add(new FireStation());
-		switchTrucks(truckNum);  
 
 		gamecam.translate(new Vector2(currentTruck.getX(), currentTruck.getY())); // sets initial Camera position
+		start = false;
 	}
 
 	/**

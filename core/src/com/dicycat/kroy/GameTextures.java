@@ -28,6 +28,7 @@ public class GameTextures {
 		bullet = new Texture("bullet.png");
 		fireStation = new Texture("FireStationTemp.png");
 		fireStationDead = new Texture("FireStationTempDead.png");
+		//
 		powerupBox = new Texture("ItemBox.png");
 	}
 	
