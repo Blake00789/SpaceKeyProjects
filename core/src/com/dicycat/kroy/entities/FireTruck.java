@@ -80,8 +80,8 @@ public class FireTruck extends Entity{
 		range = truckStats[3];			// Range of the truck
 
 		firing = false;
-		strengthUp = false;
-		healthUp = false;
+		strengthUp = true;
+		healthUp = true;
 		defenceUp = true;
 		unlimitedWater = true;
 		water = new WaterStream(Vector2.Zero);

@@ -93,6 +93,15 @@ public class GameScreen implements Screen{
 	private int patrolUpdateRate; //How many seconds should pass before we respawn patrols;
 
 	private ArrayList<FireTruck> firetrucks=new ArrayList<FireTruck>();
+
+    private StatusIcon timeIncreaseIcon;
+    private StatusIcon rainDanceIcon;
+    private StatusIcon freezeEnemiesIcon;
+    private StatusIcon revivedFireTruckIcon;
+    private boolean timeIncrease;
+    private boolean rainDance;
+    private boolean freezeEnemies;
+    private boolean revivedFireTruck;
 	/**
 	 * extended
 	 * @param _game
@@ -112,6 +121,17 @@ public class GameScreen implements Screen{
 		spawnPosition = new Vector2(3750, 4000);
 		gameTimer = 60 * 5; //new    //Set timer to 5 minutes  
 		this.truckNum = truckNum;
+
+
+        timeIncreaseIcon = new StatusIcon(Vector2.Zero,"TimeIncrease.png");
+        timeIncrease = true;
+        freezeEnemiesIcon = new StatusIcon(Vector2.Zero,"FreezeEnemies.png");
+        freezeEnemies = true;
+        rainDanceIcon = new StatusIcon(Vector2.Zero,"RainDance.png");
+        rainDance = true;
+        revivedFireTruckIcon = new StatusIcon(Vector2.Zero,"Ressurected.png");
+        revivedFireTruck = true;
+
 		lastPatrol = Gdx.graphics.getDeltaTime();
 		fortressPositions = new ArrayList<>();
 		fortressPositions.add(new Vector2(2860, 3211));
@@ -129,7 +149,37 @@ public class GameScreen implements Screen{
 		fortressSizes.add(new Vector2(450, 256));
 		patrolUpdateRate = 30;
 	}
-	
+
+    private void UpdateStatusIcons(){
+        if (timeIncrease){
+            if (!(timeIncreaseIcon.isEnabled())) {
+                timeIncreaseIcon.addIcon();
+            }
+        } else if (timeIncreaseIcon.isEnabled()){
+            timeIncreaseIcon.removeIcon();
+        }
+        if (rainDance){
+            if (!(rainDanceIcon.isEnabled())) {
+                rainDanceIcon.addIcon();
+            }
+        } else if (rainDanceIcon.isEnabled()){
+            rainDanceIcon.removeIcon();
+        }
+        if (freezeEnemies){
+            if (!(freezeEnemiesIcon.isEnabled())) {
+                freezeEnemiesIcon.addIcon();
+            }
+        } else if (freezeEnemiesIcon.isEnabled()){
+            freezeEnemiesIcon.removeIcon();
+        }
+        if (revivedFireTruck){
+            if (!(revivedFireTruckIcon.isEnabled())) {
+                revivedFireTruckIcon.addIcon();
+            }
+        } else if (revivedFireTruckIcon.isEnabled()){
+            revivedFireTruckIcon.removeIcon();
+        }
+    }
 
 	/**
 	 * Screen first shown
@@ -140,6 +190,10 @@ public class GameScreen implements Screen{
 		gameObjects = new ArrayList<GameObject>();
 		deadObjects = new ArrayList<GameObject>();
 		debugObjects = new ArrayList<DebugDraw>();
+        gameObjects.add(timeIncreaseIcon);
+        gameObjects.add(rainDanceIcon);
+        gameObjects.add(freezeEnemiesIcon);
+        gameObjects.add(revivedFireTruckIcon);
 
 		// Initialises the FireTrucks
 		for (int i = 0; i < 6; i++) {
@@ -208,7 +262,6 @@ public class GameScreen implements Screen{
 
 				game.batch.end();
 
-
 				hud.stage.draw();
 				pauseWindow.stage.draw();
 
@@ -239,7 +292,7 @@ public class GameScreen implements Screen{
 	 */
 	private void updateLoop() {
 		checkZoom();
-		
+        UpdateStatusIcons();
 		List<GameObject> toRemove = new ArrayList<GameObject>();
 		List<Vector2> patrolPositions = new ArrayList<>();
 
@@ -417,7 +470,24 @@ public class GameScreen implements Screen{
 		float cameraX = Math.max(0.5f*Kroy.width*zoom, Math.min(currentTruck.getX(), 6884-(0.5f*Kroy.width*zoom)));
 		float cameraY = Math.max(0.5f*Kroy.height*zoom, Math.min(currentTruck.getY(), 6043-(0.5f*Kroy.height*zoom)));
 		gamecam.position.lerp(new Vector3(cameraX, cameraY,gamecam.position.z),0.1f);// sets the new camera position based on the current position of the FireTruck
+        Vector2 tempBoi = new Vector2(gamecam.position.x - 260, gamecam.position.y + 327);
+        if (timeIncreaseIcon.isEnabled()) {
+            timeIncreaseIcon.setPosition(tempBoi);
+        }
+        if (freezeEnemiesIcon.isEnabled()){
+            tempBoi = new Vector2 (gamecam.position.x + 130, gamecam.position.y + 327);
+            freezeEnemiesIcon.setPosition(tempBoi);
+        }
+        if (rainDanceIcon.isEnabled()){
+            tempBoi = new Vector2 (gamecam.position.x + 170, gamecam.position.y + 327);
+            rainDanceIcon.setPosition(tempBoi);
+        }
+        if (revivedFireTruckIcon.isEnabled()){
+            tempBoi = new Vector2 (gamecam.position.x  + 500, gamecam.position.y + 327);
+            revivedFireTruckIcon.setPosition(tempBoi);
+        }
 		gamecam.update();
+
 	}
 
 	@Override
