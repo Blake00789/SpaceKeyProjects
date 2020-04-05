@@ -41,9 +41,16 @@ public class FireTruck extends Entity{
 	private StatBar healthBar;
 	private StatusIcon strengthUpIcon;
 	private StatusIcon healthUpIcon;
+	private StatusIcon defenceUpIcon;
+	private StatusIcon unlimitedWaterIcon;
 	private boolean firing;
 	private boolean healthUp;
 	private boolean strengthUp;
+	private boolean unlimitedWater;
+	private boolean defenceUp;
+
+
+	private boolean[] statusEffects = new boolean[4];
 	private float range;
 
 	private Vector2 statusIconPos = Vector2.Zero;
@@ -54,7 +61,7 @@ public class FireTruck extends Entity{
 	 */
 	public FireTruck(Vector2 spawnPos, Float[] truckStats, int truckNum) {
 		super(spawnPos, Kroy.mainGameScreen.textures.getTruck(truckNum), new Vector2(25,50), 100);
- 
+		AssignStatusEffectArray();
 		DIRECTIONS.put("n",0);			//North Facing Direction (up arrow)
 		DIRECTIONS.put("w",90);			//West Facing Direction (left arrow)
 		DIRECTIONS.put("s",180);		//South Facing Direction (down arrow)
@@ -73,8 +80,10 @@ public class FireTruck extends Entity{
 		range = truckStats[3];			// Range of the truck
 
 		firing = false;
-		strengthUp = true;
-		healthUp = true;
+		strengthUp = false;
+		healthUp = false;
+		defenceUp = true;
+		unlimitedWater = true;
 		water = new WaterStream(Vector2.Zero);
 
 		tank = new StatBar(Vector2.Zero, "Blue.png", 3);
@@ -89,6 +98,12 @@ public class FireTruck extends Entity{
 		strengthUpIcon = new StatusIcon(statusIconPos,"strengthUp.png");
 		Kroy.mainGameScreen.addGameObject(strengthUpIcon);
 
+		defenceUpIcon = new StatusIcon(statusIconPos,"DefenceUp.png");
+		Kroy.mainGameScreen.addGameObject(defenceUpIcon);
+
+		unlimitedWaterIcon = new StatusIcon(statusIconPos,"UnlimitedWater.png");
+		Kroy.mainGameScreen.addGameObject(unlimitedWaterIcon);
+
 	}
 	
 	/** 
@@ -96,7 +111,13 @@ public class FireTruck extends Entity{
 	 */
 	public FireTruck() {
 		super(new Vector2(3750, 4000), new Texture("fireTruck3.png"), new Vector2(25,50), 100);
- 
+		strengthUp = false;
+		healthUp = false;
+		defenceUp = true;
+		unlimitedWater = true;
+
+		AssignStatusEffectArray();
+
 		DIRECTIONS.put("n",0);			//North Facing Direction (up arrow)
 		DIRECTIONS.put("w",90);			//West Facing Direction (left arrow)
 		DIRECTIONS.put("s",180);		//South Facing Direction (down arrow)
@@ -114,8 +135,6 @@ public class FireTruck extends Entity{
 		currentWater=300;
 				
 		firing = false;
-		strengthUp = true;
-		healthUp = true;
 		water = new WaterStream(Vector2.Zero);
 
 	}
@@ -205,15 +224,8 @@ public class FireTruck extends Entity{
 		UpdateStatusIcons();
 		healthBar.setPosition(getCentre().add(0,25));
 		healthBar.setBarDisplay((getHealthPoints()*50)/maxHealthPoints);
-		if (strengthUpIcon.isEnabled() && healthUpIcon.isEnabled()) {
-			strengthUpIcon.setPosition(getCentre().add(-40,20));
-			healthUpIcon.setPosition(getCentre().add(-10,20));
-		} else if (strengthUpIcon.isEnabled()){
-			strengthUpIcon.setPosition(getCentre().add(-30,20));
-		} else if (healthUpIcon.isEnabled()){
-			healthUpIcon.setPosition(getCentre().add(-30,20));
-		}
-
+		AssignStatusEffectArray();
+		moveIconByFixedPoint();
 		//player firing
 		ArrayList<GameObject> inRange = entitiesInRange();		//find list of enemies in range
 
@@ -229,6 +241,43 @@ public class FireTruck extends Entity{
 		if (firing) {					//if the player is firing runs the PlayerFire method
 			playerFire(inRange);
 		}
+	}
+
+	private void moveIconByFixedPoint(){
+		int offPoint = 0;
+		if (strengthUpIcon.isEnabled()){
+			offPoint += 15;
+			strengthUpIcon.setPosition(getCentre().add(20 - offPoint,20));
+		}
+		if (defenceUpIcon.isEnabled()){
+			offPoint += 15;
+			defenceUpIcon.setPosition(getCentre().add(20 - offPoint,20));
+		}
+		if (unlimitedWaterIcon.isEnabled()){
+			offPoint += 15;
+			unlimitedWaterIcon.setPosition(getCentre().add(20 - offPoint,20));
+		}
+		if (healthUpIcon.isEnabled()){
+			offPoint += 15;
+			healthUpIcon.setPosition(getCentre().add(20 - offPoint,20));
+		}
+	}
+
+	private int getStatusNumberOfStatusEffectsInPlay(){
+		int statusEffectsInPlayCount = 0;
+		for (int i = 0; i < statusEffects.length; i++){
+			if (statusEffects[i] == true){
+				statusEffectsInPlayCount ++;
+			}
+		}
+		return statusEffectsInPlayCount;
+	}
+
+	private void AssignStatusEffectArray(){
+		statusEffects[0] = healthUp;
+		statusEffects[1] = defenceUp;
+		statusEffects[2] = unlimitedWater;
+		statusEffects[3] = strengthUp;
 	}
 
 	// Updates Icons based on if the FireTruck is currently effected by status elements
@@ -248,6 +297,20 @@ public class FireTruck extends Entity{
 			}
 		} else if (strengthUpIcon.isEnabled()){
 			strengthUpIcon.removeIcon();
+		}
+		if (defenceUp){
+			if (!(defenceUpIcon.isEnabled())) {
+				defenceUpIcon.addIcon();
+			}
+		} else if (defenceUpIcon.isEnabled()){
+			defenceUpIcon.removeIcon();
+		}
+		if (unlimitedWater){
+			if (!(unlimitedWaterIcon.isEnabled())) {
+				unlimitedWaterIcon.addIcon();
+			}
+		} else if (unlimitedWaterIcon.isEnabled()){
+			unlimitedWaterIcon.removeIcon();
 		}
 	}
 	

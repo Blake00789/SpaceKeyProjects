@@ -9,7 +9,7 @@ public class StatusIcon extends GameObject{
     private boolean enabled;
 
     public StatusIcon(Vector2 spawnPos, String texture) {
-        super(spawnPos, new Texture(texture), new Vector2(50,50));
+        super(spawnPos, new Texture(texture), new Vector2(25,25));
         enabled = false;
     }
 

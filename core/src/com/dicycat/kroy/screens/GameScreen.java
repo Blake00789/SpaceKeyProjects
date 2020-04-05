@@ -26,6 +26,7 @@ import com.dicycat.kroy.entities.FireTruck;
 import com.dicycat.kroy.entities.Fortress;
 import com.dicycat.kroy.entities.UFO;
 import com.dicycat.kroy.gamemap.TiledGameMap;
+import com.dicycat.kroy.misc.StatusIcon;
 import com.dicycat.kroy.scenes.HUD;
 import com.dicycat.kroy.scenes.OptionsWindow;
 import com.dicycat.kroy.scenes.PauseWindow;
@@ -92,7 +93,6 @@ public class GameScreen implements Screen{
 	private int patrolUpdateRate; //How many seconds should pass before we respawn patrols;
 
 	private ArrayList<FireTruck> firetrucks=new ArrayList<FireTruck>();
-
 	/**
 	 * extended
 	 * @param _game
@@ -127,7 +127,6 @@ public class GameScreen implements Screen{
 		fortressSizes.add(new Vector2(450, 256));
 		fortressSizes.add(new Vector2(400, 256));
 		fortressSizes.add(new Vector2(450, 256));
-		
 		patrolUpdateRate = 30;
 	}
 	
@@ -301,7 +300,6 @@ public class GameScreen implements Screen{
 
 			}
 		}
-
 	}
 	
 	/**
@@ -444,7 +442,6 @@ public class GameScreen implements Screen{
 	public void dispose() {
 		Kroy.mainGameScreen = null;
 	}
-
 	/**
 	 * @param s
 	 */
