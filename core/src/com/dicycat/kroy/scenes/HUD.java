@@ -37,9 +37,6 @@ public class HUD {
 	private Label worldTimerLabel;
 	private Label scoreCountLabel;
 	private Label trucksCountLabel;	//we could put mini images of the trucks instead of using an int for the lives
-	private StatusIcon timeIncreaseIcon;
-	private boolean timeIncrease;
-	private Label iconTimeIncrease;
 
 	
 	
@@ -48,8 +45,6 @@ public class HUD {
 	 * @param game	Kroy instance
 	 */
 	public HUD(SpriteBatch sb, Kroy game) {
-		timeIncreaseIcon = new StatusIcon(Vector2.Zero,"TimeIncrease.png");
-		timeIncrease = true;
 		viewport = new ScreenViewport(new OrthographicCamera());
 		stage = new Stage(viewport, sb);	//Where we are going to put the HUD elements 
 		
@@ -117,14 +112,5 @@ public class HUD {
 		score += x;
 	}
 
-	private void UpdateStatusIcons(){
-		if (timeIncrease){
-			if (!(timeIncreaseIcon.isEnabled())) {
-				timeIncreaseIcon.addIcon();
-			}
-		} else if (timeIncreaseIcon.isEnabled()){
-			timeIncreaseIcon.removeIcon();
-		}
-	}
 }
 

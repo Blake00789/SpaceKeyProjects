@@ -412,7 +412,6 @@ public class FireTruck extends Entity{
 	public void setCurrentWater(float x) {
 		 currentWater += x;
 	}
-
 	//POWERUPS - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 
 	public float getMaxWater(){
@@ -442,6 +441,6 @@ public class FireTruck extends Entity{
 		return this.defenceUp;
 	}
 	//POWERUPS - END OF MODIFICATION - NPSTUDIOS
-	
+
 
 }
