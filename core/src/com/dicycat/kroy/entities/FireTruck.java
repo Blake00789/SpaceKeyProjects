@@ -442,6 +442,21 @@ public class FireTruck extends Entity{
 	public void setCurrentWater(int x) {
 		 currentWater += x;
 	}
-	
+
+	public void SetDefenceUp(boolean set){
+	    defenceUp = set;
+    }
+
+    public void SetUnlimitedWater(boolean set){
+        unlimitedWater = set;
+    }
+
+    public void SetHealthUp(boolean set){
+        healthUp = set;
+    }
+
+    public void SetStrengthUp(boolean set){
+        strengthUp = set;
+    }
 
 }

@@ -713,5 +713,22 @@ public class GameScreen implements Screen{
 	public Vector2 getSpawnPosition() {
 		return spawnPosition;
 	}
+
+
+    public void SetFireTruckRevived(boolean set){
+        revivedFireTruck = set;
+    }
+
+    public void SetRainDance(boolean set){
+        rainDance = set;
+    }
+
+    public void SetFreezeEnemies(boolean set){
+        freezeEnemies = set;
+    }
+
+    public void SetTimeIncrease(boolean set){
+        timeIncrease = set;
+    }
 	
 }
