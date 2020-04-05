@@ -237,23 +237,14 @@ public class FireTruck extends Entity{
 		int offPoint = 0;
 		if (defenceUpIcon.isEnabled()){
 			offPoint += 15;
-			defenceUpIcon.setPosition(getCentre().add(20 - offPoint,20));
+			defenceUpIcon.setPosition(getCentre().add(20 - offPoint,25));
 		}
 		if (unlimitedWaterIcon.isEnabled()){
 			offPoint += 15;
-			unlimitedWaterIcon.setPosition(getCentre().add(20 - offPoint,20));
+			unlimitedWaterIcon.setPosition(getCentre().add(20 - offPoint,25));
 		}
 	}
 
-	private int getStatusNumberOfStatusEffectsInPlay(){
-		int statusEffectsInPlayCount = 0;
-		for (int i = 0; i < statusEffects.length; i++){
-			if (statusEffects[i] == true){
-				statusEffectsInPlayCount ++;
-			}
-		}
-		return statusEffectsInPlayCount;
-	}
 
 	private void AssignStatusEffectArray(){
 		this.statusEffects[0] = this.defenceUp;
