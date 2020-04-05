@@ -77,7 +77,7 @@ public class FireTruck extends Entity{
 
 		firing = false;
 		//Power ups
-		defenceUp = true;
+		defenceUp = false;
 		unlimitedWater = false;
 
 		water = new WaterStream(Vector2.Zero);
