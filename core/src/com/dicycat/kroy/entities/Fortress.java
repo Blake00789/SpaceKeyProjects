@@ -19,7 +19,9 @@ public class Fortress extends Entity {
 
 	private BulletDispenser dispenser;
 	private Texture deadTexture;
-	private StatBar healthBar;
+	// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - START OF MODIFICATION  - [NPSTUDIOS] - [CASSIE_LILLYSTONE] ----
+	private float fortressDamage; //Added new attribute
+	// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - END OF MODIFICATION  - [NPSTUDIOS] ----
 
 	/**
 	 * @param spawnPos
@@ -27,31 +29,31 @@ public class Fortress extends Entity {
 	 * @param deadTexture
 	 * @param size
 	 */
-	public Fortress(Vector2 spawnPos, Texture fortressTexture, Texture deadTexture, Vector2 size) {
-		super(spawnPos, fortressTexture, size, 500);
-		dispenser = new BulletDispenser(this);
-		dispenser.addPattern(new Pattern(180, 300, 800, 0.1f, 20, 1, 0.5f));
-		dispenser.addPattern(new Pattern(100, 500, 0.5f, 8, 5, 0.5f));
-		dispenser.addPattern(new Pattern(0, 50, 800, 2f, 3, 36, 4));
-		dispenser.addPattern(new Pattern(200, 600, 0.3f, 12, 2, 0.3f));
-		dispenser.addPattern(new Pattern(false, 0, 3, 100, 900, 0.02f, 1, 0.2f));
-		dispenser.addPattern(new Pattern(true, 0, 1, 100, 900, 0.02f, 1, 1.2f));
 
+	// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - START OF MODIFICATION  - [NPSTUDIOS] - [CASSIE_LILLYSTONE] ---
+		public Fortress(Vector2 spawnPos, Texture fortressTexture, Texture deadTexture, Vector2 size, Texture bulletTexture,
+						Float[] fortressStats) { //Added fortressStats as a parameter so it passes the health and damage
+												// values for the fortress being made
+		super(spawnPos, fortressTexture, size, fortressStats[0]); //Changed the value for health in the super call to be the first value in fortressStat
+		this.fortressDamage = fortressStats[1]; //Set value for new attribute to be the second value in fortressStats
+
+		dispenser = new BulletDispenser(this);
+		dispenser.addPattern(new Pattern(180, 300, 800, 0.1f, 20,
+				1, 0.5f, bulletTexture, fortressDamage)); //For each instantiation of Pattern, added fortressDamage as a parameter
+		dispenser.addPattern(new Pattern(100, 500, 0.5f, 8, 5, 0.5f, bulletTexture, fortressDamage));
+		dispenser.addPattern(new Pattern(0, 50, 800, 2f, 3, 36, 4, bulletTexture, fortressDamage));
+		dispenser.addPattern(new Pattern(200, 600, 0.3f, 12, 2, 0.3f, bulletTexture, fortressDamage));
+		dispenser.addPattern(new Pattern(false, 0, 3, 100, 900, 0.02f, 1, 0.2f, bulletTexture, fortressDamage));
+		dispenser.addPattern(new Pattern(true, 0, 1, 100, 900, 0.02f, 1, 1.2f, bulletTexture, fortressDamage));
+
+		// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - END OF MODIFICATION  - [NPSTUDIOS] ----
 		this.deadTexture = deadTexture;
-		Kroy.mainGameScreen.addFortress();
-		healthBar = new StatBar(new Vector2(getCentre().x, getCentre().y + 100), "Red.png", 10);
-		Kroy.mainGameScreen.addGameObject(healthBar);
-		
-		
+
 	}
-	
-	/** 
-	 * new
-	 */
-	public Fortress() {
-		super(new Vector2(2903, 3211),  new Texture("cliffords tower.png"),  new Vector2(256, 218), 500);
-		this.deadTexture = new Texture("cliffords tower dead.png");		
-	}
+
+	// TESTING_REFACTOR_2 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+	// Removed constructor created by previous group that was just for testing purposes
+	// TESTING_REFACTOR_2 - END OF MODIFICATION  - NP STUDIOS
  
 	/**
 	 * Removes from active pool and displays destroyed state
@@ -60,9 +62,9 @@ public class Fortress extends Entity {
 	public void die() {
 		super.die();
 		sprite.setTexture(deadTexture);
-		healthBar.setRemove(true);
 		displayable = true;
-		Kroy.mainGameScreen.removeFortress();
+
+		//This is just bad practice... should not be in the fortress class but higher up
 		if (Kroy.mainGameScreen.fortressesLeft() == 0) {	//If last fortress
 			Kroy.mainGameScreen.gameOver(true); 					//End game WIN
 		}
@@ -86,8 +88,6 @@ public class Fortress extends Entity {
 	@Override
 	public void applyDamage(float damage) {
 		super.applyDamage(damage);
-		healthBar.setPosition(getCentre().add(0, (getHeight() / 2) + 25));
-		healthBar.setBarDisplay((getHealthPoints()*500)/maxHealthPoints);
 	}
 	
 	/**
