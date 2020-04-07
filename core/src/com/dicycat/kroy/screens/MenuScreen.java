@@ -18,7 +18,10 @@ import com.dicycat.kroy.Kroy;
 import com.dicycat.kroy.scenes.FireTruckSelectionScene;
 import com.dicycat.kroy.scenes.HUD;
 import com.dicycat.kroy.scenes.OptionsWindow;
-  
+//ADD_CONTROL_SCREEN_2 - START OF MODIFICATION - NP Studios - Jordan Spooner ---------------
+import com.dicycat.kroy.scenes.ControlsWindow;
+//ADD_CONTROL_SCREEN_2 - END OF MODIFICATION - NP Studios - Jordan Spooner -----------------
+
 /**
  * Main Menu screen
  * 
@@ -38,11 +41,18 @@ public class MenuScreen implements Screen{
   	exitButtonActive, 
   	minigameButton, 
   	minigameButtonActive, 
+ // ADD_CONTROL_SCREEN_3 - START OF MODIFICATION - NP Studios - Jordan Spooner ---------------
+  	controlsButton,
+  	controlsButtonActive,
+ // ADD_CONTROL_SCREEN_3 - END OF MODIFICATION - NP Studios - Jordan Spooner -----------------
   	background;
   
   private Stage stage;
   
   private OptionsWindow optionsWindow;
+//ADD_CONTROL_SCREEN_4 - START OF MODIFICATION - NP Studios - Jordan Spooner ---------------
+  private ControlsWindow controlsWindow;
+//ADD_CONTROL_SCREEN_4 - END OF MODIFICATION - NP Studios - Jordan Spooner -----------------
   
   public static Music music = Gdx.audio.newMusic(Gdx.files.internal("gamemusic.mp3"));
   public static float musicVolume = 0.4f;
@@ -54,7 +64,10 @@ public class MenuScreen implements Screen{
   private int playButtonY = (Kroy.height/2)+75;
   private int optionsButtonY = (Kroy.height/2);
   private int minigameButtonY = (Kroy.height/2)-75;
-  private int exitButtonY = (Kroy.height/2)-150;
+//ADD_CONTROL_SCREEN_5 - START OF MODIFICATION - NP Studios - Jordan Spooner ---------------
+  private int controlsButtonY = (Kroy.height/2)-150;
+//ADD_CONTROL_SCREEN_5 - END OF MODIFICATION - NP Studios - Jordan Spooner -----------------
+  private int exitButtonY = (Kroy.height/2)-225;
   
   private Pixmap pm = new Pixmap(Gdx.files.internal("handHD2.png")); //cursor
   private int xHotSpot = pm.getWidth() / 3;	//where the cursor's aim is 
@@ -72,7 +85,10 @@ public class MenuScreen implements Screen{
   public static enum MenuScreenState {
 	  MAINMENU,
 	  TRUCKSELECT,
-	  OPTIONS
+	  OPTIONS,
+	// ADD_CONTROL_SCREEN_6 - START OF MODIFICATION - NP Studios - Jordan Spooner ---------------
+	  CONTROLS
+	// ADD_CONTROL_SCREEN_6 - END OF MODIFICATION - NP Studios - Jordan Spooner -----------------
   }
   
   public MenuScreenState state = MenuScreenState.MAINMENU;
@@ -91,6 +107,10 @@ public class MenuScreen implements Screen{
 	  minigameButton = new Texture("minigame.png");
 	  minigameButtonActive = new Texture("minigameActive.png");
 	  background = new Texture ("fireforce.png");
+	// ADD_CONTROL_SCREEN_7 - START OF MODIFICATION - NP Studios - Jordan Spooner ---------------
+	  controlsButton = new Texture("controls.png");
+	  controlsButtonActive = new Texture("controls_ACTIVE.png");
+	// ADD_CONTROL_SCREEN_7 - END OF MODIFICATION - NP Studios - Jordan Spooner -----------------
 	  
 	  gamecam = new OrthographicCamera();
 	  gameport = new FitViewport(Kroy.width, Kroy.height, gamecam);
@@ -105,6 +125,11 @@ public class MenuScreen implements Screen{
 	  
 	  optionsWindow = new OptionsWindow(game);
 	  optionsWindow.visibility(false);
+	  
+	// ADD_CONTROL_SCREEN_8 - START OF MODIFICATION - NP Studios - Jordan Spooner ---------------
+	  controlsWindow = new ControlsWindow(game);
+	  controlsWindow.visibility(false);
+	// ADD_CONTROL_SCREEN_8 - END OF MODIFICATION - NP Studios - Jordan Spooner -----------------
 	  
   }
   
@@ -175,6 +200,21 @@ public class MenuScreen implements Screen{
 			  } else {
 				  game.batch.draw(optionsButton, xAxisCentred, optionsButtonY, buttonWidth, buttonHeight);
 			  }
+			  
+		// ADD_CONTROL_SCREEN_9 - START OF MODIFICATION - NP Studios - Jordan Spooner ---------------
+			//for controls button
+			  if(( (Gdx.input.getX() < (xAxisCentred + buttonWidth)) && (Gdx.input.getX() > xAxisCentred) ) && ( (Kroy.height - Gdx.input.getY() > controlsButtonY ) && (Kroy.height - Gdx.input.getY() < (controlsButtonY + buttonHeight)) ) ){
+				  game.batch.draw(controlsButtonActive, xAxisCentred, controlsButtonY, buttonWidth, buttonHeight);
+				  if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+					  controlsWindow.visibility(true);
+					  setGameState(MenuScreenState.CONTROLS);
+				  }
+			  } else {
+				  game.batch.draw(controlsButton, xAxisCentred, controlsButtonY, buttonWidth, buttonHeight);
+			  }
+		// ADD_CONTROL_SCREEN_9 - END OF MODIFICATION - NP Studios - Jordan Spooner -----------------
+			  
+			  
 			  game.batch.end();
 				  
 			  break;
@@ -190,6 +230,14 @@ public class MenuScreen implements Screen{
 			  optionsWindow.stage.draw();
 			  optionsWindow.clickCheck(true);
 			  break;
+	// ADD_CONTROL_SCREEN_10 - START OF MODIFICATION - NP Studios - Jordan Spooner ---------------
+		  case CONTROLS:
+			  Gdx.input.setInputProcessor(controlsWindow.stage);
+			  controlsWindow.stage.act();
+			  controlsWindow.stage.draw();
+			  controlsWindow.clickCheck();
+			  break;
+	// ADD_CONTROL_SCREEN_10 - END OF MODIFICATION - NP Studios - Jordan Spooner -----------------
 		  }
   	}
   
