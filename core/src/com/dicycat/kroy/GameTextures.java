@@ -17,15 +17,11 @@ public class GameTextures {
 	//POWERUPS - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 	private Texture ufo, fireStation, fireStationDead, bullet, powerupBox;
 	//POWERUPS - END OF MODIFICATION - NPSTUDIOS
+
 	private Texture[] livingFortresses = {new Texture("cliffords tower.png"),
 			new Texture("york minster.png"), new Texture("Memorial.png") ,
 			new Texture("york museum.png") , new Texture("University.png"),
 			new Texture("Station.png")};
-
-	private Texture[] deadFortresses = {new Texture("cliffords tower dead.png"),
-			new Texture("york minster dead.png"), new Texture("york museum dead.png"),
-			new Texture("york museum dead.png"), new Texture("york minster dead.png"),
-			new Texture("york museum dead.png")};
 
 	// REFACTOR_1 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 	// Changed the array of strings containing the file names to an array of textures contaning all textures required
@@ -34,6 +30,13 @@ public class GameTextures {
 			new Texture("fireTruck3.png"), new Texture("fireTruck4.png"),
 			new Texture("fireTruck5.png"), new Texture("fireTruck6.png")};
 	// REFACTOR_1 - END OF MODIFICATION - NP STUDIOS
+
+	private Texture[] deadFortresses = {new Texture("cliffords tower dead.png"),
+			new Texture("york minster dead.png"), new Texture("MemorialDamaged.png"),
+			new Texture("york museum dead.png"), new Texture("UniversityDamaged.png"),
+			new Texture("StationDamaged.png")};
+	private String[] truckAddress = {"fireTruck1.png", "fireTruck2.png", "fireTruck3.png", "fireTruck4.png", "fireTruck5.png", "fireTruck6.png"};
+
 
 	// REFACTOR_2 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 	// Removed truck texture here as all 6 are now required it was an unused variable left by the previous team.
@@ -49,6 +52,7 @@ public class GameTextures {
 		//POWERUPS - END OF MODIFICATION - NPSTUDIOS
 		bullet = new Texture(("bullet.png"));
 	}
+
 
 	// REFACTOR_3 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 	// Edited to work with the new texture array compared to the previous filename strings as well as improving the
