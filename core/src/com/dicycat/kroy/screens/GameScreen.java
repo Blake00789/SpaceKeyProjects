@@ -191,7 +191,8 @@ public class GameScreen implements Screen{
 		//MINIGAME_INTEGRATION - END OF MODIFICATION - NPSTUDIOS
 	}
 
-	// [Alasdair PB] - START OF MODIFICATION  - [NP Studios]
+	// Power_ups_implementation - START OF MODIFICATION - NPSTUDIOS - Alasdair Pilmore-Bedford
+
 	// Sets the icons to enabled if they are currently active
     private void updateStatusIcons(){
         if (timeIncrease){

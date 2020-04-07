@@ -220,6 +220,11 @@ public class FireTruck extends Entity{
 		//POWERUPS - END OF MODIFICATION - NPSTUDIOS
 	}
 
+	/**
+	 *
+	 Power_ups_implementation- NPSTUDIOS - Alasdair PilmorepBedford
+	 *
+	 */
 
 	// Sets the position of powerUp icons to the FireTrucks Position
 	// then adds an offset value to stop the icons from overlapping
@@ -235,8 +240,6 @@ public class FireTruck extends Entity{
 		}
 	}
 
-
-	// [Alasdair PB] - START OF MODIFICATION  - [NP Studios]
 	// updates the status effects array
 	private void assignStatusEffectArray(){
 		this.statusEffects[0] = this.defenceUp;
@@ -263,7 +266,7 @@ public class FireTruck extends Entity{
 			this.unlimitedWaterIcon.removeIcon();
 		}
 	}
-	// [Alasdair PB] - END OF MODIFICATION - [NP Studios]
+	// 	//POWERUPS - END OF MODIFICATION - NPSTUDIOS
 	
 	/** 
 	 * new
