@@ -62,7 +62,7 @@ public class FireTruck extends Entity{
 
 	public FireTruck(Vector2 spawnPos, Float[] truckStats, Texture texture) {
 		super(spawnPos, texture, new Vector2(25,50), 100);
-		AssignStatusEffectArray();
+		assignStatusEffectArray();
 		DIRECTIONS.put("n",0);			//North Facing Direction (up arrow)
 		DIRECTIONS.put("w",90);			//West Facing Direction (left arrow)
 		DIRECTIONS.put("s",180);		//South Facing Direction (down arrow)
@@ -182,8 +182,8 @@ public class FireTruck extends Entity{
     	Kroy.mainGameScreen.DrawRect(new Vector2(hitbox.x, hitbox.y), new Vector2(hitbox.width, hitbox.height), 2, Color.GREEN);
     	Kroy.mainGameScreen.DrawCircle(getCentre(), range, 1, Color.BLUE);
 
-		UpdateStatusIcons();
-		AssignStatusEffectArray();
+		updateStatusIcons();
+		assignStatusEffectArray();
 		moveIconByFixedPoint();
 		// STATBAR_REFACTOR_3 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 		// Removed the statbars  update code from the firetruck class.
@@ -218,6 +218,9 @@ public class FireTruck extends Entity{
 		}
 	}
 
+
+	// Sets the position of powerUp icons to the FireTrucks Position
+	// then adds an offset value to stop the icons from overlapping
 	private void moveIconByFixedPoint(){
 		int offPoint = 0;
 		if (defenceUpIcon.isEnabled()){
@@ -231,7 +234,8 @@ public class FireTruck extends Entity{
 	}
 
 
-	private void AssignStatusEffectArray(){
+	// updates the status effects array
+	private void assignStatusEffectArray(){
 		this.statusEffects[0] = this.defenceUp;
 		this.statusEffects[1] = this.unlimitedWater;
 	}
@@ -239,7 +243,7 @@ public class FireTruck extends Entity{
 	// Updates Icons based on if the FireTruck is currently effected by status elements
 	// else clears icon textures if currently visible
 
-	private void UpdateStatusIcons(){
+	private void updateStatusIcons(){
 		if (this.defenceUp){
 			if (!(this.defenceUpIcon.isEnabled())) {
 				this.defenceUpIcon.addIcon();
@@ -410,22 +414,24 @@ public class FireTruck extends Entity{
 	 *
 	 * @param flag
 	 */
+	// Gives the fireTruck unlimited water
 	public void setUnlimitedWater(Boolean flag){
 		this.unlimitedWater = flag;
 		this.unlimitedWaterTimer = 0;
-		UpdateStatusIcons();
-		AssignStatusEffectArray();
+		updateStatusIcons();
+		assignStatusEffectArray();
 	}
 
 	/**
 	 *
 	 * @param flag
 	 */
+	// Make invulnerable for a period of time
 	public void setDefenceUp(Boolean flag){
 		this.defenceUp = flag;
 		this.defenceUpTimer = 0;
-		UpdateStatusIcons();
-		AssignStatusEffectArray();
+		updateStatusIcons();
+		assignStatusEffectArray();
 	}
 
 	public Boolean getDefenceUp(){

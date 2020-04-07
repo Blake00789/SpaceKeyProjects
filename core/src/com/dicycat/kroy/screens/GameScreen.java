@@ -183,7 +183,8 @@ public class GameScreen implements Screen{
 
 	}
 
-    private void UpdateStatusIcons(){
+	// Sets the icons to enabled if they are currently active
+    private void updateStatusIcons(){
         if (timeIncrease){
             if (!(timeIncreaseIcon.isEnabled())) {
                 timeIncreaseIcon.addIcon();
@@ -340,7 +341,7 @@ public class GameScreen implements Screen{
 	 */
 	private void updateLoop() {
 		checkZoom();
-        UpdateStatusIcons();
+        updateStatusIcons();
 		List<GameObject> toRemove = new ArrayList<GameObject>();
 		List<Vector2> patrolPositions = new ArrayList<>();
 		for (GameObject gObject : gameObjects) {	//Go through every game object
@@ -583,6 +584,7 @@ public class GameScreen implements Screen{
 	 * Updates the position of the camera to have the truck centre
 	 * Ensures it never goes out of bounds, including when zoomed
 	 * It does this by limiting the bounds of the camera
+	 * additionally moves icons at the same time as the camera if they are enabled
 	 */ 
 	public void updateCamera() {
 		//currentTruck;
