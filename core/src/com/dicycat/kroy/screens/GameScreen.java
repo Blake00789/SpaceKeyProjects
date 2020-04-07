@@ -178,7 +178,7 @@ public class GameScreen implements Screen{
 		fortressSizes.add(new Vector2(450, 256));
 		fortressesCount = 6;
 		patrolUpdateRate = 30;
-		boxSpawnRate = 10;
+		boxSpawnRate = 20;
 
 
 	}

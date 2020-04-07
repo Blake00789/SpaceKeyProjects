@@ -225,17 +225,17 @@ public class MinigameScreen implements Screen {
 	private void applyPowerUp(){
 		if (this.score < 0){
 			return;
-		}else if (this.score == 1){
+		}else if (this.score <= 10){
 			Kroy.mainGameScreen.getPlayer().setUnlimitedWater(true);
-		}else if (this.score == 2){
+		}else if (this.score <= 20){
 			Kroy.mainGameScreen.getPlayer().setDefenceUp(true);
-		}else if (this.score == 4){
+		}else if (this.score <= 40){
 			Kroy.mainGameScreen.freezePatrols(true);
-		}else if (this.score<6){
+		}else if (this.score <= 60){
 			Kroy.mainGameScreen.addTime(45);
-		}else if (this.score < 8){
+		}else if (this.score <= 80){
 			Kroy.mainGameScreen.ressurectTruck();
-		}else if (this.score >= 8){
+		}else if (this.score > 80){
 			Kroy.mainGameScreen.rainDance();
 		}
 	}
