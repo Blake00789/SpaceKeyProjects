@@ -18,8 +18,11 @@ import com.dicycat.kroy.screens.MinigameScreen;
 
 public class Kroy extends Game {
 	// GAME_RESIZE - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+	// Increased the games width and height values
 	public static final int width = 1820;
 	public static final int height = 980;
+	// GAME_RESIZE - END OF MODIFICATION  - NP STUDIOS
+
 	public static boolean debug = false;
 	// GAME_RESIZE - END OF MODIFICATION  - NP STUDIOS
 	
