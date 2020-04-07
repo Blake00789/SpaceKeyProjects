@@ -42,6 +42,8 @@ public class FireTruck extends Entity{
 	private boolean firing;
 	private boolean unlimitedWater;
 	private boolean defenceUp;
+	private float unlimitedWaterTimer;
+	private float defenceUpTimer;
 
 
 	private boolean[] statusEffects = new boolean[4];
@@ -201,6 +203,18 @@ public class FireTruck extends Entity{
 
 		if (firing) {					//if the player is firing runs the PlayerFire method
 			playerFire(inRange);
+		}
+		if (defenceUp){
+			defenceUpTimer += Gdx.graphics.getDeltaTime();
+			if (defenceUpTimer >= 15){
+				setDefenceUp(false);
+			}
+		}
+		if (unlimitedWater){
+			unlimitedWaterTimer += Gdx.graphics.getDeltaTime();
+			if (unlimitedWaterTimer >= 15){
+				setUnlimitedWater(false);
+			}
 		}
 	}
 
@@ -398,6 +412,7 @@ public class FireTruck extends Entity{
 	 */
 	public void setUnlimitedWater(Boolean flag){
 		this.unlimitedWater = flag;
+		this.unlimitedWaterTimer = 0;
 		UpdateStatusIcons();
 		AssignStatusEffectArray();
 	}
@@ -408,6 +423,7 @@ public class FireTruck extends Entity{
 	 */
 	public void setDefenceUp(Boolean flag){
 		this.defenceUp = flag;
+		this.defenceUpTimer = 0;
 		UpdateStatusIcons();
 		AssignStatusEffectArray();
 	}
