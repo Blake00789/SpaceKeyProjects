@@ -9,11 +9,8 @@ public class StatusIcon extends GameObject{
     private boolean enabled;
 
 
-    /**
-     *
-     * @author NPSTUDIOS - Alasdair PilmorepBedford
-     *
-     */
+    //POWERUPS - START OF MODIFICATION - NPSTUDIOS - Alasdair Pilmore-Bedford
+
     public StatusIcon(Vector2 spawnPos, String texture) {
         super(spawnPos, new Texture(texture), new Vector2(25,25));
         enabled = false;

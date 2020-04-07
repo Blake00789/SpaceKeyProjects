@@ -223,11 +223,7 @@ public class FireTruck extends Entity{
 		//POWERUPS - END OF MODIFICATION - NPSTUDIOS
 	}
 
-	/**
-	 *
-	 Power_ups_implementation- NPSTUDIOS - Alasdair PilmorepBedford
-	 *
-	 */
+	//POWERUPS - START OF MODIFICATION - NPSTUDIOS - Alasdair Pilmore-Bedford
 
 	// Sets the position of powerUp icons to the FireTrucks Position
 	// then adds an offset value to stop the icons from overlapping
