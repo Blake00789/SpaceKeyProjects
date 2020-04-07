@@ -133,10 +133,10 @@ public class GameScreen implements Screen{
 	private ArrayList<StatBar> fortressHealthBars = new ArrayList<>();
 	// STATBAR_REFACTOR_6 - END OF MODIFICATION  - NP STUDIOS
 
-	//POWERUPS - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+	//POWERUPS_4 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 	private float timeSinceLastBoxSpawn;
 	private int boxSpawnRate;
-	//POWERUPS - END OF MODIFICATION - NPSTUDIOS
+	//POWERUPS_4 - END OF MODIFICATION - NPSTUDIOS
 
 	/**
 	 * extended
@@ -188,17 +188,17 @@ public class GameScreen implements Screen{
 		fortressSizes.add(new Vector2(450, 256));
 		fortressesCount = 6;
 
-		//POWERUPS - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+		//POWERUPS_5 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 		patrolUpdateRate = 30;
 		boxSpawnRate = 20;
-		//POWERUPS - END OF MODIFICATION - NPSTUDIOS
+		//POWERUPS_5 - END OF MODIFICATION - NPSTUDIOS
 
 		//MINIGAME_INTEGRATION - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 		start = true;
 		//MINIGAME_INTEGRATION - END OF MODIFICATION - NPSTUDIOS
 	}
 
-	//POWERUPS - START OF MODIFICATION - NPSTUDIOS - Alasdair Pilmore-Bedford
+	//POWERUPS_6 - START OF MODIFICATION - NPSTUDIOS - Alasdair Pilmore-Bedford
 
 	// Sets the icons to enabled if they are currently active
     private void updateStatusIcons(){
@@ -231,7 +231,7 @@ public class GameScreen implements Screen{
             revivedFireTruckIcon.removeIcon();
         }
     }
-	// [Alasdair PB] - END OF MODIFICATION - [NP Studios]
+	//POWERUPS_6 - END OF MODIFICATION - NPSTUDIOS
 
 	/**
 	 * Screen first shown
@@ -426,7 +426,7 @@ public class GameScreen implements Screen{
 
 			}
 		}
-		//POWERUPS - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+		//POWERUPS_2 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 		timeSinceLastBoxSpawn += Gdx.graphics.getDeltaTime();
 		if (timeSinceLastBoxSpawn >= boxSpawnRate){
 			timeSinceLastBoxSpawn = 0;
@@ -438,7 +438,7 @@ public class GameScreen implements Screen{
 				freezePatrols(false);
 			}
 		}
-		//POWERUPS - END OF MODIFICATION - NPSTUDIOS
+		//POWERUPS_2 - END OF MODIFICATION - NPSTUDIOS
 	}
 	//MINIMAP_ADDITION_4 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 	public void drawMinimap(){
@@ -520,7 +520,7 @@ public class GameScreen implements Screen{
 	public FireTruck getPlayer() {
 		return currentTruck;
 	}
-	//POWERUPS - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+	//POWERUPS_3 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 	public void ressurectTruck(){
 		for (FireTruck truck : firetrucks){
 			if (!truck.isAlive()){
@@ -551,7 +551,7 @@ public class GameScreen implements Screen{
 	public void addTime(float time){
 		gameTimer = gameTimer + time;
 	}
-	//POWERUPS - END OF MODIFICATION - NPSTUDIOS
+	//POWERUPS_3 - END OF MODIFICATION - NPSTUDIOS
 
 	/**
 	 * Draws all debug objects for one frame

@@ -56,11 +56,11 @@ public class UFO extends Entity {
 	@Override
 	public void update() {
 		//movement
-		//POWERUPS - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+		//POWERUPS_14 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 		if (!frozen) { //the patrols do not move when they have been frozen by the freeze patrols powerup.
 			moveInDirection();
 		}
-		//POWERUPS - END OF MODIFICATION - NPSTUDIOS
+		//POWERUPS_14 - END OF MODIFICATION - NPSTUDIOS
 		movetimer += Gdx.graphics.getDeltaTime();
 		if (movetimer >= 2) {
 			movetimer = 0;
@@ -105,7 +105,7 @@ public class UFO extends Entity {
 		setPosition(newPos); // updates y direction
 		setRotation(direction);// updates truck direction
 	}
-	//POWERUPS - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+	//POWERUPS_15 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 	/**
 	 * A method to freeze and unfreeze a patrol.
 	 * @param flag
@@ -113,5 +113,5 @@ public class UFO extends Entity {
 	public void setFrozen(Boolean flag){
 		this.frozen = flag;
 	}
-	//POWERUPS - END OF MODIFICATION - NPSTUDIOS
+	//POWERUPS_15 - END OF MODIFICATION - NPSTUDIOS
 }

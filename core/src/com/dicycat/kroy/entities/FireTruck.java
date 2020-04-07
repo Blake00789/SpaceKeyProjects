@@ -207,7 +207,7 @@ public class FireTruck extends Entity{
 		if (firing) {					//if the player is firing runs the PlayerFire method
 			playerFire(inRange);
 		}
-		//POWERUPS - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+		//POWERUPS_11 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 		if (defenceUp){
 			defenceUpTimer += Gdx.graphics.getDeltaTime();
 			if (defenceUpTimer >= 15){
@@ -220,10 +220,10 @@ public class FireTruck extends Entity{
 				setUnlimitedWater(false);
 			}
 		}
-		//POWERUPS - END OF MODIFICATION - NPSTUDIOS
+		//POWERUPS_11 - END OF MODIFICATION - NPSTUDIOS
 	}
 
-	//POWERUPS - START OF MODIFICATION - NPSTUDIOS - Alasdair Pilmore-Bedford
+	//POWERUPS_1 - START OF MODIFICATION - NPSTUDIOS - Alasdair Pilmore-Bedford
 
 	// Sets the position of powerUp icons to the FireTrucks Position
 	// then adds an offset value to stop the icons from overlapping
@@ -265,7 +265,7 @@ public class FireTruck extends Entity{
 			this.unlimitedWaterIcon.removeIcon();
 		}
 	}
-	// 	//POWERUPS - END OF MODIFICATION - NPSTUDIOS
+	//POWERUPS_1 - END OF MODIFICATION - NPSTUDIOS
 	
 	/** 
 	 * new
@@ -300,11 +300,11 @@ public class FireTruck extends Entity{
 		water.setPosition(getCentre().add(direction.scl(0.5f)));
 
 		((Entity) nearestEnemy).applyDamage((float) (flowRate * Math.max(0.5, GameScreen.gameTimer * (1/600))));//Applies damage to the nearest enemy
-		//POWERUPS - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+		//POWERUPS_12 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 		if (!this.unlimitedWater) { //water only depletes while the power up is inactive.
 			currentWater = currentWater - flowRate;//reduces the tank by amount of water used
 		}
-		//POWERUPS - END OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+		//POWERUPS_12 - END OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 	}
 
 	/**
@@ -417,7 +417,7 @@ public class FireTruck extends Entity{
 	public void setCurrentWater(float x) {
 		 currentWater += x;
 	}
-	//POWERUPS - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+	//POWERUPS_13 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 	/**
 	 *
 	 * @param flag
@@ -445,6 +445,6 @@ public class FireTruck extends Entity{
 	public Boolean getDefenceUp(){
 		return this.defenceUp;
 	}
-	//POWERUPS - END OF MODIFICATION - NPSTUDIOS
+	//POWERUPS_13 - END OF MODIFICATION - NPSTUDIOS
 
 }

@@ -14,9 +14,9 @@ import com.badlogic.gdx.graphics.Texture;
  */
 public class GameTextures {
 
-	//POWERUPS - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+	//POWERUPS_7 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 	private Texture ufo, fireStation, fireStationDead, bullet, powerupBox;
-	//POWERUPS - END OF MODIFICATION - NPSTUDIOS
+	//POWERUPS_7 - END OF MODIFICATION - NPSTUDIOS
 
 	private Texture[] livingFortresses = {new Texture("cliffords tower.png"),
 			new Texture("york minster.png"), new Texture("Memorial.png") ,
@@ -47,9 +47,9 @@ public class GameTextures {
 		ufo = new Texture("ufo.png");
 		fireStation = new Texture("FireStationTemp.png");
 		fireStationDead = new Texture("FireStationTempDead.png");
-		//POWERUPS - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+		//POWERUPS_8 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 		powerupBox = new Texture("ItemBox.png");
-		//POWERUPS - END OF MODIFICATION - NPSTUDIOS
+		//POWERUPS_8 - END OF MODIFICATION - NPSTUDIOS
 		bullet = new Texture(("bullet.png"));
 	}
 
@@ -109,7 +109,7 @@ public class GameTextures {
 	public Texture getFireStationDead() {
 		return fireStationDead;
 	}
-	//POWERUPS - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+	//POWERUPS_9 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 
 	/**
 	 *
@@ -118,7 +118,7 @@ public class GameTextures {
 	public Texture getPowerupBox() {
 		return powerupBox;
 	}
-	//POWERUPS - END OF MODIFICATION - NPSTUDIOS
+	//POWERUPS_9 - END OF MODIFICATION - NPSTUDIOS
 	public Texture getBullet(){
 		return bullet;
 	}

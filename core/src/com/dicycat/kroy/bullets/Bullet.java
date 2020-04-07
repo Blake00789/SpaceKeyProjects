@@ -91,9 +91,9 @@ public class Bullet extends GameObject {
 
 		//Check to see if bullet collides with the players truck.
 		FireTruck truck = Kroy.mainGameScreen.getPlayer();
-		//POWERUPS - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+		//POWERUPS_10 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 		if (truck.isAlive() && !truck.getDefenceUp()) { //the truck doesn't take damage if it has a shield powerup.
-		//POWERUPS - END OF MODIFICATION - NPSTUDIOS
+		//POWERUPS_10 - END OF MODIFICATION - NPSTUDIOS
 			if(Intersector.overlaps(hitbox, truck.getHitbox())){
                 // [FORTRESS_IMPROVEMENT] - START OF MODIFICATION  - [NPSTUDIOS] - [CASSIE_LILLYSTONE] ---
 			    if (Kroy.mainGameScreen.gameTimer == 150){ //If the game is half way through then double the amount of damage applied

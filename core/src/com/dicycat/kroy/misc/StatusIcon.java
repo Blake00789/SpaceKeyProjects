@@ -1,15 +1,17 @@
 package com.dicycat.kroy.misc;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.dicycat.kroy.GameObject;
 
+/**
+ * ADD DESCRIPTION HERE - NEW CLASS
+ *
+ * @author Alasdair Pilmore-Bedford - NP STUDIOS
+ *
+ */
 public class StatusIcon extends GameObject{
     private boolean enabled;
-
-
-    //POWERUPS - START OF MODIFICATION - NPSTUDIOS - Alasdair Pilmore-Bedford
 
     public StatusIcon(Vector2 spawnPos, String texture) {
         super(spawnPos, new Texture(texture), new Vector2(25,25));
@@ -35,7 +37,5 @@ public class StatusIcon extends GameObject{
 
     @Override
     public void update() {}
-
-    // END OF MODIFICATION - NPSTUDIOS - Alasdair PilmorepBedford
 
 }
