@@ -204,6 +204,7 @@ public class FireTruck extends Entity{
 		if (firing) {					//if the player is firing runs the PlayerFire method
 			playerFire(inRange);
 		}
+		//POWERUPS - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 		if (defenceUp){
 			defenceUpTimer += Gdx.graphics.getDeltaTime();
 			if (defenceUpTimer >= 15){
@@ -216,6 +217,7 @@ public class FireTruck extends Entity{
 				setUnlimitedWater(false);
 			}
 		}
+		//POWERUPS - END OF MODIFICATION - NPSTUDIOS
 	}
 
 
@@ -410,6 +412,7 @@ public class FireTruck extends Entity{
 	public void setCurrentWater(float x) {
 		 currentWater += x;
 	}
+	//POWERUPS - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 	/**
 	 *
 	 * @param flag

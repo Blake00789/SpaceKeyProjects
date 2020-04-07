@@ -14,7 +14,7 @@ import com.dicycat.kroy.screens.MinigameScreen;
 
 /**
  *
- * @author Bethany Gilmore
+ * @author NPSTUDIOS - Bethany Gilmore
  *
  */
 public class Box extends Entity {
