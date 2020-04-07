@@ -47,7 +47,9 @@ public class GameScreen implements Screen{
 		PAUSE,
 		RUN,
 		RESUME,
+		//MINIGAME_INTEGRATION - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 		MINIGAME,
+		//MINIGAME_INTEGRATION - END OF MODIFICATION - NPSTUDIOS
 		OPTIONS
 	}
 	
@@ -105,8 +107,9 @@ public class GameScreen implements Screen{
 	private float lastPatrol; //time passsed since we last spawned patrols
 	private List<Vector2> fortressPositions, fortressSizes; //where our fortresses spawn
 	private int patrolUpdateRate; //How many seconds should pass before we respawn patrols;
-
+	//MINIGAME_INTEGRATION - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 	private boolean start;
+	//MINIGAME_INTEGRATION - END OF MODIFICATION - NPSTUDIOS
 
     private StatusIcon timeIncreaseIcon;
     private StatusIcon rainDanceIcon;
@@ -125,9 +128,11 @@ public class GameScreen implements Screen{
 	private ArrayList<StatBar> tankbars = new ArrayList<StatBar>();
 	private ArrayList<StatBar> fortressHealthBars = new ArrayList<>();
 	// STATBAR_REFACTOR_6 - END OF MODIFICATION  - NP STUDIOS
-	private ArrayList<Box> boxes = new ArrayList<Box>();
+
+	//POWERUPS - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 	private float timeSinceLastBoxSpawn;
 	private int boxSpawnRate;
+	//POWERUPS - END OF MODIFICATION - NPSTUDIOS
 
 	/**
 	 * extended
@@ -135,7 +140,6 @@ public class GameScreen implements Screen{
 	 * @param truckNum
 	 */
 	public GameScreen(Kroy _game, int truckNum) {
-		start = true;
 		game = _game;
 		gamecam = new OrthographicCamera();
 		gameport = new FitViewport(Kroy.width, Kroy.height, gamecam);	//Mic:could also use StretchViewPort to make the screen stretch instead of adapt
@@ -149,7 +153,6 @@ public class GameScreen implements Screen{
 		spawnPosition = new Vector2(3750, 4000);
 		gameTimer = 60 * 5; //new    //Set timer to 5 minutes  
 		this.truckNum = truckNum;
-
 
         timeIncreaseIcon = new StatusIcon(Vector2.Zero,"TimeIncrease.png");
         timeIncrease = true;
@@ -177,10 +180,15 @@ public class GameScreen implements Screen{
 		fortressSizes.add(new Vector2(400, 256));
 		fortressSizes.add(new Vector2(450, 256));
 		fortressesCount = 6;
+
+		//POWERUPS - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 		patrolUpdateRate = 30;
 		boxSpawnRate = 20;
+		//POWERUPS - END OF MODIFICATION - NPSTUDIOS
 
-
+		//MINIGAME_INTEGRATION - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+		start = true;
+		//MINIGAME_INTEGRATION - END OF MODIFICATION - NPSTUDIOS
 	}
 
     private void UpdateStatusIcons(){
@@ -219,6 +227,7 @@ public class GameScreen implements Screen{
 	 */
 	@Override
 	public void show() {
+		//MINIGAME_INTEGRATION - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 		if (start) {
 			objectsToAdd = new ArrayList<GameObject>();
 			gameObjects = new ArrayList<GameObject>();
@@ -237,6 +246,7 @@ public class GameScreen implements Screen{
 
 		gamecam.translate(new Vector2(currentTruck.getX(), currentTruck.getY())); // sets initial Camera position
 		start = false;
+		//MINIGAME_INTEGRATION - END OF MODIFICATION - NPSTUDIOS
 	}
 
 	/**
@@ -323,9 +333,11 @@ public class GameScreen implements Screen{
 				pauseWindow.visibility(false);
 				setGameState(GameScreenState.RUN);
 				break;
+			//MINIGAME_INTEGRATION - START OF MODIFICATION - NPSTUDIOS
 			case MINIGAME:
 
 				break;
+			//MINIGAME_INTEGRATION - END OF MODIFICATION - NPSTUDIOS
 			default:
 				break;
 		}
@@ -400,6 +412,7 @@ public class GameScreen implements Screen{
 
 			}
 		}
+		//POWERUPS - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 		timeSinceLastBoxSpawn += Gdx.graphics.getDeltaTime();
 		if (timeSinceLastBoxSpawn >= boxSpawnRate){
 			timeSinceLastBoxSpawn = 0;
@@ -411,6 +424,7 @@ public class GameScreen implements Screen{
 				freezePatrols(false);
 			}
 		}
+		//POWERUPS - END OF MODIFICATION - NPSTUDIOS
 	}
 	
 	/**
@@ -498,7 +512,7 @@ public class GameScreen implements Screen{
 	public FireTruck getPlayer() {
 		return currentTruck;
 	}
-
+	//POWERUPS - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 	public void ressurectTruck(){
 		for (FireTruck truck : firetrucks){
 			if (!truck.isAlive()){
@@ -529,6 +543,7 @@ public class GameScreen implements Screen{
 	public void addTime(float time){
 		gameTimer = gameTimer + time;
 	}
+	//POWERUPS - END OF MODIFICATION - NPSTUDIOS
 
 	/**
 	 * Draws all debug objects for one frame

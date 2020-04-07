@@ -222,8 +222,9 @@ public class MinigameScreen implements Screen {
 		score++;
 		// System.out.println(score);
 	}
+	//MINIGAME_INTEGRATION_4 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 	private void applyPowerUp(){
-		if (this.score < 0){
+		if (this.score == 0 || this.score == 1){
 			return;
 		}else if (this.score <= 10){
 			Kroy.mainGameScreen.getPlayer().setUnlimitedWater(true);
@@ -239,6 +240,7 @@ public class MinigameScreen implements Screen {
 			Kroy.mainGameScreen.rainDance();
 		}
 	}
+	//MINIGAME_INTEGRATION_4 - END OF MODIFICATION - NPSTUDIOS
 	private void gameOver() {
 		setGameState(GameScreenState.END);
 	}
