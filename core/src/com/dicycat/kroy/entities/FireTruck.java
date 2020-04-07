@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.dicycat.kroy.GameObject;
 import com.dicycat.kroy.Kroy;
 import com.dicycat.kroy.misc.StatBar;
+import com.dicycat.kroy.misc.StatusIcon;
 import com.dicycat.kroy.misc.WaterStream;
 import com.dicycat.kroy.screens.GameScreen;
 
@@ -27,6 +28,7 @@ public class FireTruck extends Entity{
 	private float flowRate;	//How fast the truck can dispense water
 	private float maxWater; //How much water the truck can hold
 	private float currentWater; //Current amount of water
+
  
 	private Rectangle hitbox = new Rectangle(20, 45, 20, 20);  
 
@@ -34,19 +36,33 @@ public class FireTruck extends Entity{
 	protected final int[] ARROWKEYS = {Keys.UP, Keys.DOWN, Keys.RIGHT, Keys.LEFT}; // List of the arrow keys to be able to iterate through them later on
 	protected Integer direction = 0; // Direction the truck is facing
 
+	private StatusIcon defenceUpIcon;
+	private StatusIcon unlimitedWaterIcon;
 	private WaterStream water;
 	private boolean firing;
+	private boolean unlimitedWater;
+	private boolean defenceUp;
+	private float unlimitedWaterTimer;
+	private float defenceUpTimer;
+
+
+	private boolean[] statusEffects = new boolean[4];
 	private float range;
+
+	private Vector2 statusIconPos = Vector2.Zero;
+
     // [FORTRESS_IMPROVEMENT] - START OF MODIFICATION  - [NP_STUDIOS] - [CASSIE_LILLYSTONE] ----
 	private ArrayList<Fortress> fortressList; //New attribute
     // [FORTRESS_IMPROVEMENT] - END OF MODIFICATION  - [NP_STUDIOS] -----
+
 	/**
 	 * @param spawnPos
 	 * @param truckStats
 	 */
+
 	public FireTruck(Vector2 spawnPos, Float[] truckStats, Texture texture) {
 		super(spawnPos, texture, new Vector2(25,50), 100);
- 
+		assignStatusEffectArray();
 		DIRECTIONS.put("n",0);			//North Facing Direction (up arrow)
 		DIRECTIONS.put("w",90);			//West Facing Direction (left arrow)
 		DIRECTIONS.put("s",180);		//South Facing Direction (down arrow)
@@ -65,14 +81,25 @@ public class FireTruck extends Entity{
 		range = truckStats[3];			// Range of the truck
 
 		firing = false;
+		//Power ups
+		defenceUp = false;
+		unlimitedWater = false;
+
 		water = new WaterStream(Vector2.Zero);
+
+		defenceUpIcon = new StatusIcon(statusIconPos,"DefenceUp.png");
+		Kroy.mainGameScreen.addGameObject(defenceUpIcon);
+
+		unlimitedWaterIcon = new StatusIcon(statusIconPos,"UnlimitedWater.png");
+		Kroy.mainGameScreen.addGameObject(unlimitedWaterIcon);
+
+	}
 
 		// STATBAR_REFACTOR_2 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 		// Removed the creation of statbars from the firetruck class as adding the objects to the array
 		// in GameScreen would cause problems with testing so we moved this functionality to the
 		// GameScreen class itself.
 		// STATBAR_REFACTOR_2 - END OF MODIFICATION  - NP STUDIOS
-	}
 
 	// TESTING_REFACTOR_1 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 	// Removed constructor created by previous group that was just for testing purposes
@@ -155,6 +182,9 @@ public class FireTruck extends Entity{
     	Kroy.mainGameScreen.DrawRect(new Vector2(hitbox.x, hitbox.y), new Vector2(hitbox.width, hitbox.height), 2, Color.GREEN);
     	Kroy.mainGameScreen.DrawCircle(getCentre(), range, 1, Color.BLUE);
 
+		updateStatusIcons();
+		assignStatusEffectArray();
+		moveIconByFixedPoint();
 		// STATBAR_REFACTOR_3 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 		// Removed the statbars  update code from the firetruck class.
 		// STATBAR_REFACTOR_3- END OF MODIFICATION  - NP STUDIOS
@@ -177,7 +207,65 @@ public class FireTruck extends Entity{
 		if (firing) {					//if the player is firing runs the PlayerFire method
 			playerFire(inRange);
 		}
+		//POWERUPS_11 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+		if (defenceUp){
+			defenceUpTimer += Gdx.graphics.getDeltaTime();
+			if (defenceUpTimer >= 15){
+				setDefenceUp(false);
+			}
+		}
+		if (unlimitedWater){
+			unlimitedWaterTimer += Gdx.graphics.getDeltaTime();
+			if (unlimitedWaterTimer >= 15){
+				setUnlimitedWater(false);
+			}
+		}
+		//POWERUPS_11 - END OF MODIFICATION - NPSTUDIOS
 	}
+
+	//POWERUPS_1 - START OF MODIFICATION - NPSTUDIOS - Alasdair Pilmore-Bedford
+
+	// Sets the position of powerUp icons to the FireTrucks Position
+	// then adds an offset value to stop the icons from overlapping
+	private void moveIconByFixedPoint(){
+		int offPoint = 0;
+		if (defenceUpIcon.isEnabled()){
+			offPoint += 15;
+			defenceUpIcon.setPosition(getCentre().add(20 - offPoint,25));
+		}
+		if (unlimitedWaterIcon.isEnabled()){
+			offPoint += 15;
+			unlimitedWaterIcon.setPosition(getCentre().add(20 - offPoint,25));
+		}
+	}
+
+	// updates the status effects array
+	private void assignStatusEffectArray(){
+		this.statusEffects[0] = this.defenceUp;
+		this.statusEffects[1] = this.unlimitedWater;
+	}
+
+	// Updates Icons based on if the FireTruck is currently effected by status elements
+	// else clears icon textures if currently visible
+
+
+	private void updateStatusIcons(){
+		if (this.defenceUp){
+			if (!(this.defenceUpIcon.isEnabled())) {
+				this.defenceUpIcon.addIcon();
+			}
+		} else if (this.defenceUpIcon.isEnabled()){
+			this.defenceUpIcon.removeIcon();
+		}
+		if (this.unlimitedWater){
+			if (!(this.unlimitedWaterIcon.isEnabled())) {
+				this.unlimitedWaterIcon.addIcon();
+			}
+		} else if (this.unlimitedWaterIcon.isEnabled()){
+			this.unlimitedWaterIcon.removeIcon();
+		}
+	}
+	//POWERUPS_1 - END OF MODIFICATION - NPSTUDIOS
 	
 	/** 
 	 * new
@@ -211,8 +299,12 @@ public class FireTruck extends Entity{
 		water.setRange(direction.len());
 		water.setPosition(getCentre().add(direction.scl(0.5f)));
 
-		((Entity) nearestEnemy).applyDamage((float) (flowRate * Math.max(0.5, GameScreen.gameTimer * (1/600))));			//Applies damage to the nearest enemy
-		currentWater=currentWater-flowRate;						//reduces the tank by amount of water used
+		((Entity) nearestEnemy).applyDamage((float) (flowRate * Math.max(0.5, GameScreen.gameTimer * (1/600))));//Applies damage to the nearest enemy
+		//POWERUPS_12 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+		if (!this.unlimitedWater) { //water only depletes while the power up is inactive.
+			currentWater = currentWater - flowRate;//reduces the tank by amount of water used
+		}
+		//POWERUPS_12 - END OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 	}
 
 	/**
@@ -322,10 +414,37 @@ public class FireTruck extends Entity{
 	 * new
 	 * Increase the currentWater by the input parameter
 	 */
-	public void setCurrentWater(int x) {
+	public void setCurrentWater(float x) {
 		 currentWater += x;
 	}
+	//POWERUPS_13 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+	/**
+	 *
+	 * @param flag
+	 */
+	// Gives the fireTruck unlimited water
+	public void setUnlimitedWater(Boolean flag){
+		this.unlimitedWater = flag;
+		this.unlimitedWaterTimer = 0;
+		updateStatusIcons();
+		assignStatusEffectArray();
+	}
 
+	/**
+	 *
+	 * @param flag
+	 */
+	// Make invulnerable for a period of time
+	public void setDefenceUp(Boolean flag){
+		this.defenceUp = flag;
+		this.defenceUpTimer = 0;
+		updateStatusIcons();
+		assignStatusEffectArray();
+	}
 
+	public Boolean getDefenceUp(){
+		return this.defenceUp;
+	}
+	//POWERUPS_13 - END OF MODIFICATION - NPSTUDIOS
 
 }

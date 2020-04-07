@@ -9,8 +9,10 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -50,15 +52,24 @@ public class MinigameScreen implements Screen {
 	private int score = -2; // Starts negative to give time for the pipes to reach the player 
 	private String scoreText = ""; // Instantiates the scoretext variable
 	BitmapFont font;
+	private float time; // Integer used to play goose animation on set intervals
 
 	private static Goose player; // Reference to the player
-
+	private Texture bg;
 	Texture map;
 
 	private List<Pipe> pipes; // List of pipes
 	private List<DebugDraw> debugObjects;
 
-	public MinigameScreen(Kroy _game) {
+	private Texture pipeTexture;
+	//MINIGAME_INTEGRATION_4 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+	private boolean fromMenu;
+
+	public MinigameScreen(Kroy _game, boolean flag) {
+		pipeTexture = new Texture("Rocks.png");
+		fromMenu = flag;
+	//MINIGAME_INTEGRATION_4 - END OF MODIFICATION - NPSTUDIOS
+		bg = new Texture("lightBlue.png");
 		game = _game;
 		gamecam = new OrthographicCamera();
 		gameport = new FitViewport(Kroy.width, Kroy.height, gamecam);
@@ -126,20 +137,26 @@ public class MinigameScreen implements Screen {
 			batch.setProjectionMatrix(gamecam.combined);
 			batch.begin(); // Game loop Start
 			batch.draw(map, -Kroy.width / 2, -Kroy.height / 2, Kroy.width, Kroy.height);
-
+			Animation <TextureRegion> tempBoi  = player.getAnimationInFlight();
+			batch.draw(tempBoi.getKeyFrame(time += delta), player.getPosition().x, player.getPosition().y, player.getTextureScale() + 70, player.getTextureScale());
+			tempBoi.setPlayMode(Animation.PlayMode.LOOP);
 			player.update();
-			player.render(batch);
+			//player.render(batch);
 
-			pipes.forEach(o -> {
-				o.update();
-				o.render(batch);
-				if (o.gameEnd(player)) {
+			for (Pipe pipe : pipes) {
+				pipe.update();
+				pipe.render(batch);
+				if (pipe.gameEnd(player)) {
 					// If the player hits a pipe, then the game ends
 					gameOver();
 				}
-				;
-			});
-			pipes.removeIf(o -> o.isRemove());
+			}
+			for (int x = 0; x < pipes.size(); x++){
+				if (pipes.get(x).isRemove()) {
+					pipes.remove(x);
+
+				}
+			}
 
 			// Score starts at -2, so different text is displayed instead
 			if (score < 0) {
@@ -149,7 +166,7 @@ public class MinigameScreen implements Screen {
 			}
 
 			// Score is displayed in the top left with a light blue background
-			batch.draw(new Texture("lightBlue.png"), (-Kroy.width / 2), (Kroy.height / 2) - 75, scoreText.length() * 30,
+			batch.draw(bg, (-Kroy.width / 2), (Kroy.height / 2) - 75, scoreText.length() * 30,
 					75);
 			font.draw(batch, scoreText, (-Kroy.width / 2) + 10, (Kroy.height / 2) - 10);
 
@@ -176,12 +193,22 @@ public class MinigameScreen implements Screen {
 			batch.draw(new Texture("minigameEnd.png"), 0, 0, Kroy.width, Kroy.height);
 			font.draw(batch, scoreText, (Kroy.width / 2) + 20, (Kroy.height / 2) - 300);
 			batch.end();
-			if(Gdx.input.isKeyJustPressed(Keys.SPACE) || Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+			if (Gdx.input.isKeyJustPressed(Keys.SPACE) || Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+				pipes.clear();
 				dispose();
-				game.backToMenu();
+				//MINIGAME_INTEGRATION_3 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+				if (fromMenu) {
+					game.backToMenu();
+				}else{
+					//Kroy.mainGameScreen.getPlayer()
+					applyPowerUp();
+					Kroy.mainGameScreen.hud.updateScore(score*50);
+					game.backToGame();
+				}
+				//MINIGAME_INTEGRATION_3 - END OF MODIFICATION - NPSTUDIOS
 			}
-		default:
-			break;
+			default:
+				break;
 		}
 	}
 
@@ -191,11 +218,29 @@ public class MinigameScreen implements Screen {
 	 */
 	private void createPipe() {
 		int height = (int) Math.round(-300 * Math.random()) - 900;
-		pipes.add(new Pipe(new Vector2(800, height)));
+		pipes.add(new Pipe(new Vector2(800, height), pipeTexture));
 		score++;
 		// System.out.println(score);
 	}
-
+	//MINIGAME_INTEGRATION_4 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+	private void applyPowerUp(){
+		if (this.score == 0 || this.score == 1){
+			return;
+		}else if (this.score <= 10){
+			Kroy.mainGameScreen.getPlayer().setUnlimitedWater(true);
+		}else if (this.score <= 20){
+			Kroy.mainGameScreen.getPlayer().setDefenceUp(true);
+		}else if (this.score <= 40){
+			Kroy.mainGameScreen.freezePatrols(true);
+		}else if (this.score <= 60){
+			Kroy.mainGameScreen.addTime(45);
+		}else if (this.score <= 80){
+			Kroy.mainGameScreen.ressurectTruck();
+		}else if (this.score > 80){
+			Kroy.mainGameScreen.rainDance();
+		}
+	}
+	//MINIGAME_INTEGRATION_4 - END OF MODIFICATION - NPSTUDIOS
 	private void gameOver() {
 		setGameState(GameScreenState.END);
 	}
