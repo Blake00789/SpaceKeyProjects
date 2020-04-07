@@ -248,6 +248,7 @@ public class MenuScreen implements Screen{
 		  	loadWindow.stage.act();
 		  	loadWindow.stage.draw();
 		  	clickCheck();
+		  	break;
 		  // MENU_REFACTOR_4 - END OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 	// ADD_CONTROL_SCREEN_10 - START OF MODIFICATION - NP Studios - Jordan Spooner ---------------
 		  case CONTROLS:
