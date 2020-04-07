@@ -63,7 +63,7 @@ public class GameScreen implements Screen{
 	private OrthographicCamera gamecam;	//follows along what the port displays
 	private Viewport gameport;
 	
-	private HUD hud; 
+	public HUD hud;
 	private PauseWindow pauseWindow;
 	private OptionsWindow optionsWindow;
 
@@ -125,6 +125,9 @@ public class GameScreen implements Screen{
 	private ArrayList<StatBar> tankbars = new ArrayList<StatBar>();
 	private ArrayList<StatBar> fortressHealthBars = new ArrayList<>();
 	// STATBAR_REFACTOR_6 - END OF MODIFICATION  - NP STUDIOS
+	private ArrayList<Box> boxes = new ArrayList<Box>();
+	private float timeSinceLastBoxSpawn;
+	private int boxSpawnRate;
 
 	/**
 	 * extended
@@ -158,6 +161,7 @@ public class GameScreen implements Screen{
         revivedFireTruck = true;
 
 		lastPatrol = Gdx.graphics.getDeltaTime();
+		timeSinceLastBoxSpawn = Gdx.graphics.getDeltaTime();
 		fortressPositions = new ArrayList<>();
 		fortressPositions.add(new Vector2(2860, 3211));
 		fortressPositions.add(new Vector2(3130, 5530));
@@ -174,6 +178,9 @@ public class GameScreen implements Screen{
 		fortressSizes.add(new Vector2(450, 256));
 		fortressesCount = 6;
 		patrolUpdateRate = 30;
+		boxSpawnRate = 10;
+
+
 	}
 
     private void UpdateStatusIcons(){
@@ -218,8 +225,6 @@ public class GameScreen implements Screen{
 			deadObjects = new ArrayList<GameObject>();
 			debugObjects = new ArrayList<DebugDraw>();
 
-			Box box = new Box(new Vector2(spawnPosition.x - 135, spawnPosition.y - 20));
-			addGameObject(box);
 
 			// Initialises the FireTrucks
 			for (int i = 0; i < 6; i++) {
@@ -394,6 +399,11 @@ public class GameScreen implements Screen{
 
 
 			}
+		}
+		timeSinceLastBoxSpawn += Gdx.graphics.getDeltaTime();
+		if (timeSinceLastBoxSpawn >= boxSpawnRate){
+			timeSinceLastBoxSpawn = 0;
+			gameObjects.add(new Box(new Vector2(spawnPosition.x - 135, spawnPosition.y - 20)));
 		}
 		if (freezeEnemies){
 			freezeTimer += Gdx.graphics.getDeltaTime();

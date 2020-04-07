@@ -202,6 +202,7 @@ public class MinigameScreen implements Screen {
 				}else{
 					//Kroy.mainGameScreen.getPlayer()
 					applyPowerUp();
+					Kroy.mainGameScreen.hud.updateScore(score*50);
 					game.backToGame();
 				}
 				//MINIGAME_INTEGRATION_3 - END OF MODIFICATION - NPSTUDIOS
