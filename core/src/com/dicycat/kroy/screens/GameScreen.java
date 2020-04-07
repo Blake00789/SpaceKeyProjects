@@ -8,6 +8,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -59,6 +60,9 @@ public class GameScreen implements Screen{
 	
 	private OrthographicCamera gamecam;	//follows along what the port displays
 	private Viewport gameport;
+	// MINIMAP_ADDITION_1 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE ----
+	private Texture minimap;
+	// MINIMAP_ADDITION_1 - END OF MODIFICATION - NPSTUDIOS
 	
 	private HUD hud; 
 	private PauseWindow pauseWindow;
@@ -122,7 +126,10 @@ public class GameScreen implements Screen{
 		gamecam = new OrthographicCamera();
 		gameport = new FitViewport(Kroy.width, Kroy.height, gamecam);	//Mic:could also use StretchViewPort to make the screen stretch instead of adapt
 		hud = new HUD(game.batch, this.game);
-		gameMap = new TiledGameMap();										//or FitPort to make it fit into a specific width/height ratio
+		gameMap = new TiledGameMap(); //or FitPort to make it fit into a specific width/height ratio
+		// MINIMAP_ADDITION_2 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE ----
+		minimap = new Texture("MinimapBackground.png"); //adds a texture of the map as a .png to be the minimap
+		// MINIMAP_ADDITION_2 - START OF MODIFICATION - NPSTUDIOS
 		pauseWindow = new PauseWindow(game);
 		pauseWindow.visibility(false);
 		optionsWindow = new OptionsWindow(game);
@@ -229,7 +236,7 @@ public class GameScreen implements Screen{
 				updateLoop(); //Update all game objects positions but does not render them as to be able to render everything as quickly as possible
 
 				gameMap.renderRoads(gamecam); // Render the background roads, fields and rivers
-				gameMap.renderBuildings(gamecam); // Renders the buildings and the foreground items which are not entities
+
 
 				game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
 				game.batch.setProjectionMatrix(gamecam.combined);	//Mic:only renders the part of the map where the camera is
@@ -238,11 +245,15 @@ public class GameScreen implements Screen{
 				hud.update(delta);
 
 				renderObjects(); // Renders objects specified in the UpdateLoop() called previously
-
 				game.batch.end();
-
-
+				//RENDER_ORDER - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+				gameMap.renderBuildings(gamecam); // Renders the buildings and the foreground items which are not entities, moved below renderObjects() so the firetrucks can no longer drive on the roofs.
+				//RENDER_ORDER - END OF MODIFICATION - NPSTUDIOS
 				hud.stage.draw();
+
+				//MINIMAP_ADDITION_3 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+				drawMinimap();
+				//MINIMAP_ADDITION_3 - END OF MODIFICATION - NPSTUDIOS
 				pauseWindow.stage.draw();
 
 				if (Kroy.debug) {
@@ -271,7 +282,6 @@ public class GameScreen implements Screen{
 	 * Respawns the player if necessary.
 	 */
 	private void updateLoop() {
-		checkZoom();
 		
 		List<GameObject> toRemove = new ArrayList<GameObject>();
 		List<Vector2> patrolPositions = new ArrayList<>();
@@ -290,8 +300,6 @@ public class GameScreen implements Screen{
 		}
 
 		currentTruck.update();
-		if (Gdx.input.isKeyPressed(Keys.PLUS)) {
-		}
 		
 
 		for (GameObject rObject : toRemove) {	//Remove game objects set for removal
@@ -334,30 +342,24 @@ public class GameScreen implements Screen{
 		}
 
 	}
-	
-	/**
-	 * new
-	 * Can zoom in the game by pressing EQUALS key
-	 * Can zoom out by pressing MINUS key
-	 */
-	private void checkZoom() {
-		if (Gdx.input.isKeyJustPressed(Keys.EQUALS)) {
-			if (zoom > 0.5f) {
-				zoom = zoom - 0.5f;
+	//MINIMAP_ADDITION_4 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+	public void drawMinimap(){
+		game.batch.begin();
+		game.batch.draw(minimap, 2, 2, 394, 350);
+
+		for (GameObject object : gameObjects){
+			game.batch.draw(object.getTexture(), object.getX()/19, object.getY()/19, object.getWidth()/10,
+					object.getHeight()/10);
+		} // Draws the fortresses and patrols to a minimap scaled down to the in the bottom left corner.
+		for (FireTruck truck : firetrucks) {
+			if (truck.getHealthPoints() > 0) {
+				game.batch.draw(truck.getTexture(), truck.getX() / 19, truck.getY() / 19, 20, 25);
 			}
-			gamecam.setToOrtho(false, Kroy.width * zoom, Kroy.height * zoom);
-			gamecam.translate(new Vector2(currentTruck.getX() - ((Kroy.width * zoom) / 2),
-					currentTruck.getY() - ((Kroy.height * zoom) / 2)));
+			//Draws the firetrucks on their relative position on the minimap. size is not to scale to make their position obvious and clear.
 		}
-		if (Gdx.input.isKeyJustPressed(Keys.MINUS)) {
-			if (zoom < 4f) {
-				zoom = zoom + 0.5f;
-			}
-			gamecam.setToOrtho(false, Kroy.width * zoom, Kroy.height * zoom);
-			gamecam.translate(new Vector2(currentTruck.getX() - ((Kroy.width * zoom) / 2),
-					currentTruck.getY() - ((Kroy.height * zoom) / 2)));
-		}
+		game.batch.end();
 	}
+	//MINIMAP_ADDITION_4 - END OF MODIFICATION - NPSTUDIOS
 
 	/**
 	 * Renders the objects in "objectsToRender" then clears the list
@@ -698,7 +700,7 @@ public class GameScreen implements Screen{
 	}
 
     // [FORTRESS_IMPROVEMENT] - START OF MODIFICATION  - [NP_STUDIOS] - [CASSIE_LILLYSTONE] ----
-	public ArrayList getFortresses(){
+	public ArrayList<Fortress> getFortresses(){
 	    return fortresses;
     } //Added a getter which returns a list of fortresses, required for making fortress health improve over time
     // [FORTRESS_IMPROVEMENT] - END OF MODIFICATION  - [NP_STUDIOS]----
