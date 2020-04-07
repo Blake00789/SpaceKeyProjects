@@ -80,6 +80,7 @@ public class HUD {
 	 * @param dt	Delta Time 
 	 */
 	public void update(float dt) {
+<<<<<<< HEAD
 	// HUD_UPDATES_3 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 	// Removed the need for a second variable and condensed code.
 		if (countdown > 0) { countdown -= dt; }
@@ -96,6 +97,24 @@ public class HUD {
 	public int getFinalScore() {
 		return score;
 	}
+=======
+		timeCount += dt;
+		if (timeCount >= 1) {
+			if (worldTimer>0) {
+				worldTimer--;
+			}
+			updateScore(-220);
+			worldTimerLabel.setText(String.format("%03d", worldTimer));
+			timeCount =0;
+			scoreCountLabel.setText(String.format("%05d", score));
+			trucksCountLabel.setText(String.format("%01d", Kroy.mainGameScreen.getLives()));
+		}
+	}
+
+	// HIGHSCORE_3 - START OF MODIFICATION - NP STUDIOS - LUCY IVATT
+	// Deleted getFinalScore() as it was identical to getScore.
+	// HIGHSCORE_3 - END OF MODIFICATION - NP STUDIOS - LUCY IVATT
+>>>>>>> origin
 
 	public static void setScore(Integer x){
 		score = x;

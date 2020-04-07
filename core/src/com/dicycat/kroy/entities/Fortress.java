@@ -63,7 +63,6 @@ public class Fortress extends Entity {
 		super.die();
 		sprite.setTexture(deadTexture);
 		displayable = true;
-
 		//This is just bad practice... should not be in the fortress class but higher up
 		if (Kroy.mainGameScreen.fortressesLeft() == 0) {	//If last fortress
 			Kroy.mainGameScreen.gameOver(true); 					//End game WIN
