@@ -27,6 +27,7 @@ public class HUD {
 	// Changed HUD to track fortresses, condensed timer into only 1 variable, changed Objects to primitive types.
 	private int fortresses = 6;
 	private float countdown;	//change to float maybe
+	private float gameInterval;
 	private static int score = 100000;
 	// HUD_UPDATES_1 - END OF MODIFICATION  - NP STUDIOS
 
@@ -80,10 +81,16 @@ public class HUD {
 	 * @param dt	Delta Time 
 	 */
 	public void update(float dt) {
-<<<<<<< HEAD
 	// HUD_UPDATES_3 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
-	// Removed the need for a second variable and condensed code.
-		if (countdown > 0) { countdown -= dt; }
+	// Condensed code.
+		if (countdown > 0) {
+			countdown -= dt;
+			gameInterval += dt;
+		}
+		if (gameInterval >= 1) {
+			updateScore(-220);
+			gameInterval = 0;
+		}
 		countdownLabel.setText(String.format("%.0f", abs(countdown)));
 		scoreCountLabel.setText(String.format("%06d", score));
 		fortressCountLabel.setText(String.format("%01d", Kroy.mainGameScreen.getFortressesCount())); }
@@ -94,27 +101,9 @@ public class HUD {
 	}
 	// HUD_UPDATES_3 - END OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 
-	public int getFinalScore() {
-		return score;
-	}
-=======
-		timeCount += dt;
-		if (timeCount >= 1) {
-			if (worldTimer>0) {
-				worldTimer--;
-			}
-			updateScore(-220);
-			worldTimerLabel.setText(String.format("%03d", worldTimer));
-			timeCount =0;
-			scoreCountLabel.setText(String.format("%05d", score));
-			trucksCountLabel.setText(String.format("%01d", Kroy.mainGameScreen.getLives()));
-		}
-	}
-
 	// HIGHSCORE_3 - START OF MODIFICATION - NP STUDIOS - LUCY IVATT
 	// Deleted getFinalScore() as it was identical to getScore.
 	// HIGHSCORE_3 - END OF MODIFICATION - NP STUDIOS - LUCY IVATT
->>>>>>> origin
 
 	public static void setScore(Integer x){
 		score = x;
