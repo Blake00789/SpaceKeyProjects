@@ -191,6 +191,7 @@ public class GameScreen implements Screen{
 		//MINIGAME_INTEGRATION - END OF MODIFICATION - NPSTUDIOS
 	}
 
+	// [Alasdair PB] - START OF MODIFICATION  - [NP Studios]
 	// Sets the icons to enabled if they are currently active
     private void updateStatusIcons(){
         if (timeIncrease){
@@ -222,6 +223,7 @@ public class GameScreen implements Screen{
             revivedFireTruckIcon.removeIcon();
         }
     }
+	// [Alasdair PB] - END OF MODIFICATION - [NP Studios]
 
 	/**
 	 * Screen first shown

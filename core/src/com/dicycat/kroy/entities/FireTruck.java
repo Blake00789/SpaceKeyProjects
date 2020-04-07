@@ -236,6 +236,7 @@ public class FireTruck extends Entity{
 	}
 
 
+	// [Alasdair PB] - START OF MODIFICATION  - [NP Studios]
 	// updates the status effects array
 	private void assignStatusEffectArray(){
 		this.statusEffects[0] = this.defenceUp;
@@ -244,6 +245,7 @@ public class FireTruck extends Entity{
 
 	// Updates Icons based on if the FireTruck is currently effected by status elements
 	// else clears icon textures if currently visible
+
 
 	private void updateStatusIcons(){
 		if (this.defenceUp){
@@ -261,6 +263,7 @@ public class FireTruck extends Entity{
 			this.unlimitedWaterIcon.removeIcon();
 		}
 	}
+	// [Alasdair PB] - END OF MODIFICATION - [NP Studios]
 	
 	/** 
 	 * new

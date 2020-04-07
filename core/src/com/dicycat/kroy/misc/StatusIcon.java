@@ -7,8 +7,8 @@ import com.dicycat.kroy.GameObject;
 
 public class StatusIcon extends GameObject{
     private boolean enabled;
+    // [Alasdair PB] - START OF MODIFICATION  - [NP Studios]
 
-    // On instantiation
     public StatusIcon(Vector2 spawnPos, String texture) {
         super(spawnPos, new Texture(texture), new Vector2(25,25));
         enabled = false;
@@ -33,5 +33,7 @@ public class StatusIcon extends GameObject{
 
     @Override
     public void update() {}
+
+    // [Alasdair PB] - END OF MODIFICATION - [NP Studios]
 
 }
