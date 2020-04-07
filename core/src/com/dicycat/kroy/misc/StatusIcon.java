@@ -8,7 +8,12 @@ import com.dicycat.kroy.GameObject;
 public class StatusIcon extends GameObject{
     private boolean enabled;
 
-    // On instantiation
+
+    /**
+     *
+     * @author NPSTUDIOS - Alasdair PilmorepBedford
+     *
+     */
     public StatusIcon(Vector2 spawnPos, String texture) {
         super(spawnPos, new Texture(texture), new Vector2(25,25));
         enabled = false;
@@ -33,5 +38,7 @@ public class StatusIcon extends GameObject{
 
     @Override
     public void update() {}
+
+    // END OF MODIFICATION - NPSTUDIOS - Alasdair PilmorepBedford
 
 }
