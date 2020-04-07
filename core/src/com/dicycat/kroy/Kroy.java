@@ -2,6 +2,7 @@ package com.dicycat.kroy;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dicycat.kroy.screens.GameScreen;
@@ -17,23 +18,23 @@ import com.dicycat.kroy.screens.MinigameScreen;
  */
 
 public class Kroy extends Game {
-	// GAME_RESIZE - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
-	// Increased the games width and height values
 	public static final int width = 1080;
 	public static final int height = 720;
-	// GAME_RESIZE - END OF MODIFICATION  - NP STUDIOS
+
 	public static boolean debug = false;
 	
 	public static GameScreen mainGameScreen;
 	public static MenuScreen mainMenuScreen;
 	public static MinigameScreen mainMinigameScreen;
+	public static Preferences saveData;
 	public SpriteBatch batch;
-	
-	private Integer highScore;
 	
 	@Override
 	public void create () {
-		highScore = 0;		 
+		// HIGHSCORE_1 - START OF MODIFICATION - NP STUDIOS - LUCY IVATT
+		// Initializes the save file which the highscore will be accessed from.
+		saveData = Gdx.app.getPreferences("Kroy");
+		// HIGHSCORE_1 - END OF MODIFICATION - NP STUDIOS - LUCY IVATT
 		batch = new SpriteBatch();
 		mainMenuScreen = new MenuScreen(this);
 		this.setScreen(mainMenuScreen);
@@ -85,20 +86,27 @@ public class Kroy extends Game {
 	public static int CentreWidth() {
 		return width / 3;
 	}
-	
-	/** 
-	 * Set the high score
+
+	// HIGHSCORE_2 - START OF MODIFICATION - NP STUDIOS - LUCY IVATT
+	// Updated the setHighscore method to save the value to a 'Preferences' file which will persist between games, i.e
+	// will save the highscore even when the game has been closed. Also updated the getHighScore method to access this
+	// file.
+	/**
+	 * Saves the highscore to the games saved data file - updated by NP STUDIOS
 	 * @param highScore The new high score
 	 */
 	public void setHighScore(Integer highScore) {
-		this.highScore = highScore;
+		if (highScore > saveData.getInteger("highscore", 0)) { // If the new score is bigger than the saved highscore
+			saveData.putInteger("highscore", highScore); // replace the saved highscore with the newly achieves score
+			saveData.flush(); } // updates the file
 	}
-	
+
 	/**
 	 * Get the current high score
 	 * @return highScore
 	 */
 	public Integer getHighScore() {
-		return highScore;
+		return saveData.getInteger("highscore", 0); // accesses high-score file and returns integer value
 	}
+	// HIGHSCORE_2 - END OF MODIFICATION - NP STUDIOS - LUCY IVATT
 }
