@@ -21,20 +21,10 @@ public class Goose extends Entity {
 	private static float scale = 1.5f; // Allows the goose to be scaled up in size
 
 	/**
-	 * @param spawnPos Where the goose spawns
-	 * @param img The texture of the goose
-	 * @param imSize The size of the goose
-	 * @param health The health of the goose unnecessary
-	 */
-	public Goose(Vector2 spawnPos, Texture img, Vector2 imSize, int health) {
-		super(spawnPos, img, imSize, health);
-	}
-
-	/**
 	 * Instantiate the default goose
 	 */
 	public Goose() {
-		this(new Vector2(-32 * scale, -32 * scale), new Texture("goose2.png"), new Vector2(64 * scale, 64 * scale), 1);
+		super(new Vector2(-32 * scale, -32 * scale), new Texture("goose2.png"), new Vector2(64 * scale, 64 * scale), 1);
 	}
 
 	/**
