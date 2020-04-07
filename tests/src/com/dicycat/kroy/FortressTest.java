@@ -1,5 +1,6 @@
 package com.dicycat.kroy;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
@@ -20,7 +21,7 @@ import com.dicycat.kroy.entities.FireStation;
 import com.dicycat.kroy.entities.Fortress;
 import com.dicycat.kroy.misc.StatBar;
 import com.dicycat.kroy.screens.GameScreen;
-
+import static org.junit.Assert.*;
 @PrepareForTest( Fortress.class )
 @RunWith(GdxTestRunner.class)
 public class FortressTest {	
@@ -64,7 +65,7 @@ public class FortressTest {
 	 
 	@Before
 	public void init() {
-		fortress=new Fortress();
+		fortress=new Fortress(new Vector2(0, 0 ), new Texture("fireTruck1.png"), new Texture("fireTruck2.png"), new Vector2(100, 100), new Texture("bullet.png"));
 	}
 	 
 	/**
@@ -72,9 +73,10 @@ public class FortressTest {
 	 */	 
 	@Test 
 	public void location() {
-		PowerMockito.when(gameObject.getCentre()).thenReturn(new Vector2(3031,3320));
-		assertTrue(fortress.getCentre().x==3031);
-		assertTrue(fortress.getCentre().y==3320);
+		fortress.setPosition(new Vector2(3021, 3320));
+		assertEquals(new Vector2(3021, 3320), fortress.getPosition());
+//		assertTrue(fortress.getCentre().x==3031);
+//		assertTrue(fortress.getCentre().y==3320);
 		
 	}
 	

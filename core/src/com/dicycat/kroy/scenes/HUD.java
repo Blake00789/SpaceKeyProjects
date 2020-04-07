@@ -2,14 +2,19 @@ package com.dicycat.kroy.scenes;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dicycat.kroy.Kroy;
+import com.dicycat.kroy.misc.StatusIcon;
+
+import java.beans.VetoableChangeListener;
 
 /**
  * HUD window
@@ -32,6 +37,7 @@ public class HUD {
 	private Label worldTimerLabel;
 	private Label scoreCountLabel;
 	private Label trucksCountLabel;	//we could put mini images of the trucks instead of using an int for the lives
+
 	
 	
 	/**
@@ -53,6 +59,7 @@ public class HUD {
 		trucksLabel = new Label("TRUCKS:", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 		trucksCountLabel = new Label(String.format("%01d", trucks), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
+
 		tableHUD.add(timeLabel).expandX().padTop(10);
 		tableHUD.add(worldTimerLabel).expandX().padTop(10);
 		tableHUD.add(scoreLabel).expandX().padTop(10);			// expandX so that all elements take up the same amount of space
@@ -71,12 +78,13 @@ public class HUD {
 	 * @param dt	Delta Time 
 	 */
 	public void update(float dt) {
+		//timeIncreaseIcon.setPosition(Kroy.);
 		timeCount += dt;
 		if (timeCount >= 1) {
 			if (worldTimer>0) {
 				worldTimer--;
 			}
-			score = score - 220;
+			updateScore(-220);
 			worldTimerLabel.setText(String.format("%03d", worldTimer));
 			timeCount =0;
 			scoreCountLabel.setText(String.format("%05d", score));
@@ -84,16 +92,15 @@ public class HUD {
 		}
 	}
 
-
-	public Integer getFinalScore() {
-		return score;
-	}
+	// HIGHSCORE_3 - START OF MODIFICATION - NP STUDIOS - LUCY IVATT
+	// Deleted getFinalScore() as it was identical to getScore.
+	// HIGHSCORE_3 - END OF MODIFICATION - NP STUDIOS - LUCY IVATT
 
 	public static void setScore(Integer x){
 		score = x;
 	}
 
-	public Integer getScore(){
+	public int getScore(){
 		return score;
 	}
 
@@ -103,6 +110,6 @@ public class HUD {
 	public void updateScore(Integer x){
 		score += x;
 	}
-	
+
 }
 

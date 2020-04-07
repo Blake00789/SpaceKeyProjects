@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.dicycat.kroy.GameObject;
 import com.dicycat.kroy.Kroy;
 import com.dicycat.kroy.misc.StatBar;
+import com.dicycat.kroy.misc.StatusIcon;
 import com.dicycat.kroy.misc.WaterStream;
 import com.dicycat.kroy.screens.GameScreen;
 
@@ -27,6 +28,7 @@ public class FireTruck extends Entity{
 	private float flowRate;	//How fast the truck can dispense water
 	private float maxWater; //How much water the truck can hold
 	private float currentWater; //Current amount of water
+
  
 	private Rectangle hitbox = new Rectangle(20, 45, 20, 20);  
 
@@ -34,19 +36,33 @@ public class FireTruck extends Entity{
 	protected final int[] ARROWKEYS = {Keys.UP, Keys.DOWN, Keys.RIGHT, Keys.LEFT}; // List of the arrow keys to be able to iterate through them later on
 	protected Integer direction = 0; // Direction the truck is facing
 
-	private WaterStream water; 
-	private StatBar tank;
-	private StatBar healthBar;
+	private StatusIcon defenceUpIcon;
+	private StatusIcon unlimitedWaterIcon;
+	private WaterStream water;
 	private boolean firing;
+	private boolean unlimitedWater;
+	private boolean defenceUp;
+	private float unlimitedWaterTimer;
+	private float defenceUpTimer;
+
+
+	private boolean[] statusEffects = new boolean[4];
 	private float range;
+
+	private Vector2 statusIconPos = Vector2.Zero;
+
+    // [FORTRESS_IMPROVEMENT] - START OF MODIFICATION  - [NP_STUDIOS] - [CASSIE_LILLYSTONE] ----
+	private ArrayList<Fortress> fortressList; //New attribute
+    // [FORTRESS_IMPROVEMENT] - END OF MODIFICATION  - [NP_STUDIOS] -----
 
 	/**
 	 * @param spawnPos
 	 * @param truckStats
 	 */
-	public FireTruck(Vector2 spawnPos, Float[] truckStats, int truckNum) {
-		super(spawnPos, Kroy.mainGameScreen.textures.getTruck(truckNum), new Vector2(25,50), 100);
- 
+
+	public FireTruck(Vector2 spawnPos, Float[] truckStats, Texture texture) {
+		super(spawnPos, texture, new Vector2(25,50), 100);
+		assignStatusEffectArray();
 		DIRECTIONS.put("n",0);			//North Facing Direction (up arrow)
 		DIRECTIONS.put("w",90);			//West Facing Direction (left arrow)
 		DIRECTIONS.put("s",180);		//South Facing Direction (down arrow)
@@ -65,40 +81,29 @@ public class FireTruck extends Entity{
 		range = truckStats[3];			// Range of the truck
 
 		firing = false;
+		//Power ups
+		defenceUp = false;
+		unlimitedWater = false;
+
 		water = new WaterStream(Vector2.Zero);
 
-		tank = new StatBar(Vector2.Zero, "Blue.png", 3);
-		Kroy.mainGameScreen.addGameObject(tank);
+		defenceUpIcon = new StatusIcon(statusIconPos,"DefenceUp.png");
+		Kroy.mainGameScreen.addGameObject(defenceUpIcon);
 
-		healthBar= new StatBar(Vector2.Zero, "Green.png", 3);
-		Kroy.mainGameScreen.addGameObject(healthBar);
-	}
-	
-	/** 
-	 * new
-	 */
-	public FireTruck() {
-		super(new Vector2(3750, 4000), new Texture("fireTruck3.png"), new Vector2(25,50), 100);
- 
-		DIRECTIONS.put("n",0);			//North Facing Direction (up arrow)
-		DIRECTIONS.put("w",90);			//West Facing Direction (left arrow)
-		DIRECTIONS.put("s",180);		//South Facing Direction (down arrow)
-		DIRECTIONS.put("e",270);		//East Facing Direction (right arrow)
+		unlimitedWaterIcon = new StatusIcon(statusIconPos,"UnlimitedWater.png");
+		Kroy.mainGameScreen.addGameObject(unlimitedWaterIcon);
 
-		DIRECTIONS.put("nw",45);		//up and left arrows
-		DIRECTIONS.put("sw",135);		//down and left arrows
-		DIRECTIONS.put("se",225);		//down and right arrows
-		DIRECTIONS.put("ne",315);		//up and right arrows
-		DIRECTIONS.put("",0); 			// included so that if multiple keys in the opposite direction are pressed, the truck faces north
-		
-		speed=300;	//How fast the truck can move
-		flowRate=(float) 1.5;	//How fast the truck can dispense water
-		maxWater=400; //How much water the truck can hold
-		currentWater=300;
-				
-		firing = false;
-		water = new WaterStream(Vector2.Zero);
 	}
+
+		// STATBAR_REFACTOR_2 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+		// Removed the creation of statbars from the firetruck class as adding the objects to the array
+		// in GameScreen would cause problems with testing so we moved this functionality to the
+		// GameScreen class itself.
+		// STATBAR_REFACTOR_2 - END OF MODIFICATION  - NP STUDIOS
+
+	// TESTING_REFACTOR_1 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+	// Removed constructor created by previous group that was just for testing purposes
+	// TESTING_REFACTOR_1 - END OF MODIFICATION  - NP STUDIOS
 
 	/**
 	 * When called, this method moves the truck by 1 unit of movement in the direction calculated in "updateDirection()"
@@ -176,22 +181,24 @@ public class FireTruck extends Entity{
         //Draw debugs
     	Kroy.mainGameScreen.DrawRect(new Vector2(hitbox.x, hitbox.y), new Vector2(hitbox.width, hitbox.height), 2, Color.GREEN);
     	Kroy.mainGameScreen.DrawCircle(getCentre(), range, 1, Color.BLUE);
-		
 
-		//water bar update
-		tank.setPosition(getCentre().add(0,20));
-		tank.setBarDisplay((currentWater/maxWater)*50);
-
-		healthBar.setPosition(getCentre().add(0,25));
-		healthBar.setBarDisplay((getHealthPoints()*50)/maxHealthPoints);
+		updateStatusIcons();
+		assignStatusEffectArray();
+		moveIconByFixedPoint();
+		// STATBAR_REFACTOR_3 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+		// Removed the statbars  update code from the firetruck class.
+		// STATBAR_REFACTOR_3- END OF MODIFICATION  - NP STUDIOS
 
 		//player firing
 		ArrayList<GameObject> inRange = entitiesInRange();		//find list of enemies in range
-
-		if(inRange.isEmpty() || (currentWater<=0)){				//Removes the water stream if nothing is in range
+		// ATTACK_WITH_SPACE - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+		// Made it so the user has to hold space to attack the closest entity to them
+		if(inRange.isEmpty() || (currentWater<=0 || !Gdx.input.isKeyPressed(Keys.SPACE))){//Removes the water stream if nothing is in range
+		// ATTACK_WITH_SPACE - END OF MODIFICATION  - NP STUDIOS
 			firing=false;
 			water.setRemove(true);
-		}else if(!firing){					//Adds the water stream if something comes into range
+		}
+		else if(!firing){					//Adds the water stream if something comes into range
 			water= new WaterStream(Vector2.Zero);
 			firing=true;
 			Kroy.mainGameScreen.addGameObject(water);		//initialises water as a WaterStream
@@ -200,7 +207,65 @@ public class FireTruck extends Entity{
 		if (firing) {					//if the player is firing runs the PlayerFire method
 			playerFire(inRange);
 		}
+		//POWERUPS_11 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+		if (defenceUp){
+			defenceUpTimer += Gdx.graphics.getDeltaTime();
+			if (defenceUpTimer >= 15){
+				setDefenceUp(false);
+			}
+		}
+		if (unlimitedWater){
+			unlimitedWaterTimer += Gdx.graphics.getDeltaTime();
+			if (unlimitedWaterTimer >= 15){
+				setUnlimitedWater(false);
+			}
+		}
+		//POWERUPS_11 - END OF MODIFICATION - NPSTUDIOS
 	}
+
+	//POWERUPS_1 - START OF MODIFICATION - NPSTUDIOS - Alasdair Pilmore-Bedford
+
+	// Sets the position of powerUp icons to the FireTrucks Position
+	// then adds an offset value to stop the icons from overlapping
+	private void moveIconByFixedPoint(){
+		int offPoint = 0;
+		if (defenceUpIcon.isEnabled()){
+			offPoint += 15;
+			defenceUpIcon.setPosition(getCentre().add(20 - offPoint,25));
+		}
+		if (unlimitedWaterIcon.isEnabled()){
+			offPoint += 15;
+			unlimitedWaterIcon.setPosition(getCentre().add(20 - offPoint,25));
+		}
+	}
+
+	// updates the status effects array
+	private void assignStatusEffectArray(){
+		this.statusEffects[0] = this.defenceUp;
+		this.statusEffects[1] = this.unlimitedWater;
+	}
+
+	// Updates Icons based on if the FireTruck is currently effected by status elements
+	// else clears icon textures if currently visible
+
+
+	private void updateStatusIcons(){
+		if (this.defenceUp){
+			if (!(this.defenceUpIcon.isEnabled())) {
+				this.defenceUpIcon.addIcon();
+			}
+		} else if (this.defenceUpIcon.isEnabled()){
+			this.defenceUpIcon.removeIcon();
+		}
+		if (this.unlimitedWater){
+			if (!(this.unlimitedWaterIcon.isEnabled())) {
+				this.unlimitedWaterIcon.addIcon();
+			}
+		} else if (this.unlimitedWaterIcon.isEnabled()){
+			this.unlimitedWaterIcon.removeIcon();
+		}
+	}
+	//POWERUPS_1 - END OF MODIFICATION - NPSTUDIOS
 	
 	/** 
 	 * new
@@ -234,8 +299,12 @@ public class FireTruck extends Entity{
 		water.setRange(direction.len());
 		water.setPosition(getCentre().add(direction.scl(0.5f)));
 
-		((Entity) nearestEnemy).applyDamage((float) (flowRate * Math.max(0.5, GameScreen.gameTimer * (1/600))));			//Applies damage to the nearest enemy
-		currentWater=currentWater-flowRate;						//reduces the tank by amount of water used
+		((Entity) nearestEnemy).applyDamage((float) (flowRate * Math.max(0.5, GameScreen.gameTimer * (1/600))));//Applies damage to the nearest enemy
+		//POWERUPS_12 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+		if (!this.unlimitedWater) { //water only depletes while the power up is inactive.
+			currentWater = currentWater - flowRate;//reduces the tank by amount of water used
+		}
+		//POWERUPS_12 - END OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 	}
 
 	/**
@@ -270,8 +339,19 @@ public class FireTruck extends Entity{
 	public void die() {
 		super.die();
 		water.setRemove(true);
-		tank.setRemove(true);
-		healthBar.setRemove(true);
+
+		// STATBAR_REFACTOR_4 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+		// Removed statbar remove code.
+		// STATBAR_REFACTOR_4 - END OF MODIFICATION  - NP STUDIOS
+
+        // [FORTRESS_IMPROVEMENT] - START OF MODIFICATION  - [NP_STUDIOS] - [CASSIE_LILLYSTONE] ----
+        fortressList = Kroy.mainGameScreen.getFortresses(); //Create a new list which contains the fortresses
+
+        for (Fortress fortress : fortressList){
+            fortress.setHealthPoints(10); //Add 10 to the health of each fortress each time a truck is killed - so that fortresses improve their health over time
+		// [FORTRESS_IMPROVEMENT] - END OF MODIFICATION  - [NP_STUDIOS] ----
+        }
+
 	} 
 
 	/**
@@ -286,6 +366,13 @@ public class FireTruck extends Entity{
 	 */
 	public Integer getDirection() {
 		return direction;
+	}
+
+	// STATBAR_REFACTOR_5 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+	// Added getter for MaxWater needed for the statbars in the GameScreen class.
+	// STATBAR_REFACTOR_5 - END OF MODIFICATION  - NP STUDIOS
+	public float getMaxWater() {
+		return maxWater;
 	}
 
 	/**
@@ -327,9 +414,37 @@ public class FireTruck extends Entity{
 	 * new
 	 * Increase the currentWater by the input parameter
 	 */
-	public void setCurrentWater(int x) {
+	public void setCurrentWater(float x) {
 		 currentWater += x;
 	}
-	
+	//POWERUPS_13 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+	/**
+	 *
+	 * @param flag
+	 */
+	// Gives the fireTruck unlimited water
+	public void setUnlimitedWater(Boolean flag){
+		this.unlimitedWater = flag;
+		this.unlimitedWaterTimer = 0;
+		updateStatusIcons();
+		assignStatusEffectArray();
+	}
+
+	/**
+	 *
+	 * @param flag
+	 */
+	// Make invulnerable for a period of time
+	public void setDefenceUp(Boolean flag){
+		this.defenceUp = flag;
+		this.defenceUpTimer = 0;
+		updateStatusIcons();
+		assignStatusEffectArray();
+	}
+
+	public Boolean getDefenceUp(){
+		return this.defenceUp;
+	}
+	//POWERUPS_13 - END OF MODIFICATION - NPSTUDIOS
 
 }

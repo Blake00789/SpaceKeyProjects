@@ -8,6 +8,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -26,6 +27,9 @@ import com.dicycat.kroy.entities.FireTruck;
 import com.dicycat.kroy.entities.Fortress;
 import com.dicycat.kroy.entities.UFO;
 import com.dicycat.kroy.gamemap.TiledGameMap;
+import com.dicycat.kroy.misc.StatusIcon;
+import com.dicycat.kroy.powerups.Box;
+import com.dicycat.kroy.misc.StatBar;
 import com.dicycat.kroy.scenes.HUD;
 import com.dicycat.kroy.scenes.OptionsWindow;
 import com.dicycat.kroy.scenes.PauseWindow;
@@ -44,6 +48,9 @@ public class GameScreen implements Screen{
 		PAUSE,
 		RUN,
 		RESUME,
+		//MINIGAME_INTEGRATION - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+		MINIGAME,
+		//MINIGAME_INTEGRATION - END OF MODIFICATION - NPSTUDIOS
 		OPTIONS
 	}
 	
@@ -58,8 +65,11 @@ public class GameScreen implements Screen{
 	
 	private OrthographicCamera gamecam;	//follows along what the port displays
 	private Viewport gameport;
+	// MINIMAP_ADDITION_1 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE ----
+	private Texture minimap;
+	// MINIMAP_ADDITION_1 - END OF MODIFICATION - NPSTUDIOS
 	
-	private HUD hud; 
+	public HUD hud;
 	private PauseWindow pauseWindow;
 	private OptionsWindow optionsWindow;
 
@@ -72,6 +82,17 @@ public class GameScreen implements Screen{
 			{300f, 1f, 500f, 300f},		//Capacity
 			{300f, 1f, 400f, 450f},		//Range
 		};
+
+	// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - START OF MODIFICATION  - [NPSTUDIOS] - [CASSIE_LILLYSTONE] ----
+	private Float[][] fortressStats = { //Each list contains unique values for health and damage. One list for each fortress
+
+            {300f, 5f},
+            {400f, 10f},
+            {500f, 15f},
+            {600f, 20f},
+            {700f, 25f},
+            {800f, 30f},
+    }; //[UNIQUE_FORTRESS_HEALTH_DAMAGE] - END OF MODIFICATION  - [NPSTUDIOS]
 	
 	
 	private int truckNum; // Identifies the truck thats selected in the menu screen
@@ -90,8 +111,32 @@ public class GameScreen implements Screen{
 	private float lastPatrol; //time passsed since we last spawned patrols
 	private List<Vector2> fortressPositions, fortressSizes; //where our fortresses spawn
 	private int patrolUpdateRate; //How many seconds should pass before we respawn patrols;
+	//MINIGAME_INTEGRATION - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+	private boolean start;
+	//MINIGAME_INTEGRATION - END OF MODIFICATION - NPSTUDIOS
 
-	private ArrayList<FireTruck> firetrucks=new ArrayList<FireTruck>();
+    private StatusIcon timeIncreaseIcon;
+    private StatusIcon rainDanceIcon;
+    private StatusIcon freezeEnemiesIcon;
+    private StatusIcon revivedFireTruckIcon;
+    private boolean timeIncrease;
+    private boolean rainDance;
+    private boolean freezeEnemies;
+    private float freezeTimer;
+    private boolean revivedFireTruck;
+	private ArrayList<FireTruck> firetrucks = new ArrayList<FireTruck>();
+	private ArrayList<Fortress> fortresses = new ArrayList<Fortress>();
+	// STATBAR_REFACTOR_6 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+	// Created new arrays for the firetruck statbars.
+	private ArrayList<StatBar> healthbars = new ArrayList<StatBar>();
+	private ArrayList<StatBar> tankbars = new ArrayList<StatBar>();
+	private ArrayList<StatBar> fortressHealthBars = new ArrayList<>();
+	// STATBAR_REFACTOR_6 - END OF MODIFICATION  - NP STUDIOS
+
+	//POWERUPS_4 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+	private float timeSinceLastBoxSpawn;
+	private int boxSpawnRate;
+	//POWERUPS_4 - END OF MODIFICATION - NPSTUDIOS
 
 	/**
 	 * extended
@@ -103,16 +148,30 @@ public class GameScreen implements Screen{
 		gamecam = new OrthographicCamera();
 		gameport = new FitViewport(Kroy.width, Kroy.height, gamecam);	//Mic:could also use StretchViewPort to make the screen stretch instead of adapt
 		hud = new HUD(game.batch, this.game);
-		gameMap = new TiledGameMap();										//or FitPort to make it fit into a specific width/height ratio
+		gameMap = new TiledGameMap(); //or FitPort to make it fit into a specific width/height ratio
+		// MINIMAP_ADDITION_2 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE ----
+		minimap = new Texture("MinimapBackground.png"); //adds a texture of the map as a .png to be the minimap
+		// MINIMAP_ADDITION_2 - START OF MODIFICATION - NPSTUDIOS
 		pauseWindow = new PauseWindow(game);
 		pauseWindow.visibility(false);
 		optionsWindow = new OptionsWindow(game);
 		optionsWindow.visibility(false);
-		textures = new GameTextures(truckNum);
+		textures = new GameTextures();
 		spawnPosition = new Vector2(3750, 4000);
 		gameTimer = 60 * 5; //new    //Set timer to 5 minutes  
 		this.truckNum = truckNum;
+
+        timeIncreaseIcon = new StatusIcon(Vector2.Zero,"TimeIncrease.png");
+        timeIncrease = true;
+        freezeEnemiesIcon = new StatusIcon(Vector2.Zero,"FreezeEnemies.png");
+        freezeEnemies = true;
+        rainDanceIcon = new StatusIcon(Vector2.Zero,"RainDance.png");
+        rainDance = true;
+        revivedFireTruckIcon = new StatusIcon(Vector2.Zero,"Ressurected.png");
+        revivedFireTruck = true;
+
 		lastPatrol = Gdx.graphics.getDeltaTime();
+		timeSinceLastBoxSpawn = Gdx.graphics.getDeltaTime();
 		fortressPositions = new ArrayList<>();
 		fortressPositions.add(new Vector2(2860, 3211));
 		fortressPositions.add(new Vector2(3130, 5530));
@@ -127,30 +186,78 @@ public class GameScreen implements Screen{
 		fortressSizes.add(new Vector2(450, 256));
 		fortressSizes.add(new Vector2(400, 256));
 		fortressSizes.add(new Vector2(450, 256));
-		
+		fortressesCount = 6;
+
+		//POWERUPS_5 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
 		patrolUpdateRate = 30;
+		boxSpawnRate = 20;
+		//POWERUPS_5 - END OF MODIFICATION - NPSTUDIOS
+
+		//MINIGAME_INTEGRATION - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+		start = true;
+		//MINIGAME_INTEGRATION - END OF MODIFICATION - NPSTUDIOS
 	}
-	
+
+	//POWERUPS_6 - START OF MODIFICATION - NPSTUDIOS - Alasdair Pilmore-Bedford
+
+	// Sets the icons to enabled if they are currently active
+    private void updateStatusIcons(){
+        if (timeIncrease){
+            if (!(timeIncreaseIcon.isEnabled())) {
+                timeIncreaseIcon.addIcon();
+            }
+        } else if (timeIncreaseIcon.isEnabled()){
+            timeIncreaseIcon.removeIcon();
+        }
+        if (rainDance){
+            if (!(rainDanceIcon.isEnabled())) {
+                rainDanceIcon.addIcon();
+            }
+        } else if (rainDanceIcon.isEnabled()){
+            rainDanceIcon.removeIcon();
+        }
+        if (freezeEnemies){
+            if (!(freezeEnemiesIcon.isEnabled())) {
+                freezeEnemiesIcon.addIcon();
+            }
+        } else if (freezeEnemiesIcon.isEnabled()){
+            freezeEnemiesIcon.removeIcon();
+        }
+        if (revivedFireTruck){
+            if (!(revivedFireTruckIcon.isEnabled())) {
+                revivedFireTruckIcon.addIcon();
+            }
+        } else if (revivedFireTruckIcon.isEnabled()){
+            revivedFireTruckIcon.removeIcon();
+        }
+    }
+	//POWERUPS_6 - END OF MODIFICATION - NPSTUDIOS
 
 	/**
 	 * Screen first shown
 	 */
 	@Override
 	public void show() {
-		objectsToAdd = new ArrayList<GameObject>();
-		gameObjects = new ArrayList<GameObject>();
-		deadObjects = new ArrayList<GameObject>();
-		debugObjects = new ArrayList<DebugDraw>();
+		//MINIGAME_INTEGRATION - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+		if (start) {
+			objectsToAdd = new ArrayList<GameObject>();
+			gameObjects = new ArrayList<GameObject>();
+			deadObjects = new ArrayList<GameObject>();
+			debugObjects = new ArrayList<DebugDraw>();
 
-		// Initialises the FireTrucks
-		for (int i = 0; i < 6; i++) {
-			firetruckInit(spawnPosition.x - 135 + (i * 50), spawnPosition.y, i);
-			fortressInit(i);
+
+			// Initialises the FireTrucks
+			for (int i = 0; i < 6; i++) {
+				firetruckInit(spawnPosition.x - 135 + (i * 50), spawnPosition.y, i);
+				fortressInit(i);
+			}
+			gameObjects.add(new FireStation(textures.getFireStation(), textures.getFireStationDead()));
+			switchTrucks(truckNum);
 		}
-		gameObjects.add(new FireStation());
-		switchTrucks(truckNum);  
 
 		gamecam.translate(new Vector2(currentTruck.getX(), currentTruck.getY())); // sets initial Camera position
+		start = false;
+		//MINIGAME_INTEGRATION - END OF MODIFICATION - NPSTUDIOS
 	}
 
 	/**
@@ -161,8 +268,15 @@ public class GameScreen implements Screen{
 	 * @param num the fortress number
 	 */
 	private void fortressInit(int num) {
-		gameObjects.add(new Fortress(fortressPositions.get(num), textures.getFortress(num), textures.getDeadFortress(num),
-				fortressSizes.get(num)));
+		// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - START OF MODIFICATION  - [NPSTUDIOS] - [CASSIE_LILLYSTONE] ----
+		Fortress tempFortress = new Fortress(fortressPositions.get(num), textures.getFortress(num), textures.getDeadFortress(num),
+				fortressSizes.get(num), textures.getBullet(), fortressStats[num]); //Added the list of stats corresponding
+		  																	       // to the fortress being made as a parameter
+																					//to pass to instantiate a fortress
+        // [UNIQUE_FORTRESS_HEALTH_DAMAGE] - END OF MODIFICATION  - [NPSTUDIOS] ----
+		gameObjects.add(tempFortress);
+		fortresses.add(tempFortress);
+		fortressHealthBars.add(new StatBar(new Vector2(fortressPositions.get(num).x, fortressPositions.get(num).y + 100), "Red.png", 10));
 	}
 
 	/**
@@ -173,7 +287,12 @@ public class GameScreen implements Screen{
 	 * @param num the truck number
 	 */
 	private void firetruckInit(float x, float y, int num) {
-		firetrucks.add(new FireTruck(new Vector2(x, y), truckStats[num], num));
+		// STATBAR_REFACTOR_7 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+		// Created statbars alongside the firetrucks and updated the firetruck creation to use the new constructor.
+		firetrucks.add(new FireTruck(new Vector2(x, y), truckStats[num], textures.getTruck(num)));
+		healthbars.add(new StatBar(new Vector2(x, y + 25), "Green.png", 3));
+		tankbars.add(new StatBar(new Vector2(x, y + 20), "Blue.png", 3));
+		// STATBAR_REFACTOR_7 - END OF MODIFICATION  - NP STUDIOS
 	}
 
 	/**
@@ -197,7 +316,7 @@ public class GameScreen implements Screen{
 				updateLoop(); //Update all game objects positions but does not render them as to be able to render everything as quickly as possible
 
 				gameMap.renderRoads(gamecam); // Render the background roads, fields and rivers
-				gameMap.renderBuildings(gamecam); // Renders the buildings and the foreground items which are not entities
+
 
 				game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
 				game.batch.setProjectionMatrix(gamecam.combined);	//Mic:only renders the part of the map where the camera is
@@ -206,11 +325,16 @@ public class GameScreen implements Screen{
 				hud.update(delta);
 
 				renderObjects(); // Renders objects specified in the UpdateLoop() called previously
-
 				game.batch.end();
 
-
+				//RENDER_ORDER - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+				gameMap.renderBuildings(gamecam); // Renders the buildings and the foreground items which are not entities, moved below renderObjects() so the firetrucks can no longer drive on the roofs.
+				//RENDER_ORDER - END OF MODIFICATION - NPSTUDIOS
 				hud.stage.draw();
+
+				//MINIMAP_ADDITION_3 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+				drawMinimap();
+				//MINIMAP_ADDITION_3 - END OF MODIFICATION - NPSTUDIOS
 				pauseWindow.stage.draw();
 
 				if (Kroy.debug) {
@@ -226,6 +350,11 @@ public class GameScreen implements Screen{
 				pauseWindow.visibility(false);
 				setGameState(GameScreenState.RUN);
 				break;
+			//MINIGAME_INTEGRATION - START OF MODIFICATION - NPSTUDIOS
+			case MINIGAME:
+
+				break;
+			//MINIGAME_INTEGRATION - END OF MODIFICATION - NPSTUDIOS
 			default:
 				break;
 		}
@@ -239,11 +368,9 @@ public class GameScreen implements Screen{
 	 * Respawns the player if necessary.
 	 */
 	private void updateLoop() {
-		checkZoom();
-		
+        updateStatusIcons();
 		List<GameObject> toRemove = new ArrayList<GameObject>();
 		List<Vector2> patrolPositions = new ArrayList<>();
-
 		for (GameObject gObject : gameObjects) {	//Go through every game object
 			gObject.update();						//Update the game object
 			if (gObject.isRemove()) {				//Check if game object is to be removed
@@ -259,8 +386,6 @@ public class GameScreen implements Screen{
 		}
 
 		currentTruck.update();
-		if (Gdx.input.isKeyPressed(Keys.PLUS)) {
-		}
 		
 
 		for (GameObject rObject : toRemove) {	//Remove game objects set for removal
@@ -296,37 +421,43 @@ public class GameScreen implements Screen{
 				float randX = (float) (oldX - 400 + Math.random() * 400);
 				float randY = (float) (oldY - 400 + Math.random() * 400);
 
-				gameObjects.add(new UFO(new Vector2(randX, randY)));
+				gameObjects.add(new UFO(new Vector2(randX, randY), textures.getUFO(), textures.getBullet()));
 
 
 			}
 		}
-
+		//POWERUPS_2 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+		timeSinceLastBoxSpawn += Gdx.graphics.getDeltaTime();
+		if (timeSinceLastBoxSpawn >= boxSpawnRate){
+			timeSinceLastBoxSpawn = 0;
+			gameObjects.add(new Box(new Vector2(spawnPosition.x - 135, spawnPosition.y - 20)));
+		}
+		if (freezeEnemies){
+			freezeTimer += Gdx.graphics.getDeltaTime();
+			if (freezeTimer >= 15){
+				freezePatrols(false);
+			}
+		}
+		//POWERUPS_2 - END OF MODIFICATION - NPSTUDIOS
 	}
-	
-	/**
-	 * new
-	 * Can zoom in the game by pressing EQUALS key
-	 * Can zoom out by pressing MINUS key
-	 */
-	private void checkZoom() {
-		if (Gdx.input.isKeyJustPressed(Keys.EQUALS)) {
-			if (zoom > 0.5f) {
-				zoom = zoom - 0.5f;
+	//MINIMAP_ADDITION_4 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+	public void drawMinimap(){
+		game.batch.begin();
+		game.batch.draw(minimap, 2, 2, 394, 350);
+
+		for (GameObject object : gameObjects){
+			game.batch.draw(object.getTexture(), object.getX()/19, object.getY()/19, object.getWidth()/10,
+					object.getHeight()/10);
+		} // Draws the fortresses and patrols to a minimap scaled down to the in the bottom left corner.
+		for (FireTruck truck : firetrucks) {
+			if (truck.getHealthPoints() > 0) {
+				game.batch.draw(truck.getTexture(), truck.getX() / 19, truck.getY() / 19, 20, 25);
 			}
-			gamecam.setToOrtho(false, Kroy.width * zoom, Kroy.height * zoom);
-			gamecam.translate(new Vector2(currentTruck.getX() - ((Kroy.width * zoom) / 2),
-					currentTruck.getY() - ((Kroy.height * zoom) / 2)));
+			//Draws the firetrucks on their relative position on the minimap. size is not to scale to make their position obvious and clear.
 		}
-		if (Gdx.input.isKeyJustPressed(Keys.MINUS)) {
-			if (zoom < 4f) {
-				zoom = zoom + 0.5f;
-			}
-			gamecam.setToOrtho(false, Kroy.width * zoom, Kroy.height * zoom);
-			gamecam.translate(new Vector2(currentTruck.getX() - ((Kroy.width * zoom) / 2),
-					currentTruck.getY() - ((Kroy.height * zoom) / 2)));
-		}
+		game.batch.end();
 	}
+	//MINIMAP_ADDITION_4 - END OF MODIFICATION - NPSTUDIOS
 
 	/**
 	 * Renders the objects in "objectsToRender" then clears the list
@@ -338,8 +469,38 @@ public class GameScreen implements Screen{
 		for (FireTruck truck : firetrucks) {
 			if(truck.isAlive()) {
 			truck.render(game.batch);
+
+			// STATBAR_REFACTOR_8 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+			// Updates the statbars for each firetruck
+			tankbars.get(firetrucks.indexOf(truck)).setPosition(truck.getCentre().add(0,20));
+			tankbars.get(firetrucks.indexOf(truck)).setBarDisplay((truck.getCurrentWater()/ truck.getMaxWater())*50);
+
+			healthbars.get(firetrucks.indexOf(truck)).setPosition(truck.getCentre().add(0,25));
+			healthbars.get(firetrucks.indexOf(truck)).setBarDisplay((truck.getHealthPoints()*50)/truck.getMaxHealthPoints());
+
+			healthbars.get(firetrucks.indexOf(truck)).render(game.batch);
+			tankbars.get(firetrucks.indexOf(truck)).render(game.batch);
+			// STATBAR_REFACTOR_8 - END OF MODIFICATION  - NP STUDIOS
 			}
 		}
+
+		// FORTRESS_COUNT_FIX_1 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+		// Previously the game was ending when only 3 fortresses were destroyed so we added this code to
+		// fix the fortress count, ensuring the game completed at the correct point.
+		int alive = 0;
+		for (Fortress fortress : fortresses) {
+			if(fortress.isAlive()) {
+				alive++;
+				fortress.render(game.batch);
+
+				fortressHealthBars.get(fortresses.indexOf(fortress)).setPosition(fortress.getCentre().add(0, 100));
+				fortressHealthBars.get(fortresses.indexOf(fortress)).setBarDisplay(fortress.getHealthPoints()*500/fortress.getMaxHealthPoints());
+				fortressHealthBars.get(fortresses.indexOf(fortress)).render(game.batch);
+			}
+		}
+		fortressesCount = alive;
+		// FORTRESS_COUNT_FIX_1 - END OF MODIFICATION  - NP STUDIOS
+
 
 		objectsToRender.clear();
 	}
@@ -359,6 +520,38 @@ public class GameScreen implements Screen{
 	public FireTruck getPlayer() {
 		return currentTruck;
 	}
+	//POWERUPS_3 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+	public void ressurectTruck(){
+		for (FireTruck truck : firetrucks){
+			if (!truck.isAlive()){
+				truck.setRemove(false);
+				truck.setHealthPoints(1000);
+				truck.setCurrentWater(truck.getMaxWater());
+				break;
+			}
+		}
+	}
+	public void freezePatrols(Boolean flag){
+		freezeEnemies = flag;
+		freezeTimer = 0;
+		for (GameObject obj : gameObjects){
+			if (obj instanceof UFO) {
+				((UFO) obj).setFrozen(flag);
+			}
+		}
+	}
+	public void rainDance(){
+		for (GameObject obj : gameObjects){
+			if (obj instanceof UFO) {
+				obj.die();
+			}
+		}
+	}
+
+	public void addTime(float time){
+		gameTimer = gameTimer + time;
+	}
+	//POWERUPS_3 - END OF MODIFICATION - NPSTUDIOS
 
 	/**
 	 * Draws all debug objects for one frame
@@ -413,13 +606,31 @@ public class GameScreen implements Screen{
 	 * Updates the position of the camera to have the truck centre
 	 * Ensures it never goes out of bounds, including when zoomed
 	 * It does this by limiting the bounds of the camera
+	 * additionally moves icons at the same time as the camera if they are enabled
 	 */ 
 	public void updateCamera() {
 		//currentTruck;
 		float cameraX = Math.max(0.5f*Kroy.width*zoom, Math.min(currentTruck.getX(), 6884-(0.5f*Kroy.width*zoom)));
 		float cameraY = Math.max(0.5f*Kroy.height*zoom, Math.min(currentTruck.getY(), 6043-(0.5f*Kroy.height*zoom)));
 		gamecam.position.lerp(new Vector3(cameraX, cameraY,gamecam.position.z),0.1f);// sets the new camera position based on the current position of the FireTruck
+        Vector2 tempBoi = new Vector2(gamecam.position.x - 260, gamecam.position.y + 327);
+        if (timeIncreaseIcon.isEnabled()) {
+            timeIncreaseIcon.setPosition(tempBoi);
+        }
+        if (freezeEnemiesIcon.isEnabled()){
+            tempBoi = new Vector2 (gamecam.position.x + 130, gamecam.position.y + 327);
+            freezeEnemiesIcon.setPosition(tempBoi);
+        }
+        if (rainDanceIcon.isEnabled()){
+            tempBoi = new Vector2 (gamecam.position.x + 170, gamecam.position.y + 327);
+            rainDanceIcon.setPosition(tempBoi);
+        }
+        if (revivedFireTruckIcon.isEnabled()){
+            tempBoi = new Vector2 (gamecam.position.x  + 500, gamecam.position.y + 327);
+            revivedFireTruckIcon.setPosition(tempBoi);
+        }
 		gamecam.update();
+
 	}
 
 	@Override
@@ -444,7 +655,6 @@ public class GameScreen implements Screen{
 	public void dispose() {
 		Kroy.mainGameScreen = null;
 	}
-
 	/**
 	 * @param s
 	 */
@@ -508,20 +718,6 @@ public class GameScreen implements Screen{
 	    		return;
 	    	}
 	    });
-	}
-
-	/**
-	 * Add one fortress to the count
-	 */
-	public void addFortress() {
-		fortressesCount++;
-	}
-
-	/**
-	 * Remove one fortress to the count
-	 */
-	public void removeFortress() {
-		fortressesCount--;
 	}
 
 	/**
@@ -630,7 +826,6 @@ public class GameScreen implements Screen{
 	 */
 	private void changeToTruck(FireTruck t) {
 		currentTruck = t;
-
 	}  
 
 	/**
@@ -640,11 +835,20 @@ public class GameScreen implements Screen{
 		return hud;
 	}
 
+	// FORTRESS_COUNT_FIX_2 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+	// Deleted unused setters for fortressCount
+	// FORTRESS_COUNT_FIX_2 - END OF MODIFICATION  - NP STUDIOS
+
 	/** 
 	 * @return spawnPosition
 	 */
 	public Vector2 getSpawnPosition() {
 		return spawnPosition;
 	}
-	
+
+    // [FORTRESS_IMPROVEMENT] - START OF MODIFICATION  - [NP_STUDIOS] - [CASSIE_LILLYSTONE] ----
+	public ArrayList<Fortress> getFortresses(){
+	    return fortresses;
+    } //Added a getter which returns a list of fortresses, required for making fortress health improve over time
+    // [FORTRESS_IMPROVEMENT] - END OF MODIFICATION  - [NP_STUDIOS]----
 }

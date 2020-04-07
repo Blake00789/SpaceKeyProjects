@@ -1,6 +1,7 @@
 package com.dicycat.kroy.entities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Vector2;
 import com.dicycat.kroy.Kroy;
@@ -30,17 +31,23 @@ public class UFO extends Entity {
 	private float speed = 300f;
 	protected int direction = 0;
 	private float movetimer = 0;
+	private Boolean frozen;
 
 	/**
 	 *
 	 * @param spawnPos Where we spawn
 	 */
-	public UFO(Vector2 spawnPos) {
-		super(spawnPos, Kroy.mainGameScreen.textures.getUFO(), new Vector2(80, 80), 100);
+	public UFO(Vector2 spawnPos, Texture texture, Texture bulletTexture) {
+		super(spawnPos, texture, new Vector2(80, 80), 100);
 		this.spawnPos = spawnPos;
 		dispenser = new BulletDispenser(this);
-		dispenser.addPattern(new Pattern(180, 300, 800, 0.1f, 20, 1, 0.5f));
-
+		this.frozen = false;
+		dispenser.addPattern(new Pattern(180, 300, 800, 0.1f,
+				// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - START OF MODIFICATION  - [NPSTUDIOS] - [CASSIE_LILLYSTONE] ---
+				20, 1, 0.5f, bulletTexture, 10)); //Needed to add a parameter
+																								// here for creating patterns for the
+																								//bullets of patrols. Just gave them a constant damage of 10
+				// [UNIQUE_FORTRESS_HEALTH_DAMAGE] - END OF MODIFICATION  - [NPSTUDIOS] ---
 	}
 
 	/**
@@ -49,7 +56,11 @@ public class UFO extends Entity {
 	@Override
 	public void update() {
 		//movement
-		moveInDirection();
+		//POWERUPS_14 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+		if (!frozen) { //the patrols do not move when they have been frozen by the freeze patrols powerup.
+			moveInDirection();
+		}
+		//POWERUPS_14 - END OF MODIFICATION - NPSTUDIOS
 		movetimer += Gdx.graphics.getDeltaTime();
 		if (movetimer >= 2) {
 			movetimer = 0;
@@ -62,7 +73,7 @@ public class UFO extends Entity {
 		Bullet[] toShoot = dispenser.update(true);
 		if (toShoot != null) {
 			//we don't want to shoot if the player isn't nearby, even though we are still moving around in a square.
-			if (playerInRadius()) {
+			if (playerInRadius() && !frozen) {
 
 				for (Bullet bullet : toShoot) {
 					bullet.changeDirection(Kroy.mainGameScreen.getPlayer().getCentre().sub(this.getCentre()).nor());
@@ -94,5 +105,13 @@ public class UFO extends Entity {
 		setPosition(newPos); // updates y direction
 		setRotation(direction);// updates truck direction
 	}
-
+	//POWERUPS_15 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+	/**
+	 * A method to freeze and unfreeze a patrol.
+	 * @param flag
+	 */
+	public void setFrozen(Boolean flag){
+		this.frozen = flag;
+	}
+	//POWERUPS_15 - END OF MODIFICATION - NPSTUDIOS
 }
