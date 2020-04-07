@@ -34,9 +34,8 @@ public class Goose extends Entity {
 	 * Instantiate the default goose
 	 */
 	public Goose() {
-<<<<<<< HEAD
 		// was * scale
-		this(new Vector2(-200, 0 ), new Texture("goose2.png"), new Vector2(scale, scale), 1);
+		super(new Vector2(-200, 0 ), new Texture("goose2.png"), new Vector2(scale, scale), 1);
 		SetAnimation(73,97);
 	}
 
@@ -59,9 +58,6 @@ public class Goose extends Entity {
 		TextureRegion[] animationFrames = new TextureRegion[tempList.size()];
 		animationFrames = tempList.toArray(animationFrames);
 		return animationFrames;
-=======
-		super(new Vector2(-32 * scale, -32 * scale), new Texture("goose2.png"), new Vector2(64 * scale, 64 * scale), 1);
->>>>>>> master
 	}
 
 	/**

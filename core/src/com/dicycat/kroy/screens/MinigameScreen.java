@@ -229,7 +229,7 @@ public class MinigameScreen implements Screen {
 		}else if (this.score == 2){
 			Kroy.mainGameScreen.getPlayer().setDefenceUp(true);
 		}else if (this.score == 4){
-			Kroy.mainGameScreen.freezePatrols();
+			Kroy.mainGameScreen.freezePatrols(true);
 		}else if (this.score<6){
 			Kroy.mainGameScreen.addTime(45);
 		}else if (this.score < 8){

@@ -115,6 +115,7 @@ public class GameScreen implements Screen{
     private boolean timeIncrease;
     private boolean rainDance;
     private boolean freezeEnemies;
+    private float freezeTimer;
     private boolean revivedFireTruck;
 	private ArrayList<FireTruck> firetrucks = new ArrayList<FireTruck>();
 	private ArrayList<Fortress> fortresses = new ArrayList<Fortress>();
@@ -394,6 +395,12 @@ public class GameScreen implements Screen{
 
 			}
 		}
+		if (freezeEnemies){
+			freezeTimer += Gdx.graphics.getDeltaTime();
+			if (freezeTimer >= 15){
+				freezePatrols(false);
+			}
+		}
 	}
 	
 	/**
@@ -492,17 +499,19 @@ public class GameScreen implements Screen{
 			}
 		}
 	}
-	public void freezePatrols(){
+	public void freezePatrols(Boolean flag){
+		freezeEnemies = flag;
+		freezeTimer = 0;
 		for (GameObject obj : gameObjects){
 			if (obj instanceof UFO) {
-				((UFO) obj).setFrozen(true);
+				((UFO) obj).setFrozen(flag);
 			}
 		}
 	}
 	public void rainDance(){
 		for (GameObject obj : gameObjects){
 			if (obj instanceof UFO) {
-				((UFO) obj).die();
+				obj.die();
 			}
 		}
 	}
@@ -802,22 +811,6 @@ public class GameScreen implements Screen{
 	public Vector2 getSpawnPosition() {
 		return spawnPosition;
 	}
-
-	public void SetFireTruckRevived(boolean set){
-        revivedFireTruck = set;
-    }
-
-    public void SetRainDance(boolean set){
-        rainDance = set;
-    }
-
-    public void SetFreezeEnemies(boolean set){
-        freezeEnemies = set;
-    }
-
-    public void SetTimeIncrease(boolean set){
-        timeIncrease = set;
-    }
 
     // [FORTRESS_IMPROVEMENT] - START OF MODIFICATION  - [NP_STUDIOS] - [CASSIE_LILLYSTONE] ----
 	public ArrayList getFortresses(){
