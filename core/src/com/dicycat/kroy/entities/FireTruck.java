@@ -52,7 +52,7 @@ public class FireTruck extends Entity{
 	private Vector2 statusIconPos = Vector2.Zero;
 
     // [FORTRESS_IMPROVEMENT] - START OF MODIFICATION  - [NP_STUDIOS] - [CASSIE_LILLYSTONE] ----
-	private ArrayList fortressList; //New attribute
+	private ArrayList<Fortress> fortressList; //New attribute
     // [FORTRESS_IMPROVEMENT] - END OF MODIFICATION  - [NP_STUDIOS] -----
 
 	/**
@@ -351,8 +351,8 @@ public class FireTruck extends Entity{
         // [FORTRESS_IMPROVEMENT] - START OF MODIFICATION  - [NP_STUDIOS] - [CASSIE_LILLYSTONE] ----
         fortressList = Kroy.mainGameScreen.getFortresses(); //Create a new list which contains the fortresses
 
-        for (Object fortress : fortressList){
-            setHealthPoints(10); //Add 10 to the health of each fortress each time a truck is killed - so that fortresses improve their health over time
+        for (Fortress fortress : fortressList){
+            fortress.setHealthPoints(10); //Add 10 to the health of each fortress each time a truck is killed - so that fortresses improve their health over time
 		// [FORTRESS_IMPROVEMENT] - END OF MODIFICATION  - [NP_STUDIOS] ----
         }
 
