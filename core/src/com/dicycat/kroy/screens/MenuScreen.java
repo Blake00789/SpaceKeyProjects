@@ -336,7 +336,7 @@ public class MenuScreen implements Screen{
 	public void startMinigame() {
 		 if (!currentlyRunningGame) {	// Checks if a new GameScreen is currently running and either makes one or ignores the commands
 			 currentlyRunningGame = true; // Makes sure that only one GameScreen is opened at once
-			 game.newMinigame(); // Calls the function in Kroy to start a new minigame
+			 game.newMinigame(true); // Calls the function in Kroy to start a new minigame
 		 }
 	} 
   

@@ -80,11 +80,13 @@ public class Kroy extends Game {
 		setScreen(mainGameScreen);// Display new game
 	}
 	// SAVING_1 - END OF MODIFICATION  - NP STUDIOS
-	
-	public void newMinigame() {
-		mainMinigameScreen = new MinigameScreen(this);// Initialise new minigame
+
+	//MINIGAME_INTEGRATION_1 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+	public void newMinigame(boolean flag) {
+		mainMinigameScreen = new MinigameScreen(this, flag);// Initialise new minigame
 		setScreen(mainMinigameScreen);// Display new minigame
 	}
+	//MINIGAME_INTEGRATION_1 - END OF MODIFICATION - NPSTUDIOS
 
 	/**
 	 * Return back to the menu screen
@@ -94,6 +96,13 @@ public class Kroy extends Game {
 		mainMenuScreen.setCurrentlyRunningGame(false); //Tells the screen not to block any button pushes which would initialise a new game again
 		setScreen(mainMenuScreen); // displays the menu screen
 	}
+
+	//MINIGAME_INTEGRATION_2 - START OF MODIFICATION - NPSTUDIOS - BETHANY GILMORE
+	public void backToGame(){
+		mainGameScreen.setGameState(GameScreen.GameScreenState.RUN);
+		setScreen(mainGameScreen);
+	}
+	//MINIGAME_INTEGRATION_2 - END OF MODIFICATION - NPSTUDIOS
 	
 	/**
 	 * Centre of the screen width
