@@ -662,6 +662,10 @@ public class GameScreen implements Screen{
 	    state = s;
 	}
 
+	public GameScreenState getGameScreenState() {
+		return state;
+	}
+
 	/**
 	 * @return  the list of active game objects
 	 */
@@ -867,11 +871,14 @@ public class GameScreen implements Screen{
 			saveData.putFloat((prefix + "TRUCK_WATER_" + i), firetrucks.get(i).getCurrentWater());
 			saveData.putFloat((prefix + "TRUCK_X_POS_" + i), firetrucks.get(i).getPosition().x);
 			saveData.putFloat((prefix + "TRUCK_Y_POS_" + i), firetrucks.get(i).getPosition().y);
-			saveData.putFloat((prefix + "GAME_TIME"), gameTimer);
-			// TODO: Add any powerup saving stuff
-			// TODO: Add minigame checks - save 
-			saveData.flush();
+			saveData.putBoolean((prefix + "UNLIMITED_WATER_" + i), firetrucks.get(i).isUnlimitedWater());
+			saveData.putBoolean((prefix + "DEFENCE_UP_" + i), firetrucks.get(i).getDefenceUp());
+			System.out.println(firetrucks.get(i).isUnlimitedWater());
 		}
+		saveData.putBoolean((prefix + "FREEZE_ENEMIES"), freezeEnemies);
+		saveData.putBoolean((prefix + "RAIN_DANCE"), rainDance);
+		saveData.putFloat((prefix + "GAME_TIME"), gameTimer);
+		saveData.flush();
 	}
 
 	/**
@@ -889,11 +896,18 @@ public class GameScreen implements Screen{
 				firetrucks.get(i).setPosition(new Vector2(saveData.getFloat(prefix + "TRUCK_X_POS_" + i,
 						spawnPosition.x - 135 + (i * 50)),
 						saveData.getFloat(prefix + "TRUCK_Y_POS_" + i,spawnPosition.y)));
-				// TODO: Add any powerup saving stuff
-				// TODO: Add minigame checks - save
+				firetrucks.get(i).setUnlimitedWater(saveData.getBoolean((prefix + "UNLIMITED_WATER_" + i)));
+				firetrucks.get(i).setDefenceUp(saveData.getBoolean(prefix + "DEFENCE_UP_" + i));
+				firetrucks.get(i).update();
 			}
 			gameTimer = saveData.getFloat(prefix + "GAME_TIME", 300);
 			hud.setTimer(saveData.getFloat(prefix + "GAME_TIME", 300));
+			if (saveData.getBoolean((prefix + "FREEZE_ENEMIES"))) {
+				freezePatrols(true);
+			}
+			if (saveData.getBoolean(prefix + "RAIN_DANCE")) {
+				rainDance();
+			}
 		}
 	}
 

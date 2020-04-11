@@ -44,7 +44,7 @@ public class FireTruck extends Entity{
 	private float defenceUpTimer;
 
 
-	private boolean[] statusEffects = new boolean[4];
+	private boolean[] statusEffects = new boolean[2];
 	private float range;
 
 	private Vector2 statusIconPos = Vector2.Zero;
@@ -93,11 +93,11 @@ public class FireTruck extends Entity{
 
 	}
 
-		// STATBAR_REFACTOR_2 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
-		// Removed the creation of statbars from the firetruck class as adding the objects to the array
-		// in GameScreen would cause problems with testing so we moved this functionality to the
-		// GameScreen class itself.
-		// STATBAR_REFACTOR_2 - END OF MODIFICATION  - NP STUDIOS
+	// STATBAR_REFACTOR_2 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
+	// Removed the creation of statbars from the firetruck class as adding the objects to the array
+	// in GameScreen would cause problems with testing so we moved this functionality to the
+	// GameScreen class itself.
+	// STATBAR_REFACTOR_2 - END OF MODIFICATION  - NP STUDIOS
 
 	// TESTING_REFACTOR_1 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 	// Removed constructor created by previous group that was just for testing purposes
@@ -140,7 +140,7 @@ public class FireTruck extends Entity{
 
 			for (int i = 0; i <= 3; i++) {// loops through the 4 arrow keys (Stored as KEYS above)
 				if (Gdx.input.isKeyPressed(ARROWKEYS[i])) {
-					directionKey+=directionKeys[i];
+					directionKey += directionKeys[i];
 				}
 			}
 
@@ -179,6 +179,7 @@ public class FireTruck extends Entity{
 		updateStatusIcons();
 		assignStatusEffectArray();
 		moveIconByFixedPoint();
+
 		// STATBAR_REFACTOR_3 - START OF MODIFICATION  - NP STUDIOS - LUCY IVATT
 		// Removed the statbars  update code from the firetruck class.
 		// STATBAR_REFACTOR_3- END OF MODIFICATION  - NP STUDIOS
@@ -435,6 +436,10 @@ public class FireTruck extends Entity{
 		assignStatusEffectArray();
 	}
 
+	public boolean isUnlimitedWater() {
+		return unlimitedWater;
+	}
+
 	/**
 	 *
 	 * @param flag
@@ -448,7 +453,7 @@ public class FireTruck extends Entity{
 	}
 
 	public Boolean getDefenceUp(){
-		return this.defenceUp;
+		return defenceUp;
 	}
 	//POWERUPS_13 - END OF MODIFICATION - NPSTUDIOS
 }

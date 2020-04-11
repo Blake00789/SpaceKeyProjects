@@ -132,8 +132,6 @@ public class MinigameScreen implements Screen {
 				pause();
 			}
 
-			
-
 			batch.setProjectionMatrix(gamecam.combined);
 			batch.begin(); // Game loop Start
 			batch.draw(map, -Kroy.width / 2, -Kroy.height / 2, Kroy.width, Kroy.height);
